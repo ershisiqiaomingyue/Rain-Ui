@@ -1,0 +1,48 @@
+.tool-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--radius-panel);
+  color: var(--accent-ink);
+  background: var(--accent-subtle);
+}
+
+.tool-icon > svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.75;
+}
+
+/* 尺寸档：sm 24 / md 36（默认）/ lg 44 */
+.tool-icon.is-sm {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-control);
+}
+
+.tool-icon.is-sm > svg {
+  width: 14px;
+  height: 14px;
+}
+
+.tool-icon.is-lg {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-overlay);
+}
+
+.tool-icon.is-lg > svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* 工具图标不按色相区分：颜色只表达状态，底与字都走中性 */
+.tool-icon.is-neutral {
+  color: var(--text-secondary);
+  background: var(--bg-muted);
+}

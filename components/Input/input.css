@@ -1,0 +1,189 @@
+/* ==========================================================================
+   Input Component Styles - 输入框组件规范
+   - 100% 还原 modern-ui-showcase.html 沉浸内凹槽位 (Sunken Slot)
+   - 消除生硬外框线，支持前缀图标与一键清除/复合操作组
+   - 支持 .desk-input / .input 以及 .input-shell / .input-wrapper 双别名
+   ========================================================================== */
+
+.input-shell,
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.desk-input,
+.input {
+  width: 100%;
+  height: var(--control-height);
+  padding: 0 12px;
+  background: var(--input-bg-sunken);
+  color: var(--input-text);
+  border: var(--input-border);
+  border-radius: var(--radius-control);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  outline: none;
+  /* Sunken slot: the field is a step DARKER than the surface it sits on plus
+     one inset top shadow, so it reads as a hole rather than a floating slab.
+     No outer hairline — on a card the fill edge is already the boundary. */
+  box-shadow: var(--input-glass);
+  transition: background-color var(--transition-fast), color var(--transition-fast),
+    border-color var(--transition-fast), box-shadow var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.desk-input::placeholder,
+.input::placeholder {
+  color: var(--input-placeholder);
+  opacity: 1;
+}
+
+/* Hover deepens the slot by one step; the fill, not a border, is the edge. */
+.desk-input:hover:not(:disabled):not(:focus),
+.input:hover:not(:disabled):not(:focus) {
+  background: var(--input-bg-hover);
+  color: var(--input-hover-text);
+  box-shadow: var(--input-lift-hover), var(--input-glass);
+}
+
+/* Focus keeps the sunken fill and adds one accent ring. The ring is the only
+   focus signal in the system, so it is never traded for a fill change. */
+.desk-input:focus,
+.input:focus {
+  background: var(--input-bg-focus);
+  color: var(--input-hover-text);
+  border-color: var(--input-focus-border);
+  box-shadow: var(--input-focus-ring), var(--input-glass);
+}
+
+.desk-input:disabled,
+.input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.desk-input[readonly],
+.input[readonly] { color: var(--text-secondary); }
+
+/* Surface variant (toolbar search fields): the field is a real plate — white
+   fill + one hairline — because it sits on a toolbar that is already tinted.
+   A sunken well would read as a hole in the toolbar, and a borderless white
+   plate would vanish on a white panel. One edge, never border + inset shadow. */
+.input-surface .input {
+  border-radius: var(--radius-control);
+  color: var(--text-primary);
+  background: var(--input-surface-bg);
+  border-color: var(--divider-color);
+  box-shadow: none;
+}
+.input-surface .input::placeholder { color: var(--text-tertiary); }
+.input-surface .input-prefix-icon { color: var(--text-secondary); }
+.input-surface .input:hover:not(:disabled):not(:focus) {
+  color: var(--text-primary);
+  background: var(--input-surface-hover-bg, var(--input-surface-bg));
+  border-color: var(--border-subtle);
+  box-shadow: none;
+}
+.input-surface .input:focus {
+  color: var(--text-primary);
+  background: var(--input-surface-focus-bg, var(--input-surface-bg));
+  border-color: var(--accent-primary);
+  box-shadow: var(--input-focus-ring);
+}
+
+/* 尺寸变体 */
+.input-sm {
+  height: var(--control-height-sm);
+  padding: 0 10px;
+  font-size: var(--text-label);
+}
+
+.input-md {
+  height: var(--control-height-md);
+  padding: 0 12px;
+  font-size: var(--text-body);
+}
+
+.input-lg {
+  height: var(--control-height-lg);
+  padding: 0 14px;
+  font-size: var(--text-body);
+}
+
+/* 前置图标 */
+.has-lead .desk-input,
+.has-lead .input,
+.input-with-icon-prefix .desk-input,
+.input-with-icon-prefix .input {
+  padding-left: 36px !important;
+}
+
+.has-tail .desk-input,
+.has-tail .input,
+.input-with-action .desk-input,
+.input-with-action .input {
+  padding-right: 36px !important;
+}
+
+.input-lead-icon,
+.input-prefix-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: var(--input-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-raised);
+  transition: color 0.18s;
+}
+
+/* 一键清除胶囊 */
+/* Clear affordance: same treatment as the toast × and the attachment remove
+   button — nothing at rest, a quiet tint on hover.
+
+   The button is a library `Button variant="bare"`, which carries
+   `.btn.btn-bare` (0,2,0). A plain `.input-clear-pill` selector (0,1,0) loses
+   to it, which is why the fill and radius used to disappear. The selector is
+   qualified with `.btn` so this rule actually lands. */
+.input-clear-pill.btn,
+.input-clear-pill {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: var(--input-muted);
+  cursor: pointer;
+  z-index: var(--z-raised);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.input-clear-pill.btn:hover:not(:disabled),
+.input-clear-pill:hover {
+  color: var(--text-primary);
+  background: var(--chrome-hover);
+}
+
+.input-clear-pill.btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 1px;
+}

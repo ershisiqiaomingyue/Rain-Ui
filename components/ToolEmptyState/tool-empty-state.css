@@ -1,0 +1,64 @@
+/* Empty region: text first, one action, no decorative glyph.
+   It inherits the surface it sits on instead of punching a darker well in it. */
+.tool-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 120px;
+  padding: 24px 20px;
+  text-align: center;
+  color: var(--text-tertiary);
+  background: transparent;
+}
+
+.tool-empty-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  max-width: 46ch;
+}
+
+.tool-empty-title {
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.tool-empty-state p {
+  margin: 0;
+  font-size: var(--text-label);
+  line-height: 1.6;
+  color: var(--text-tertiary);
+  overflow-wrap: anywhere;
+}
+
+.tool-empty-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Compact: a row that hugs the toolbar above it and aligns to the left edge. */
+.tool-empty-state.compact {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 16px;
+  min-height: 0;
+  padding: 10px 0;
+  text-align: left;
+}
+
+.tool-empty-state.compact .tool-empty-copy {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
+  max-width: none;
+}
+
+.tool-empty-state.compact .tool-empty-title { font-size: var(--text-body); }
+.tool-empty-state.compact p { font-size: var(--text-label); }
+.tool-empty-state.compact .tool-empty-action { margin-left: auto; }

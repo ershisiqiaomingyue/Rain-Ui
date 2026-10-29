@@ -1,0 +1,95 @@
+/* ==========================================================================
+   Table Component Styles - 数据表格规范
+   - 包含极虚的分割线 (--table-border-subtle & --divider-subtle)
+   - 支持 .table-container / .desk-table-container 及 .table / .desk-table 双别名
+   ========================================================================== */
+
+.table-container,
+.desk-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--table-bg);
+  /* 外框必须是实际可见的 1px：--card-border 的值是 transparent，表格因此
+     没有左右和下边线，看起来像一张"断了框"的表。 */
+  border: 1px solid var(--divider-color);
+  border-radius: var(--radius-panel);
+}
+
+.table,
+.desk-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--text-body);
+  font-family: var(--font-sans);
+}
+
+/* 表头：12px 常规大小写，不用大写+字距（中文表头加字距只会散开，
+   11px 大写英文在 1080p 下也读不清）。 */
+.table th,
+.desk-table th {
+  padding: 10px 16px;
+  font-size: var(--text-label);
+  font-weight: 600;
+  color: var(--table-header-text);
+  letter-spacing: 0;
+  background: var(--table-header-bg);
+  border-bottom: 1px solid var(--divider-color);
+  height: 38px;
+  white-space: nowrap;
+}
+
+/* 数据单元格：行与行之间一条能看见的 1px，最后一行的框线由容器收口，
+   不要再靠淡到几乎看不见的 --table-divider。 */
+.table td,
+.desk-table td {
+  padding: 11px 16px;
+  color: var(--table-text);
+  border-bottom: 1px solid var(--divider-color);
+  vertical-align: middle;
+  transition: background 0.15s ease;
+}
+
+/* 行悬浮 */
+.table tbody tr:hover td,
+.desk-table tbody tr:hover td {
+  background: var(--table-hover-bg);
+}
+
+/* 最后一行去除下边线 */
+.table tbody tr:last-child td,
+.desk-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Markdown tables use row separators without enclosing the whole grid. */
+html[data-theme] .markdown-body tbody tr:last-child td {
+  border-bottom-color: transparent !important;
+}
+
+/* 等宽数字单元格 */
+.table-cell-mono,
+.cell-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-label);
+  color: var(--text-secondary);
+}
+
+/* 数字列：右对齐 + 等宽数字。th 和 td 用同一个类，表头才跟着走。 */
+.table .table-cell-num,
+.desk-table .table-cell-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 表格内复选框 */
+.table th input[type="checkbox"],
+.table td input[type="checkbox"],
+.desk-table th input[type="checkbox"],
+.desk-table td input[type="checkbox"] {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent-primary);
+}

@@ -1,0 +1,179 @@
+/* ==========================================================================
+   Property Grid Component Styles - 属性键值遥测表格 (图2 原生规范)
+   - 包含极虚的分割线 (--divider-subtle)
+   - 左右两列对齐，左侧图标+标签，右侧加粗等宽数值
+   ========================================================================== */
+
+.property-grid-card {
+  background: var(--bg-card);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  padding: 18px 22px;
+  box-shadow: var(--card-shadow), var(--card-rim);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+html[data-theme="dark"] .property-grid-card,
+[data-theme="dark"] .property-grid-card {
+  background: var(--bg-card);
+  border: var(--card-border);
+  box-shadow: var(--card-shadow), var(--card-rim);
+}
+
+.property-grid-card:hover {
+  /* no border-color change - only bg transitions allowed */
+}
+
+/* 双栏网格布局：左右之间包含极虚垂直分割线。
+   列数跟容器宽度走，不跟视口走 —— 同一套组件既放在 400px 的卡片里，
+   也放在 900px 的工具面板里，视口断点在这两种情况下都是错的。 */
+.property-grid-card {
+  container-type: inline-size;
+}
+
+/* 放进 Card 里的 PropertyGrid 不再自带壳：外层已经有底色、描边和内边距，
+   里层再补一层 18/22 的内边距，第一行标签会离卡片左边缘 42px，
+   像卡片中间浮着一件家具。这里只保留行本身。 */
+/* !important 是必要的：上面「嵌套卡片降级为内嵌底色」那条规则带了 !important，
+   否则这里会被它盖回去，卡片里仍然浮着一整块更亮的底板。 */
+html[data-theme] .card .property-grid-card,
+html[data-theme] .card-tool .property-grid-card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* 行本身左右留 8px 是给悬停底色用的；嵌进卡片后这段内缩会让第一列标签
+   比卡片标题再往里 8px，两处左边缘对不上。用负外边距把这 8px 让出去：
+   文字回到卡片的内边距线上，悬停底色仍旧铺满整行。 */
+html[data-theme] .card .property-row,
+html[data-theme] .card-tool .property-row {
+  margin-inline: -8px;
+}
+
+
+.property-grid-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 0;
+  row-gap: 0;
+}
+
+/* 只有容器真的够宽才并排；并排时才需要中缝那条竖线与两侧缩进。 */
+@container (min-width: 561px) {
+  .property-grid-columns {
+    grid-template-columns: 1fr 1fr;
+  }
+  .property-grid-columns > .property-grid-col:first-child {
+    padding-right: 28px;
+    border-right: 1px solid var(--property-divider);
+  }
+  .property-grid-columns > .property-grid-col:last-child {
+    padding-left: 28px;
+  }
+}
+
+.property-grid-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+
+
+/* 每列最后一行的下边线会悬在卡片内边距上方，看着像多出一条横线；这里收掉。 */
+.property-grid-col > .property-row:last-child {
+  border-bottom: 0;
+}
+
+/* 但容器窄到只剩一列时，两列是上下叠起来的：第一列的「最后一行」在视觉上
+   排在列表中间，去掉它的下边线就等于列表中间少了一条分隔线。
+   只有真正排在末尾的那一行才该收掉。 */
+@container (max-width: 560px) {
+  .property-grid-columns > .property-grid-col:first-child > .property-row:last-child {
+    border-bottom: 1px solid var(--property-divider);
+  }
+}
+/* 单个属性行 */
+.property-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 8px;
+  border-bottom: 1px solid var(--property-divider); /* 很虚的分割线 */
+  transition: background-color var(--transition-fast);
+  border-radius: var(--radius-control);
+}
+
+.property-row:hover {
+  background: var(--property-hover-bg);
+}
+
+/* 每一列的最后一行可以去除下边线，也可以全保留虚线 */
+.property-label-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  user-select: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.property-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.property-name {
+  font-weight: 500;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.property-value {
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--property-value-text);
+  font-family: var(--font-mono);
+  flex: 1;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: normal;
+  line-height: 1.4;
+}
+
+/* 特殊高亮值 */
+.property-value.value-orange {
+  color: var(--warning-text);
+}
+
+.property-value.value-green {
+  color: var(--success-text);
+}
+
+.property-value.value-accent {
+  color: var(--accent-ink);
+}
+
+.property-value.value-unknown {
+  color: var(--property-unknown-text);
+  font-family: var(--font-sans);
+  font-weight: 500;
+}
+
+.property-value.value-danger { color: var(--status-danger-text); }

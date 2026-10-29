@@ -1,0 +1,30 @@
+/* Tooltip —— 跟随主题，不走主文本色反色。
+   旧写法 `background: var(--tooltip-bg)` 里 --tooltip-bg 就是 --text-primary：
+   深色主题下文本近白，气泡被画成一枚白方块；亮色主题下是纯黑块。两套都不像
+   浮层。这里改成和菜单/弹层同一族的底色 + 描边 + 阴影，明暗各取自己的一套。 */
+
+.ui-tooltip-trigger { display: inline-flex; align-items: center; }
+.ui-tooltip-trigger:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 3px; border-radius: var(--radius-control); }
+
+.ui-tooltip {
+  position: fixed;
+  z-index: var(--z-popover);
+  box-sizing: border-box;
+  /* 宽度跟着内容走：单行短提示就是一枚小气泡，只有长文案才升到 320px。
+     旧值把 width 写死成 360px，27px 的图标按钮也会弹出一条盖住整列导航的长条。 */
+  width: max-content;
+  max-width: min(320px, calc(100vw - 16px));
+  padding: 6px 9px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-overlay);
+  background: var(--popover-bg);
+  color: var(--text-primary);
+  box-shadow: var(--popover-shadow);
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  line-height: 1.5;
+  font-weight: 400;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}

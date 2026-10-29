@@ -1,0 +1,93 @@
+/* ==========================================================================
+   UsageMetrics — the composer's one-line metrics strip.
+   Geometry from conversation-theme.css: hairline top divider, 10px type,
+   baseline-aligned label + bold value, 9px horizontal padding per item.
+   ========================================================================== */
+
+.ui-usage {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  min-width: 0;
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 1px solid var(--composer-divider);
+  color: var(--composer-muted);
+  font-size: var(--text-label);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.ui-usage-item {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  min-width: 0;
+  padding: 0 9px;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+}
+
+/* 项目之间的竖分割线：用户明确要求「usage 每个 item 中间有分割线」。
+   用伪元素而不是 border-right，这样最后一项自然不带尾巴，也不用在 TSX 里判断 index。 */
+.ui-usage-item + .ui-usage-item::before,
+.ui-usage-item + .ui-usage-action::before,
+.ui-usage-action + .ui-usage-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 9px;
+  margin-top: -4.5px;
+  background: var(--composer-divider);
+}
+
+.ui-usage-item b {
+  color: var(--text-primary);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.ui-usage-label {
+  color: var(--composer-muted);
+  font-weight: 400;
+}
+
+.ui-usage-action {
+  cursor: pointer;
+  border-radius: var(--radius-control);
+  transition: background-color var(--transition-fast);
+}
+
+.ui-usage-action:hover:not(:disabled) {
+  background: var(--button-hover-bg);
+  color: var(--text-primary);
+}
+
+.ui-usage-action:disabled { cursor: default; }
+
+.ui-usage-action:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 1px;
+}
+
+.ui-usage-spin { animation: ui-usage-rotate 0.9s linear infinite; }
+
+@keyframes ui-usage-rotate {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+  .ui-usage-item { padding: 0 5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-usage-spin { animation: none; }
+  .ui-usage-action { transition: none; }
+}

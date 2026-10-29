@@ -1,0 +1,54 @@
+/* ==========================================================================
+   ResizablePane — 拖拽手柄
+   --------------------------------------------------------------------------
+   PaneResizeHandle / PaneHeightResizeHandle 默认类名是 code-viewer-pane-resizer
+   和 pane-height-resizer。原应用把这两个手柄的样式写在页面级样式表里，拷贝时
+   没带过来，于是调用方不显式传 className 时拿到的是零尺寸、看不见的手柄。
+   这里给默认手柄补上真实命中区和一条发丝线，颜色全部走既有 token。
+   调用方传入的 className 仍然优先（这些是单类选择器，调用方的类在 className
+   字符串里排在后面）。
+   ========================================================================== */
+
+.code-viewer-pane-resizer,
+.pane-height-resizer {
+  flex: 0 0 6px;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  outline: none;
+  touch-action: none;
+  user-select: none;
+}
+
+.code-viewer-pane-resizer {
+  display: flex;
+  width: 6px;
+  cursor: col-resize;
+  border-right: var(--divider-subtle);
+}
+
+.pane-height-resizer {
+  display: flex;
+  width: 100%;
+  height: 6px;
+  cursor: row-resize;
+  border-bottom: var(--divider-subtle);
+}
+
+/* 悬停 / 拖拽反馈：只加背景，不改宽度，避免布局跳动。 */
+.code-viewer-pane-resizer:hover,
+.pane-height-resizer:hover {
+  background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+}
+
+.code-viewer-pane-resizer.is-dragging,
+.pane-height-resizer.is-dragging {
+  background: color-mix(in srgb, var(--accent-primary) 22%, transparent);
+}
+
+.code-viewer-pane-resizer:focus-visible,
+.pane-height-resizer:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: -2px;
+}

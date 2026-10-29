@@ -1,0 +1,53 @@
+/* ==========================================================================
+   rain-ui — 全局样式入口
+   --------------------------------------------------------------------------
+   引入顺序即层叠优先级：字体 → tokens → 排版 → 环境光层 → 基础原子 → 组件。
+   只有「基础原子 + 通用布局外壳」在这里，业务视图样式（Home / Settings /
+   Chat / Terminal）不进组件库。
+
+   使用方式（二选一）：
+     1. bundler 中 `import "rain-ui/styles.css"`（本文件是打包入口）；
+     2. 或直接引入打包产物 `node_modules/rain-ui/dist/rain-ui.css`。
+   ========================================================================== */
+
+/* 1. 基础规范 */
+
+@import "./tokens.css";
+@import "./typography.css";
+@import "./ambient.css";
+@import "./base.css";
+@import "../../components/Divider/divider.css";
+@import "../../components/Button/button.css";
+@import "../../components/Button/tool-back-button.css";
+@import "../../components/Input/input.css";
+@import "../../components/Select/select.css";
+@import "../../components/Switch/switch.css";
+@import "../../components/Badge/badge.css";
+@import "../../components/Table/table.css";
+@import "../../components/PropertyGrid/property-grid.css";
+@import "../../components/Card/card.css";
+@import "../../components/SessionTabs/session-tabs.css";
+@import "../../components/ConfirmDialog/confirm-dialog.css";
+@import "../../components/RenameDialog/rename-dialog.css";
+@import "../../components/ToolEmptyState/tool-empty-state.css";
+@import "../../components/ToolIcon/tool-icon.css";
+@import "../../components/BorderGlow/border-glow.css";
+@import "../../components/BootScreen/boot-screen.css";
+@import "../../components/ui/toast.css";
+@import "../../components/ui/list-item.css";
+@import "../../components/ui/notice-panel.css";
+@import "../../components/ui/attachment.css";
+@import "../../components/ui/progress-ring.css";
+@import "../../components/ui/spinner.css";
+@import "../../components/ui/compaction-progress.css";
+@import "../../components/ui/usage-metrics.css";
+@import "../../components/ui/file-preview-panel.css";
+@import "../../components/ui/file-diff-view.css";
+@import "../../components/ui/file-change-card.css";
+@import "../../components/ui/file-change-notice.css";
+@import "../../components/ui/context-menu.css";
+@import "../../components/ui/modal.css";
+@import "../../components/ui/tooltip.css";
+@import "../../components/ui/task-step-list.css";
+@import "../../components/ui/access-mode-menu.css";
+@import "../../components/ResizablePane/resizable-pane.css";

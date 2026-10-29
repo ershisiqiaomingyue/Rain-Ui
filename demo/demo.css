@@ -1,0 +1,533 @@
+/* demo chrome + kit primitives */
+@import "./kit.css";
+/* ══════════════════════════════════════════════════════════════════════════
+   rain-ui demo chrome
+   只做演示站的排版外壳，组件本身不依赖这里的任何样式。
+   ══════════════════════════════════════════════════════════════════════════ */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.demo-shell {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  height: 100vh;
+  background: var(--bg-canvas);
+}
+
+/* ── 左侧索引 ─────────────────────────────────────────────────────────── */
+
+.demo-nav {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 12px;
+  padding: 14px 12px 12px;
+  border-right: 1px solid var(--divider-color);
+  background: var(--bg-app);
+}
+
+.demo-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 2px 4px 6px;
+}
+
+.demo-brand-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-control);
+  background: var(--accent-primary);
+  flex: none;
+}
+
+.demo-brand strong {
+  display: block;
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.demo-brand small {
+  display: block;
+  font-size: var(--text-meta);
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+.demo-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 9px;
+  border-radius: var(--radius-sm);
+  background: var(--input-bg-sunken);
+  color: var(--text-tertiary);
+}
+
+.demo-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--text-primary);
+  font-size: var(--text-label);
+  outline: none;
+}
+
+.demo-search input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.demo-nav-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 8px;
+  /* 目录是可滚动的长列表，滚动时上下边缘一定会切到半行字。
+     用 12px 的渐隐代替硬切口，切边就不会被误读成渲染错位。 */
+  mask-image: linear-gradient(to bottom, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+}
+
+.demo-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.demo-nav-group-label {
+  padding: 0 6px 4px;
+  font-size: var(--text-label);
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.demo-nav-item {
+  height: 28px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-label);
+  text-align: left;
+  cursor: pointer;
+}
+
+.demo-nav-item:hover {
+  background: var(--button-hover-bg);
+  color: var(--text-primary);
+}
+
+.demo-nav-item.is-active {
+  background: var(--rail-active-bg);
+  color: var(--text-primary);
+  font-weight: 550;
+}
+
+.demo-nav-foot {
+  padding-top: 8px;
+  border-top: 1px solid var(--divider-color);
+}
+
+.demo-theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  height: 28px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  /* 和目录条目同一档：亮色下不要在白底侧栏里再放一块纯白浮块，
+     那会让「切到亮色」看起来比它切换的内容还高一级。 */
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-label);
+  cursor: pointer;
+}
+
+.demo-theme-toggle:hover {
+  color: var(--text-primary);
+}
+
+/* ── 右侧内容 ─────────────────────────────────────────────────────────── */
+
+.demo-main {
+  min-width: 0;
+  overflow-y: auto;
+  padding: 28px 40px 96px;
+  background: var(--bg-canvas);
+}
+
+/* 单页视图：一屏一个组件，页头 + 画布 + 翻页。 */
+.demo-page {
+  max-width: 980px;
+  margin: 0 auto;
+  animation: demo-page-in 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes demo-page-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+.demo-page-head {
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.demo-page-crumb {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+  font-size: var(--text-meta);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.demo-page-group {
+  color: var(--accent-ink);
+}
+
+.demo-page-sep {
+  color: var(--text-tertiary);
+}
+
+.demo-page-index {
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-page-head h1 {
+  margin: 0;
+  font-size: var(--text-display);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.demo-page-head p {
+  margin: 7px 0 0;
+  max-width: 72ch;
+  font-size: var(--text-label);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.demo-block-body {
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px solid var(--divider-color);
+  border-radius: var(--radius-panel);
+  /* 样板画布后退一档：卡片是 --bg-surface，如果画布同色，嵌套层级就只剩
+     一条 1px 边框在撑，看起来像卡片直接贴在页面上。画布用页面底色，
+     里面的组件才浮得起来。 */
+  background: var(--bg-canvas);
+}
+
+/* ── 样板排版原语 ─────────────────────────────────────────────────────── */
+
+.demo-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.demo-stack-tight {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.demo-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.demo-line-wrap {
+  align-items: stretch;
+}
+
+.demo-tall {
+  align-items: center;
+  height: 40px;
+}
+
+.demo-relative {
+  position: relative;
+}
+
+.demo-hint {
+  margin: 0;
+  font-size: var(--text-label);
+  color: var(--text-tertiary);
+  line-height: 1.55;
+}
+
+.demo-group-label {
+  font-size: var(--text-label);
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+.demo-w-md {
+  width: 260px;
+}
+
+.demo-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.demo-card-surface {
+  border: 1px solid var(--divider-color);
+  border-radius: var(--radius-base);
+  background: var(--bg-canvas);
+  overflow: hidden;
+}
+
+.demo-metrics {
+  padding: 10px 14px;
+}
+
+.demo-diff {
+  padding: 8px 0;
+}
+
+.demo-preview {
+  height: 320px;
+  display: flex;
+}
+
+.demo-preview > * {
+  flex: 1;
+  min-width: 0;
+}
+
+.demo-context-target {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96px;
+  border-style: dashed;
+}
+
+.demo-seg-sm .seg-btn {
+  height: 24px;
+  font-size: var(--text-label);
+}
+
+.demo-lead-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  background: var(--input-bg-sunken);
+  color: var(--text-secondary);
+}
+
+/* 色板 */
+.demo-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.demo-swatch {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+  align-items: center;
+  padding: 7px 9px;
+  border: 1px solid var(--divider-color);
+  border-radius: var(--radius-sm);
+}
+
+.demo-swatch-chip {
+  grid-row: span 2;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--divider-color);
+}
+
+.demo-swatch code {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--text-primary);
+}
+
+.demo-swatch .demo-hint {
+  font-size: var(--text-meta);
+}
+
+/* 字号阶梯 */
+.demo-typescale {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72px 260px;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.demo-typescale:last-child {
+  border-bottom: 0;
+}
+
+.demo-typescale code {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--text-secondary);
+}
+
+.demo-typescale > span:first-child {
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+/* 圆角与间距 */
+.demo-radius {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 92px;
+}
+
+.demo-radius-box {
+  width: 46px;
+  height: 46px;
+  background: var(--input-bg-sunken);
+  border: 1px solid var(--divider-color);
+}
+
+.demo-space-box {
+  background: var(--accent-primary);
+  opacity: 0.55;
+  border-radius: 2px;
+}
+
+.demo-radius code {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+}
+
+.demo-radius .demo-hint {
+  font-size: var(--text-meta);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .demo-shell {
+    grid-template-columns: 1fr;
+  }
+  .demo-nav {
+    display: none;
+  }
+  .demo-main {
+    padding: 20px 18px 64px;
+  }
+  .demo-grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .demo-typescale {
+    grid-template-columns: minmax(0, 1fr) 60px;
+  }
+  .demo-typescale .demo-hint {
+    display: none;
+  }
+}
+
+
+
+/* ── 组件翻页（上一页 / 下一页） ─────────────────────────────────────── */
+.demo-pager {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  max-width: 980px;
+  margin: 30px auto 8px;
+}
+
+.demo-pager-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 50%;
+  padding: 10px 14px;
+  border: 1px solid var(--divider-color);
+  border-radius: var(--radius-panel);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-label);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.demo-pager-btn span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.demo-pager-btn.is-next {
+  margin-left: auto;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.demo-pager-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  background: var(--button-hover-bg);
+}
+
+.demo-pager-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.demo-empty {
+  max-width: 980px;
+  margin: 80px auto;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+}
+
+.demo-empty p {
+  margin: 0 0 16px;
+}
+
+.demo-empty .demo-pager-btn {
+  display: inline-flex;
+}

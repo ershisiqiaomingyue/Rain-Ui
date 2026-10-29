@@ -1,0 +1,17 @@
+# deps
+node_modules/
+.pnpm-store/
+
+# build output（dist 是本地 `npm run build` 产物，引用方自行构建）
+dist/
+dist-demo/
+
+# 截图/审计工作目录（CDP 截图脚本的输出与临时浏览器 profile）
+.shots/
+
+# 编辑器 / 系统
+.idea/
+.vscode/
+*.log
+.DS_Store
+Thumbs.db

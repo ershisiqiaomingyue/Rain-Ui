@@ -1,0 +1,292 @@
+{
+  "name": "rain-ui",
+  "version": "0.1.0",
+  "description": "Android Toolkit 的 UI 组件库：tokens、控件、对话与通知组件，桌面工具类应用的完整设计系统。",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/rain-ui.cjs",
+  "module": "./dist/rain-ui.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/rain-ui.js",
+      "require": "./dist/rain-ui.cjs"
+    },
+    "./styles.css": "./dist/rain-ui.css",
+    "./components/BootScreen/BootScreen": {
+      "types": "./dist/types/components/BootScreen/BootScreen.d.ts",
+      "import": "./dist/components/BootScreen/BootScreen.js",
+      "require": "./dist/components/BootScreen/BootScreen.cjs"
+    },
+    "./components/BorderGlow/BorderGlow": {
+      "types": "./dist/types/components/BorderGlow/BorderGlow.d.ts",
+      "import": "./dist/components/BorderGlow/BorderGlow.js",
+      "require": "./dist/components/BorderGlow/BorderGlow.cjs"
+    },
+    "./components/ConfirmDialog/ConfirmDialog": {
+      "types": "./dist/types/components/ConfirmDialog/ConfirmDialog.d.ts",
+      "import": "./dist/components/ConfirmDialog/ConfirmDialog.js",
+      "require": "./dist/components/ConfirmDialog/ConfirmDialog.cjs"
+    },
+    "./components/ConfirmDialog/useConfirmAction": {
+      "types": "./dist/types/components/ConfirmDialog/useConfirmAction.d.ts",
+      "import": "./dist/components/ConfirmDialog/useConfirmAction.js",
+      "require": "./dist/components/ConfirmDialog/useConfirmAction.cjs"
+    },
+    "./components/RenameDialog/RenameDialog": {
+      "types": "./dist/types/components/RenameDialog/RenameDialog.d.ts",
+      "import": "./dist/components/RenameDialog/RenameDialog.js",
+      "require": "./dist/components/RenameDialog/RenameDialog.cjs"
+    },
+    "./components/ResizablePane/PaneHeightResizeHandle": {
+      "types": "./dist/types/components/ResizablePane/PaneHeightResizeHandle.d.ts",
+      "import": "./dist/components/ResizablePane/PaneHeightResizeHandle.js",
+      "require": "./dist/components/ResizablePane/PaneHeightResizeHandle.cjs"
+    },
+    "./components/ResizablePane/PaneResizeHandle": {
+      "types": "./dist/types/components/ResizablePane/PaneResizeHandle.d.ts",
+      "import": "./dist/components/ResizablePane/PaneResizeHandle.js",
+      "require": "./dist/components/ResizablePane/PaneResizeHandle.cjs"
+    },
+    "./components/ResizablePane/paneWidth": {
+      "types": "./dist/types/components/ResizablePane/paneWidth.d.ts",
+      "import": "./dist/components/ResizablePane/paneWidth.js",
+      "require": "./dist/components/ResizablePane/paneWidth.cjs"
+    },
+    "./components/ResizablePane/usePaneHeight": {
+      "types": "./dist/types/components/ResizablePane/usePaneHeight.d.ts",
+      "import": "./dist/components/ResizablePane/usePaneHeight.js",
+      "require": "./dist/components/ResizablePane/usePaneHeight.cjs"
+    },
+    "./components/ResizablePane/usePaneWidth": {
+      "types": "./dist/types/components/ResizablePane/usePaneWidth.d.ts",
+      "import": "./dist/components/ResizablePane/usePaneWidth.js",
+      "require": "./dist/components/ResizablePane/usePaneWidth.cjs"
+    },
+    "./components/ToolIcon/ToolIcon": {
+      "types": "./dist/types/components/ToolIcon/ToolIcon.d.ts",
+      "import": "./dist/components/ToolIcon/ToolIcon.js",
+      "require": "./dist/components/ToolIcon/ToolIcon.cjs"
+    },
+    "./components/ui/AccessModeMenu": {
+      "types": "./dist/types/components/ui/AccessModeMenu.d.ts",
+      "import": "./dist/components/ui/AccessModeMenu.js",
+      "require": "./dist/components/ui/AccessModeMenu.cjs"
+    },
+    "./components/ui/Attachment": {
+      "types": "./dist/types/components/ui/Attachment.d.ts",
+      "import": "./dist/components/ui/Attachment.js",
+      "require": "./dist/components/ui/Attachment.cjs"
+    },
+    "./components/ui/Badge": {
+      "types": "./dist/types/components/ui/Badge.d.ts",
+      "import": "./dist/components/ui/Badge.js",
+      "require": "./dist/components/ui/Badge.cjs"
+    },
+    "./components/ui/Button": {
+      "types": "./dist/types/components/ui/Button.d.ts",
+      "import": "./dist/components/ui/Button.js",
+      "require": "./dist/components/ui/Button.cjs"
+    },
+    "./components/ui/Card": {
+      "types": "./dist/types/components/ui/Card.d.ts",
+      "import": "./dist/components/ui/Card.js",
+      "require": "./dist/components/ui/Card.cjs"
+    },
+    "./components/ui/Checkbox": {
+      "types": "./dist/types/components/ui/Checkbox.d.ts",
+      "import": "./dist/components/ui/Checkbox.js",
+      "require": "./dist/components/ui/Checkbox.cjs"
+    },
+    "./components/ui/CompactionProgress": {
+      "types": "./dist/types/components/ui/CompactionProgress.d.ts",
+      "import": "./dist/components/ui/CompactionProgress.js",
+      "require": "./dist/components/ui/CompactionProgress.cjs"
+    },
+    "./components/ui/ContextMenu": {
+      "types": "./dist/types/components/ui/ContextMenu.d.ts",
+      "import": "./dist/components/ui/ContextMenu.js",
+      "require": "./dist/components/ui/ContextMenu.cjs"
+    },
+    "./components/ui/Divider": {
+      "types": "./dist/types/components/ui/Divider.d.ts",
+      "import": "./dist/components/ui/Divider.js",
+      "require": "./dist/components/ui/Divider.cjs"
+    },
+    "./components/ui/FileChangeCard": {
+      "types": "./dist/types/components/ui/FileChangeCard.d.ts",
+      "import": "./dist/components/ui/FileChangeCard.js",
+      "require": "./dist/components/ui/FileChangeCard.cjs"
+    },
+    "./components/ui/FileChangeNotice": {
+      "types": "./dist/types/components/ui/FileChangeNotice.d.ts",
+      "import": "./dist/components/ui/FileChangeNotice.js",
+      "require": "./dist/components/ui/FileChangeNotice.cjs"
+    },
+    "./components/ui/fileDiff": {
+      "types": "./dist/types/components/ui/fileDiff.d.ts",
+      "import": "./dist/components/ui/fileDiff.js",
+      "require": "./dist/components/ui/fileDiff.cjs"
+    },
+    "./components/ui/FileDiffView": {
+      "types": "./dist/types/components/ui/FileDiffView.d.ts",
+      "import": "./dist/components/ui/FileDiffView.js",
+      "require": "./dist/components/ui/FileDiffView.cjs"
+    },
+    "./components/ui/FilePreviewPanel": {
+      "types": "./dist/types/components/ui/FilePreviewPanel.d.ts",
+      "import": "./dist/components/ui/FilePreviewPanel.js",
+      "require": "./dist/components/ui/FilePreviewPanel.cjs"
+    },
+    "./components/ui/index": {
+      "types": "./dist/types/components/ui/index.d.ts",
+      "import": "./dist/components/ui/index.js",
+      "require": "./dist/components/ui/index.cjs"
+    },
+    "./components/ui/Input": {
+      "types": "./dist/types/components/ui/Input.d.ts",
+      "import": "./dist/components/ui/Input.js",
+      "require": "./dist/components/ui/Input.cjs"
+    },
+    "./components/ui/ListItem": {
+      "types": "./dist/types/components/ui/ListItem.d.ts",
+      "import": "./dist/components/ui/ListItem.js",
+      "require": "./dist/components/ui/ListItem.cjs"
+    },
+    "./components/ui/Modal": {
+      "types": "./dist/types/components/ui/Modal.d.ts",
+      "import": "./dist/components/ui/Modal.js",
+      "require": "./dist/components/ui/Modal.cjs"
+    },
+    "./components/ui/NoticeContent": {
+      "types": "./dist/types/components/ui/NoticeContent.d.ts",
+      "import": "./dist/components/ui/NoticeContent.js",
+      "require": "./dist/components/ui/NoticeContent.cjs"
+    },
+    "./components/ui/NoticePanel": {
+      "types": "./dist/types/components/ui/NoticePanel.d.ts",
+      "import": "./dist/components/ui/NoticePanel.js",
+      "require": "./dist/components/ui/NoticePanel.cjs"
+    },
+    "./components/ui/ProgressRing": {
+      "types": "./dist/types/components/ui/ProgressRing.d.ts",
+      "import": "./dist/components/ui/ProgressRing.js",
+      "require": "./dist/components/ui/ProgressRing.cjs"
+    },
+    "./components/ui/PropertyGrid": {
+      "types": "./dist/types/components/ui/PropertyGrid.d.ts",
+      "import": "./dist/components/ui/PropertyGrid.js",
+      "require": "./dist/components/ui/PropertyGrid.cjs"
+    },
+    "./components/ui/SegmentedControl": {
+      "types": "./dist/types/components/ui/SegmentedControl.d.ts",
+      "import": "./dist/components/ui/SegmentedControl.js",
+      "require": "./dist/components/ui/SegmentedControl.cjs"
+    },
+    "./components/ui/Select": {
+      "types": "./dist/types/components/ui/Select.d.ts",
+      "import": "./dist/components/ui/Select.js",
+      "require": "./dist/components/ui/Select.cjs"
+    },
+    "./components/ui/SessionTabs": {
+      "types": "./dist/types/components/ui/SessionTabs.d.ts",
+      "import": "./dist/components/ui/SessionTabs.js",
+      "require": "./dist/components/ui/SessionTabs.cjs"
+    },
+    "./components/ui/Spinner": {
+      "types": "./dist/types/components/ui/Spinner.d.ts",
+      "import": "./dist/components/ui/Spinner.js",
+      "require": "./dist/components/ui/Spinner.cjs"
+    },
+    "./components/ui/StepSpinner": {
+      "types": "./dist/types/components/ui/StepSpinner.d.ts",
+      "import": "./dist/components/ui/StepSpinner.js",
+      "require": "./dist/components/ui/StepSpinner.cjs"
+    },
+    "./components/ui/Switch": {
+      "types": "./dist/types/components/ui/Switch.d.ts",
+      "import": "./dist/components/ui/Switch.js",
+      "require": "./dist/components/ui/Switch.cjs"
+    },
+    "./components/ui/Table": {
+      "types": "./dist/types/components/ui/Table.d.ts",
+      "import": "./dist/components/ui/Table.js",
+      "require": "./dist/components/ui/Table.cjs"
+    },
+    "./components/ui/TaskStepList": {
+      "types": "./dist/types/components/ui/TaskStepList.d.ts",
+      "import": "./dist/components/ui/TaskStepList.js",
+      "require": "./dist/components/ui/TaskStepList.cjs"
+    },
+    "./components/ui/Toast": {
+      "types": "./dist/types/components/ui/Toast.d.ts",
+      "import": "./dist/components/ui/Toast.js",
+      "require": "./dist/components/ui/Toast.cjs"
+    },
+    "./components/ui/ToolBackButton": {
+      "types": "./dist/types/components/ui/ToolBackButton.d.ts",
+      "import": "./dist/components/ui/ToolBackButton.js",
+      "require": "./dist/components/ui/ToolBackButton.cjs"
+    },
+    "./components/ui/ToolEmptyState": {
+      "types": "./dist/types/components/ui/ToolEmptyState.d.ts",
+      "import": "./dist/components/ui/ToolEmptyState.js",
+      "require": "./dist/components/ui/ToolEmptyState.cjs"
+    },
+    "./components/ui/Tooltip": {
+      "types": "./dist/types/components/ui/Tooltip.d.ts",
+      "import": "./dist/components/ui/Tooltip.js",
+      "require": "./dist/components/ui/Tooltip.cjs"
+    },
+    "./components/ui/UsageMetrics": {
+      "types": "./dist/types/components/ui/UsageMetrics.d.ts",
+      "import": "./dist/components/ui/UsageMetrics.js",
+      "require": "./dist/components/ui/UsageMetrics.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "predev": "node scripts/sync-monolith.mjs",
+    "dev": "vite",
+    "demo": "vite",
+    "prebuild": "node scripts/sync-monolith.mjs",
+    "build": "vite build && node scripts/build-types.mjs",
+    "build:demo": "vite build --mode vitedemo",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.475.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0",
+    "ws": "^8.22.0"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "components",
+    "design-system",
+    "android",
+    "desktop"
+  ]
+}

@@ -1,0 +1,284 @@
+/* ==========================================================================
+   Button Component Styles - 按钮组件规范
+   - 物理底座手感、鲜红危险态、平滑加载态与微回弹动效
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  border-radius: var(--radius-control);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Line icon actions share the same quiet resting state across pages. */
+.btn.btn-icon-only { aspect-ratio: 1; padding-inline: 0; }
+html[data-theme] .btn.btn-subtle.btn-icon-only {
+  background: transparent;
+  color: var(--text-secondary);
+  box-shadow: none;
+}
+html[data-theme] .btn.btn-subtle.btn-icon-only:hover:not(:disabled) {
+  background: var(--button-hover-bg);
+  color: var(--button-hover-text);
+  box-shadow: none;
+}
+.btn-icon-only .btn-icon { display: inline-flex; align-items: center; justify-content: center; }
+.btn-icon-only svg { stroke-width: 1.6; }
+
+/* 尺寸变体 */
+.btn-xs {
+  height: 24px;
+  padding: 0 8px;
+  font-size: var(--text-label);
+}
+
+.btn-sm {
+  height: 28px;
+  padding: 0 12px;
+  font-size: var(--text-label);
+}
+
+.btn-md {
+  height: 32px;
+  padding: 0 14px;
+  font-size: var(--text-body);
+}
+
+.btn-lg {
+  height: 38px;
+  padding: 0 18px;
+  font-size: var(--text-title);
+}
+
+/* One neutral ladder, one filled action.
+   primary  : the only filled control on a screen (brand accent, no glow)
+   secondary: bordered neutral slab, ink text  — the default action
+   surface  : filled neutral, no border        — toolbar / segmented sibling
+   subtle   : transparent, muted text          — quietest labelled action
+   danger   : red outline, quiet until hover   — destructive, not loud
+   success  : green outline, quiet
+   bare     : no box at all (host draws the surface)
+   Glass, sheen, rim highlights and coloured glows are gone: at rest a button
+   is a flat shape, and depth comes from the fill step, not from decoration. */
+html[data-theme] .btn:not(.btn-icon-only):not(.btn-bare) {
+  position: relative;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-theme] .btn:not(.btn-icon-only) > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 样式变体 */
+.btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: transparent;
+  box-shadow: none;
+  font-weight: 550;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--btn-primary-hover);
+  box-shadow: none;
+}
+
+.btn-primary:active:not(:disabled) {
+  background: var(--btn-primary-hover);
+  transform: none;
+}
+
+.btn-secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border-color: var(--btn-secondary-border);
+  box-shadow: none;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--btn-secondary-hover);
+  border-color: var(--border-hover);
+  box-shadow: none;
+}
+
+/* aria-pressed="true" 是「已选中」的无样式语义，按钮必须自己把它画出来，
+   否则 NoticeQuestionContent 的三个候选芯片选中的和没选中的长得一模一样。 */
+html[data-theme] .btn.btn-secondary[aria-pressed="true"]:not(:disabled),
+.btn-secondary.is-active,
+.btn-secondary.active {
+  background: var(--bg-selected) !important;
+  color: var(--accent-ink) !important;
+  border-color: transparent !important;
+}
+
+.btn-primary:focus-visible {
+  background: var(--btn-primary-hover);
+  color: var(--btn-primary-text);
+}
+
+.btn.btn-danger-hover:hover:not(:disabled) {
+  color: var(--btn-danger-text) !important;
+  background: color-mix(in srgb, var(--danger-text) 12%, transparent) !important;
+  border-color: color-mix(in srgb, var(--danger-text) 34%, transparent) !important;
+}
+
+.btn.btn-danger-hover:active:not(:disabled) {
+  color: var(--btn-danger-text) !important;
+  background: color-mix(in srgb, var(--danger-text) 18%, transparent) !important;
+}
+
+.btn-subtle {
+  background: transparent;
+  color: var(--btn-subtle-text);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.btn-subtle:hover:not(:disabled) {
+  background: var(--btn-subtle-hover);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+.btn-subtle:active:not(:disabled) {
+  background: var(--btn-subtle-hover);
+}
+
+.btn-danger {
+  background: color-mix(in srgb, var(--danger-text) 10%, transparent);
+  color: var(--btn-danger-text) !important;
+  border: 1px solid color-mix(in srgb, var(--danger-text) 26%, transparent);
+  box-shadow: none;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--danger-text) 18%, transparent) !important;
+  color: var(--btn-danger-text) !important;
+  box-shadow: none;
+}
+
+.btn-danger:active:not(:disabled) {
+  background: color-mix(in srgb, var(--danger-text) 26%, transparent) !important;
+  color: var(--btn-danger-text) !important;
+}
+
+.btn-success {
+  background: color-mix(in srgb, var(--success-text) 10%, transparent);
+  color: var(--btn-success-text);
+  border-color: color-mix(in srgb, var(--success-text) 26%, transparent);
+  box-shadow: none;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--success-text) 18%, transparent);
+}
+
+/* Neutral surface actions: a filled neutral slab, no border, one hover step. */
+html[data-theme] .btn.btn-surface {
+  background: var(--btn-secondary-bg);
+  color: var(--control-text);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+html[data-theme] .btn.btn-surface:hover:not(:disabled) {
+  background: var(--btn-secondary-hover);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+html[data-theme] .btn.btn-surface:is(.active, .is-active, [aria-pressed="true"]):not(:disabled),
+html[data-theme] .btn.btn-surface:active:not(:disabled) {
+  background: var(--bg-selected);
+  color: var(--accent-ink);
+  box-shadow: none;
+}
+
+html[data-theme] .btn.btn-surface:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* 加载态 Spinner */
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+/* 加载中不是禁用态：按钮保持本色，只把图标换成转圈。
+   Button.tsx 在 loading 时也会设置 disabled，若沿用 .btn:disabled 的 0.45 透明度，
+   primary 加载按钮会褪成灰紫色，看起来像「不可用」而不是「正在执行」。 */
+html[data-theme] .btn.btn-loading:disabled,
+.btn.btn-loading:disabled {
+  opacity: 1;
+  cursor: progress;
+}
+
+.btn-spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: btnSpin 0.7s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+@keyframes btnSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* ==========================================================================
+   btn-bare — no box of its own.
+   Used where the clickable surface is defined by the parent: a list row, the
+   round context-usage ring, a toast action. Only decoration is cleared —
+   fill, shadow, glass, border paint. Geometry (size, padding, radius) stays
+   the host's business.
+   ========================================================================== */
+.btn.btn-bare {
+  /* 只清除 .btn 注入的外观，几何留给宿主。
+     注意：这里不能写 border-radius: 0 —— 那会把宿主自己声明的圆角
+     一并压平（环形的 hover 就是因此变成方块的）。 */
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  font: inherit;
+  font-weight: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.btn.btn-bare:active:not(:disabled) { transform: none; }
+
+.btn.btn-bare:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn.btn-bare:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
