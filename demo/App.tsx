@@ -149,18 +149,24 @@ const NAV_ITEMS: NavItem[] = [
   { id: "toggle", title: "Toggle", label: "切换状态按钮", group: "base" },
   { id: "tooltip", title: "Tooltip", label: "文字提示", group: "base" },
 ]
+const PageContext = React.createContext<string | null>(null)
+
 function Section({ id, title, label, count, children }: { id: string; title: string; label: string; count: number; children: React.ReactNode }) {
+  const activePage = React.useContext(PageContext)
+  if (activePage !== null && activePage !== id) return null
   return (
-    <section id={id} className="scroll-mt-16 space-y-3 pb-8 border-b border-border/50 last:border-b-0">
-      <div className="flex items-center gap-2">
-        <span className="flex h-5 w-5 items-center justify-center rounded bg-muted text-[11px] font-mono text-muted-foreground">
-          {count}
-        </span>
-        <h2 className="text-sm font-semibold tracking-tight text-foreground flex items-center gap-2">
-          {title}
-          <span className="text-xs font-normal text-muted-foreground">({label})</span>
-        </h2>
-      </div>
+    <section id={id} className="space-y-3">
+      {activePage === null && (
+        <div className="flex items-center gap-2">
+          <span className="flex h-5 w-5 items-center justify-center rounded bg-muted text-[11px] font-mono text-muted-foreground">
+            {count}
+          </span>
+          <h2 className="text-sm font-semibold tracking-tight text-foreground flex items-center gap-2">
+            {title}
+            <span className="text-xs font-normal text-muted-foreground">({label})</span>
+          </h2>
+        </div>
+      )}
       <div className="p-4 rounded-lg border border-border/60 bg-card shadow-xs">
         {children}
       </div>
@@ -249,6 +255,41 @@ export function App() {
     }
     root.setAttribute("data-accent", accentColor)
   }, [dark, accentColor])
+  // 每个组件一个页面，可用 URL hash 直达：/#button、/#dialog ...
+  React.useEffect(() => {
+    const fromHash = () => {
+      const hash = window.location.hash.replace(/^#/, "")
+      if (hash && NAV_ITEMS.some((n) => n.id === hash)) setActiveId(hash)
+    }
+    fromHash()
+    window.addEventListener("hashchange", fromHash)
+    return () => window.removeEventListener("hashchange", fromHash)
+  }, [])
+  // 左右方向键翻页
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null
+      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return
+      if (e.metaKey || e.ctrlKey || e.altKey) return
+      // 组件内部的方向键交互（单选框/标签页/滑块/菜单等）优先
+      if (
+        target?.closest?.(
+          'button,[role="button"],[role="radio"],[role="tab"],[role="slider"],[role="menuitem"],[role="menuitemradio"],[role="option"],[contenteditable="true"]'
+        )
+      ) return
+      const idx = NAV_ITEMS.findIndex((n) => n.id === activeId)
+      if (idx < 0) return
+      if (e.key === "ArrowRight" && idx < NAV_ITEMS.length - 1) {
+        e.preventDefault()
+        goToPage(NAV_ITEMS[idx + 1].id)
+      } else if (e.key === "ArrowLeft" && idx > 0) {
+        e.preventDefault()
+        goToPage(NAV_ITEMS[idx - 1].id)
+      }
+    }
+    document.addEventListener("keydown", onKey)
+    return () => document.removeEventListener("keydown", onKey)
+  }, [activeId])
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
@@ -264,13 +305,18 @@ export function App() {
       item.title.toLowerCase().includes(filter.toLowerCase()) ||
       item.label.includes(filter)
   )
-  const scrollTo = (id: string) => {
+  const goToPage = (id: string) => {
     setActiveId(id)
-    const el = document.getElementById(id)
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" })
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", `#${id}`)
     }
+    window.scrollTo({ top: 0, behavior: "auto" })
   }
+  const scrollTo = goToPage
+  const activeIndex = NAV_ITEMS.findIndex((n) => n.id === activeId)
+  const current = activeIndex >= 0 ? NAV_ITEMS[activeIndex] : undefined
+  const prevItem = activeIndex > 0 ? NAV_ITEMS[activeIndex - 1] : undefined
+  const nextItem = activeIndex >= 0 && activeIndex < NAV_ITEMS.length - 1 ? NAV_ITEMS[activeIndex + 1] : undefined
   return (
     <div className="min-h-screen bg-background text-foreground antialiased flex flex-col">
       {/* 顶部 Header */}
@@ -398,32 +444,63 @@ export function App() {
             <span className="font-mono text-[10px]">100% 对应</span>
           </div>
         </aside>
-        {/* 右侧组件逐项平铺 */}
-        <main className="flex-1 min-w-0 p-6 md:p-8 space-y-10">
-          {/* 基础组件引导与分组头 */}
-          <div className="rounded-xl border border-border/80 bg-gradient-to-r from-muted/40 via-muted/20 to-background p-5 shadow-xs">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="size-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+        {/* 右侧：一个组件一页，上一页 / 下一页切换 */}
+        <main className="flex-1 min-w-0 p-6 md:p-8 flex flex-col gap-6">
+          {/* 当前页标题栏 */}
+          <div className="rounded-xl border border-border/80 bg-gradient-to-r from-muted/40 via-muted/20 to-background p-4 shadow-xs">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3 min-w-0">
+                <div className={cn(
+                  "mt-0.5 size-8 shrink-0 rounded-lg border flex items-center justify-center",
+                  current?.group === "composed"
+                    ? "bg-primary/10 border-primary/20 text-primary"
+                    : "bg-muted border-border text-muted-foreground"
+                )}>
                   <Layers className="size-4" />
                 </div>
-                <div>
-                  <h1 className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2">
-                    组件库总览
-                    <span className="text-xs font-normal text-muted-foreground px-2 py-0.5 rounded-full bg-muted border">Composed + Primitives</span>
-                  </h1>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    上半部分是桌面应用级「组合组件」(迁移自 Android-Tool 真实产品界面)，下半部分是 shadcn/ui 1:1 对齐的基础原子组件。
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className={cn(
+                      "rounded-full px-2 py-0.5 text-[10px] font-medium border",
+                      current?.group === "composed"
+                        ? "bg-primary/10 text-primary border-primary/20"
+                        : "bg-muted text-muted-foreground border-border"
+                    )}>
+                      {current?.group === "composed" ? "组合组件" : "基础组件"}
+                    </span>
+                    <h1 className="text-base font-semibold tracking-tight text-foreground">{current?.title}</h1>
+                    <span className="text-xs text-muted-foreground truncate">{current?.label}</span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mt-1 font-mono">
+                    第 {activeIndex + 1} / {NAV_ITEMS.length} 页
                   </p>
                 </div>
               </div>
-              <div className="hidden sm:flex items-center gap-2">
-                <span className="text-[11px] text-muted-foreground bg-background px-2.5 py-1 rounded-md border shadow-2xs">
-                  组合 {NAV_ITEMS.filter(n => n.group === "composed").length} · 基础 {NAV_ITEMS.filter(n => n.group === "base").length}
-                </span>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!prevItem}
+                  onClick={() => prevItem && goToPage(prevItem.id)}
+                  className="gap-1 text-xs"
+                >
+                  <ChevronRight className="size-3.5 rotate-180" />
+                  <span className="hidden sm:inline">上一页</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={!nextItem}
+                  onClick={() => nextItem && goToPage(nextItem.id)}
+                  className="gap-1 text-xs"
+                >
+                  <span className="hidden sm:inline">下一页</span>
+                  <ChevronRight className="size-3.5" />
+                </Button>
               </div>
             </div>
           </div>
+          <PageContext.Provider value={activeId}>
           {/* 组合组件 · 上下文圆环 */}
           <Section id="context-usage-ring" title="Context Ring" label="上下文用量圆环 (70% 警告 / 90% 危险)" count={1}>
             <div className="space-y-4">
@@ -609,14 +686,6 @@ export function App() {
               <StatusBadge variant="primary" hideDot>v2.4.0</StatusBadge>
             </div>
           </Section>
-          {/* 基础原子组件分组头 */}
-          <div className="flex items-center gap-3 pt-2">
-            <div className="h-px flex-1 bg-border/70" />
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              基础组件 · Base Primitives
-            </span>
-            <div className="h-px flex-1 bg-border/70" />
-          </div>
           <Section id="alert-dialog" title="AlertDialog" label="确认对话框" count={11}>
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -1515,6 +1584,34 @@ export function App() {
               </Tooltip>
             </TooltipProvider>
           </Section>
+          </PageContext.Provider>
+          {/* 底部翻页 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            {prevItem ? (
+              <button
+                onClick={() => scrollTo(prevItem.id)}
+                className="group flex items-center gap-3 rounded-lg border border-border/70 bg-card px-4 py-3 text-left transition-colors hover:bg-muted/50"
+              >
+                <ChevronRight className="size-4 rotate-180 text-muted-foreground" />
+                <span className="min-w-0">
+                  <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">上一页 · {prevItem.group === "composed" ? "组合组件" : "基础组件"}</span>
+                  <span className="block truncate text-xs font-medium text-foreground">{prevItem.title}</span>
+                </span>
+              </button>
+            ) : <div className="hidden sm:block" />}
+            {nextItem ? (
+              <button
+                onClick={() => scrollTo(nextItem.id)}
+                className="group flex items-center justify-end gap-3 rounded-lg border border-border/70 bg-card px-4 py-3 text-right transition-colors hover:bg-muted/50"
+              >
+                <span className="min-w-0">
+                  <span className="block text-[10px] uppercase tracking-wider text-muted-foreground">下一页 · {nextItem.group === "composed" ? "组合组件" : "基础组件"}</span>
+                  <span className="block truncate text-xs font-medium text-foreground">{nextItem.title}</span>
+                </span>
+                <ChevronRight className="size-4 text-muted-foreground" />
+              </button>
+            ) : <div className="hidden sm:block" />}
+          </div>
         </main>
       </div>
       <Toaster position="top-center" />
