@@ -2,21 +2,23 @@
 
 import * as React from "react"
 import {
-  AlertTriangle,
   Check,
-  ChevronDown,
   ChevronRight,
   ClipboardList,
   FolderOpen,
-  HelpCircle,
   ListPlus,
-  Loader2,
-  ShieldAlert,
+  MessageCircleQuestion,
+  ShieldCheck,
   Sparkles,
   X,
 } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 
 export type NoticeItemKind =
@@ -28,6 +30,24 @@ export type NoticeItemKind =
   | "files"
   | "compaction"
 
+export type NoticeState = "done" | "running" | "pending" | "error"
+
+export interface NoticeDetail {
+  id: string
+  title: string
+  description?: string
+  meta?: string
+  state?: NoticeState
+}
+
+export interface NoticeFileEntry {
+  id: string
+  path: string
+  state?: NoticeState
+  added?: number
+  removed?: number
+}
+
 export interface ComposerNoticeItem {
   id: string
   kind: NoticeItemKind
@@ -37,200 +57,222 @@ export interface ComposerNoticeItem {
   running?: boolean
   attention?: boolean
   badge?: string
+  /** 结构化明细：展开后渲染为卡片式的 Item 列表 */
+  details?: NoticeDetail[]
+  /** 文件改动专用 */
+  files?: NoticeFileEntry[]
+  addedLines?: number
+  removedLines?: number
+  /** 覆盖默认展开内容 */
   content?: React.ReactNode
+  /** 展开后的操作按钮 */
+  actions?: React.ReactNode
 }
 
 export interface ComposerNoticeDockProps {
   items: ComposerNoticeItem[]
-  activeId?: string
-  onToggleItem?: (id: string) => void
-  onDismissItem?: (id: string) => void
   className?: string
 }
 
-const noticeConfig: Record<
+const toneOf: Record<
   NoticeItemKind,
-  {
-    icon: React.ComponentType<{ className?: string }>
-    toneClasses: {
-      bar: string
-      iconBg: string
-      badge: string
-    }
-  }
+  { icon: React.ComponentType<{ className?: string }>; accent: string; text: string }
 > = {
-  permission: {
-    icon: ShieldAlert,
-    toneClasses: {
-      bar: "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
-      iconBg: "bg-amber-500/20 text-amber-600 dark:text-amber-400",
-      badge: "bg-amber-500/20 text-amber-600",
-    },
-  },
-  question: {
-    icon: HelpCircle,
-    toneClasses: {
-      bar: "border-primary/30 bg-primary/10 text-primary",
-      iconBg: "bg-primary/20 text-primary",
-      badge: "bg-primary/20 text-primary",
-    },
-  },
-  plan: {
-    icon: ClipboardList,
-    toneClasses: {
-      bar: "border-border/80 bg-card text-foreground",
-      iconBg: "bg-muted text-muted-foreground",
-      badge: "bg-muted text-muted-foreground",
-    },
-  },
-  background: {
-    icon: Loader2,
-    toneClasses: {
-      bar: "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
-      iconBg: "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400",
-      badge: "bg-emerald-500/20 text-emerald-600",
-    },
-  },
-  queue: {
-    icon: ListPlus,
-    toneClasses: {
-      bar: "border-border/80 bg-card text-foreground",
-      iconBg: "bg-muted text-muted-foreground",
-      badge: "bg-muted text-muted-foreground",
-    },
-  },
-  files: {
-    icon: FolderOpen,
-    toneClasses: {
-      bar: "border-border/80 bg-card text-foreground",
-      iconBg: "bg-muted text-muted-foreground",
-      badge: "bg-muted text-muted-foreground",
-    },
-  },
-  compaction: {
-    icon: Sparkles,
-    toneClasses: {
-      bar: "border-indigo-500/30 bg-indigo-500/10 text-indigo-700 dark:text-indigo-300",
-      iconBg: "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400",
-      badge: "bg-indigo-500/20 text-indigo-600",
-    },
-  },
+  permission: { icon: ShieldCheck, accent: "text-amber-500", text: "text-amber-600 dark:text-amber-400" },
+  question: { icon: MessageCircleQuestion, accent: "text-primary", text: "text-primary" },
+  plan: { icon: ClipboardList, accent: "text-muted-foreground", text: "text-foreground" },
+  background: { icon: Sparkles, accent: "text-emerald-500", text: "text-emerald-600 dark:text-emerald-400" },
+  queue: { icon: ListPlus, accent: "text-muted-foreground", text: "text-foreground" },
+  files: { icon: FolderOpen, accent: "text-muted-foreground", text: "text-foreground" },
+  compaction: { icon: Sparkles, accent: "text-primary", text: "text-primary" },
 }
 
-export function ComposerNoticeDock({
-  items,
-  activeId,
-  onToggleItem,
-  onDismissItem,
-  className,
-}: ComposerNoticeDockProps) {
-  const [internalActiveId, setInternalActiveId] = React.useState<string | null>(
-    activeId || null
-  )
-
-  const currentActiveId = activeId !== undefined ? activeId : internalActiveId
-
-  const handleToggle = (id: string) => {
-    if (onToggleItem) {
-      onToggleItem(id)
-    } else {
-      setInternalActiveId((prev) => (prev === id ? null : id))
-    }
+function StateMark({ state }: { state?: NoticeState }) {
+  if (state === "running") {
+    return (
+      <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/12 text-primary">
+        <Spinner size="xs" className="size-3" />
+      </span>
+    )
   }
+  if (state === "done") {
+    return (
+      <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+        <Check className="size-2.5" strokeWidth={3} />
+      </span>
+    )
+  }
+  if (state === "error") {
+    return (
+      <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold">
+        !
+      </span>
+    )
+  }
+  return (
+    <span className="size-4 shrink-0 rounded-full border-[1.5px] border-muted-foreground/35" />
+  )
+}
+
+/** 展开后的一张张明细卡片：复用基础组件 Card / Item / Badge */
+function NoticeDetailList({ details }: { details: NoticeDetail[] }) {
+  return (
+    <div className="space-y-1.5">
+      {details.map((detail) => (
+        <Card key={detail.id} className="rounded-[10px] border-border/70 shadow-none">
+          <CardContent className="flex items-center gap-2.5 p-2.5">
+            <StateMark state={detail.state} />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-medium text-foreground">{detail.title}</p>
+              {detail.description && (
+                <p className="truncate text-[11px] text-muted-foreground">{detail.description}</p>
+              )}
+            </div>
+            {detail.meta && (
+              <Badge variant="muted" className="h-5 shrink-0 font-mono text-[10.5px]">
+                {detail.meta}
+              </Badge>
+            )}
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
+/** 文件改动：独立卡，展开方向朝上、悬浮覆盖，不占布局高度 */
+function FilesNotice({ item }: { item: ComposerNoticeItem }) {
+  const files = item.files ?? []
+  const added = item.addedLines ?? files.reduce((sum, file) => sum + (file.added ?? 0), 0)
+  const removed = item.removedLines ?? files.reduce((sum, file) => sum + (file.removed ?? 0), 0)
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className="h-8 gap-1.5 px-2.5 font-normal"
+          aria-label="文件改动"
+        >
+          <FolderOpen className="size-3.5 text-muted-foreground" />
+          <span className="text-xs text-foreground">文件改动</span>
+          <span className="font-mono text-[11px] tabular-nums">
+            <em className="not-italic text-emerald-600 dark:text-emerald-400">+{added}</em>
+            <i className="ml-1 not-italic text-destructive">−{removed}</i>
+          </span>
+          <span className="text-[11px] text-muted-foreground">{files.length} 个文件</span>
+          <ChevronRight className="ml-auto size-3.5 shrink-0 text-muted-foreground transition-transform [[aria-expanded=true]>&]:rotate-90" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent side="top" align="start" sideOffset={6} className="w-80 p-2">
+        <div className="flex items-center justify-between px-1 pb-1.5">
+          <span className="text-xs font-medium text-foreground">文件改动</span>
+          <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
+            <em className="not-italic text-emerald-600 dark:text-emerald-400">+{added}</em>
+            <i className="ml-1 not-italic text-destructive">−{removed}</i>
+          </span>
+        </div>
+        <Separator className="mb-1.5" />
+        <div className="max-h-64 space-y-1 overflow-y-auto">
+          {files.map((file) => (
+            <div
+              key={file.id}
+              className="flex items-center gap-2 rounded-md px-1.5 py-1 transition-colors hover:bg-muted"
+            >
+              <StateMark state={file.state ?? "done"} />
+              <span className="min-w-0 flex-1 truncate font-mono text-[11px] text-foreground" title={file.path}>
+                {file.path}
+              </span>
+              {(file.added != null || file.removed != null) && (
+                <span className="shrink-0 font-mono text-[10.5px] tabular-nums text-muted-foreground">
+                  <em className="not-italic text-emerald-600 dark:text-emerald-400">+{file.added ?? 0}</em>
+                  <i className="ml-1 not-italic text-destructive">−{file.removed ?? 0}</i>
+                </span>
+              )}
+            </div>
+          ))}
+          {files.length === 0 && (
+            <p className="px-1.5 py-2 text-center text-[11px] text-muted-foreground">没有文件改动</p>
+          )}
+        </div>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+/**
+ * ComposerNoticeDock
+ * -----------------------------------------------------------------------------
+ * 可展开的通知卡组。收起时是一行行胶囊，点击展开为卡片明细；同一时刻只展开一张。
+ * 文件改动是特殊卡：朝上浮层展开，不占位、不参与互斥。
+ */
+export function ComposerNoticeDock({ items, className }: ComposerNoticeDockProps) {
+  const [expandedId, setExpandedId] = React.useState<string | null>(null)
 
   if (!items || items.length === 0) return null
 
   return (
-    <div className={cn("w-full flex flex-col gap-2", className)}>
+    <div className={cn("flex w-full flex-col items-start gap-1.5", className)}>
       {items.map((item) => {
-        const config = noticeConfig[item.kind]
-        const Icon = config.icon
-        const isExpanded = currentActiveId === item.id
+        if (item.kind === "files") return <FilesNotice key={item.id} item={item} />
+
+        const tone = toneOf[item.kind]
+        const Icon = tone.icon
+        const expanded = expandedId === item.id
+        const inline = item.kind === "queue"
 
         return (
-          <div
-            key={item.id}
-            className={cn(
-              "rounded-xl border transition-all duration-200 overflow-hidden shadow-xs",
-              config.toneClasses.bar,
-              isExpanded ? "ring-1 ring-primary/30" : "hover:border-border"
-            )}
-          >
-            {/* 顶部标题栏 (可点击折叠/展开) */}
+          <div key={item.id} className="w-full">
             <div
-              onClick={() => handleToggle(item.id)}
-              className="flex items-center justify-between gap-3 px-3 py-2 cursor-pointer select-none"
+              className={cn(
+                "flex min-h-8 items-center gap-2 rounded-[10px] border border-border/70 bg-card px-2.5 transition-colors",
+                expanded && "border-border"
+              )}
             >
-              <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                <span
-                  className={cn(
-                    "size-6 rounded-md flex items-center justify-center shrink-0",
-                    config.toneClasses.iconBg
-                  )}
-                >
-                  {item.running ? (
-                    <Spinner size="xs" />
-                  ) : (
-                    <Icon className="size-3.5" />
-                  )}
+              <button
+                type="button"
+                aria-expanded={expanded}
+                onClick={() => setExpandedId((prev) => (prev === item.id ? null : item.id))}
+                className="flex min-w-0 flex-1 items-center gap-2 rounded-md py-1 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+              >
+                <span className={cn("flex size-4 shrink-0 items-center justify-center", tone.accent)}>
+                  {item.running ? <Spinner size="xs" className="size-3" /> : <Icon className="size-3.5" />}
                 </span>
-                <span className="text-xs font-semibold shrink-0">
-                  {item.label}
-                </span>
-                <span className="text-xs text-muted-foreground truncate">
-                  {item.summary}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 shrink-0">
+                <span className={cn("shrink-0 text-xs font-medium", tone.text)}>{item.label}</span>
+                <span className="min-w-0 truncate text-xs text-muted-foreground">{item.summary}</span>
                 {item.count != null && (
-                  <span className="font-mono text-[11px] px-1.5 py-0.5 rounded-full bg-background/50 border border-border/40 tabular-nums">
+                  <Badge variant="muted" className="h-5 shrink-0 px-1.5 font-mono text-[10.5px]">
                     {item.count}
-                  </span>
+                  </Badge>
                 )}
                 {item.badge && (
-                  <span
-                    className={cn(
-                      "text-[10.5px] px-1.5 py-0.5 rounded-md font-medium",
-                      config.toneClasses.badge
-                    )}
-                  >
+                  <Badge variant={item.attention ? "destructive" : "secondary"} className="h-5 shrink-0 px-1.5 text-[10.5px]">
                     {item.badge}
-                  </span>
+                  </Badge>
                 )}
-                <Button
-                  variant="ghost"
-                  size="icon-xs"
-                  className="size-5 rounded-md text-muted-foreground hover:text-foreground"
-                  aria-label={isExpanded ? "折叠" : "展开"}
-                >
-                  {isExpanded ? (
-                    <ChevronDown className="size-3.5" />
-                  ) : (
-                    <ChevronRight className="size-3.5" />
-                  )}
-                </Button>
-                {onDismissItem && (
-                  <Button
-                    variant="ghost"
-                    size="icon-xs"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onDismissItem(item.id)
-                    }}
-                    className="size-5 rounded-md text-muted-foreground hover:text-destructive"
-                    aria-label="关闭"
-                  >
-                    <X className="size-3" />
-                  </Button>
+                {!inline && (
+                  <ChevronRight
+                    className={cn(
+                      "ml-auto size-3.5 shrink-0 text-muted-foreground transition-transform",
+                      expanded && "rotate-90"
+                    )}
+                  />
                 )}
-              </div>
+              </button>
+              {item.actions}
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                aria-label="关闭"
+                className="text-muted-foreground hover:text-destructive"
+              >
+                <X className="size-3" />
+              </Button>
             </div>
 
-            {/* 展开的详情内容区域 */}
-            {isExpanded && item.content && (
-              <div className="px-3 pb-3 pt-1 border-t border-border/40 text-xs text-foreground/90 bg-background/40">
-                {item.content}
+            {expanded && (
+              <div className="mt-1.5 rounded-[10px] border border-border/70 bg-muted/30 p-2">
+                {item.content ?? (item.details ? <NoticeDetailList details={item.details} /> : null)}
               </div>
             )}
           </div>

@@ -2,7 +2,9 @@
 
 import * as React from "react"
 import { AlertCircle, Check, CircleDashed } from "lucide-react"
+
 import { Spinner } from "@/components/ui/spinner"
+import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 export type CompactionStatus = "running" | "completed" | "interrupted" | "failed"
@@ -13,26 +15,29 @@ export interface CompactionProgressProps {
   progress?: number | null
   detail?: React.ReactNode
   className?: string
-  /** strip = 独立状态条；row = 时间线单行 */
-  variant?: "strip" | "row"
+  /** pill = 窄胶囊（默认）；row = 时间线单行 */
+  variant?: "pill" | "row"
 }
 
 const LABELS: Record<CompactionStatus, string> = {
   running: "正在压缩上下文",
   completed: "上下文已压缩",
-  interrupted: "上下文压缩已中断",
-  failed: "上下文压缩失败",
+  interrupted: "压缩已中断",
+  failed: "压缩失败",
 }
 
+/**
+ * 上下文压缩状态。窄胶囊宽度随内容收缩（不再一条拉满），
+ * 进度用小轨道 + 百分比。
+ */
 export function CompactionProgress({
   status,
   progress,
   detail,
   className,
-  variant = "strip",
+  variant = "pill",
 }: CompactionProgressProps) {
   const row = variant === "row"
-  const showTrack = status === "running" || status === "completed"
   const indeterminate = status === "running" && progress == null
   const value = status === "completed" ? 100 : Math.min(100, Math.max(0, progress ?? 0))
   const percentText = indeterminate ? "…" : `${Math.round(value)}%`
@@ -40,69 +45,53 @@ export function CompactionProgress({
   return (
     <div
       className={cn(
-        "flex items-center gap-3 px-3 py-2 rounded-xl border text-xs",
+        "inline-flex max-w-full items-center gap-2 rounded-full border px-2.5 py-1 text-xs",
         status === "failed" && "border-destructive/30 bg-destructive/10 text-destructive",
         status === "interrupted" && "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
         (status === "running" || status === "completed") && "border-border/70 bg-card text-foreground",
-        row && "border-transparent bg-transparent px-0 py-1",
+        row && "rounded-none border-0 bg-transparent px-0",
         className
       )}
     >
       <span
         className={cn(
-          "size-4 rounded-full flex items-center justify-center shrink-0",
+          "flex size-4 shrink-0 items-center justify-center rounded-full",
           status === "completed" && "bg-primary text-primary-foreground",
-          status === "running" && "bg-primary/15 text-primary",
+          status === "running" && "bg-primary/12 text-primary",
           status === "interrupted" && "bg-amber-500/20 text-amber-600 dark:text-amber-400",
           status === "failed" && "bg-destructive/20 text-destructive"
         )}
       >
         {status === "running" && <Spinner size="xs" className="size-3" />}
-        {status === "completed" && (
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="size-2.5"
-          >
-            <path d="M20 6L9 17l-5-5" />
-          </svg>
-        )}
+        {status === "completed" && <Check className="size-2.5" strokeWidth={3.2} />}
         {status === "interrupted" && <CircleDashed className="size-3" />}
         {status === "failed" && <AlertCircle className="size-3" />}
       </span>
 
-      <span className="font-medium shrink-0">{LABELS[status]}</span>
+      <span className="shrink-0 font-medium">{LABELS[status]}</span>
 
-      {!row && showTrack && (
-        <div
-          className={cn(
-            "flex-1 h-1.5 rounded-full bg-muted overflow-hidden",
-            indeterminate && "animate-pulse"
-          )}
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={indeterminate ? undefined : Math.round(value)}
-        >
-          <div
-            className="h-full rounded-full bg-primary transition-all duration-300"
-            style={indeterminate ? { width: "40%" } : { width: `${value}%` }}
-          />
-        </div>
-      )}
-
-      {showTrack && (
-        <span className="font-mono text-[11px] tabular-nums text-muted-foreground shrink-0">
-          {percentText}
+      {(status === "running" || status === "completed") && (
+        <span className="flex w-16 shrink-0 items-center gap-1.5">
+          <span
+            className="h-1 flex-1 overflow-hidden rounded-full bg-muted"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={indeterminate ? undefined : Math.round(value)}
+          >
+            <span
+              className={cn("block h-full rounded-full bg-primary transition-all duration-300", indeterminate && "animate-pulse")}
+              style={{ width: indeterminate ? "40%" : `${value}%` }}
+            />
+          </span>
+          <span className="font-mono text-[10.5px] tabular-nums text-muted-foreground">{percentText}</span>
         </span>
       )}
 
       {detail && (
-        <span className="text-[11px] text-muted-foreground truncate">{detail}</span>
+        <Badge variant="muted" className="h-5 shrink-0 truncate font-mono text-[10.5px]">
+          {detail}
+        </Badge>
       )}
     </div>
   )

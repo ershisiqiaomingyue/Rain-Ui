@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+
+import { Badge, type BadgeProps } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 export type StatusBadgeVariant = "primary" | "success" | "warning" | "danger" | "neutral"
@@ -16,29 +18,17 @@ export interface StatusBadgeProps {
   children: React.ReactNode
 }
 
-const variantStyles: Record<StatusBadgeVariant, { wrap: string; dot: string }> = {
-  primary: {
-    wrap: "bg-primary/10 text-primary border-primary/25",
-    dot: "bg-primary",
-  },
-  success: {
-    wrap: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/25",
-    dot: "bg-emerald-500",
-  },
-  warning: {
-    wrap: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/25",
-    dot: "bg-amber-500",
-  },
-  danger: {
-    wrap: "bg-destructive/10 text-destructive border-destructive/25",
-    dot: "bg-destructive",
-  },
-  neutral: {
-    wrap: "bg-muted text-muted-foreground border-border/70",
-    dot: "bg-muted-foreground/60",
-  },
+const variantToBadge: Record<StatusBadgeVariant, { badge: BadgeProps["variant"]; dot: string }> = {
+  primary: { badge: "secondary", dot: "bg-primary" },
+  success: { badge: "success", dot: "bg-emerald-500" },
+  warning: { badge: "warning", dot: "bg-amber-500" },
+  danger: { badge: "destructive", dot: "bg-destructive" },
+  neutral: { badge: "muted", dot: "bg-muted-foreground/60" },
 }
 
+/**
+ * 状态徽章：复用基础 Badge，高度提到 24px（h-6），字号 11.5px。
+ */
 export function StatusBadge({
   variant = "neutral",
   pulse = false,
@@ -47,30 +37,25 @@ export function StatusBadge({
   className,
   children,
 }: StatusBadgeProps) {
-  const styles = variantStyles[variant]
+  const styles = variantToBadge[variant]
+
   return (
-    <span
+    <Badge
       title={title}
-      className={cn(
-        "inline-flex items-center gap-1.5 h-5 px-2 rounded-full border text-[11px] font-medium whitespace-nowrap",
-        styles.wrap,
-        className
-      )}
+      variant={styles.badge}
+      className={cn("h-6 gap-1.5 px-2 text-[11.5px] font-medium rounded-full", className)}
     >
       {!hideDot && (
         <span className="relative flex size-1.5 shrink-0">
           {pulse && (
             <span
-              className={cn(
-                "absolute inline-flex size-full rounded-full opacity-70 animate-ping",
-                styles.dot
-              )}
+              className={cn("absolute inline-flex size-full animate-ping rounded-full opacity-70", styles.dot)}
             />
           )}
           <span className={cn("relative inline-flex size-1.5 rounded-full", styles.dot)} />
         </span>
       )}
       {children}
-    </span>
+    </Badge>
   )
 }

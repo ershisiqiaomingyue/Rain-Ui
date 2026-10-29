@@ -70,6 +70,12 @@ import {
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Progress } from "@/components/ui/progress"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import { Slider } from "@/components/ui/slider"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
 import { Spinner } from "@/components/ui/spinner"
@@ -104,50 +110,59 @@ interface NavItem {
   group: "composed" | "base"
 }
 const NAV_ITEMS: NavItem[] = [
-  { id: "context-usage-ring", title: "Context Ring", label: "上下文圆环", group: "composed" },
-  { id: "model-provider-picker", title: "Model Picker", label: "模型服务商选择器", group: "composed" },
-  { id: "composer-notice-dock", title: "Notice Dock", label: "输入框上方通知组", group: "composed" },
-  { id: "task-status-row", title: "Task Status", label: "任务状态行", group: "composed" },
-  { id: "terminal-range-slider", title: "Range Slider", label: "终端字号拖动条", group: "composed" },
-  { id: "compaction-progress", title: "Compaction", label: "上下文压缩进度条", group: "composed" },
-  { id: "permission-request-bar", title: "Permission Bar", label: "工具授权请求条", group: "composed" },
-  { id: "usage-metrics-strip", title: "Usage Metrics", label: "会话用量指标条", group: "composed" },
-  { id: "segmented-control", title: "Segmented", label: "分段切换控件", group: "composed" },
-  { id: "status-badge", title: "Status Badge", label: "状态徽章", group: "composed" },
-  { id: "alert-dialog", title: "AlertDialog", label: "确认对话框", group: "base" },
-  { id: "button", title: "Button", label: "Button (Radix-Nova 官方)", group: "base" },
-  { id: "button-group", title: "Button Group", label: "按钮组 (带下拉)", group: "base" },
-  { id: "card", title: "Card", label: "卡片", group: "base" },
-  { id: "checkbox", title: "Checkbox", label: "复选框", group: "base" },
-  { id: "combobox", title: "Combobox", label: "组合框", group: "base" },
-  { id: "command", title: "Command", label: "命令面板 (⌘K弹窗)", group: "base" },
-  { id: "context-menu", title: "Context Menu", label: "右键菜单", group: "base" },
-  { id: "dialog", title: "Dialog", label: "模态弹窗", group: "base" },
-  { id: "dropdown-menu", title: "Dropdown Menu", label: "下拉菜单 (多级/快捷键)", group: "base" },
-  { id: "empty", title: "Empty", label: "空状态", group: "base" },
-  { id: "field", title: "Field", label: "表单字段", group: "base" },
-  { id: "input", title: "Input", label: "输入框 (32px)", group: "base" },
+  // 基础组件（先做基础，再拼组合）
+  { id: "button", title: "Button", label: "按钮", group: "base" },
+  { id: "button-group", title: "Button Group", label: "按钮组", group: "base" },
+  { id: "input", title: "Input", label: "输入框", group: "base" },
   { id: "input-group", title: "Input Group", label: "输入框组", group: "base" },
-  { id: "item", title: "Item", label: "列表项 (复合项)", group: "base" },
+  { id: "textarea", title: "Textarea", label: "多行文本", group: "base" },
   { id: "label", title: "Label", label: "标签", group: "base" },
-  { id: "menubar", title: "Menubar", label: "菜单栏", group: "base" },
-  { id: "pagination", title: "Pagination", label: "分页 (含省略号)", group: "base" },
-  { id: "popover", title: "Popover", label: "气泡浮层", group: "base" },
-  { id: "radio-group", title: "Radio Group", label: "单选框组", group: "base" },
-  { id: "resizable", title: "Resizable", label: "可调整面板", group: "base" },
-  { id: "scroll-area", title: "Scroll Area", label: "滚动区域", group: "base" },
+  { id: "field", title: "Field", label: "表单字段", group: "base" },
   { id: "select", title: "Select", label: "选择器", group: "base" },
-  { id: "separator", title: "Separator", label: "分割线", group: "base" },
-  { id: "sidebar", title: "Sidebar", label: "侧边栏 (应用级布局)", group: "base" },
-  { id: "skeleton", title: "Skeleton", label: "骨架屏", group: "base" },
-  { id: "sonner", title: "Sonner", label: "Toast 消息", group: "base" },
-  { id: "spinner", title: "Spinner", label: "加载指示器", group: "base" },
-  { id: "switch", title: "Switch", label: "开关 (20px Apple绿)", group: "base" },
-  { id: "table", title: "Tables", label: "表格", group: "base" },
-  { id: "tabs", title: "Tabs", label: "分段标签页 (紧凑胶囊)", group: "base" },
-  { id: "textarea", title: "Textarea", label: "多行文本输入", group: "base" },
-  { id: "toggle", title: "Toggle", label: "切换状态按钮", group: "base" },
+  { id: "combobox", title: "Combobox", label: "组合框", group: "base" },
+  { id: "checkbox", title: "Checkbox", label: "复选框", group: "base" },
+  { id: "radio-group", title: "Radio Group", label: "单选框组", group: "base" },
+  { id: "switch", title: "Switch", label: "开关", group: "base" },
+  { id: "slider", title: "Slider", label: "滑块", group: "base" },
+  { id: "toggle", title: "Toggle", label: "切换按钮", group: "base" },
+  { id: "tabs", title: "Tabs", label: "标签页", group: "base" },
+  { id: "card", title: "Card", label: "卡片", group: "base" },
+  { id: "item", title: "Item", label: "列表项", group: "base" },
+  { id: "badge", title: "Badge", label: "徽章", group: "base" },
+  { id: "avatar", title: "Avatar", label: "头像", group: "base" },
+  { id: "progress", title: "Progress", label: "进度条", group: "base" },
+  { id: "accordion", title: "Accordion", label: "折叠面板", group: "base" },
+  { id: "hover-card", title: "Hover Card", label: "悬停卡片", group: "base" },
+  { id: "alert", title: "Alert", label: "提示条", group: "base" },
+  { id: "alert-dialog", title: "AlertDialog", label: "确认对话框", group: "base" },
+  { id: "dialog", title: "Dialog", label: "模态对话框", group: "base" },
+  { id: "popover", title: "Popover", label: "气泡浮层", group: "base" },
   { id: "tooltip", title: "Tooltip", label: "文字提示", group: "base" },
+  { id: "dropdown-menu", title: "Dropdown Menu", label: "下拉菜单", group: "base" },
+  { id: "context-menu", title: "Context Menu", label: "右键菜单", group: "base" },
+  { id: "menubar", title: "Menubar", label: "菜单栏", group: "base" },
+  { id: "command", title: "Command", label: "命令面板", group: "base" },
+  { id: "sonner", title: "Sonner", label: "Toast 消息", group: "base" },
+  { id: "table", title: "Tables", label: "表格", group: "base" },
+  { id: "pagination", title: "Pagination", label: "分页", group: "base" },
+  { id: "separator", title: "Separator", label: "分割线", group: "base" },
+  { id: "skeleton", title: "Skeleton", label: "骨架屏", group: "base" },
+  { id: "spinner", title: "Spinner", label: "加载指示器", group: "base" },
+  { id: "empty", title: "Empty", label: "空状态", group: "base" },
+  { id: "scroll-area", title: "Scroll Area", label: "滚动区域", group: "base" },
+  { id: "resizable", title: "Resizable", label: "可调整面板", group: "base" },
+  { id: "sidebar", title: "Sidebar", label: "侧边栏布局", group: "base" },
+  // 组合组件
+  { id: "context-usage-ring", title: "Context Ring", label: "上下文圆环", group: "composed" },
+  { id: "model-provider-picker", title: "Model Picker", label: "模型选择器", group: "composed" },
+  { id: "composer-notice-dock", title: "Notice Dock", label: "通知停靠区", group: "composed" },
+  { id: "task-status-row", title: "Task Status", label: "任务进度", group: "composed" },
+  { id: "terminal-range-slider", title: "Range Slider", label: "设置拖动条", group: "composed" },
+  { id: "compaction-progress", title: "Compaction", label: "上下文压缩", group: "composed" },
+  { id: "permission-request-bar", title: "Permission Bar", label: "工具授权", group: "composed" },
+  { id: "usage-metrics-strip", title: "Usage Metrics", label: "会话用量", group: "composed" },
+  { id: "segmented-control", title: "Segmented", label: "分段切换", group: "composed" },
+  { id: "status-badge", title: "Status Badge", label: "状态徽章", group: "composed" },
 ]
 const PageContext = React.createContext<string | null>(null)
 
@@ -189,8 +204,8 @@ export function App() {
   const [providerId, setProviderId] = React.useState("anthropic")
   const [modelId, setModelId] = React.useState("claude-sonnet-4")
   const [reasoningLevel, setReasoningLevel] = React.useState<ReasoningLevel>("medium")
-  const [noticeActiveId, setNoticeActiveId] = React.useState<string | null>("plan")
   const [terminalFontSize, setTerminalFontSize] = React.useState(13)
+  const [sliderValue, setSliderValue] = React.useState(13)
   const [tasks, setTasks] = React.useState<TaskItem[]>([
     { id: "t1", title: "Install app-release.apk", chip: "ARM64", status: "done" },
     { id: "t2", title: "Create channel /tool:adb-shell/", chip: "ADB", status: "done" },
@@ -210,38 +225,48 @@ export function App() {
       id: "plan",
       kind: "plan",
       label: "任务编排",
-      summary: "构建并安装 debug APK，共 4 个步骤",
+      summary: "构建并安装 debug APK",
       count: 4,
-      content: (
-        <div className="space-y-1.5 pt-1 text-xs text-muted-foreground">
-          <p>1. gradlew assembleDebug</p>
-          <p>2. adb install -r app-debug.apk</p>
-          <p>3. adb shell am start 主 Activity</p>
-        </div>
-      ),
+      details: [
+        { id: "s1", title: "gradlew assembleDebug", meta: "done", state: "done" },
+        { id: "s2", title: "adb install -r app-debug.apk", meta: "12.4 MB", state: "done" },
+        { id: "s3", title: "adb shell am start 主 Activity", state: "running" },
+        { id: "s4", title: "回传启动日志", state: "pending" },
+      ],
     },
     {
       id: "background",
       kind: "background",
       label: "后台任务",
-      summary: "正在下载 Android 15 system image",
+      summary: "下载 Android 15 system image",
       running: true,
       badge: "68%",
+      details: [
+        { id: "b1", title: "system-image-arm64.zip", description: "1.4 GB / 2.0 GB", meta: "68%", state: "running" },
+        { id: "b2", title: "校验完整性", state: "pending" },
+      ],
     },
     {
       id: "files",
       kind: "files",
       label: "文件改动",
       summary: "3 个文件已修改",
-      count: 3,
+      files: [
+        { id: "f1", path: "src/views/Chat/ComposerInput.tsx", added: 24, removed: 8, state: "done" },
+        { id: "f2", path: "src/platform/chatApi.ts", added: 6, removed: 1, state: "done" },
+        { id: "f3", path: "src/styles/conversation.css", added: 12, removed: 0, state: "done" },
+      ],
     },
     {
       id: "permission",
       kind: "permission",
       label: "权限请求",
-      summary: "Agent 请求执行 adb shell rm -rf /sdcard/tmp",
+      summary: "adb shell rm -rf /sdcard/tmp",
       attention: true,
       badge: "待审批",
+      details: [
+        { id: "p1", title: "删除设备临时目录", description: "/sdcard/tmp · 不可恢复", meta: "高", state: "error" },
+      ],
     },
   ]
   React.useEffect(() => {
@@ -408,7 +433,7 @@ export function App() {
             </div>
           </div>
           <ScrollArea className="flex-1 p-2">
-              {(["composed", "base"] as const).map((group) => {
+              {(["base", "composed"] as const).map((group) => {
                 const groupItems = filteredNav.filter((item) => item.group === group)
                 if (!groupItems.length) return null
                 return (
@@ -502,26 +527,32 @@ export function App() {
           </div>
           <PageContext.Provider value={activeId}>
           {/* 组合组件 · 上下文圆环 */}
-          <Section id="context-usage-ring" title="Context Ring" label="上下文用量圆环 (70% 警告 / 90% 危险)" count={1}>
+          <Section id="context-usage-ring" title="Context Ring" label="上下文用量圆环（70% 警告 / 90% 危险）" count={0}>
             <div className="space-y-4">
-              <p className="text-xs text-muted-foreground">输入框右下角的上下文占用指示器，点击展开分段明细面板：</p>
-              <div className="flex flex-wrap items-center gap-4 p-3 rounded-xl border border-border/70 bg-muted/20">
+              <p className="text-xs text-muted-foreground">
+                输入框右下角的上下文占用指示器。就绪态只画填充弧、绝不整圈旋转；读取中仅让填充弧呼吸。
+              </p>
+              <div className="flex flex-wrap items-center gap-4 rounded-xl border border-border/70 bg-muted/20 p-3">
                 <ContextUsageRing percent={28} tokens={84000} capacity={300000} systemTokens={9400} toolTokens={16200} />
                 <ContextUsageRing percent={74} tokens={222000} capacity={300000} systemTokens={9400} toolTokens={16200} />
                 <ContextUsageRing percent={93} tokens={279000} capacity={300000} systemTokens={9400} toolTokens={16200} />
                 <ContextUsageRing percent={null} busy />
               </div>
-              <div className="flex flex-wrap items-center gap-4 p-3 rounded-xl border border-border/70 bg-card max-w-md">
-                <span className="text-xs text-muted-foreground">暗色/强调色自适应：</span>
+              <div className="flex max-w-md flex-wrap items-center gap-4 rounded-xl border border-border/70 bg-card p-3">
+                <span className="text-xs text-muted-foreground">带读数来源：</span>
                 <ContextUsageRing percent={62} tokens={186000} capacity={300000} systemTokens={12400} toolTokens={23100} readingModelId="claude-sonnet-4" />
               </div>
             </div>
           </Section>
-          {/* 组合组件 · 模型服务商选择器 */}
-          <Section id="model-provider-picker" title="Model Picker" label="模型 / 服务商选择器 (分组子菜单)" count={2}>
+
+          {/* 组合组件 · 模型选择器 */}
+          <Section id="model-provider-picker" title="Model Picker" label="模型选择器（含思考强度）" count={0}>
             <div className="space-y-4">
-              <p className="text-xs text-muted-foreground">输入框底栏左侧的模型入口，支持服务商分组 → 模型二级菜单 + 推理深度调节：</p>
-              <div className="flex flex-wrap items-center gap-3 p-3 rounded-xl border border-border/70 bg-muted/20">
+              <p className="text-xs text-muted-foreground">
+                触发器与 Button default 完全同高（32px）、同圆角（10px）。只显示模型本身：模型图标 + 名称 + 200K + 思考强度，
+                供应商与协议不出现在触发器上。弹层宽度与未展开的 Select 一致，首行标题已删除，底部可直接调思考强度。
+              </p>
+              <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border/70 bg-muted/20 p-3">
                 <ModelProviderPicker
                   providers={[
                     {
@@ -556,32 +587,38 @@ export function App() {
                 />
               </div>
               <p className="text-[11px] text-muted-foreground">
-                当前：{providerId} / {modelId} · 推理深度 {reasoningLevel}
+                当前：{providerId} / {modelId} · 思考强度 {reasoningLevel}
               </p>
             </div>
           </Section>
-          {/* 组合组件 · 输入框上方通知组 */}
-          <Section id="composer-notice-dock" title="Notice Dock" label="输入框上方通知栈 (任务/后台/文件/审批)" count={3}>
+
+          {/* 组合组件 · 通知停靠区 */}
+          <Section id="composer-notice-dock" title="Notice Dock" label="通知停靠区（可展开卡片组）" count={0}>
             <div className="max-w-xl space-y-3">
-              <p className="text-xs text-muted-foreground">输入框上方的通知停靠区：点击卡片头展开详情，同一时刻仅一张展开：</p>
-              <ComposerNoticeDock
-                items={noticeItems}
-                activeId={noticeActiveId ?? undefined}
-                onToggleItem={(id) => setNoticeActiveId((prev) => (prev === id ? null : id))}
+              <p className="text-xs text-muted-foreground">
+                收起是一行胶囊，点击展开为卡片明细，同一时刻只展开一张。文件改动是独立卡：朝上浮层展开、悬浮不占位。
+              </p>
+              <ComposerNoticeDock items={noticeItems} />
+            </div>
+          </Section>
+
+          {/* 组合组件 · 任务状态 */}
+          <Section id="task-status-row" title="Task Status" label="任务进度（总卡 + 各自小卡）" count={0}>
+            <div className="max-w-xl space-y-3">
+              <p className="text-xs text-muted-foreground">一张总卡包住全部任务，每个任务各自一张小卡；点击可循环切换状态：</p>
+              <TaskStatusRow
+                title="构建并部署 debug 包"
+                description="Android 15 · Pixel 8 Pro"
+                tasks={tasks}
+                onToggleStatus={cycleTask}
               />
             </div>
           </Section>
-          {/* 组合组件 · 任务状态行 */}
-          <Section id="task-status-row" title="Task Status" label="任务状态行 (对勾/旋转/待处理/失败)" count={4}>
-            <div className="max-w-xl space-y-3">
-              <p className="text-xs text-muted-foreground">点击任意行循环切换状态，图标动效取自 card-showcase.html：</p>
-              <TaskStatusRow tasks={tasks} onToggleStatus={cycleTask} />
-            </div>
-          </Section>
-          {/* 组合组件 · 终端字号拖动条 */}
-          <Section id="terminal-range-slider" title="Range Slider" label="设置项拖动条 (终端字号)" count={5}>
+
+          {/* 组合组件 · 拖动条 */}
+          <Section id="terminal-range-slider" title="Range Slider" label="设置项拖动条（终端字号）" count={0}>
             <div className="max-w-2xl space-y-3">
-              <p className="text-xs text-muted-foreground">设置面板右侧的数值拖动条，Apple HIG 圆形 thumb + 数值药丸：</p>
+              <p className="text-xs text-muted-foreground">设置面板右侧的数值拖动条，圆形 thumb + 数值药丸：</p>
               <TerminalRangeSlider value={terminalFontSize} min={10} max={24} onChange={setTerminalFontSize} />
               <TerminalRangeSlider
                 title="终端行高"
@@ -594,21 +631,25 @@ export function App() {
               />
             </div>
           </Section>
-          {/* 组合组件 · 上下文压缩进度 */}
-          <Section id="compaction-progress" title="Compaction" label="上下文压缩状态条 (running / done / failed)" count={6}>
+
+          {/* 组合组件 · 上下文压缩 */}
+          <Section id="compaction-progress" title="Compaction" label="上下文压缩状态（窄胶囊）" count={0}>
             <div className="max-w-2xl space-y-2.5">
-              <p className="text-xs text-muted-foreground">压缩中 → 完成是同一条状态条连续演进，不跳变：</p>
-              <CompactionProgress status="running" progress={46} detail="已处理 62 / 134 条消息" />
-              <CompactionProgress status="running" progress={null} detail="等待后端上报进度" />
-              <CompactionProgress status="completed" detail="12,400 → 3,200 Tokens" />
-              <CompactionProgress status="interrupted" detail="用户中断了本轮压缩" />
-              <CompactionProgress status="failed" detail="供应商返回 429 限流" />
+              <p className="text-xs text-muted-foreground">宽度随内容收缩，不再拉满一整行：</p>
+              <div className="flex flex-wrap items-center gap-2">
+                <CompactionProgress status="running" progress={46} detail="62 / 134 条" />
+                <CompactionProgress status="running" progress={null} />
+                <CompactionProgress status="completed" detail="12,400 → 3,200" />
+                <CompactionProgress status="interrupted" />
+                <CompactionProgress status="failed" detail="429" />
+              </div>
             </div>
           </Section>
-          {/* 组合组件 · 授权请求条 */}
-          <Section id="permission-request-bar" title="Permission Bar" label="工具授权请求 (含补充说明与三项决策)" count={7}>
+
+          {/* 组合组件 · 授权请求 */}
+          <Section id="permission-request-bar" title="Permission Bar" label="工具授权请求" count={0}>
             <div className="max-w-2xl space-y-3">
-              <p className="text-xs text-muted-foreground">Agent 请求危险操作时弹在输入框上方，带倒计时与说明输入：</p>
+              <p className="text-xs text-muted-foreground">按钮全部使用 Button default（32px / 10px 圆角 / 12px）：</p>
               <PermissionRequestBar
                 toolLabel="adb shell"
                 environmentLabel="Pixel 8 Pro · Android 15"
@@ -623,32 +664,44 @@ export function App() {
               />
             </div>
           </Section>
-          {/* 组合组件 · 用量指标条 */}
-          <Section id="usage-metrics-strip" title="Usage Metrics" label="会话用量指标 (细线分隔的一行统计)" count={8}>
-            <div className="max-w-2xl space-y-4">
-              <p className="text-xs text-muted-foreground">输入框最下方一行细字统计，余额可点击刷新：</p>
+
+          {/* 组合组件 · 会话用量 */}
+          <Section id="usage-metrics-strip" title="Usage Metrics" label="会话用量条（可插槽 / 悬停展开）" count={0}>
+            <div className="max-w-4xl space-y-4">
+              <p className="text-xs text-muted-foreground">
+                一行细字统计，条目用竖线分隔。带 detail 的条目 hover 用 Tooltip 展开；Token 用量点击展开明细浮层。
+              </p>
               <div className="rounded-xl border border-border/70 bg-card p-3">
                 <UsageMetricsStrip
+                  tokenUsage={{
+                    total: "5.1M tok",
+                    rows: [
+                      { id: "cache", label: "缓存命中", value: "97.3%" },
+                      { id: "uncached", label: "未缓存输入", value: "159,549 tok" },
+                      { id: "read", label: "缓存读取", value: "4,771,200 tok" },
+                      { id: "output", label: "输出", value: "170,783 tok" },
+                    ],
+                  }}
                   metrics={[
-                    { id: "speed", label: "输出速度", value: "42 tok/s" },
-                    { id: "in", label: "输入", value: "18.2K" },
-                    { id: "out", label: "输出", value: "2.1K" },
-                    { id: "cache", label: "缓存命中", value: "87%" },
+                    { id: "in", label: "会话输入", value: "69.3M" },
+                    { id: "out", label: "会话输出", value: "602.4K" },
+                    { id: "speed", label: "输出速度", value: "124 token/s" },
                   ]}
-                  balance={{ label: "余额", value: "$12.40", refreshing: balanceRefreshing }}
+                  balance={{ label: "余额", value: "—", refreshing: balanceRefreshing }}
                   onRefreshBalance={() => {
                     setBalanceRefreshing(true)
                     window.setTimeout(() => setBalanceRefreshing(false), 1200)
                   }}
-                  cost={{ id: "cost", label: "本轮花费", value: "$0.0031" }}
+                  cost={{ label: "本轮消费", value: "0.702403" }}
                 />
               </div>
             </div>
           </Section>
+
           {/* 组合组件 · 分段切换 */}
-          <Section id="segmented-control" title="Segmented" label="分段切换控件 (视图/筛选)" count={9}>
+          <Section id="segmented-control" title="Segmented" label="分段切换（Tabs 封装）" count={0}>
             <div className="space-y-4">
-              <p className="text-xs text-muted-foreground">iOS/macOS 分段控件：滑动选中块 + 灰色凹陷底槽：</p>
+              <p className="text-xs text-muted-foreground">直接复用基础组件 Tabs，不再自建按钮：</p>
               <div className="flex flex-wrap items-center gap-4">
                 <SegmentedControl
                   label="视图切换"
@@ -675,8 +728,9 @@ export function App() {
               <p className="text-[11px] text-muted-foreground">当前：{segmentedView} / {segmentedRange}</p>
             </div>
           </Section>
+
           {/* 组合组件 · 状态徽章 */}
-          <Section id="status-badge" title="Status Badge" label="状态徽章 (运行中呼吸点)" count={10}>
+          <Section id="status-badge" title="Status Badge" label="状态徽章（24px 高）" count={0}>
             <div className="flex flex-wrap items-center gap-2">
               <StatusBadge variant="primary" pulse>运行中</StatusBadge>
               <StatusBadge variant="success">已完成</StatusBadge>
@@ -686,6 +740,106 @@ export function App() {
               <StatusBadge variant="primary" hideDot>v2.4.0</StatusBadge>
             </div>
           </Section>
+
+          {/* Avatar */}
+          <Section id="avatar" title="Avatar" label="头像" count={0}>
+            <div className="flex flex-wrap items-center gap-3">
+              <Avatar className="size-9">
+                <AvatarImage src="https://github.com/shadcn.png" alt="用户头像" />
+                <AvatarFallback>SC</AvatarFallback>
+              </Avatar>
+              <Avatar className="size-8">
+                <AvatarFallback>RN</AvatarFallback>
+              </Avatar>
+              <Avatar className="size-6">
+                <AvatarFallback>UI</AvatarFallback>
+              </Avatar>
+              <Avatar className="size-8 rounded-lg">
+                <AvatarFallback className="rounded-lg">AP</AvatarFallback>
+              </Avatar>
+            </div>
+          </Section>
+
+          {/* Progress */}
+          <Section id="progress" title="Progress" label="进度条" count={0}>
+            <div className="max-w-md space-y-4">
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>上传中</span>
+                  <span className="tabular-nums">62%</span>
+                </div>
+                <Progress value={62} />
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>已满</span>
+                  <span className="tabular-nums">100%</span>
+                </div>
+                <Progress value={100} />
+              </div>
+              <Progress value={18} className="h-1" />
+            </div>
+          </Section>
+
+          {/* Accordion */}
+          <Section id="accordion" title="Accordion" label="折叠面板" count={0}>
+            <Accordion type="single" collapsible defaultValue="a" className="max-w-md">
+              <AccordionItem value="a">
+                <AccordionTrigger>什么是 rain-ui？</AccordionTrigger>
+                <AccordionContent>
+                  一套面向桌面工具类应用的组件库：统一 32px 控件度量、10px 圆角，暗色与亮色同步。
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="b">
+                <AccordionTrigger>可以和 shadcn 混用吗？</AccordionTrigger>
+                <AccordionContent>可以，组件 API 与 shadcn/ui 保持一致，样式令牌独立。</AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="c">
+                <AccordionTrigger>默认主题是什么？</AccordionTrigger>
+                <AccordionContent>Slate Indigo（#6366F1），另有 5 套桌面级强调色可选。</AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </Section>
+
+          {/* Hover Card */}
+          <Section id="hover-card" title="Hover Card" label="悬停卡片" count={0}>
+            <HoverCard openDelay={80}>
+              <HoverCardTrigger asChild>
+                <Button variant="link" className="h-auto px-0">@rain-ui</Button>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-72">
+                <div className="flex items-start gap-3">
+                  <Avatar className="size-9">
+                    <AvatarFallback>RN</AvatarFallback>
+                  </Avatar>
+                  <div className="space-y-1">
+                    <p className="text-xs font-medium text-foreground">rain-ui</p>
+                    <p className="text-[11px] leading-relaxed text-muted-foreground">
+                      桌面工具类应用的组件库。统一度量 · Apple HIG 质感 · 明暗双主题。
+                    </p>
+                    <p className="text-[11px] text-muted-foreground">加入于 2026 年 10 月</p>
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          </Section>
+
+          {/* Badge */}
+          <Section id="badge" title="Badge" label="徽章（与 Button 同族：24px 高 / 6px 圆角）" count={0}>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge>默认</Badge>
+              <Badge variant="secondary">次要</Badge>
+              <Badge variant="outline">描边</Badge>
+              <Badge variant="muted">中性</Badge>
+              <Badge variant="success">成功</Badge>
+              <Badge variant="warning">警告</Badge>
+              <Badge variant="destructive">危险</Badge>
+              <Badge variant="outline">
+                <Check className="size-3" /> 带图标
+              </Badge>
+            </div>
+          </Section>
+
           <Section id="alert-dialog" title="AlertDialog" label="确认对话框" count={11}>
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -1510,6 +1664,27 @@ export function App() {
             </div>
           </Section>
           {/* 32. Tabs */}
+          {/* Slider */}
+          <Section id="slider" title="Slider" label="滑块（基础组件）" count={0}>
+            <div className="max-w-md space-y-5">
+              <p className="text-xs text-muted-foreground">受控滑块：轨道 6px 全圆角，拇指 16px；命中区高 32px：</p>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">终端字号</span>
+                  <span className="font-mono tabular-nums text-foreground">{sliderValue}px</span>
+                </div>
+                <Slider value={sliderValue} min={10} max={24} onValueChange={setSliderValue} />
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">禁用状态</span>
+                  <span className="font-mono tabular-nums text-foreground">40</span>
+                </div>
+                <Slider value={40} disabled onValueChange={() => {}} />
+              </div>
+            </div>
+          </Section>
+
           <Section id="tabs" title="Tabs" label="分段选项卡 (Apple 胶囊滑块与边框/内容层次)" count={41}>
             <div className="space-y-4 max-w-lg">
               <Tabs defaultValue="account" className="w-full">
