@@ -5,7 +5,8 @@ import {
   Sun, Moon, Terminal, Plus, Trash2, Check, Sparkles,
   Smartphone, AlertTriangle, Search, Info, Settings,
   Folder, Layers, ChevronRight, ArrowRight, ExternalLink,
-  MoreHorizontal, Play, RefreshCw, X, Shield, Sliders, Menu
+  MoreHorizontal, Play, RefreshCw, X, Shield, Sliders, Menu,
+  Home, Inbox, Calendar, Search as SearchIcon, User2, ChevronUp
 } from "lucide-react"
 
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
@@ -55,7 +56,20 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner"
@@ -76,7 +90,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { id: "alert", title: "Alert", label: "警告提示" },
-  { id: "alert-dialog", title: "Alert Dialog", label: "确认对话框" },
+  { id: "alert-dialog", title: "AlertDialog", label: "确认对话框" },
   { id: "button", title: "Button", label: "按钮 (sm 28px)" },
   { id: "button-group", title: "Button Group", label: "按钮组 (带下拉)" },
   { id: "card", title: "Card", label: "卡片" },
@@ -100,12 +114,12 @@ const NAV_ITEMS: NavItem[] = [
   { id: "scroll-area", title: "Scroll Area", label: "滚动区域" },
   { id: "select", title: "Select", label: "选择器" },
   { id: "separator", title: "Separator", label: "分割线" },
-  { id: "sheet", title: "Sheet / Sidebar", label: "抽屉侧边栏" },
+  { id: "sidebar", title: "Sidebar", label: "侧边栏组件" },
   { id: "skeleton", title: "Skeleton", label: "骨架屏" },
   { id: "sonner", title: "Sonner", label: "Toast 消息" },
   { id: "spinner", title: "Spinner", label: "加载中" },
   { id: "switch", title: "Switch", label: "开关 (20px Apple绿)" },
-  { id: "table", title: "Table", label: "表格" },
+  { id: "table", title: "Tables", label: "表格" },
   { id: "tabs", title: "Tabs", label: "分段标签页" },
   { id: "textarea", title: "Textarea", label: "多行文本输入" },
   { id: "tooltip", title: "Tooltip", label: "文字提示" },
@@ -123,7 +137,7 @@ function Section({ id, title, label, count, children }: { id: string; title: str
           <span className="text-xs font-normal text-muted-foreground">({label})</span>
         </h2>
       </div>
-      <div className="p-4 rounded-lg border border-border/60 bg-card/40 backdrop-blur-sm">
+      <div className="p-4 rounded-lg border border-border/60 bg-card shadow-xs">
         {children}
       </div>
     </section>
@@ -136,10 +150,14 @@ export function App() {
   const [filter, setFilter] = React.useState("")
 
   React.useEffect(() => {
+    // 确保 html 上的 class 和 data-theme 正确同步
+    const root = document.documentElement
     if (dark) {
-      document.documentElement.classList.add("dark")
+      root.classList.add("dark")
+      root.setAttribute("data-theme", "dark")
     } else {
-      document.documentElement.classList.remove("dark")
+      root.classList.remove("dark")
+      root.removeAttribute("data-theme")
     }
   }, [dark])
 
@@ -160,7 +178,7 @@ export function App() {
   return (
     <div className="min-h-screen bg-background text-foreground antialiased flex flex-col">
       {/* 顶部 Header */}
-      <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/85 backdrop-blur-md">
+      <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/90 backdrop-blur-md">
         <div className="flex h-12 items-center justify-between px-6">
           <div className="flex items-center gap-2.5">
             <div className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground font-semibold text-xs shadow-xs">
@@ -170,23 +188,33 @@ export function App() {
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-sm tracking-tight">rain-ui</span>
                 <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary border border-primary/20">
-                  shadcn/ui · Apple HIG
+                  Apple HIG · shadcn/ui
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <span className="text-xs text-muted-foreground hidden sm:inline">
-              默认按钮高度: <strong className="font-mono text-foreground">sm 28px</strong>
+              模式: <strong className="font-medium text-foreground">{dark ? "🌙 黑夜暗黑" : "☀️ 白天明亮"}</strong>
             </span>
             <Button
               variant="outline"
-              size="icon"
+              size="sm"
               onClick={() => setDark(!dark)}
-              aria-label="Toggle theme"
+              className="gap-1.5"
             >
-              {dark ? <Sun className="size-3.5 text-amber-400" /> : <Moon className="size-3.5 text-slate-700" />}
+              {dark ? (
+                <>
+                  <Sun className="size-3.5 text-amber-500" />
+                  <span>切换白天</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="size-3.5 text-slate-700" />
+                  <span>切换暗黑</span>
+                </>
+              )}
             </Button>
           </div>
         </div>
@@ -195,7 +223,7 @@ export function App() {
       {/* 主体两栏布局：左侧导航 + 右侧一一陈列 */}
       <div className="flex-1 flex max-w-7xl w-full mx-auto">
         {/* 左侧固钉导航栏 */}
-        <aside className="w-64 shrink-0 border-r border-border/60 hidden md:flex flex-col sticky top-12 h-[calc(100vh-3rem)]">
+        <aside className="w-64 shrink-0 border-r border-border/60 hidden md:flex flex-col sticky top-12 h-[calc(100vh-3rem)] bg-muted/10">
           <div className="p-3 border-b border-border/50">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 size-3.5 text-muted-foreground" />
@@ -204,7 +232,7 @@ export function App() {
                 placeholder="搜索组件..."
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="w-full h-7 pl-8 pr-2.5 rounded-md text-xs bg-muted/60 border border-border/50 focus:outline-none focus:ring-1 focus:ring-ring text-foreground placeholder:text-muted-foreground"
+                className="w-full h-7 pl-8 pr-2.5 rounded-md text-xs bg-muted/60 border border-border/60 focus:outline-none focus:ring-1 focus:ring-ring text-foreground placeholder:text-muted-foreground"
               />
             </div>
           </div>
@@ -216,7 +244,7 @@ export function App() {
                   onClick={() => scrollTo(item.id)}
                   className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-left transition-colors ${
                     activeId === item.id
-                      ? "bg-primary text-primary-foreground font-medium"
+                      ? "bg-primary text-primary-foreground font-medium shadow-xs"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
                   }`}
                 >
@@ -229,8 +257,8 @@ export function App() {
             </nav>
           </ScrollArea>
           <div className="p-3 border-t border-border/50 text-[11px] text-muted-foreground flex items-center justify-between">
-            <span>共 {NAV_ITEMS.length} 个原子组件</span>
-            <span className="font-mono text-[10px]">v0.1.0</span>
+            <span>清单内全部 {NAV_ITEMS.length} 项</span>
+            <span className="font-mono text-[10px]">100% 对应</span>
           </div>
         </aside>
 
@@ -243,7 +271,7 @@ export function App() {
                 <Terminal className="size-3.5" />
                 <AlertTitle>Heads up!</AlertTitle>
                 <AlertDescription>
-                  You can add components to your app using the cli.
+                  You can add components to your app using the shadcn cli.
                 </AlertDescription>
               </Alert>
               <Alert variant="destructive">
@@ -256,8 +284,8 @@ export function App() {
             </div>
           </Section>
 
-          {/* 2. Alert Dialog */}
-          <Section id="alert-dialog" title="Alert Dialog" label="确认对话框" count={2}>
+          {/* 2. AlertDialog */}
+          <Section id="alert-dialog" title="AlertDialog" label="确认对话框" count={2}>
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="outline">Show Alert Dialog</Button>
@@ -278,7 +306,7 @@ export function App() {
             </AlertDialog>
           </Section>
 
-          {/* 3. Button (默认 sm 28px) */}
+          {/* 3. Button */}
           <Section id="button" title="Button" label="按钮 (默认 sm 28px)" count={3}>
             <div className="space-y-4">
               <div>
@@ -461,7 +489,7 @@ export function App() {
             </div>
           </Section>
 
-          {/* 14. Input (32px) */}
+          {/* 14. Input */}
           <Section id="input" title="Input" label="输入框 (统一 h-8 · 32px)" count={14}>
             <div className="max-w-sm space-y-2">
               <Input placeholder="Default input (32px)" />
@@ -484,7 +512,7 @@ export function App() {
 
           {/* 16. Item */}
           <Section id="item" title="Item" label="列表项" count={16}>
-            <div className="max-w-md divide-y divide-border/50 rounded-lg border border-border/60 bg-card/60">
+            <div className="max-w-md divide-y divide-border/50 rounded-lg border border-border/60 bg-card">
               <Item
                 icon={<Smartphone className="size-4 text-primary" />}
                 title="iPhone 16 Pro"
@@ -656,29 +684,59 @@ export function App() {
             </div>
           </Section>
 
-          {/* 26. Sheet / Sidebar */}
-          <Section id="sheet" title="Sheet / Sidebar" label="抽屉侧边栏" count={26}>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline">
-                  <Menu className="size-3.5 mr-1" />
-                  Open Sidebar Drawer
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-72">
-                <SheetHeader>
-                  <SheetTitle>Navigation Sidebar</SheetTitle>
-                  <SheetDescription>
-                    Browse applications and workspace tools.
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="py-4 space-y-1 text-xs">
-                  <Button variant="ghost" className="w-full justify-start"><Layers className="size-3.5 mr-2" />Projects</Button>
-                  <Button variant="ghost" className="w-full justify-start"><Smartphone className="size-3.5 mr-2" />Devices</Button>
-                  <Button variant="ghost" className="w-full justify-start"><Settings className="size-3.5 mr-2" />Settings</Button>
+          {/* 26. Sidebar */}
+          <Section id="sidebar" title="Sidebar" label="侧边栏标准组件 (shadcn 1:1)" count={26}>
+            <div className="border border-border/70 rounded-lg overflow-hidden h-72">
+              <SidebarProvider defaultOpen={true}>
+                <div className="flex h-full w-full">
+                  <Sidebar collapsible="icon" className="border-r border-border/60">
+                    <SidebarHeader className="p-2 border-b border-border/40">
+                      <div className="flex items-center gap-2 px-2 py-1 text-xs font-semibold">
+                        <Terminal className="size-4" />
+                        <span>Acme Inc</span>
+                      </div>
+                    </SidebarHeader>
+                    <SidebarContent className="p-2">
+                      <SidebarGroup>
+                        <SidebarGroupLabel className="text-[10px]">Application</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                          <SidebarMenu>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton isActive size="sm">
+                                <Home className="size-3.5" />
+                                <span>Dashboard</span>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton size="sm">
+                                <Inbox className="size-3.5" />
+                                <span>Inbox</span>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                              <SidebarMenuButton size="sm">
+                                <Calendar className="size-3.5" />
+                                <span>Calendar</span>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          </SidebarMenu>
+                        </SidebarGroupContent>
+                      </SidebarGroup>
+                    </SidebarContent>
+                    <SidebarFooter className="p-2 border-t border-border/40">
+                      <div className="flex items-center justify-between px-2 text-xs text-muted-foreground">
+                        <span className="text-[11px]">user@apple.com</span>
+                        <SidebarTrigger />
+                      </div>
+                    </SidebarFooter>
+                  </Sidebar>
+                  <div className="flex-1 p-4 bg-muted/20 flex flex-col justify-center items-center text-xs text-muted-foreground">
+                    <p>Sidebar 内置 Content 区域</p>
+                    <p className="text-[11px] mt-1 text-muted-foreground/70">（支持折叠、展开与响应式状态）</p>
+                  </div>
                 </div>
-              </SheetContent>
-            </Sheet>
+              </SidebarProvider>
+            </div>
           </Section>
 
           {/* 27. Skeleton */}
@@ -730,8 +788,8 @@ export function App() {
             </div>
           </Section>
 
-          {/* 31. Table */}
-          <Section id="table" title="Table" label="表格" count={31}>
+          {/* 31. Tables */}
+          <Section id="table" title="Tables" label="表格" count={31}>
             <div className="rounded-md border border-border/70 overflow-hidden">
               <Table>
                 <TableHeader>
