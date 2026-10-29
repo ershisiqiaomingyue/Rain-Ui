@@ -32,10 +32,10 @@ export function ButtonGroupDemo() {
   const [label, setLabel] = React.useState("personal")
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <ButtonGroup className="hidden sm:inline-flex">
+    <ButtonGroup>
+      <ButtonGroup className="hidden sm:flex">
         <Button variant="outline" size="icon" aria-label="Go Back">
-          <ArrowLeftIcon className="size-3.5" />
+          <ArrowLeftIcon />
         </Button>
       </ButtonGroup>
       <ButtonGroup>
@@ -47,38 +47,38 @@ export function ButtonGroupDemo() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" aria-label="More Options">
-              <MoreHorizontalIcon className="size-3.5" />
+              <MoreHorizontalIcon />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-44">
+          <DropdownMenuContent align="end" className="w-40">
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <MailCheckIcon className="size-3.5" />
-                <span>Mark as Read</span>
+                <MailCheckIcon />
+                Mark as Read
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <ArchiveIcon className="size-3.5" />
-                <span>Archive</span>
+                <ArchiveIcon />
+                Archive
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <ClockIcon className="size-3.5" />
-                <span>Snooze</span>
+                <ClockIcon />
+                Snooze
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CalendarPlusIcon className="size-3.5" />
-                <span>Add to Calendar</span>
+                <CalendarPlusIcon />
+                Add to Calendar
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <ListFilterIcon className="size-3.5" />
-                <span>Add to List</span>
+                <ListFilterIcon />
+                Add to List
               </DropdownMenuItem>
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                  <TagIcon className="size-3.5" />
-                  <span>Label As...</span>
+                  <TagIcon />
+                  Label As...
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
                   <DropdownMenuRadioGroup
@@ -101,13 +101,13 @@ export function ButtonGroupDemo() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem variant="destructive">
-                <Trash2Icon className="size-3.5" />
-                <span>Trash</span>
+                <Trash2Icon />
+                Trash
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </ButtonGroup>
-    </div>
+    </ButtonGroup>
   )
 }
