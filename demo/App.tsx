@@ -685,57 +685,38 @@ export function App() {
           </Section>
 
           {/* 26. Sidebar */}
-          <Section id="sidebar" title="Sidebar" label="侧边栏标准组件 (shadcn 1:1)" count={26}>
-            <div className="border border-border/70 rounded-lg overflow-hidden h-72">
-              <SidebarProvider defaultOpen={true}>
-                <div className="flex h-full w-full">
-                  <Sidebar collapsible="icon" className="border-r border-border/60">
-                    <SidebarHeader className="p-2 border-b border-border/40">
-                      <div className="flex items-center gap-2 px-2 py-1 text-xs font-semibold">
-                        <Terminal className="size-4" />
-                        <span>Acme Inc</span>
-                      </div>
-                    </SidebarHeader>
-                    <SidebarContent className="p-2">
-                      <SidebarGroup>
-                        <SidebarGroupLabel className="text-[10px]">Application</SidebarGroupLabel>
-                        <SidebarGroupContent>
-                          <SidebarMenu>
-                            <SidebarMenuItem>
-                              <SidebarMenuButton isActive size="sm">
-                                <Home className="size-3.5" />
-                                <span>Dashboard</span>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                              <SidebarMenuButton size="sm">
-                                <Inbox className="size-3.5" />
-                                <span>Inbox</span>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                              <SidebarMenuButton size="sm">
-                                <Calendar className="size-3.5" />
-                                <span>Calendar</span>
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                          </SidebarMenu>
-                        </SidebarGroupContent>
-                      </SidebarGroup>
-                    </SidebarContent>
-                    <SidebarFooter className="p-2 border-t border-border/40">
-                      <div className="flex items-center justify-between px-2 text-xs text-muted-foreground">
-                        <span className="text-[11px]">user@apple.com</span>
-                        <SidebarTrigger />
-                      </div>
-                    </SidebarFooter>
-                  </Sidebar>
-                  <div className="flex-1 p-4 bg-muted/20 flex flex-col justify-center items-center text-xs text-muted-foreground">
-                    <p>Sidebar 内置 Content 区域</p>
-                    <p className="text-[11px] mt-1 text-muted-foreground/70">（支持折叠、展开与响应式状态）</p>
-                  </div>
+          <Section id="sidebar" title="Sidebar" label="侧边栏视图组件 (Inline Preview)" count={26}>
+            <div className="border border-border/70 rounded-lg overflow-hidden h-64 flex bg-card">
+              {/* 纯内联模拟展示 Sidebar 容器，不污染外部全局 fixed 视口 */}
+              <div className="w-56 border-r border-border/60 flex flex-col bg-muted/20">
+                <div className="p-3 border-b border-border/50 flex items-center gap-2 text-xs font-semibold">
+                  <Terminal className="size-4" />
+                  <span>Acme Inc</span>
                 </div>
-              </SidebarProvider>
+                <div className="flex-1 p-2 space-y-1">
+                  <div className="px-2 py-1 text-[10px] font-semibold text-muted-foreground tracking-wider uppercase">Application</div>
+                  <button className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs bg-primary text-primary-foreground font-medium text-left">
+                    <Home className="size-3.5" />
+                    <span>Dashboard</span>
+                  </button>
+                  <button className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors text-left">
+                    <Inbox className="size-3.5" />
+                    <span>Inbox</span>
+                  </button>
+                  <button className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors text-left">
+                    <Calendar className="size-3.5" />
+                    <span>Calendar</span>
+                  </button>
+                </div>
+                <div className="p-2.5 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
+                  <span className="text-[11px]">user@apple.com</span>
+                  <Settings className="size-3.5 cursor-pointer hover:text-foreground" />
+                </div>
+              </div>
+              <div className="flex-1 p-6 flex flex-col justify-center items-center text-xs text-muted-foreground bg-muted/5">
+                <p className="font-medium text-foreground">Main Content Preview</p>
+                <p className="text-[11px] text-muted-foreground mt-1">独立侧边栏布局展示区（避免侵入全局页面）</p>
+              </div>
             </div>
           </Section>
 
