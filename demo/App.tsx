@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 import * as React from "react"
 import {
   Sun, Moon, Terminal, Plus, Trash2, Check, Sparkles,
@@ -81,47 +81,73 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Toggle } from "@/components/ui/toggle"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import {
+  ContextUsageRing,
+  ComposerNoticeDock,
+  ModelProviderPicker,
+  TaskStatusRow,
+  TerminalRangeSlider,
+  CompactionProgress,
+  PermissionRequestBar,
+  UsageMetricsStrip,
+  SegmentedControl,
+  StatusBadge,
+  type ComposerNoticeItem,
+  type ReasoningLevel,
+  type TaskItem,
+} from "@/components/composed"
 import { cn } from "@/lib/utils"
 interface NavItem {
   id: string
   title: string
   label: string
+  group: "composed" | "base"
 }
 const NAV_ITEMS: NavItem[] = [
-  { id: "alert-dialog", title: "AlertDialog", label: "确认对话框" },
-  { id: "button", title: "Button", label: "Button (Radix-Nova 官方)" },
-  { id: "button-group", title: "Button Group", label: "按钮组 (带下拉)" },
-  { id: "card", title: "Card", label: "卡片" },
-  { id: "checkbox", title: "Checkbox", label: "复选框" },
-  { id: "combobox", title: "Combobox", label: "组合框" },
-  { id: "command", title: "Command", label: "命令面板 (⌘K弹窗)" },
-  { id: "context-menu", title: "Context Menu", label: "右键菜单" },
-  { id: "dialog", title: "Dialog", label: "模态弹窗" },
-  { id: "dropdown-menu", title: "Dropdown Menu", label: "下拉菜单 (多级/快捷键)" },
-  { id: "empty", title: "Empty", label: "空状态" },
-  { id: "field", title: "Field", label: "表单字段" },
-  { id: "input", title: "Input", label: "输入框 (32px)" },
-  { id: "input-group", title: "Input Group", label: "输入框组" },
-  { id: "item", title: "Item", label: "列表项 (复合项)" },
-  { id: "label", title: "Label", label: "标签" },
-  { id: "menubar", title: "Menubar", label: "菜单栏" },
-  { id: "pagination", title: "Pagination", label: "分页 (含省略号)" },
-  { id: "popover", title: "Popover", label: "气泡浮层" },
-  { id: "radio-group", title: "Radio Group", label: "单选框组" },
-  { id: "resizable", title: "Resizable", label: "可调整面板" },
-  { id: "scroll-area", title: "Scroll Area", label: "滚动区域" },
-  { id: "select", title: "Select", label: "选择器" },
-  { id: "separator", title: "Separator", label: "分割线" },
-  { id: "sidebar", title: "Sidebar", label: "侧边栏 (应用级布局)" },
-  { id: "skeleton", title: "Skeleton", label: "骨架屏" },
-  { id: "sonner", title: "Sonner", label: "Toast 消息" },
-  { id: "spinner", title: "Spinner", label: "加载指示器" },
-  { id: "switch", title: "Switch", label: "开关 (20px Apple绿)" },
-  { id: "table", title: "Tables", label: "表格" },
-  { id: "tabs", title: "Tabs", label: "分段标签页 (紧凑胶囊)" },
-  { id: "textarea", title: "Textarea", label: "多行文本输入" },
-  { id: "toggle", title: "Toggle", label: "切换状态按钮" },
-  { id: "tooltip", title: "Tooltip", label: "文字提示" },
+  { id: "context-usage-ring", title: "Context Ring", label: "上下文圆环", group: "composed" },
+  { id: "model-provider-picker", title: "Model Picker", label: "模型服务商选择器", group: "composed" },
+  { id: "composer-notice-dock", title: "Notice Dock", label: "输入框上方通知组", group: "composed" },
+  { id: "task-status-row", title: "Task Status", label: "任务状态行", group: "composed" },
+  { id: "terminal-range-slider", title: "Range Slider", label: "终端字号拖动条", group: "composed" },
+  { id: "compaction-progress", title: "Compaction", label: "上下文压缩进度条", group: "composed" },
+  { id: "permission-request-bar", title: "Permission Bar", label: "工具授权请求条", group: "composed" },
+  { id: "usage-metrics-strip", title: "Usage Metrics", label: "会话用量指标条", group: "composed" },
+  { id: "segmented-control", title: "Segmented", label: "分段切换控件", group: "composed" },
+  { id: "status-badge", title: "Status Badge", label: "状态徽章", group: "composed" },
+  { id: "alert-dialog", title: "AlertDialog", label: "确认对话框", group: "base" },
+  { id: "button", title: "Button", label: "Button (Radix-Nova 官方)", group: "base" },
+  { id: "button-group", title: "Button Group", label: "按钮组 (带下拉)", group: "base" },
+  { id: "card", title: "Card", label: "卡片", group: "base" },
+  { id: "checkbox", title: "Checkbox", label: "复选框", group: "base" },
+  { id: "combobox", title: "Combobox", label: "组合框", group: "base" },
+  { id: "command", title: "Command", label: "命令面板 (⌘K弹窗)", group: "base" },
+  { id: "context-menu", title: "Context Menu", label: "右键菜单", group: "base" },
+  { id: "dialog", title: "Dialog", label: "模态弹窗", group: "base" },
+  { id: "dropdown-menu", title: "Dropdown Menu", label: "下拉菜单 (多级/快捷键)", group: "base" },
+  { id: "empty", title: "Empty", label: "空状态", group: "base" },
+  { id: "field", title: "Field", label: "表单字段", group: "base" },
+  { id: "input", title: "Input", label: "输入框 (32px)", group: "base" },
+  { id: "input-group", title: "Input Group", label: "输入框组", group: "base" },
+  { id: "item", title: "Item", label: "列表项 (复合项)", group: "base" },
+  { id: "label", title: "Label", label: "标签", group: "base" },
+  { id: "menubar", title: "Menubar", label: "菜单栏", group: "base" },
+  { id: "pagination", title: "Pagination", label: "分页 (含省略号)", group: "base" },
+  { id: "popover", title: "Popover", label: "气泡浮层", group: "base" },
+  { id: "radio-group", title: "Radio Group", label: "单选框组", group: "base" },
+  { id: "resizable", title: "Resizable", label: "可调整面板", group: "base" },
+  { id: "scroll-area", title: "Scroll Area", label: "滚动区域", group: "base" },
+  { id: "select", title: "Select", label: "选择器", group: "base" },
+  { id: "separator", title: "Separator", label: "分割线", group: "base" },
+  { id: "sidebar", title: "Sidebar", label: "侧边栏 (应用级布局)", group: "base" },
+  { id: "skeleton", title: "Skeleton", label: "骨架屏", group: "base" },
+  { id: "sonner", title: "Sonner", label: "Toast 消息", group: "base" },
+  { id: "spinner", title: "Spinner", label: "加载指示器", group: "base" },
+  { id: "switch", title: "Switch", label: "开关 (20px Apple绿)", group: "base" },
+  { id: "table", title: "Tables", label: "表格", group: "base" },
+  { id: "tabs", title: "Tabs", label: "分段标签页 (紧凑胶囊)", group: "base" },
+  { id: "textarea", title: "Textarea", label: "多行文本输入", group: "base" },
+  { id: "toggle", title: "Toggle", label: "切换状态按钮", group: "base" },
+  { id: "tooltip", title: "Tooltip", label: "文字提示", group: "base" },
 ]
 function Section({ id, title, label, count, children }: { id: string; title: string; label: string; count: number; children: React.ReactNode }) {
   return (
@@ -143,7 +169,7 @@ function Section({ id, title, label, count, children }: { id: string; title: str
 }
 export function App() {
   const [dark, setDark] = React.useState(false)
-  const [accentColor, setAccentColor] = React.useState<"emerald" | "indigo" | "amber" | "mint" | "violet" | "graphite">("emerald")
+  const [accentColor, setAccentColor] = React.useState<"emerald" | "indigo" | "amber" | "mint" | "violet" | "graphite">("indigo")
   const [activeId, setActiveId] = React.useState("button")
   const [filter, setFilter] = React.useState("")
   const [openCommand, setOpenCommand] = React.useState(false)
@@ -153,6 +179,65 @@ export function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false)
   const [toggleItalic, setToggleItalic] = React.useState(false)
   const [toggleUnderline, setToggleUnderline] = React.useState(false)
+  // 组合组件演示状态
+  const [providerId, setProviderId] = React.useState("anthropic")
+  const [modelId, setModelId] = React.useState("claude-sonnet-4")
+  const [reasoningLevel, setReasoningLevel] = React.useState<ReasoningLevel>("medium")
+  const [noticeActiveId, setNoticeActiveId] = React.useState<string | null>("plan")
+  const [terminalFontSize, setTerminalFontSize] = React.useState(13)
+  const [tasks, setTasks] = React.useState<TaskItem[]>([
+    { id: "t1", title: "Install app-release.apk", chip: "ARM64", status: "done" },
+    { id: "t2", title: "Create channel /tool:adb-shell/", chip: "ADB", status: "done" },
+    { id: "t3", title: "Invite users to channel", chip: "5 members", status: "running" },
+    { id: "t4", title: "Sync framework-res.apk", chip: "12.4 MB", status: "pending" },
+    { id: "t5", title: "Deploy to husky device", chip: "failed", status: "error" },
+  ])
+  const [permissionInstruction, setPermissionInstructionState] = React.useState("")
+  const [balanceRefreshing, setBalanceRefreshing] = React.useState(false)
+  const [segmentedView, setSegmentedView] = React.useState<"conversation" | "terminal" | "files">("conversation")
+  const [segmentedRange, setSegmentedRange] = React.useState<"day" | "week" | "month" | "all">("week")
+  const cycleTask = (id: string) => {
+    setTasks((prev) => prev.map((t) => t.id === id ? { ...t, status: t.status === "done" ? "running" : t.status === "running" ? "pending" : "done" } : t))
+  }
+  const noticeItems: ComposerNoticeItem[] = [
+    {
+      id: "plan",
+      kind: "plan",
+      label: "任务编排",
+      summary: "构建并安装 debug APK，共 4 个步骤",
+      count: 4,
+      content: (
+        <div className="space-y-1.5 pt-1 text-xs text-muted-foreground">
+          <p>1. gradlew assembleDebug</p>
+          <p>2. adb install -r app-debug.apk</p>
+          <p>3. adb shell am start 主 Activity</p>
+        </div>
+      ),
+    },
+    {
+      id: "background",
+      kind: "background",
+      label: "后台任务",
+      summary: "正在下载 Android 15 system image",
+      running: true,
+      badge: "68%",
+    },
+    {
+      id: "files",
+      kind: "files",
+      label: "文件改动",
+      summary: "3 个文件已修改",
+      count: 3,
+    },
+    {
+      id: "permission",
+      kind: "permission",
+      label: "权限请求",
+      summary: "Agent 请求执行 adb shell rm -rf /sdcard/tmp",
+      attention: true,
+      badge: "待审批",
+    },
+  ]
   React.useEffect(() => {
     const root = document.documentElement
     if (dark) {
@@ -220,11 +305,12 @@ export function App() {
             <div className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-border/60 bg-muted/30">
               <span className="text-[11px] text-muted-foreground mr-1 hidden sm:inline">主题色:</span>
               {[
-                { id: "graphite", label: "Graphite (原生桌面钛灰)", bg: "bg-[#4B5563]" },
-                { id: "indigo", label: "Indigo (macOS 专业靛蓝)", bg: "bg-[#4F46E5]" },
-                { id: "teal", label: "Slate Teal (沉稳墨青松绿)", bg: "bg-[#0D9488]" },
-                { id: "amber", label: "Amber Gold (经典暖琥珀)", bg: "bg-[#D97706]" },
-                { id: "rosewood", label: "Rosewood (紫檀雅红)", bg: "bg-[#BE123C]" },
+                { id: "emerald", label: "Emerald Jade (极光松石绿 · 幽绿漫射)", bg: "bg-[#10B981]" },
+                { id: "indigo", label: "Slate Indigo (雾霾靛青 · Raycast 冷靛)", bg: "bg-[#6366F1]" },
+                { id: "amber", label: "Warm Bronze Amber (曜石琥珀金 · 钛金暖调)", bg: "bg-[#F59E0B]" },
+                { id: "mint", label: "Glacier Mint (冰川薄荷青 · 清澈透光)", bg: "bg-[#06B6D4]" },
+                { id: "violet", label: "Cosmic Violet (深空暗紫星霓 · 晶石暗紫)", bg: "bg-[#8B5CF6]" },
+                { id: "graphite", label: "Graphite (原生桌面钛灰 · 中性石墨)", bg: "bg-[#4B5563]" },
               ].map((c) => (
                 <button
                   key={c.id}
@@ -276,28 +362,36 @@ export function App() {
             </div>
           </div>
           <ScrollArea className="flex-1 p-2">
-            <div className="px-2.5 py-1.5 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center justify-between">
-              <span>基础组件</span>
-              <span className="text-[10px] font-mono text-muted-foreground/80">{filteredNav.length}</span>
-            </div>
-            <nav className="space-y-0.5 text-xs">
-              {filteredNav.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollTo(item.id)}
-                  className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-left transition-colors ${
-                    activeId === item.id
-                      ? "bg-primary text-primary-foreground font-medium shadow-xs"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
-                  }`}
-                >
-                  <span className="truncate">{item.title}</span>
-                  <span className={`text-[10px] truncate ml-1 ${activeId === item.id ? "text-primary-foreground/80" : "text-muted-foreground/70"}`}>
-                    {item.label}
-                  </span>
-                </button>
-              ))}
-            </nav>
+              {(["composed", "base"] as const).map((group) => {
+                const groupItems = filteredNav.filter((item) => item.group === group)
+                if (!groupItems.length) return null
+                return (
+                  <div key={group} className="mb-3 last:mb-0">
+                    <div className="px-2.5 py-1.5 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center justify-between">
+                      <span>{group === "composed" ? "组合组件" : "基础组件"}</span>
+                      <span className="text-[10px] font-mono text-muted-foreground/80">{groupItems.length}</span>
+                    </div>
+                    <nav className="space-y-0.5 text-xs">
+                      {groupItems.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => scrollTo(item.id)}
+                          className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-left transition-colors ${
+                            activeId === item.id
+                              ? "bg-primary text-primary-foreground font-medium shadow-xs"
+                              : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
+                          }`}
+                        >
+                          <span className="truncate">{item.title}</span>
+                          <span className={`text-[10px] truncate ml-1 ${activeId === item.id ? "text-primary-foreground/80" : "text-muted-foreground/70"}`}>
+                            {item.label}
+                          </span>
+                        </button>
+                      ))}
+                    </nav>
+                  </div>
+                )
+              })}
           </ScrollArea>
           <div className="p-3 border-t border-border/50 text-[11px] text-muted-foreground flex items-center justify-between">
             <span>清单内全部 {NAV_ITEMS.length} 项</span>
@@ -315,22 +409,215 @@ export function App() {
                 </div>
                 <div>
                   <h1 className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2">
-                    基础组件
-                    <span className="text-xs font-normal text-muted-foreground px-2 py-0.5 rounded-full bg-muted border">Base Primitives</span>
+                    组件库总览
+                    <span className="text-xs font-normal text-muted-foreground px-2 py-0.5 rounded-full bg-muted border">Composed + Primitives</span>
                   </h1>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    采用 Apple 极简人机交互规范 (HIG) 与 shadcn/ui 1:1 对齐构建，作为后续组合组件的底层基石。
+                    上半部分是桌面应用级「组合组件」(迁移自 Android-Tool 真实产品界面)，下半部分是 shadcn/ui 1:1 对齐的基础原子组件。
                   </p>
                 </div>
               </div>
               <div className="hidden sm:flex items-center gap-2">
                 <span className="text-[11px] text-muted-foreground bg-background px-2.5 py-1 rounded-md border shadow-2xs">
-                  共 34 个原子控件
+                  组合 {NAV_ITEMS.filter(n => n.group === "composed").length} · 基础 {NAV_ITEMS.filter(n => n.group === "base").length}
                 </span>
               </div>
             </div>
           </div>
-          <Section id="alert-dialog" title="AlertDialog" label="确认对话框" count={2}>
+          {/* 组合组件 · 上下文圆环 */}
+          <Section id="context-usage-ring" title="Context Ring" label="上下文用量圆环 (70% 警告 / 90% 危险)" count={1}>
+            <div className="space-y-4">
+              <p className="text-xs text-muted-foreground">输入框右下角的上下文占用指示器，点击展开分段明细面板：</p>
+              <div className="flex flex-wrap items-center gap-4 p-3 rounded-xl border border-border/70 bg-muted/20">
+                <ContextUsageRing percent={28} tokens={84000} capacity={300000} systemTokens={9400} toolTokens={16200} />
+                <ContextUsageRing percent={74} tokens={222000} capacity={300000} systemTokens={9400} toolTokens={16200} />
+                <ContextUsageRing percent={93} tokens={279000} capacity={300000} systemTokens={9400} toolTokens={16200} />
+                <ContextUsageRing percent={null} busy />
+              </div>
+              <div className="flex flex-wrap items-center gap-4 p-3 rounded-xl border border-border/70 bg-card max-w-md">
+                <span className="text-xs text-muted-foreground">暗色/强调色自适应：</span>
+                <ContextUsageRing percent={62} tokens={186000} capacity={300000} systemTokens={12400} toolTokens={23100} readingModelId="claude-sonnet-4" />
+              </div>
+            </div>
+          </Section>
+          {/* 组合组件 · 模型服务商选择器 */}
+          <Section id="model-provider-picker" title="Model Picker" label="模型 / 服务商选择器 (分组子菜单)" count={2}>
+            <div className="space-y-4">
+              <p className="text-xs text-muted-foreground">输入框底栏左侧的模型入口，支持服务商分组 → 模型二级菜单 + 推理深度调节：</p>
+              <div className="flex flex-wrap items-center gap-3 p-3 rounded-xl border border-border/70 bg-muted/20">
+                <ModelProviderPicker
+                  providers={[
+                    {
+                      id: "anthropic",
+                      name: "Anthropic",
+                      models: [
+                        { id: "claude-sonnet-4", name: "Claude Sonnet 4", contextWindow: 200000, supportsReasoning: true },
+                        { id: "claude-opus-4", name: "Claude Opus 4", contextWindow: 200000, supportsReasoning: true },
+                        { id: "claude-haiku-3-5", name: "Claude Haiku 3.5", contextWindow: 200000 },
+                      ],
+                    },
+                    {
+                      id: "openai",
+                      name: "OpenAI",
+                      models: [
+                        { id: "gpt-5", name: "GPT-5", contextWindow: 400000, supportsReasoning: true },
+                        { id: "gpt-5-mini", name: "GPT-5 mini", contextWindow: 128000 },
+                      ],
+                    },
+                    {
+                      id: "local",
+                      name: "Ollama (本地)",
+                      models: [{ id: "qwen3-coder", name: "Qwen3 Coder 30B", contextWindow: 262144 }],
+                    },
+                  ]}
+                  selectedProviderId={providerId}
+                  selectedModelId={modelId}
+                  reasoningLevel={reasoningLevel}
+                  onReasoningLevelChange={setReasoningLevel}
+                  onSelect={(p, m) => { setProviderId(p); setModelId(m) }}
+                  onOpenSettings={() => toast("打开模型设置")}
+                />
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                当前：{providerId} / {modelId} · 推理深度 {reasoningLevel}
+              </p>
+            </div>
+          </Section>
+          {/* 组合组件 · 输入框上方通知组 */}
+          <Section id="composer-notice-dock" title="Notice Dock" label="输入框上方通知栈 (任务/后台/文件/审批)" count={3}>
+            <div className="max-w-xl space-y-3">
+              <p className="text-xs text-muted-foreground">输入框上方的通知停靠区：点击卡片头展开详情，同一时刻仅一张展开：</p>
+              <ComposerNoticeDock
+                items={noticeItems}
+                activeId={noticeActiveId ?? undefined}
+                onToggleItem={(id) => setNoticeActiveId((prev) => (prev === id ? null : id))}
+              />
+            </div>
+          </Section>
+          {/* 组合组件 · 任务状态行 */}
+          <Section id="task-status-row" title="Task Status" label="任务状态行 (对勾/旋转/待处理/失败)" count={4}>
+            <div className="max-w-xl space-y-3">
+              <p className="text-xs text-muted-foreground">点击任意行循环切换状态，图标动效取自 card-showcase.html：</p>
+              <TaskStatusRow tasks={tasks} onToggleStatus={cycleTask} />
+            </div>
+          </Section>
+          {/* 组合组件 · 终端字号拖动条 */}
+          <Section id="terminal-range-slider" title="Range Slider" label="设置项拖动条 (终端字号)" count={5}>
+            <div className="max-w-2xl space-y-3">
+              <p className="text-xs text-muted-foreground">设置面板右侧的数值拖动条，Apple HIG 圆形 thumb + 数值药丸：</p>
+              <TerminalRangeSlider value={terminalFontSize} min={10} max={24} onChange={setTerminalFontSize} />
+              <TerminalRangeSlider
+                title="终端行高"
+                desc="终端渲染时的行高倍数，影响阅读密度"
+                value={14}
+                min={10}
+                max={22}
+                unit=""
+                onChange={() => {}}
+              />
+            </div>
+          </Section>
+          {/* 组合组件 · 上下文压缩进度 */}
+          <Section id="compaction-progress" title="Compaction" label="上下文压缩状态条 (running / done / failed)" count={6}>
+            <div className="max-w-2xl space-y-2.5">
+              <p className="text-xs text-muted-foreground">压缩中 → 完成是同一条状态条连续演进，不跳变：</p>
+              <CompactionProgress status="running" progress={46} detail="已处理 62 / 134 条消息" />
+              <CompactionProgress status="running" progress={null} detail="等待后端上报进度" />
+              <CompactionProgress status="completed" detail="12,400 → 3,200 Tokens" />
+              <CompactionProgress status="interrupted" detail="用户中断了本轮压缩" />
+              <CompactionProgress status="failed" detail="供应商返回 429 限流" />
+            </div>
+          </Section>
+          {/* 组合组件 · 授权请求条 */}
+          <Section id="permission-request-bar" title="Permission Bar" label="工具授权请求 (含补充说明与三项决策)" count={7}>
+            <div className="max-w-2xl space-y-3">
+              <p className="text-xs text-muted-foreground">Agent 请求危险操作时弹在输入框上方，带倒计时与说明输入：</p>
+              <PermissionRequestBar
+                toolLabel="adb shell"
+                environmentLabel="Pixel 8 Pro · Android 15"
+                command="adb shell rm -rf /sdcard/Android/data/com.example.tmp"
+                question="该操作会永久删除设备上的缓存目录，无法恢复。"
+                expiresIn={52}
+                instruction={permissionInstruction}
+                onInstructionChange={setPermissionInstructionState}
+                onAllow={() => toast("已允许执行")}
+                onAlwaysAllow={() => toast("本会话内始终允许")}
+                onDeny={() => toast("已拒绝")}
+              />
+            </div>
+          </Section>
+          {/* 组合组件 · 用量指标条 */}
+          <Section id="usage-metrics-strip" title="Usage Metrics" label="会话用量指标 (细线分隔的一行统计)" count={8}>
+            <div className="max-w-2xl space-y-4">
+              <p className="text-xs text-muted-foreground">输入框最下方一行细字统计，余额可点击刷新：</p>
+              <div className="rounded-xl border border-border/70 bg-card p-3">
+                <UsageMetricsStrip
+                  metrics={[
+                    { id: "speed", label: "输出速度", value: "42 tok/s" },
+                    { id: "in", label: "输入", value: "18.2K" },
+                    { id: "out", label: "输出", value: "2.1K" },
+                    { id: "cache", label: "缓存命中", value: "87%" },
+                  ]}
+                  balance={{ label: "余额", value: "$12.40", refreshing: balanceRefreshing }}
+                  onRefreshBalance={() => {
+                    setBalanceRefreshing(true)
+                    window.setTimeout(() => setBalanceRefreshing(false), 1200)
+                  }}
+                  cost={{ id: "cost", label: "本轮花费", value: "$0.0031" }}
+                />
+              </div>
+            </div>
+          </Section>
+          {/* 组合组件 · 分段切换 */}
+          <Section id="segmented-control" title="Segmented" label="分段切换控件 (视图/筛选)" count={9}>
+            <div className="space-y-4">
+              <p className="text-xs text-muted-foreground">iOS/macOS 分段控件：滑动选中块 + 灰色凹陷底槽：</p>
+              <div className="flex flex-wrap items-center gap-4">
+                <SegmentedControl
+                  label="视图切换"
+                  value={segmentedView}
+                  onChange={setSegmentedView}
+                  options={[
+                    { value: "conversation", label: "对话" },
+                    { value: "terminal", label: "终端" },
+                    { value: "files", label: "文件" },
+                  ]}
+                />
+                <SegmentedControl
+                  label="时间范围"
+                  value={segmentedRange}
+                  onChange={setSegmentedRange}
+                  options={[
+                    { value: "day", label: "今天" },
+                    { value: "week", label: "近 7 天" },
+                    { value: "month", label: "近 30 天" },
+                    { value: "all", label: "全部", disabled: true },
+                  ]}
+                />
+              </div>
+              <p className="text-[11px] text-muted-foreground">当前：{segmentedView} / {segmentedRange}</p>
+            </div>
+          </Section>
+          {/* 组合组件 · 状态徽章 */}
+          <Section id="status-badge" title="Status Badge" label="状态徽章 (运行中呼吸点)" count={10}>
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusBadge variant="primary" pulse>运行中</StatusBadge>
+              <StatusBadge variant="success">已完成</StatusBadge>
+              <StatusBadge variant="warning" pulse>等待审批</StatusBadge>
+              <StatusBadge variant="danger">失败</StatusBadge>
+              <StatusBadge variant="neutral">空闲</StatusBadge>
+              <StatusBadge variant="primary" hideDot>v2.4.0</StatusBadge>
+            </div>
+          </Section>
+          {/* 基础原子组件分组头 */}
+          <div className="flex items-center gap-3 pt-2">
+            <div className="h-px flex-1 bg-border/70" />
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              基础组件 · Base Primitives
+            </span>
+            <div className="h-px flex-1 bg-border/70" />
+          </div>
+          <Section id="alert-dialog" title="AlertDialog" label="确认对话框" count={11}>
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button>Show Alert Dialog</Button>
@@ -351,7 +638,7 @@ export function App() {
             </AlertDialog>
           </Section>
           {/* 3. Button */}
-          <Section id="button" title="Button" label="Button (Radix-Nova 官方标准)" count={3}>
+          <Section id="button" title="Button" label="Button (Radix-Nova 官方标准)" count={12}>
             <div className="space-y-5">
               {/* 官方文档首屏示例 (1:1 纯正对标图1) */}
               <div className="rounded-xl border border-border/80 bg-card p-4">
@@ -441,14 +728,14 @@ export function App() {
             </div>
           </Section>
           {/* 4. Button Group */}
-          <Section id="button-group" title="Button Group" label="按钮组 (带下拉及复合状态)" count={4}>
+          <Section id="button-group" title="Button Group" label="按钮组 (带下拉及复合状态)" count={13}>
             <div className="space-y-3">
               <p className="text-xs text-muted-foreground">官方 1:1 ButtonGroup 交互实装（支持 Icon、分段组合与 DropdownMenu 下拉）：</p>
               <ButtonGroupDemo />
             </div>
           </Section>
           {/* 5. Card */}
-          <Section id="card" title="Card" label="卡片" count={5}>
+          <Section id="card" title="Card" label="卡片" count={14}>
             <Card className="max-w-md">
               <CardHeader>
                 <CardTitle>Create project</CardTitle>
@@ -466,7 +753,7 @@ export function App() {
             </Card>
           </Section>
           {/* 6. Checkbox */}
-          <Section id="checkbox" title="Checkbox" label="复选框" count={6}>
+          <Section id="checkbox" title="Checkbox" label="复选框" count={15}>
             <div className="flex items-center space-x-2">
               <Checkbox id="terms" defaultChecked />
               <Label htmlFor="terms" className="text-xs cursor-pointer">
@@ -475,7 +762,7 @@ export function App() {
             </div>
           </Section>
           {/* 7. Combobox */}
-          <Section id="combobox" title="Combobox" label="组合框 (可点击展开与搜索选择)" count={7}>
+          <Section id="combobox" title="Combobox" label="组合框 (可点击展开与搜索选择)" count={16}>
             <div className="w-64">
               <Combobox
                 value={comboboxVal}
@@ -492,7 +779,7 @@ export function App() {
             </div>
           </Section>
           {/* 8. Command */}
-          <Section id="command" title="Command" label="命令面板 (支持点击按钮展开 & 快捷键 ⌘K)" count={8}>
+          <Section id="command" title="Command" label="命令面板 (支持点击按钮展开 & 快捷键 ⌘K)" count={17}>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <Button size="sm" onClick={() => setOpenCommand(true)} className="gap-2">
@@ -563,7 +850,7 @@ export function App() {
             </div>
           </Section>
           {/* 9. Context Menu */}
-          <Section id="context-menu" title="Context Menu" label="右键上下文菜单" count={9}>
+          <Section id="context-menu" title="Context Menu" label="右键上下文菜单" count={18}>
             <ContextMenu>
               <ContextMenuTrigger className="flex h-24 w-full max-w-sm items-center justify-center rounded-md border border-dashed border-border/80 text-xs text-muted-foreground select-none bg-muted/20">
                 在此区域右键点击打开菜单
@@ -579,7 +866,7 @@ export function App() {
             </ContextMenu>
           </Section>
           {/* 10. Dialog */}
-          <Section id="dialog" title="Dialog" label="模态对话框" count={10}>
+          <Section id="dialog" title="Dialog" label="模态对话框" count={19}>
             <Dialog>
               <DialogTrigger asChild>
                 <Button>Open Dialog</Button>
@@ -606,7 +893,7 @@ export function App() {
             </Dialog>
           </Section>
           {/* 11. Dropdown Menu */}
-          <Section id="dropdown-menu" title="Dropdown Menu" label="下拉菜单 (丰富多级子菜单/单选/快捷键)" count={11}>
+          <Section id="dropdown-menu" title="Dropdown Menu" label="下拉菜单 (丰富多级子菜单/单选/快捷键)" count={20}>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button>
@@ -658,7 +945,7 @@ export function App() {
             </DropdownMenu>
           </Section>
           {/* 12. Empty */}
-          <Section id="empty" title="Empty" label="空状态 (shadcn 1:1 复合结构)" count={12}>
+          <Section id="empty" title="Empty" label="空状态 (shadcn 1:1 复合结构)" count={21}>
             <div className="w-full max-w-xl mx-auto">
               <Empty>
                 <EmptyHeader>
@@ -683,7 +970,7 @@ export function App() {
             </div>
           </Section>
           {/* 13. Field */}
-          <Section id="field" title="Field" label="表单字段" count={13}>
+          <Section id="field" title="Field" label="表单字段" count={22}>
             <div className="max-w-sm space-y-3">
               <Field label="Email Address" hint="We will never share your email with third parties.">
                 <Input placeholder="m@example.com" />
@@ -694,7 +981,7 @@ export function App() {
             </div>
           </Section>
           {/* 14. Input */}
-          <Section id="input" title="Input" label="输入框 (统一 h-8 · 32px)" count={14}>
+          <Section id="input" title="Input" label="输入框 (统一 h-8 · 32px)" count={23}>
             <div className="max-w-sm space-y-2">
               <Input placeholder="Default input (32px)" />
               <Input disabled placeholder="Disabled input" />
@@ -703,7 +990,7 @@ export function App() {
           </Section>
           {/* 15. Input Group */}
           {/* 15. Input Group */}
-          <Section id="input-group" title="Input Group" label="输入框组 (严格对齐 shadcn skill 规范)" count={15}>
+          <Section id="input-group" title="Input Group" label="输入框组 (严格对齐 shadcn skill 规范)" count={24}>
             <div className="max-w-sm space-y-3">
               <InputGroup>
                 <InputGroupAddon align="start">
@@ -728,7 +1015,7 @@ export function App() {
             </div>
           </Section>
           {/* 16. Item */}
-          <Section id="item" title="Item" label="列表项 (复合组件规范 1:1)" count={16}>
+          <Section id="item" title="Item" label="列表项 (复合组件规范 1:1)" count={25}>
             <div className="flex w-full max-w-xs flex-col gap-3 [--radius:1rem]">
               <Item variant="muted">
                 <ItemMedia>
@@ -757,7 +1044,7 @@ export function App() {
             </div>
           </Section>
           {/* 17. Label */}
-          <Section id="label" title="Label" label="标签" count={17}>
+          <Section id="label" title="Label" label="标签" count={26}>
             <div className="max-w-sm space-y-3">
               <div className="flex items-center space-x-2">
                 <Checkbox id="label-demo" />
@@ -775,7 +1062,7 @@ export function App() {
             </div>
           </Section>
           {/* 18. Menubar */}
-          <Section id="menubar" title="Menubar" label="菜单栏" count={18}>
+          <Section id="menubar" title="Menubar" label="菜单栏" count={27}>
             <Menubar className="w-fit">
               <MenubarMenu>
                 <MenubarTrigger>File</MenubarTrigger>
@@ -802,7 +1089,7 @@ export function App() {
             </Menubar>
           </Section>
           {/* 19. Pagination */}
-          <Section id="pagination" title="Pagination" label="分页 (含省略号规范)" count={19}>
+          <Section id="pagination" title="Pagination" label="分页 (含省略号规范)" count={28}>
             <Pagination className="justify-start">
               <PaginationContent>
                 <PaginationItem>
@@ -830,7 +1117,7 @@ export function App() {
             </Pagination>
           </Section>
           {/* 20. Popover */}
-          <Section id="popover" title="Popover" label="气泡浮层" count={20}>
+          <Section id="popover" title="Popover" label="气泡浮层" count={29}>
             <Popover>
               <PopoverTrigger asChild>
                 <Button>Open Popover</Button>
@@ -846,7 +1133,7 @@ export function App() {
             </Popover>
           </Section>
           {/* 21. Radio Group */}
-          <Section id="radio-group" title="Radio Group" label="单选框组" count={21}>
+          <Section id="radio-group" title="Radio Group" label="单选框组" count={30}>
             <RadioGroup defaultValue="comfortable" className="gap-2">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="default" id="r1" />
@@ -863,7 +1150,7 @@ export function App() {
             </RadioGroup>
           </Section>
           {/* 22. Resizable */}
-          <Section id="resizable" title="Resizable" label="可调整尺寸面板" count={22}>
+          <Section id="resizable" title="Resizable" label="可调整尺寸面板" count={31}>
             <div className="h-40 rounded-lg border border-border/70 overflow-hidden">
               <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel defaultSize={35} minSize={20}>
@@ -881,7 +1168,7 @@ export function App() {
             </div>
           </Section>
           {/* 23. Scroll Area */}
-          <Section id="scroll-area" title="Scroll Area" label="定制轻量滚动条" count={23}>
+          <Section id="scroll-area" title="Scroll Area" label="定制轻量滚动条" count={32}>
             <ScrollArea className="h-32 w-64 rounded-md border border-border/60 p-3 text-xs">
               <div className="space-y-2">
                 <p className="font-semibold text-foreground">Apple HIG Guidelines</p>
@@ -894,7 +1181,7 @@ export function App() {
             </ScrollArea>
           </Section>
           {/* 24. Select */}
-          <Section id="select" title="Select" label="下拉选择框" count={24}>
+          <Section id="select" title="Select" label="下拉选择框" count={33}>
             <div className="w-56">
               <Select defaultValue="apple">
                 <SelectTrigger>
@@ -910,7 +1197,7 @@ export function App() {
             </div>
           </Section>
           {/* 25. Separator */}
-          <Section id="separator" title="Separator" label="分割线" count={25}>
+          <Section id="separator" title="Separator" label="分割线" count={34}>
             <div className="space-y-2">
               <div className="text-xs font-medium">Section Header</div>
               <Separator />
@@ -924,7 +1211,7 @@ export function App() {
             </div>
           </Section>
           {/* 26. Sidebar */}
-          <Section id="sidebar" title="Sidebar" label="侧边栏视图组件 (支持折叠/展开收缩切换 · 1:1)" count={26}>
+          <Section id="sidebar" title="Sidebar" label="侧边栏视图组件 (支持折叠/展开收缩切换 · 1:1)" count={35}>
             <div className="border border-border/70 rounded-xl overflow-hidden h-72 flex bg-card shadow-xs transition-all">
               <div className={cn("border-r border-border/60 flex flex-col bg-muted/20 transition-all duration-300", sidebarCollapsed ? "w-14 items-center" : "w-60")}>
                 <div className={cn("p-2.5 border-b border-border/50 flex items-center w-full", sidebarCollapsed ? "justify-center" : "justify-between")}>
@@ -1060,7 +1347,7 @@ export function App() {
             </div>
           </Section>
           {/* 27. Skeleton */}
-          <Section id="skeleton" title="Skeleton" label="骨架屏" count={27}>
+          <Section id="skeleton" title="Skeleton" label="骨架屏" count={36}>
             <div className="flex items-center space-x-3">
               <Skeleton className="size-10 rounded-full" />
               <div className="space-y-1.5">
@@ -1070,7 +1357,7 @@ export function App() {
             </div>
           </Section>
           {/* 28. Sonner */}
-          <Section id="sonner" title="Sonner" label="Toast 消息 (顶部居中弹出 · 1:1)" count={28}>
+          <Section id="sonner" title="Sonner" label="Toast 消息 (顶部居中弹出 · 1:1)" count={37}>
             <Button
               onClick={() =>
                 toast("Event created", {
@@ -1086,7 +1373,7 @@ export function App() {
             </Button>
           </Section>
           {/* 29. Spinner */}
-          <Section id="spinner" title="Spinner" label="加载指示器 (含 Item 官方实例)" count={29}>
+          <Section id="spinner" title="Spinner" label="加载指示器 (含 Item 官方实例)" count={38}>
             <div className="space-y-4">
               <div>
                 <p className="text-xs text-muted-foreground mb-2">各尺寸加载微动效：</p>
@@ -1116,7 +1403,7 @@ export function App() {
             </div>
           </Section>
           {/* 30. Switch */}
-          <Section id="switch" title="Switch" label="开关 (20px Apple 绿胶囊)" count={30}>
+          <Section id="switch" title="Switch" label="开关 (20px Apple 绿胶囊)" count={39}>
             <div className="flex items-center space-x-3">
               <Switch id="airplane-mode" defaultChecked />
               <Label htmlFor="airplane-mode" className="text-xs cursor-pointer">
@@ -1125,7 +1412,7 @@ export function App() {
             </div>
           </Section>
           {/* 31. Tables */}
-          <Section id="table" title="Tables" label="表格" count={31}>
+          <Section id="table" title="Tables" label="表格" count={40}>
             <div className="rounded-md border border-border/70 overflow-hidden">
               <Table>
                 <TableHeader>
@@ -1154,7 +1441,7 @@ export function App() {
             </div>
           </Section>
           {/* 32. Tabs */}
-          <Section id="tabs" title="Tabs" label="分段选项卡 (Apple 胶囊滑块与边框/内容层次)" count={32}>
+          <Section id="tabs" title="Tabs" label="分段选项卡 (Apple 胶囊滑块与边框/内容层次)" count={41}>
             <div className="space-y-4 max-w-lg">
               <Tabs defaultValue="account" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 h-8 bg-muted/60 p-1 rounded-lg border border-border/40">
@@ -1178,11 +1465,11 @@ export function App() {
             </div>
           </Section>
           {/* 33. Textarea */}
-          <Section id="textarea" title="Textarea" label="多行文本框" count={33}>
+          <Section id="textarea" title="Textarea" label="多行文本框" count={42}>
             <Textarea placeholder="Type your message here..." className="max-w-md h-20 text-xs" />
           </Section>
           {/* 34. Toggle */}
-          <Section id="toggle" title="Toggle" label="切换状态按钮 (文本格式化切换)" count={34}>
+          <Section id="toggle" title="Toggle" label="切换状态按钮 (文本格式化切换)" count={43}>
             <div className="space-y-3">
               <div className="flex items-center gap-1.5">
                 <Toggle
@@ -1216,7 +1503,7 @@ export function App() {
             </div>
           </Section>
           {/* 35. Tooltip */}
-          <Section id="tooltip" title="Tooltip" label="文字提示浮层" count={35}>
+          <Section id="tooltip" title="Tooltip" label="文字提示浮层" count={44}>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

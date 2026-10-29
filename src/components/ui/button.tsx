@@ -10,15 +10,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 active:bg-primary/95",
+          "bg-primary text-primary-foreground font-[550] [box-shadow:var(--btn-primary-shadow)] hover:bg-primary/90 active:bg-primary/95",
         outline:
           "border-border bg-background shadow-xs hover:bg-muted hover:text-foreground active:bg-muted/80 dark:border-input dark:bg-transparent dark:hover:bg-muted/30",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 active:bg-secondary/90",
+          "bg-[var(--btn-glass-accent-bg)] text-[var(--btn-glass-accent-text)] [box-shadow:var(--btn-glass-rim)] hover:bg-[var(--btn-glass-accent-hover)] active:bg-[var(--btn-glass-accent-active)]",
         ghost:
           "hover:bg-muted hover:text-foreground active:bg-muted/70 dark:hover:bg-muted/40",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 active:bg-destructive/95",
+          "bg-[var(--btn-danger-bg)] text-[var(--btn-danger-text)] [box-shadow:var(--btn-danger-rim)] hover:bg-[var(--btn-danger-hover)] active:bg-[var(--btn-danger-hover)]",
         link:
           "text-primary underline-offset-4 hover:underline active:opacity-80 active:translate-y-0 active:scale-100",
       },

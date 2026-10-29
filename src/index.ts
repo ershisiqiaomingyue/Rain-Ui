@@ -36,3 +36,5 @@ export * from "./components/ui/toggle";
 export * from "./components/ui/tooltip";
 export * from "./lib/utils";
 export * from "./components/ui/dropdown-menu";
+// Composed Components
+export * from "./components/composed";
