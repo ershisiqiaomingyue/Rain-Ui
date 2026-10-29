@@ -21,6 +21,7 @@ function componentEntries() {
 }
 
 const ALIAS = [
+  { find: /^@\//, replacement: resolve(__dirname, "src/") + "/" },
   { find: /^rain-ui$/, replacement: resolve(__dirname, "src/index.ts") },
   { find: /^rain-ui\/styles\.css$/, replacement: resolve(__dirname, "assets/styles/index.css") },
   { find: /^rain-ui\/fonts\.css$/, replacement: resolve(__dirname, "assets/styles/fonts.css") },

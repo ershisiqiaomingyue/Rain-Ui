@@ -2,7 +2,11 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -15,12 +19,28 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "types": ["node", "vite/client"],
+    "types": [
+      "node",
+      "vite/client"
+    ],
     "baseUrl": ".",
     "paths": {
-      "rain-ui": ["./src/index.ts"],
-      "rain-ui/styles.css": ["./assets/styles/index.css"]
+      "@/*": [
+        "./src/*"
+      ],
+      "rain-ui": [
+        "./src/index.ts"
+      ],
+      "rain-ui/styles.css": [
+        "./assets/styles/index.css"
+      ]
     }
   },
-  "include": ["src", "components", "demo", "vite.config.ts", "env.d.ts"]
+  "include": [
+    "src",
+    "components",
+    "demo",
+    "vite.config.ts",
+    "env.d.ts"
+  ]
 }
