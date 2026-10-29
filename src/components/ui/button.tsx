@@ -23,6 +23,8 @@ const buttonVariants = cva(
           "bg-[var(--btn-glass-accent-bg)] text-[var(--btn-glass-accent-text)] hover:bg-[var(--btn-glass-accent-hover)] active:bg-[var(--btn-glass-accent-active)]",
         ghost:
           "hover:bg-muted hover:text-foreground active:bg-muted/70 dark:hover:bg-muted/40",
+        bare:
+          "border-transparent bg-transparent text-muted-foreground shadow-none hover:bg-muted hover:text-foreground active:bg-muted/70 dark:hover:bg-muted/40",
         destructive:
           "bg-[var(--btn-danger-bg)] text-[var(--btn-danger-text)] hover:bg-[var(--btn-danger-hover)] active:bg-[var(--btn-danger-hover)]",
         link:

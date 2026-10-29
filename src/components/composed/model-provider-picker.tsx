@@ -1,11 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronDown, Cpu, Plus, Search, Settings2 } from "lucide-react"
+import { Check, ChevronDown, ChevronRight, Cpu, Plus, Settings2 } from "lucide-react"
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { ButtonGroup } from "@/components/ui/button-group"
 import { Separator } from "@/components/ui/separator"
 import { ReasoningEffort, REASONING_EFFORT_LEVELS } from "@/components/ui/reasoning-effort"
 import { cn } from "@/lib/utils"
@@ -58,13 +59,8 @@ function formatWindow(count?: number | null) {
 
 /**
  * 模型选择器
- * -----------------------------------------------------------------------------
- * 触发器和 Button default 完全同高（32px）、同圆角（10px）、同字号（12px）。
- * 触发器只显示模型本身：模型图标 + 模型名 + 上下文窗口 + 思考强度。
- * 供应商 / 协议不出现在触发器上。
- *
- * 弹层：宽度等于触发器宽度（与未展开的 Select 完全一致），
- * 第一行（供应商/模型标题行）已删除，只保留模型列表、思考强度与添加入口。
+ * 触发器与 Button default 同度量：模型图标、模型名、上下文窗口与思考强度同处一条水平线。
+ * 模型和思考强度各自使用向上展开的 Popover。
  */
 export function ModelProviderPicker({
   providers = [],
@@ -78,204 +74,199 @@ export function ModelProviderPicker({
   className,
   disabled = false,
 }: ModelProviderPickerProps) {
-  const [open, setOpen] = React.useState(false)
-  const [query, setQuery] = React.useState("")
-  const [effortOpen, setEffortOpen] = React.useState(false)
+  const [modelOpen, setModelOpen] = React.useState(false)
+  const [reasoningOpen, setReasoningOpen] = React.useState(false)
 
   const currentProvider =
-    providers.find((p) => p.id === selectedProviderId) || providers[0]
+    providers.find((provider) => provider.id === selectedProviderId) || providers[0]
   const currentModel =
-    currentProvider?.models.find((m) => m.id === selectedModelId) ||
+    currentProvider?.models.find((model) => model.id === selectedModelId) ||
     currentProvider?.models[0]
-
-  const flatModels = React.useMemo(
-    () =>
-      providers.flatMap((provider) =>
-        provider.models.map((model) => ({ provider, model }))
-      ),
-    [providers]
-  )
-
-  const visible = React.useMemo(() => {
-    const normalized = query.trim().toLowerCase()
-    if (!normalized) return flatModels
-    return flatModels.filter(
-      ({ model }) =>
-        model.name.toLowerCase().includes(normalized) ||
-        model.id.toLowerCase().includes(normalized)
-    )
-  }, [flatModels, query])
 
   const effortLabel =
     REASONING_EFFORT_LEVELS.find((level) => level.value === reasoningLevel)?.label ?? "中"
-
   const reasoningEnabled = Boolean(currentModel?.supportsReasoning && onReasoningLevelChange)
 
   const choose = (providerId: string, modelId: string) => {
     onSelect(providerId, modelId)
-    setOpen(false)
-    setEffortOpen(false)
-    setQuery("")
+    setModelOpen(false)
   }
 
   return (
     <div className={cn("inline-flex items-center gap-2", className)}>
-      <Popover
-        open={open}
-        onOpenChange={(next) => {
-          setOpen(next)
-          if (!next) {
-            setEffortOpen(false)
-            setQuery("")
-          }
-        }}
-      >
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            disabled={disabled}
-            aria-label="选择模型"
-            className="h-8 max-w-[15rem] gap-1.5 px-2.5 font-normal"
-          >
-            <span className="flex size-4 shrink-0 items-center justify-center text-primary">
-              {currentModel?.icon || currentProvider?.icon || <Cpu className="size-3.5" />}
-            </span>
-            <span className="min-w-0 truncate text-xs text-foreground">
-              {currentModel?.name || "未配置模型"}
-            </span>
-            {currentModel?.contextWindow ? (
-              <span className="shrink-0 font-mono text-[11px] tabular-nums text-muted-foreground">
-                {formatWindow(currentModel.contextWindow)}
+      <ButtonGroup>
+        <Popover open={modelOpen} onOpenChange={setModelOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              disabled={disabled}
+              aria-label={`选择模型，当前 ${currentModel?.name ?? "未配置模型"}`}
+              className="h-8 min-w-0 items-center gap-1.5 px-2.5 font-normal leading-none"
+            >
+              <span className="flex size-4 shrink-0 items-center justify-center text-primary">
+                {currentModel?.icon || currentProvider?.icon || <Cpu className="size-3.5" />}
               </span>
-            ) : null}
-            {reasoningEnabled && currentModel?.supportsReasoning ? (
-              <span className="shrink-0 text-[11px] text-muted-foreground">{effortLabel}</span>
-            ) : null}
-            <ChevronDown
-              className={cn(
-                "ml-auto size-3.5 shrink-0 text-muted-foreground transition-transform",
-                open && "rotate-180"
-              )}
-            />
-          </Button>
-        </PopoverTrigger>
-
-        <PopoverContent
-          align="start"
-          side="top"
-          sideOffset={6}
-          className="w-[var(--radix-popover-trigger-width)] p-1.5"
-        >
-          {/* 模型列表（供应商与协议不展示） */}
-          <div className="px-1 pb-1">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="搜索模型"
-                className="h-8 pl-7"
+              <span className="max-w-[9.5rem] truncate text-center text-xs leading-none text-foreground">
+                {currentModel?.name || "未配置模型"}
+              </span>
+              {currentModel?.contextWindow ? (
+                <span className="shrink-0 self-center font-mono text-[11px] leading-none tabular-nums text-muted-foreground">
+                  {formatWindow(currentModel.contextWindow)}
+                </span>
+              ) : null}
+              <ChevronDown
+                className={cn(
+                  "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
+                  modelOpen && "rotate-180"
+                )}
               />
+            </Button>
+          </PopoverTrigger>
+
+          <PopoverContent
+            align="start"
+            side="top"
+            sideOffset={6}
+            collisionPadding={8}
+            avoidCollisions={false}
+            onOpenAutoFocus={(event) => event.preventDefault()}
+            className="w-[var(--radix-popover-trigger-width)] p-1.5"
+          >
+            <div className="flex flex-col gap-0.5">
+              {providers.map((provider) => {
+                const active = provider.id === currentProvider?.id
+                return (
+                  <HoverCard key={provider.id} openDelay={80} closeDelay={120}>
+                    <HoverCardTrigger asChild>
+                      <button
+                        type="button"
+                        className={cn(
+                          "flex h-8 w-full items-center gap-2 rounded-[8px] px-2 text-left text-xs outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40",
+                          active && "bg-muted/70"
+                        )}
+                      >
+                        <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
+                          {provider.icon || <Cpu className="size-3.5" />}
+                        </span>
+                        <span className="min-w-0 flex-1 truncate text-foreground">{provider.name}</span>
+                        <span className="shrink-0 font-mono text-[10.5px] tabular-nums text-muted-foreground">
+                          {provider.models.length}
+                        </span>
+                        <span className="flex size-3.5 shrink-0 items-center justify-center">
+                          {active && <Check className="size-3 text-primary" />}
+                        </span>
+                        <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent side="right" align="start" sideOffset={6} collisionPadding={8} className="w-56 p-1">
+                      <div className="max-h-56 overflow-y-auto">
+                        {provider.models.map((model) => {
+                          const selected = active && model.id === currentModel?.id
+                          return (
+                            <button
+                              key={model.id}
+                              type="button"
+                              onClick={() => choose(provider.id, model.id)}
+                              className={cn(
+                                "flex h-8 w-full items-center gap-2 rounded-[8px] px-2 text-left text-xs outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40",
+                                selected && "bg-muted/70"
+                              )}
+                            >
+                              <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
+                                {model.icon || <Cpu className="size-3.5" />}
+                              </span>
+                              <span className="min-w-0 flex-1 truncate text-foreground">{model.name}</span>
+                              {model.contextWindow ? (
+                                <span className="shrink-0 font-mono text-[10.5px] tabular-nums text-muted-foreground">
+                                  {formatWindow(model.contextWindow)}
+                                </span>
+                              ) : null}
+                              <span className="flex size-3.5 shrink-0 items-center justify-center">
+                                {selected && <Check className="size-3 text-primary" />}
+                              </span>
+                            </button>
+                          )
+                        })}
+                        {provider.models.length === 0 && (
+                          <p className="px-2 py-3 text-center text-[11px] text-muted-foreground">
+                            该供应商未保存模型
+                          </p>
+                        )}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                )
+              })}
+              {providers.length === 0 && (
+                <p className="px-2 py-2 text-center text-[11px] text-muted-foreground">还没有供应商</p>
+              )}
             </div>
-          </div>
 
-          <div className="max-h-64 overflow-y-auto">
-            {visible.map(({ provider, model }) => {
-              const selected = model.id === currentModel?.id && provider.id === currentProvider?.id
-              return (
+            {onOpenSettings && (
+              <>
+                <Separator className="my-1" />
                 <button
-                  key={`${provider.id}-${model.id}`}
                   type="button"
-                  onClick={() => choose(provider.id, model.id)}
-                  className={cn(
-                    "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left transition-colors outline-none hover:bg-muted focus-visible:bg-muted",
-                    selected && "bg-muted/60"
-                  )}
+                  onClick={() => {
+                    setModelOpen(false)
+                    onOpenSettings()
+                  }}
+                  className="flex h-8 w-full items-center gap-2 rounded-[8px] px-2 text-xs text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                 >
-                  <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
-                    {model.icon || provider.icon || <Cpu className="size-3.5" />}
-                  </span>
-                  <span
-                    className={cn(
-                      "min-w-0 flex-1 truncate text-xs",
-                      selected ? "font-medium text-foreground" : "text-foreground/90"
-                    )}
-                  >
-                    {model.name}
-                  </span>
-                  {model.contextWindow ? (
-                    <span className="shrink-0 font-mono text-[11px] tabular-nums text-muted-foreground">
-                      {formatWindow(model.contextWindow)}
-                    </span>
-                  ) : null}
-                  <span className="flex size-4 shrink-0 items-center justify-center">
-                    {selected && <Check className="size-3.5 text-primary" />}
-                  </span>
+                  <Settings2 className="size-3.5" />
+                  管理模型与密钥
+                  <Plus className="ml-auto size-3.5" />
                 </button>
-              )
-            })}
-            {visible.length === 0 && (
-              <p className="px-2 py-3 text-center text-[11px] text-muted-foreground">
-                {flatModels.length ? "没有匹配的模型" : "该供应商未保存模型"}
-              </p>
+              </>
             )}
-          </div>
+          </PopoverContent>
+        </Popover>
 
-          {reasoningEnabled && (
-            <>
-              <Separator className="my-1.5" />
-              <button
-                type="button"
-                aria-expanded={effortOpen}
-                onClick={() => setEffortOpen((value) => !value)}
-                className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs outline-none transition-colors hover:bg-muted focus-visible:bg-muted"
+        {reasoningEnabled && (
+          <Popover open={reasoningOpen} onOpenChange={setReasoningOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                disabled={disabled}
+                aria-label={`选择思考强度，当前 ${effortLabel}`}
+                aria-expanded={reasoningOpen}
+                className="h-8 items-center gap-1.5 px-2.5 font-normal leading-none text-muted-foreground"
               >
-                <span className="text-foreground">思考强度</span>
-                <span className="ml-auto text-[11px] text-muted-foreground">{effortLabel}</span>
+                <span className="shrink-0 self-center text-[11px] leading-none text-muted-foreground">思考</span>
+                <span className="inline-flex w-7 shrink-0 items-center justify-center self-center text-xs font-medium leading-none text-foreground">{effortLabel}</span>
                 <ChevronDown
                   className={cn(
-                    "size-3.5 shrink-0 text-muted-foreground transition-transform",
-                    effortOpen && "rotate-180"
+                    "size-3.5 shrink-0 transition-transform duration-150",
+                    reasoningOpen && "rotate-180"
                   )}
                 />
-              </button>
-              {effortOpen && (
-                <div className="px-2 pb-2 pt-1">
-                  <ReasoningEffort
-                    value={reasoningLevel}
-                    title={null}
-                    onReset={() =>
-                      onReasoningLevelChange?.(
-                        (REASONING_EFFORT_LEVELS.find((l) => l.value === "medium")?.value ??
-                          "medium") as ReasoningLevel
-                      )
-                    }
-                    onChange={(next) => onReasoningLevelChange?.(next as ReasoningLevel)}
-                  />
-                </div>
-              )}
-            </>
-          )}
-
-          {onOpenSettings && (
-            <>
-              <Separator className="my-1.5" />
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(false)
-                  onOpenSettings()
-                }}
-                className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:bg-muted"
-              >
-                <Settings2 className="size-3.5" />
-                管理模型与密钥
-                <Plus className="ml-auto size-3.5" />
-              </button>
-            </>
-          )}
-        </PopoverContent>
-      </Popover>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent
+              side="top"
+              align="end"
+              sideOffset={6}
+              collisionPadding={8}
+              avoidCollisions={false}
+              className="w-64 p-3"
+              aria-label="思考强度"
+            >
+              <ReasoningEffort
+                value={reasoningLevel}
+                title="思考强度"
+                subtitle={currentModel?.name}
+                onReset={() =>
+                  onReasoningLevelChange?.(
+                    (REASONING_EFFORT_LEVELS.find((level) => level.value === "medium")?.value ??
+                      "medium") as ReasoningLevel
+                  )
+                }
+                onChange={(next) => onReasoningLevelChange?.(next as ReasoningLevel)}
+              />
+            </PopoverContent>
+          </Popover>
+        )}
+      </ButtonGroup>
 
       {children}
     </div>

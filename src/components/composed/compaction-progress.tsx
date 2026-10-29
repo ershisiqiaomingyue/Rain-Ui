@@ -4,7 +4,6 @@ import * as React from "react"
 import { AlertCircle, Check, CircleDashed } from "lucide-react"
 
 import { Spinner } from "@/components/ui/spinner"
-import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 export type CompactionStatus = "running" | "completed" | "interrupted" | "failed"
@@ -15,8 +14,6 @@ export interface CompactionProgressProps {
   progress?: number | null
   detail?: React.ReactNode
   className?: string
-  /** pill = 窄胶囊（默认）；row = 时间线单行 */
-  variant?: "pill" | "row"
 }
 
 const LABELS: Record<CompactionStatus, string> = {
@@ -27,29 +24,27 @@ const LABELS: Record<CompactionStatus, string> = {
 }
 
 /**
- * 上下文压缩状态。窄胶囊宽度随内容收缩（不再一条拉满），
- * 进度用小轨道 + 百分比。
+ * 上下文压缩状态。
+ * 宽度统一（与通知卡同宽），多个状态从上往下依次排列。
  */
 export function CompactionProgress({
   status,
   progress,
   detail,
   className,
-  variant = "pill",
 }: CompactionProgressProps) {
-  const row = variant === "row"
   const indeterminate = status === "running" && progress == null
   const value = status === "completed" ? 100 : Math.min(100, Math.max(0, progress ?? 0))
   const percentText = indeterminate ? "…" : `${Math.round(value)}%`
 
   return (
     <div
+      data-slot="compaction-progress"
       className={cn(
-        "inline-flex max-w-full items-center gap-2 rounded-full border px-2.5 py-1 text-xs",
-        status === "failed" && "border-destructive/30 bg-destructive/10 text-destructive",
-        status === "interrupted" && "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
-        (status === "running" || status === "completed") && "border-border/70 bg-card text-foreground",
-        row && "rounded-none border-0 bg-transparent px-0",
+        "flex h-8 w-full items-center gap-2 rounded-[10px] border border-border/70 bg-card px-2.5 text-xs",
+        status === "failed" && "border-destructive/40 bg-destructive/8 text-destructive",
+        status === "interrupted" &&
+          "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
         className
       )}
     >
@@ -59,7 +54,7 @@ export function CompactionProgress({
           status === "completed" && "bg-primary text-primary-foreground",
           status === "running" && "bg-primary/12 text-primary",
           status === "interrupted" && "bg-amber-500/20 text-amber-600 dark:text-amber-400",
-          status === "failed" && "bg-destructive/20 text-destructive"
+          status === "failed" && "bg-destructive/15 text-destructive"
         )}
       >
         {status === "running" && <Spinner size="xs" className="size-3" />}
@@ -71,7 +66,7 @@ export function CompactionProgress({
       <span className="shrink-0 font-medium">{LABELS[status]}</span>
 
       {(status === "running" || status === "completed") && (
-        <span className="flex w-16 shrink-0 items-center gap-1.5">
+        <span className="flex min-w-0 flex-1 items-center gap-1.5">
           <span
             className="h-1 flex-1 overflow-hidden rounded-full bg-muted"
             role="progressbar"
@@ -80,18 +75,23 @@ export function CompactionProgress({
             aria-valuenow={indeterminate ? undefined : Math.round(value)}
           >
             <span
-              className={cn("block h-full rounded-full bg-primary transition-all duration-300", indeterminate && "animate-pulse")}
+              className={cn(
+                "block h-full rounded-full bg-primary transition-all duration-300",
+                indeterminate && "animate-pulse"
+              )}
               style={{ width: indeterminate ? "40%" : `${value}%` }}
             />
           </span>
-          <span className="font-mono text-[10.5px] tabular-nums text-muted-foreground">{percentText}</span>
+          <span className="w-8 shrink-0 text-right font-mono text-[10.5px] tabular-nums text-muted-foreground">
+            {percentText}
+          </span>
         </span>
       )}
 
       {detail && (
-        <Badge variant="muted" className="h-5 shrink-0 truncate font-mono text-[10.5px]">
+        <span className="ml-auto shrink-0 truncate font-mono text-[10.5px] tabular-nums text-muted-foreground">
           {detail}
-        </Badge>
+        </span>
       )}
     </div>
   )

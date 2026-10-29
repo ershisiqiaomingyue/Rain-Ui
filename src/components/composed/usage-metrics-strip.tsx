@@ -1,11 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { Database, RefreshCw } from "lucide-react"
+import { Database } from "lucide-react"
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Separator } from "@/components/ui/separator"
+import { Spinner } from "@/components/ui/spinner"
 import { cn } from "@/lib/utils"
 
 export interface UsageMetric {
@@ -38,7 +39,7 @@ export interface UsageMetricsStripProps {
 /** 单条指标：有 detail 时包 Tooltip，可 hover 展开 */
 function Metric({ metric }: { metric: UsageMetric }) {
   const body = (
-    <span className="inline-flex items-baseline gap-1">
+    <>
       <span className="text-muted-foreground">{metric.label}</span>
       <b
         className={cn(
@@ -48,17 +49,16 @@ function Metric({ metric }: { metric: UsageMetric }) {
       >
         {metric.value ?? "—"}
       </b>
-    </span>
+    </>
   )
+  const hitArea = "inline-flex min-h-9 cursor-default items-center gap-1 rounded-[10px] px-2.5 transition-colors hover:bg-muted/70"
 
-  if (!metric.detail) return body
+  if (!metric.detail) return <span className={hitArea}>{body}</span>
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <span className="cursor-default rounded-sm px-0.5 transition-colors hover:bg-muted/70">
-          {body}
-        </span>
+        <span className={hitArea}>{body}</span>
       </TooltipTrigger>
       <TooltipContent side="top" className="max-w-72 whitespace-pre-line leading-relaxed">
         {metric.detail}
@@ -91,7 +91,7 @@ export function UsageMetricsStrip({
           <button
             type="button"
             aria-label="Token 用量明细"
-            className="inline-flex items-center gap-1 rounded-sm px-0.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40"
+            className="inline-flex min-h-9 items-center gap-1 rounded-[10px] px-2.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             <Database className="size-3 text-muted-foreground" />
             <b className="font-medium tabular-nums text-foreground">{tokenUsage.total}</b>
@@ -144,11 +144,11 @@ export function UsageMetricsStrip({
         onClick={onRefreshBalance}
         disabled={balance.refreshing}
         title={balance.detail}
-        className="inline-flex items-baseline gap-1 rounded-sm px-0.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
+        className="inline-flex min-h-9 items-center gap-1 rounded-[10px] px-2.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
       >
         <span className="text-muted-foreground">{balance.label}</span>
         <b className="font-medium tabular-nums text-foreground">{balance.value ?? "—"}</b>
-        {balance.refreshing && <RefreshCw className="size-2.5 animate-spin text-muted-foreground" />}
+        {balance.refreshing && <Spinner size="xs" className="size-2.5 text-muted-foreground" />}
       </button>
     )
   }
@@ -157,7 +157,7 @@ export function UsageMetricsStrip({
     <TooltipProvider delayDuration={120}>
       <div
         className={cn(
-          "flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[11px] leading-none",
+          "flex flex-wrap items-center gap-x-1 gap-y-1 text-[11px] leading-none",
           className
         )}
         aria-label="会话用量"

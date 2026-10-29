@@ -6,9 +6,7 @@ import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 
 /*
- * 按钮组：与 Button default（h-8 / rounded-[10px] / text-xs）同一度量。
- * 关键点：中间按钮只抹掉相邻侧圆角，首尾按钮必须保留外侧 10px 圆角，
- * 避免出现「直角按钮」。
+ * 按钮组与 Button default 使用同一度量。
  */
 const buttonGroupVariants = cva(
   "inline-flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10",
@@ -16,9 +14,9 @@ const buttonGroupVariants = cva(
     variants: {
       orientation: {
         horizontal:
-          "flex-row [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg",
+          "flex-row [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none",
         vertical:
-          "flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-lg",
+          "flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none",
       },
     },
     defaultVariants: {

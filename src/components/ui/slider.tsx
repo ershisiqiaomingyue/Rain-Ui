@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils"
 /**
  * Slider（基础组件）
  * -----------------------------------------------------------------------------
- * 原生 range 之上的一层受控滑块：轨道 6px、圆角全通、拇指 16px 圆形。
- * 高度与 Button default 对齐（h-8 命中区），视觉轨道居中。
+ * 原生 range 之上的一层受控滑块：32px 胶囊命中区、24px 內轨、24px 白色旋钮。
+ * 与 Button default 同高同圆角，以桌面应用的内嵌控制器形态呈现。
  */
 export interface SliderProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "type"> {
@@ -28,16 +28,16 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
       <div
         data-slot="slider"
         className={cn(
-          "relative flex h-8 w-full items-center select-none",
+          "relative flex h-8 w-full items-center rounded-full select-none",
           disabled && "opacity-50",
           className
         )}
       >
-        <div className="absolute inset-x-0 h-1.5 overflow-hidden rounded-full bg-muted">
+        <div className="absolute inset-x-0 h-6 overflow-hidden rounded-full bg-muted/90 ring-1 ring-inset ring-border/55">
           <div className="h-full rounded-full bg-primary transition-[width] duration-75" style={{ width: `${percent}%` }} />
         </div>
         <span
-          className="pointer-events-none absolute size-4 -translate-x-1/2 rounded-full border-2 border-primary bg-background shadow-xs"
+          className="pointer-events-none absolute size-5 -translate-x-1/2 rounded-full border border-black/5 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.22)] dark:border-white/15 dark:bg-zinc-100"
           style={{ left: `${percent}%` }}
         />
         <input

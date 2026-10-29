@@ -5,7 +5,7 @@ import { AlertCircle, Check } from "lucide-react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Spinner } from "@/components/ui/spinner"
+import { StepSpinner } from "@/components/ui/step-spinner"
 import { cn } from "@/lib/utils"
 
 export type TaskStatus = "done" | "running" | "pending" | "error"
@@ -43,8 +43,8 @@ function TaskMark({ status }: { status: TaskStatus }) {
   }
   if (status === "running") {
     return (
-      <span className="flex size-[18px] shrink-0 items-center justify-center rounded-full bg-primary/12 text-primary">
-        <Spinner size="xs" className="size-3" />
+      <span className="flex shrink-0 items-center justify-center">
+        <StepSpinner size={18} />
       </span>
     )
   }
@@ -71,8 +71,8 @@ export function TaskStatusRow({
   const done = tasks.filter((task) => task.status === "done").length
 
   return (
-    <Card className={cn("w-full rounded-xl", className)}>
-      <CardHeader className="flex-row items-center justify-between space-y-0 p-3">
+    <Card className={cn("w-full gap-0 rounded-xl border-border/70 bg-card/95 py-0 shadow-none", className)}>
+      <CardHeader className="flex-row items-center justify-between gap-2 p-2.5">
         <div className="min-w-0">
           <CardTitle className="text-xs font-semibold text-foreground">{title}</CardTitle>
           {description && (
@@ -83,17 +83,17 @@ export function TaskStatusRow({
           {done} / {tasks.length}
         </Badge>
       </CardHeader>
-      <CardContent className="space-y-1.5 p-3 pt-0">
+      <CardContent className="flex flex-col gap-1 p-2.5 pt-0">
         {tasks.map((task) => (
           <Card
             key={task.id}
             onClick={() => onToggleStatus?.(task.id)}
             className={cn(
-              "rounded-[10px] border-border/70 shadow-none transition-colors",
-              onToggleStatus && "cursor-pointer hover:bg-muted/50"
+              "rounded-[10px] border-border bg-background/80 shadow-none transition-colors",
+              onToggleStatus && "cursor-pointer hover:bg-muted/55"
             )}
           >
-            <CardContent className="flex items-center gap-2.5 p-2.5">
+            <CardContent className="flex items-center gap-2 px-2 py-1.5">
               <TaskMark status={task.status} />
               <span className="min-w-0 flex-1 truncate text-xs text-foreground">{task.title}</span>
               {task.chip && (

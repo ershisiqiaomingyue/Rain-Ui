@@ -125,10 +125,10 @@
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 214 32% 92%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 214 32% 92%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     /* 桌面级危险色：macOS 柔和红，不刺眼 */
@@ -198,10 +198,10 @@
     --secondary: 220 14% 17%;
     --secondary-foreground: 210 20% 96%;
 
-    --muted: 220 14% 17%;
+    --muted: 220 13% 23%;
     --muted-foreground: 217.9 10.6% 64.9%;
 
-    --accent: 220 14% 17%;
+    --accent: 220 13% 23%;
     --accent-foreground: 210 20% 96%;
 
     /* 优化后的暗黑柔和警示红：低饱和度、高辨识、不刺目 (#e06c75 质感) */
@@ -230,7 +230,7 @@
   --sidebar-foreground: hsl(222.2 47.4% 11.2%);
   --sidebar-primary: hsl(239 84% 67%);
   --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(210 40% 96.1%);
+  --sidebar-accent: hsl(214 32% 92%);
   --sidebar-accent-foreground: hsl(222.2 47.4% 11.2%);
   --sidebar-border: hsl(214.3 31.8% 91.4%);
   --sidebar-ring: hsl(215.4 16.3% 46.9%);
@@ -241,7 +241,7 @@
   --sidebar-foreground: hsl(210 20% 96%);
   --sidebar-primary: hsl(239 84% 67%);
   --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(220 14% 17%);
+  --sidebar-accent: hsl(220 13% 23%);
   --sidebar-accent-foreground: hsl(210 20% 96%);
   --sidebar-border: hsl(220 13% 18%);
   --sidebar-ring: hsl(217.9 10.6% 64.9%);

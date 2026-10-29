@@ -19,7 +19,7 @@ const InputGroup = React.forwardRef<
       ref={ref}
       data-slot="input-group"
       className={cn(
-        "group/input-group relative flex h-8 w-full min-w-0 items-center rounded-[10px] border border-input bg-background transition-[border-color,box-shadow] has-[>textarea]:h-auto has-[[data-slot=input-group-control]:focus-visible]:border-primary has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-primary/20 has-disabled:opacity-50",
+        "group/input-group relative flex h-8 w-full min-w-0 items-center rounded-[10px] border border-transparent bg-muted/45 transition-[border-color,background-color,box-shadow] hover:bg-muted/55 has-[>textarea]:h-auto has-[[data-slot=input-group-control]:focus-visible]:border-primary/40 has-[[data-slot=input-group-control]:focus-visible]:bg-background has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-primary/15 has-disabled:opacity-50",
         className
       )}
       {...props}

@@ -94,7 +94,6 @@ import {
   TaskStatusRow,
   TerminalRangeSlider,
   CompactionProgress,
-  PermissionRequestBar,
   UsageMetricsStrip,
   SegmentedControl,
   StatusBadge,
@@ -159,7 +158,6 @@ const NAV_ITEMS: NavItem[] = [
   { id: "task-status-row", title: "Task Status", label: "任务进度", group: "composed" },
   { id: "terminal-range-slider", title: "Range Slider", label: "设置拖动条", group: "composed" },
   { id: "compaction-progress", title: "Compaction", label: "上下文压缩", group: "composed" },
-  { id: "permission-request-bar", title: "Permission Bar", label: "工具授权", group: "composed" },
   { id: "usage-metrics-strip", title: "Usage Metrics", label: "会话用量", group: "composed" },
   { id: "segmented-control", title: "Segmented", label: "分段切换", group: "composed" },
   { id: "status-badge", title: "Status Badge", label: "状态徽章", group: "composed" },
@@ -213,7 +211,6 @@ export function App() {
     { id: "t4", title: "Sync framework-res.apk", chip: "12.4 MB", status: "pending" },
     { id: "t5", title: "Deploy to husky device", chip: "failed", status: "error" },
   ])
-  const [permissionInstruction, setPermissionInstructionState] = React.useState("")
   const [balanceRefreshing, setBalanceRefreshing] = React.useState(false)
   const [segmentedView, setSegmentedView] = React.useState<"conversation" | "terminal" | "files">("conversation")
   const [segmentedRange, setSegmentedRange] = React.useState<"day" | "week" | "month" | "all">("week")
@@ -247,6 +244,26 @@ export function App() {
       ],
     },
     {
+      id: "queue-single",
+      kind: "queue",
+      label: "追加消息",
+      summary: "把刚才的日志再整理一下",
+      details: [
+        { id: "q1", title: "把刚才的日志再整理一下" },
+      ],
+    },
+    {
+      id: "queue-multi",
+      kind: "queue",
+      label: "追加消息",
+      summary: "3 条消息等待发送",
+      count: 3,
+      details: [
+        { id: "q2", title: "补一张深色模式截图" },
+        { id: "q3", title: "检查压缩后的 CSS 有没有丢规则" },
+        { id: "q4", title: "最后再跑一次类型检查" },
+      ],
+    },    {
       id: "files",
       kind: "files",
       label: "文件改动",
@@ -550,7 +567,7 @@ export function App() {
             <div className="space-y-4">
               <p className="text-xs text-muted-foreground">
                 触发器与 Button default 完全同高（32px）、同圆角（10px）。只显示模型本身：模型图标 + 名称 + 200K + 思考强度，
-                供应商与协议不出现在触发器上。弹层宽度与未展开的 Select 一致，首行标题已删除，底部可直接调思考强度。
+                供应商与协议不出现在触发器上。模型弹层向上展开，思考强度使用独立的向上弹层，滑块与 Android-Tool 原版一致。
               </p>
               <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border/70 bg-muted/20 p-3">
                 <ModelProviderPicker
@@ -643,25 +660,6 @@ export function App() {
                 <CompactionProgress status="interrupted" />
                 <CompactionProgress status="failed" detail="429" />
               </div>
-            </div>
-          </Section>
-
-          {/* 组合组件 · 授权请求 */}
-          <Section id="permission-request-bar" title="Permission Bar" label="工具授权请求" count={0}>
-            <div className="max-w-2xl space-y-3">
-              <p className="text-xs text-muted-foreground">按钮全部使用 Button default（32px / 10px 圆角 / 12px）：</p>
-              <PermissionRequestBar
-                toolLabel="adb shell"
-                environmentLabel="Pixel 8 Pro · Android 15"
-                command="adb shell rm -rf /sdcard/Android/data/com.example.tmp"
-                question="该操作会永久删除设备上的缓存目录，无法恢复。"
-                expiresIn={52}
-                instruction={permissionInstruction}
-                onInstructionChange={setPermissionInstructionState}
-                onAllow={() => toast("已允许执行")}
-                onAlwaysAllow={() => toast("本会话内始终允许")}
-                onDeny={() => toast("已拒绝")}
-              />
             </div>
           </Section>
 

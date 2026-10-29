@@ -3,16 +3,15 @@
 import * as React from "react"
 import { RotateCcw } from "lucide-react"
 
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import "./reasoning-effort.css"
 
 /**
  * ReasoningEffort
  * -----------------------------------------------------------------------------
- * 思考强度档位滑块。源自 Android-Tool 的推理强度选择器（原生桌面质感）：
- * 渐变轨道 + 刻度点 + 圆形拖拽拇指 + 档位文字按钮。
- *
- * 档位数量不固定：2 ~ 6 档都可以，传几档就渲染几档（低 / 中 / 高 /
- * 极高 / 最高 …）。默认取 5 档，和产品里一致。
+ * 可插拔的思考强度选择器（2 ~ 6 档）。中间滑块完整迁移自 Android-Tool：
+ * 24px 内轨、刻度点、白色旋钮与主题色流光；下方档位文字保留 rain-ui 现有设计。
  */
 
 export interface ReasoningEffortOption {
@@ -30,7 +29,7 @@ export interface ReasoningEffortProps {
   title?: string | null
   /** 面板副标题，一般是模型名 */
   subtitle?: React.ReactNode
-  /** 展示「恢复默认」按钮，点击回到 defaultLevel */
+  /** 展示「恢复默认」按钮 */
   onReset?: () => void
   /** 说明文字，显示在底部 */
   footer?: React.ReactNode
@@ -57,69 +56,59 @@ export function ReasoningEffort({
   className,
   disabled = false,
 }: ReasoningEffortProps) {
-  const index = Math.max(
-    0,
-    options.findIndex((option) => option.value === value)
-  )
+  const found = options.findIndex((option) => option.value === value)
+  const index = found >= 0 ? found : 0
   const last = Math.max(1, options.length - 1)
-  const progress = index / last
   const current = options[index]
+  const progress = index / last
 
   return (
     <div
       data-slot="reasoning-effort"
-      className={cn("w-full select-none", className)}
+      className={cn("w-full select-none", disabled && "opacity-60", className)}
     >
-      {(title || subtitle || onReset) && (
-        <div className="relative mb-1 flex min-h-5 items-center gap-2 pr-7">
-          {title && (
-            <span className="text-[11px] font-medium text-foreground">
-              {title}
-            </span>
+      {(title || onReset) && (
+        <div className="flex h-7 items-center justify-between gap-2">
+          {title ? (
+            <span className="text-xs font-medium text-foreground">{title}</span>
+          ) : (
+            <span />
           )}
           {onReset && (
-            <button
+            <Button
               type="button"
+              variant="bare"
+              size="icon-xs"
               onClick={onReset}
               disabled={disabled}
               aria-label="恢复默认思考强度"
               title="恢复默认思考强度"
-              className="absolute right-0 top-0 flex size-5 items-center justify-center rounded-md text-muted-foreground transition-colors outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-50"
             >
-              <RotateCcw className="size-3" />
-            </button>
+              <RotateCcw />
+            </Button>
           )}
         </div>
       )}
 
       {subtitle && (
-        <div className="mb-2 truncate text-center text-[11px] text-muted-foreground">
+        <div className="truncate pt-0.5 text-center text-[11px] text-muted-foreground">
           {subtitle}
         </div>
       )}
 
-      {/* 轨道：渐变填充宽度 = 档位进度；刻度点均分；拇指跟随 */}
       <div
-        className="relative mx-0.5 h-8"
-        style={{ "--effort-progress": progress } as React.CSSProperties}
+        className="rain-reasoning-track mt-2"
+        data-minimum={index === 0 ? "true" : undefined}
+        style={{ "--rain-inference-progress": progress } as React.CSSProperties}
       >
-        <span className="pointer-events-none absolute inset-x-0 top-1 h-6 rounded-full bg-muted" />
-        <span
-          className="pointer-events-none absolute left-0 top-1 h-6 overflow-hidden rounded-full bg-gradient-to-r from-primary/55 to-primary transition-[width] duration-150 ease-out"
-          style={{ width: `calc(12px + (100% - 24px) * ${progress})` }}
-        />
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-3">
+        <span className="rain-reasoning-track-base" aria-hidden="true" />
+        <span className="rain-reasoning-track-fill" aria-hidden="true" />
+        <div className="rain-reasoning-ticks" aria-hidden="true">
           {options.map((option) => (
-            <i
-              key={option.value}
-              className="size-[3px] rounded-full bg-foreground/30"
-            />
+            <i key={option.value} />
           ))}
         </div>
-        <span
-          className="pointer-events-none absolute top-1 size-6 -translate-x-1/2 rounded-full border border-black/5 bg-background shadow-[0_1px_3px_rgba(0,0,0,0.16)] transition-[left] duration-150 ease-out"
-          style={{ left: `calc(12px + (100% - 24px) * ${progress})` }}
-        />
+        <span className="rain-reasoning-thumb" aria-hidden="true" />
         <input
           type="range"
           min={0}
@@ -133,35 +122,36 @@ export function ReasoningEffort({
             const next = options[Number(event.target.value)]
             if (next) onChange(next.value)
           }}
-          className="absolute inset-0 h-8 w-full cursor-grab appearance-none bg-transparent opacity-0 disabled:cursor-not-allowed"
         />
       </div>
 
-      <div className="mt-0.5 flex justify-between">
+      <div className="mt-1 flex items-center justify-between gap-0.5">
         {options.map((option) => {
           const active = option.value === value
           return (
-            <button
+            <Button
               key={option.value}
               type="button"
+              variant="bare"
+              size="xs"
               aria-pressed={active}
               disabled={disabled}
               onClick={() => onChange(option.value)}
               className={cn(
-                "min-w-7 px-0 py-0.5 text-[10px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-50",
+                "min-w-0 px-1.5",
                 active
-                  ? "font-semibold text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary/10 font-semibold text-primary hover:bg-primary/15 hover:text-primary"
+                  : "text-muted-foreground"
               )}
             >
               {option.label}
-            </button>
+            </Button>
           )
         })}
       </div>
 
       {footer && (
-        <div className="mt-2 text-[10.5px] leading-relaxed text-muted-foreground">
+        <div className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
           {footer}
         </div>
       )}
