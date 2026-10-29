@@ -132,6 +132,8 @@
   border: var(--popover-border);
   border-radius: var(--radius-overlay);
   box-shadow: var(--popover-shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   padding: 6px;
   display: none;
   overflow-x: hidden;

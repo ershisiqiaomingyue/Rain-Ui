@@ -21,7 +21,7 @@
 }
 
 .btn:active:not(:disabled) {
-  transform: translateY(1px);
+  transform: translateY(0.5px);
 }
 
 .btn:disabled {
@@ -95,31 +95,32 @@ html[data-theme] .btn:not(.btn-icon-only) > * {
   background: var(--btn-primary-bg);
   color: var(--btn-primary-text);
   border-color: transparent;
-  box-shadow: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), var(--btn-primary-rim);
   font-weight: 550;
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--btn-primary-hover);
-  box-shadow: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), var(--btn-primary-rim);
 }
 
 .btn-primary:active:not(:disabled) {
   background: var(--btn-primary-hover);
-  transform: none;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.14), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  transform: translateY(0.5px);
 }
 
 .btn-secondary {
   background: var(--btn-secondary-bg);
   color: var(--btn-secondary-text);
   border-color: var(--btn-secondary-border);
-  box-shadow: none;
+  box-shadow: var(--btn-secondary-shadow, 0 1px 2px rgba(0, 0, 0, 0.05));
 }
 
 .btn-secondary:hover:not(:disabled) {
   background: var(--btn-secondary-hover);
   border-color: var(--border-hover);
-  box-shadow: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
 }
 
 /* aria-pressed="true" 是「已选中」的无样式语义，按钮必须自己把它画出来，
