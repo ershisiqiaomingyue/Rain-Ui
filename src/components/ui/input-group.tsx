@@ -5,33 +5,39 @@ export function InputGroup({
   className,
   lead,
   tail,
+  prefix,
+  suffix,
   children,
   ...props
 }: {
   className?: string
   lead?: React.ReactNode
   tail?: React.ReactNode
+  prefix?: React.ReactNode
+  suffix?: React.ReactNode
   children: React.ReactNode
 } & React.HTMLAttributes<HTMLDivElement>) {
+  const left = lead || prefix
+  const right = tail || suffix
   return (
     <div
       className={cn(
-        "relative flex items-center w-full rounded-md shadow-sm",
+        "relative flex items-center w-full rounded-md shadow-xs",
         className
       )}
       {...props}
     >
-      {lead && (
-        <div className="absolute left-3 flex items-center pointer-events-none text-muted-foreground z-10">
-          {lead}
+      {left && (
+        <div className="absolute left-2.5 flex items-center pointer-events-none text-muted-foreground z-10 [&_svg]:size-3.5">
+          {left}
         </div>
       )}
-      <div className={cn("w-full", lead && "[&>input]:pl-9", tail && "[&>input]:pr-9")}>
+      <div className={cn("w-full", left && "[&>input]:pl-8", right && "[&>input]:pr-8")}>
         {children}
       </div>
-      {tail && (
-        <div className="absolute right-3 flex items-center text-muted-foreground z-10">
-          {tail}
+      {right && (
+        <div className="absolute right-2.5 flex items-center text-muted-foreground z-10 [&_svg]:size-3.5">
+          {right}
         </div>
       )}
     </div>

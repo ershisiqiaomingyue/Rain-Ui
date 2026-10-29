@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -24,21 +26,42 @@ export interface ComboboxOption {
 export interface ComboboxProps {
   options: ComboboxOption[]
   value?: string
+  defaultValue?: string
   onChange?: (value: string) => void
   placeholder?: string
+  searchPlaceholder?: string
   emptyText?: string
   className?: string
+  disabled?: boolean
 }
 
 export function Combobox({
   options = [],
-  value,
+  value: controlledValue,
+  defaultValue = "",
   onChange,
-  placeholder = "请选择...",
-  emptyText = "未找到对应条目",
+  placeholder = "Select an option...",
+  searchPlaceholder = "Search...",
+  emptyText = "No results found.",
   className,
+  disabled = false,
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
+  const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue)
+
+  const isControlled = controlledValue !== undefined
+  const currentValue = isControlled ? controlledValue : uncontrolledValue
+
+  const selectedOption = options.find((opt) => opt.value === currentValue)
+
+  const handleSelect = (selectedValue: string) => {
+    const nextValue = selectedValue === currentValue ? "" : selectedValue
+    if (!isControlled) {
+      setUncontrolledValue(nextValue)
+    }
+    onChange?.(nextValue)
+    setOpen(false)
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -47,38 +70,39 @@ export function Combobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn("w-full justify-between font-normal bg-background/80 backdrop-blur-sm border-border/80", className)}
+          disabled={disabled}
+          className={cn("w-[220px] justify-between font-normal", className)}
         >
-          {value
-            ? options.find((option) => option.value === value)?.label
-            : placeholder}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <span className="truncate">
+            {selectedOption ? selectedOption.label : placeholder}
+          </span>
+          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[--radix-popover-trigger-width] p-0 shadow-xl border-border/60">
+      <PopoverContent className="w-[220px] p-0" align="start">
         <Command>
-          <CommandInput placeholder={placeholder} />
+          <CommandInput placeholder={searchPlaceholder} className="h-8" />
           <CommandList>
             <CommandEmpty>{emptyText}</CommandEmpty>
             <CommandGroup>
-              {options.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  value={option.value}
-                  onSelect={(currentValue) => {
-                    onChange?.(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4 text-primary",
-                      value === option.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {option.label}
-                </CommandItem>
-              ))}
+              {options.map((option) => {
+                const isSelected = currentValue === option.value
+                return (
+                  <CommandItem
+                    key={option.value}
+                    value={option.label}
+                    onSelect={() => handleSelect(option.value)}
+                  >
+                    <span>{option.label}</span>
+                    <Check
+                      className={cn(
+                        "ml-auto size-4",
+                        isSelected ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                )
+              })}
             </CommandGroup>
           </CommandList>
         </Command>

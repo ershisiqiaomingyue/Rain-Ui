@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -21,13 +22,13 @@ const buttonGroupVariants = cva(
   }
 )
 
-function ButtonGroup({
-  className,
-  orientation,
-  ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof buttonGroupVariants>) {
+const ButtonGroup = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & VariantProps<typeof buttonGroupVariants>
+>(({ className, orientation, ...props }, ref) => {
   return (
     <div
+      ref={ref}
       role="group"
       data-slot="button-group"
       data-orientation={orientation}
@@ -35,19 +36,20 @@ function ButtonGroup({
       {...props}
     />
   )
-}
+})
+ButtonGroup.displayName = "ButtonGroup"
 
-function ButtonGroupText({
-  className,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"div"> & {
-  asChild?: boolean
-}) {
+const ButtonGroupText = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & {
+    asChild?: boolean
+  }
+>(({ className, asChild = false, ...props }, ref) => {
   const Comp = asChild ? Slot : "div"
 
   return (
     <Comp
+      ref={ref}
       className={cn(
         "bg-muted gap-2 rounded-lg border px-2.5 text-sm font-medium [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none",
         className
@@ -55,15 +57,16 @@ function ButtonGroupText({
       {...props}
     />
   )
-}
+})
+ButtonGroupText.displayName = "ButtonGroupText"
 
-function ButtonGroupSeparator({
-  className,
-  orientation = "vertical",
-  ...props
-}: React.ComponentProps<typeof Separator>) {
+const ButtonGroupSeparator = React.forwardRef<
+  React.ElementRef<typeof Separator>,
+  React.ComponentProps<typeof Separator>
+>(({ className, orientation = "vertical", ...props }, ref) => {
   return (
     <Separator
+      ref={ref}
       data-slot="button-group-separator"
       orientation={orientation}
       className={cn(
@@ -73,7 +76,8 @@ function ButtonGroupSeparator({
       {...props}
     />
   )
-}
+})
+ButtonGroupSeparator.displayName = "ButtonGroupSeparator"
 
 export {
   ButtonGroup,

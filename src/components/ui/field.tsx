@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label"
 export function Field({
   label,
   description,
+  hint,
   error,
   required,
   className,
@@ -12,11 +13,13 @@ export function Field({
 }: {
   label?: string
   description?: string
+  hint?: string
   error?: string
   required?: boolean
   className?: string
   children: React.ReactNode
 }) {
+  const desc = description || hint
   return (
     <div className={cn("flex flex-col gap-1.5 w-full", className)}>
       {label && (
@@ -26,8 +29,8 @@ export function Field({
         </Label>
       )}
       {children}
-      {description && !error && (
-        <p className="text-[11.5px] text-muted-foreground leading-normal">{description}</p>
+      {desc && !error && (
+        <p className="text-[11.5px] text-muted-foreground leading-normal">{desc}</p>
       )}
       {error && (
         <p className="text-[11.5px] font-medium text-destructive leading-normal">{error}</p>
