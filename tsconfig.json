@@ -42,5 +42,11 @@
     "demo",
     "vite.config.ts",
     "env.d.ts"
+  ],
+  "exclude": [
+    "demo/spec-*.tsx",
+    "node_modules",
+    "dist",
+    "dist-demo"
   ]
 }

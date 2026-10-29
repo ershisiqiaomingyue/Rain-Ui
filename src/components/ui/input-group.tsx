@@ -1,45 +1,99 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-export function InputGroup({
-  className,
-  lead,
-  tail,
-  prefix,
-  suffix,
-  children,
-  ...props
-}: {
-  className?: string
-  lead?: React.ReactNode
-  tail?: React.ReactNode
-  prefix?: React.ReactNode
-  suffix?: React.ReactNode
-  children: React.ReactNode
-} & React.HTMLAttributes<HTMLDivElement>) {
+const InputGroup = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & {
+    lead?: React.ReactNode
+    tail?: React.ReactNode
+    prefix?: React.ReactNode
+    suffix?: React.ReactNode
+  }
+>(({ className, lead, tail, prefix, suffix, children, ...props }, ref) => {
   const left = lead || prefix
   const right = tail || suffix
+
   return (
     <div
+      ref={ref}
+      data-slot="input-group"
       className={cn(
-        "relative flex items-center w-full rounded-md shadow-xs",
+        "group/input-group relative flex items-center w-full rounded-lg border border-input bg-background transition-[border-color,background-color] focus-within:border-primary focus-within:ring-0",
         className
       )}
       {...props}
     >
       {left && (
-        <div className="absolute left-2.5 flex items-center pointer-events-none text-muted-foreground z-10 [&_svg]:size-3.5">
+        <div className="flex shrink-0 items-center pl-2.5 pr-1 text-muted-foreground [&_svg]:size-3.5 select-none pointer-events-none">
           {left}
         </div>
       )}
-      <div className={cn("w-full", left && "[&>input]:pl-8", right && "[&>input]:pr-8")}>
-        {children}
-      </div>
+      {children}
       {right && (
-        <div className="absolute right-2.5 flex items-center text-muted-foreground z-10 [&_svg]:size-3.5">
+        <div className="flex shrink-0 items-center pr-2.5 pl-1 text-muted-foreground [&_svg]:size-3.5 select-none">
           {right}
         </div>
       )}
     </div>
   )
-}
+})
+InputGroup.displayName = "InputGroup"
+
+const InputGroupInput = React.forwardRef<
+  HTMLInputElement,
+  React.ComponentProps<"input">
+>(({ className, ...props }, ref) => {
+  return (
+    <input
+      ref={ref}
+      data-slot="input-group-input"
+      className={cn(
+        "flex h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2.5 py-1 text-xs text-foreground placeholder:text-muted-foreground/60 shadow-none outline-none ring-0 focus:outline-none focus:ring-0 focus:border-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:border-0 disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+      {...props}
+    />
+  )
+})
+InputGroupInput.displayName = "InputGroupInput"
+
+const InputGroupTextarea = React.forwardRef<
+  HTMLTextAreaElement,
+  React.ComponentProps<"textarea">
+>(({ className, ...props }, ref) => {
+  return (
+    <textarea
+      ref={ref}
+      data-slot="input-group-textarea"
+      className={cn(
+        "flex min-h-[60px] w-full min-w-0 flex-1 resize-none border-0 bg-transparent px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/60 shadow-none outline-none ring-0 focus:outline-none focus:ring-0 focus:border-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:border-0 disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+      {...props}
+    />
+  )
+})
+InputGroupTextarea.displayName = "InputGroupTextarea"
+
+const InputGroupAddon = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & { align?: "start" | "end" }
+>(({ className, align = "end", children, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      data-slot="input-group-addon"
+      className={cn(
+        "flex items-center gap-1 text-xs text-muted-foreground",
+        align === "start" ? "pl-2.5 pr-1" : "pr-2 pl-1",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+})
+InputGroupAddon.displayName = "InputGroupAddon"
+
+export { InputGroup, InputGroupInput, InputGroupTextarea, InputGroupAddon }
