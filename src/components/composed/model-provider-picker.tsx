@@ -85,7 +85,7 @@ export function ModelProviderPicker({
             variant="outline"
             size="sm"
             disabled={disabled}
-            className="h-7 gap-1.5 px-2.5 rounded-lg border-border/80 bg-background/80 hover:bg-muted text-xs font-normal"
+            className="border-border/80 bg-background/80 hover:bg-muted font-normal"
           >
             <div className="flex items-center gap-1.5">
               {currentProvider?.icon || <Cpu className="size-3.5 text-primary" />}
@@ -107,7 +107,7 @@ export function ModelProviderPicker({
         <DropdownMenuContent
           align="start"
           sideOffset={6}
-          className="w-56 p-1 rounded-xl shadow-lg border-border/80"
+          className="w-56 p-1 rounded-lg shadow-lg border-border/80"
         >
           <DropdownMenuLabel className="text-[11px] font-semibold text-muted-foreground px-2 py-1">
             切换 AI 服务商与模型
@@ -126,7 +126,7 @@ export function ModelProviderPicker({
                   {isCurrentP && <span className="size-1.5 rounded-full bg-primary mr-1" />}
                 </DropdownMenuSubTrigger>
 
-                <DropdownMenuSubContent className="w-52 p-1 rounded-xl shadow-lg border-border/80">
+                <DropdownMenuSubContent className="w-52 p-1 rounded-lg shadow-lg border-border/80">
                   <DropdownMenuLabel className="text-[11px] text-muted-foreground px-2 py-1">
                     {p.name} 模型库
                   </DropdownMenuLabel>
@@ -181,14 +181,14 @@ export function ModelProviderPicker({
             <Button
               variant="ghost"
               size="sm"
-              className="h-7 px-2 gap-1 rounded-lg text-xs text-muted-foreground hover:text-foreground"
+              className="h-7 px-2 gap-1 text-muted-foreground hover:text-foreground"
               title="设置思考推理深度"
             >
               <Sparkles className="size-3 text-amber-500" />
               <span className="text-[11px] capitalize">{reasoningLevel}</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40 p-1 rounded-xl border-border/80">
+          <DropdownMenuContent align="end" className="w-40 p-1 rounded-lg border-border/80">
             <DropdownMenuLabel className="text-[11px] text-muted-foreground px-2 py-1">
               思考推理深度
             </DropdownMenuLabel>

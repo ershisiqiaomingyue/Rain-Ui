@@ -1085,7 +1085,7 @@ export function App() {
           </Section>
           {/* 16. Item */}
           <Section id="item" title="Item" label="列表项 (复合组件规范 1:1)" count={25}>
-            <div className="flex w-full max-w-xs flex-col gap-3 [--radius:1rem]">
+            <div className="flex w-full max-w-xs flex-col gap-3">
               <Item variant="muted">
                 <ItemMedia>
                   <Spinner size="sm" />
@@ -1162,25 +1162,25 @@ export function App() {
             <Pagination className="justify-start">
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationPrevious href="#" size="sm" />
+                  <PaginationPrevious href="#" />
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationLink href="#" isActive size="sm">1</PaginationLink>
+                  <PaginationLink href="#" isActive>1</PaginationLink>
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationLink href="#" size="sm">2</PaginationLink>
+                  <PaginationLink href="#">2</PaginationLink>
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationLink href="#" size="sm">3</PaginationLink>
+                  <PaginationLink href="#">3</PaginationLink>
                 </PaginationItem>
                 <PaginationItem>
                   <PaginationEllipsis />
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationLink href="#" size="sm">10</PaginationLink>
+                  <PaginationLink href="#">10</PaginationLink>
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationNext href="#" size="sm" />
+                  <PaginationNext href="#" />
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
@@ -1513,20 +1513,20 @@ export function App() {
           <Section id="tabs" title="Tabs" label="分段选项卡 (Apple 胶囊滑块与边框/内容层次)" count={41}>
             <div className="space-y-4 max-w-lg">
               <Tabs defaultValue="account" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 h-8 bg-muted/60 p-1 rounded-lg border border-border/40">
-                  <TabsTrigger value="account" className="text-xs rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs font-medium">账户信息</TabsTrigger>
-                  <TabsTrigger value="password" className="text-xs rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs font-medium">安全密码</TabsTrigger>
-                  <TabsTrigger value="notifications" className="text-xs rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs font-medium">通知推送</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="account">账户信息</TabsTrigger>
+                  <TabsTrigger value="password">安全密码</TabsTrigger>
+                  <TabsTrigger value="notifications">通知推送</TabsTrigger>
                 </TabsList>
-                <TabsContent value="account" className="text-xs text-muted-foreground p-3.5 border border-border/60 rounded-xl bg-card shadow-xs mt-2.5">
+                <TabsContent value="account" className="text-xs text-muted-foreground p-3.5 border border-border/60 rounded-[10px] bg-card shadow-xs mt-2.5">
                   <p className="font-medium text-foreground mb-1">个人账户管理</p>
                   <p className="leading-relaxed">支持随时更改您的公开显示名称、个人头像以及团队绑定的主电子邮箱。</p>
                 </TabsContent>
-                <TabsContent value="password" className="text-xs text-muted-foreground p-3.5 border border-border/60 rounded-xl bg-card shadow-xs mt-2.5">
+                <TabsContent value="password" className="text-xs text-muted-foreground p-3.5 border border-border/60 rounded-[10px] bg-card shadow-xs mt-2.5">
                   <p className="font-medium text-foreground mb-1">修改密码与两步验证</p>
                   <p className="leading-relaxed">定期轮换您的密码，并开启 Apple Passkey 或硬件安全密钥保护。</p>
                 </TabsContent>
-                <TabsContent value="notifications" className="text-xs text-muted-foreground p-3.5 border border-border/60 rounded-xl bg-card shadow-xs mt-2.5">
+                <TabsContent value="notifications" className="text-xs text-muted-foreground p-3.5 border border-border/60 rounded-[10px] bg-card shadow-xs mt-2.5">
                   <p className="font-medium text-foreground mb-1">通知接收偏好</p>
                   <p className="leading-relaxed">可设置是否接收每周项目汇总邮件，或仅在被 @ 提及时代发重要通知。</p>
                 </TabsContent>

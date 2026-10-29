@@ -6,19 +6,21 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+/* Toggle 复用 Button 度量：h-8 / rounded-[10px] / text-xs */
 const toggleVariants = cva(
-  "inline-flex items-center justify-center rounded-lg text-xs font-medium transition-all duration-100 ease-out hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 active:scale-[0.98] active:translate-y-[1px] disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-secondary data-[state=on]:text-secondary-foreground data-[state=on]:shadow-xs leading-none select-none",
+  "inline-flex items-center justify-center gap-1.5 rounded-[10px] text-xs font-medium whitespace-nowrap leading-none transition-all duration-100 ease-out outline-none select-none hover:bg-muted hover:text-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 active:scale-[0.98] active:translate-y-[1px] disabled:pointer-events-none disabled:opacity-50 aria-pressed:bg-muted data-[state=on]:bg-muted data-[state=on]:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         default: "bg-transparent",
-        outline:
-          "border border-border bg-transparent shadow-xs hover:bg-muted hover:text-foreground data-[state=on]:border-transparent",
+        outline: "border border-input bg-transparent shadow-xs hover:bg-muted",
       },
       size: {
-        default: "h-8 px-2.5 min-w-8 text-xs rounded-lg gap-1.5",
-        sm: "h-7 px-2 min-w-7 text-xs rounded-md gap-1",
-        lg: "h-9 px-3 min-w-9 text-sm rounded-lg gap-2",
+        default: "h-8 min-w-8 px-2.5",
+        sm: "h-7 min-w-7 px-2 [&_svg:not([class*='size-'])]:size-3.5",
+        lg: "h-9 min-w-9 px-3 text-sm",
+        icon: "size-8",
+        "icon-sm": "size-7",
       },
     },
     defaultVariants: {
@@ -35,11 +37,12 @@ const Toggle = React.forwardRef<
 >(({ className, variant, size, ...props }, ref) => (
   <TogglePrimitive.Root
     ref={ref}
+    data-slot="toggle"
+    data-size={size}
     className={cn(toggleVariants({ variant, size, className }))}
     {...props}
   />
 ))
-
 Toggle.displayName = TogglePrimitive.Root.displayName
 
 export { Toggle, toggleVariants }

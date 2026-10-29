@@ -5,15 +5,20 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 
+/*
+ * 按钮组：与 Button default（h-8 / rounded-[10px] / text-xs）同一度量。
+ * 关键点：中间按钮只抹掉相邻侧圆角，首尾按钮必须保留外侧 10px 圆角，
+ * 避免出现「直角按钮」。
+ */
 const buttonGroupVariants = cva(
-  "inline-flex items-center",
+  "inline-flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10",
   {
     variants: {
       orientation: {
         horizontal:
-          "flex-row [&>[data-slot=button-group]]:mr-2 [&>[data-slot=button-group]:last-child]:mr-0 [&>button:not(:first-child)]:rounded-l-none [&>button:not(:first-child)]:border-l-0 [&>button:not(:last-child)]:rounded-r-none [&>*:not(:first-child):not([data-slot=button-group])]:rounded-l-none [&>*:not(:first-child):not([data-slot=button-group])]:border-l-0 [&>*:not(:last-child):not([data-slot=button-group])]:rounded-r-none",
+          "flex-row [&>*:not(:first-child)]:rounded-l-none [&>*:not(:first-child)]:border-l-0 [&>*:not(:last-child)]:rounded-r-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-r-lg",
         vertical:
-          "flex-col [&>button:not(:first-child)]:rounded-t-none [&>button:not(:first-child)]:border-t-0 [&>button:not(:last-child)]:rounded-b-none",
+          "flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:first-child)]:border-t-0 [&>*:not(:last-child)]:rounded-b-none [&>[data-slot]:not(:has(~[data-slot]))]:rounded-b-lg",
       },
     },
     defaultVariants: {
@@ -51,7 +56,7 @@ const ButtonGroupText = React.forwardRef<
     <Comp
       ref={ref}
       className={cn(
-        "bg-muted gap-2 rounded-lg border px-2.5 text-xs font-medium [&_svg:not([class*='size-'])]:size-4 flex items-center [&_svg]:pointer-events-none",
+        "flex h-8 items-center gap-2 rounded-[10px] border bg-muted px-3 text-xs font-medium [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none",
         className
       )}
       {...props}

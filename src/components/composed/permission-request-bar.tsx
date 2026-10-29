@@ -75,18 +75,18 @@ export function PermissionRequestBar({
           value={instruction}
           onChange={(e) => onInstructionChange(e.target.value)}
           placeholder="可选：补充说明给 Agent（例如：只允许读取，不要删除）"
-          className="h-7 text-xs rounded-md"
+          className=""
         />
       )}
 
       <div className="flex items-center justify-end gap-2">
-        <Button variant="ghost" size="sm" disabled={busy} onClick={onDeny} className="gap-1.5 rounded-md">
+        <Button variant="ghost" size="sm" disabled={busy} onClick={onDeny} className="gap-1.5">
           <ShieldX className="size-3.5" /> 拒绝
         </Button>
-        <Button variant="outline" size="sm" disabled={busy} onClick={onAlwaysAllow} className="gap-1.5 rounded-md">
+        <Button variant="outline" size="sm" disabled={busy} onClick={onAlwaysAllow} className="gap-1.5">
           <ShieldCheck className="size-3.5" /> 本会话始终允许
         </Button>
-        <Button size="sm" disabled={busy} onClick={onAllow} className="gap-1.5 rounded-md">
+        <Button size="sm" disabled={busy} onClick={onAllow} className="gap-1.5">
           <ShieldCheck className="size-3.5" /> 允许执行
         </Button>
       </div>

@@ -1,6 +1,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
+/* 与 Input / Button 同一度量：h-8 / rounded-[10px] / text-xs */
 const InputGroup = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
@@ -18,7 +19,7 @@ const InputGroup = React.forwardRef<
       ref={ref}
       data-slot="input-group"
       className={cn(
-        "group/input-group relative flex items-center w-full rounded-lg border border-input bg-background transition-[border-color,background-color] focus-within:border-primary focus-within:ring-0",
+        "group/input-group relative flex h-8 w-full min-w-0 items-center rounded-[10px] border border-input bg-background transition-[border-color,box-shadow] has-[>textarea]:h-auto has-[[data-slot=input-group-control]:focus-visible]:border-primary has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-primary/20 has-disabled:opacity-50",
         className
       )}
       {...props}
@@ -46,9 +47,9 @@ const InputGroupInput = React.forwardRef<
   return (
     <input
       ref={ref}
-      data-slot="input-group-input"
+      data-slot="input-group-control"
       className={cn(
-        "flex h-8 w-full min-w-0 flex-1 border-0 bg-transparent px-2.5 py-1 text-xs text-foreground placeholder:text-muted-foreground/60 shadow-none outline-none ring-0 focus:outline-none focus:ring-0 focus:border-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:border-0 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-full w-full min-w-0 flex-1 rounded-none border-0 bg-transparent px-2.5 py-1 text-xs text-foreground placeholder:text-muted-foreground/60 shadow-none outline-none ring-0 focus:outline-none focus:ring-0 focus:border-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:border-0 disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
@@ -64,9 +65,9 @@ const InputGroupTextarea = React.forwardRef<
   return (
     <textarea
       ref={ref}
-      data-slot="input-group-textarea"
+      data-slot="input-group-control"
       className={cn(
-        "flex min-h-[60px] w-full min-w-0 flex-1 resize-none border-0 bg-transparent px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/60 shadow-none outline-none ring-0 focus:outline-none focus:ring-0 focus:border-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:border-0 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex min-h-[60px] w-full min-w-0 flex-1 resize-none rounded-none border-0 bg-transparent px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/60 shadow-none outline-none ring-0 focus:outline-none focus:ring-0 focus:border-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:border-0 disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
@@ -84,8 +85,8 @@ const InputGroupAddon = React.forwardRef<
       ref={ref}
       data-slot="input-group-addon"
       className={cn(
-        "flex items-center gap-1 text-xs text-muted-foreground",
-        align === "start" ? "pl-2.5 pr-1" : "pr-2 pl-1",
+        "flex shrink-0 items-center gap-1 text-xs text-muted-foreground",
+        align === "start" ? "pl-2.5 pr-1" : "pr-2.5 pl-1",
         className
       )}
       {...props}

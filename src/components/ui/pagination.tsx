@@ -2,12 +2,13 @@ import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { ButtonProps, buttonVariants } from "@/components/ui/button"
+import { Button, ButtonProps } from "@/components/ui/button"
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
     role="navigation"
     aria-label="pagination"
+    data-slot="pagination"
     className={cn("mx-auto flex w-full justify-center", className)}
     {...props}
   />
@@ -20,7 +21,8 @@ const PaginationContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={cn("flex flex-row items-center gap-1.5", className)}
+    data-slot="pagination-content"
+    className={cn("flex flex-row items-center gap-1", className)}
     {...props}
   />
 ))
@@ -30,10 +32,12 @@ const PaginationItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<"li">
 >(({ className, ...props }, ref) => (
-  <li ref={ref} className={cn("", className)} {...props} />
+  <li ref={ref} data-slot="pagination-item" className={cn("", className)} {...props} />
 ))
 PaginationItem.displayName = "PaginationItem"
 
+/* 直接复用 Button（asChild），保证高度 / 圆角 / 字号与 default 完全一致；
+   用 asChild 是为了同时支持 <a href> 与 <button> 两种语义。 */
 type PaginationLinkProps = {
   isActive?: boolean
 } & Pick<ButtonProps, "size"> &
@@ -42,22 +46,19 @@ type PaginationLinkProps = {
 const PaginationLink = ({
   className,
   isActive,
-  size = "sm",
+  size = "icon",
   ...props
 }: PaginationLinkProps) => (
-  <a
-    aria-current={isActive ? "page" : undefined}
-    className={cn(
-      buttonVariants({
-        variant: isActive ? "outline" : "ghost",
-        size,
-      }),
-      "min-w-7 h-7 px-2.5 rounded-lg text-xs font-medium cursor-pointer transition-all duration-100 active:scale-[0.98] active:translate-y-[1px]",
-      isActive && "bg-background text-foreground shadow-xs font-semibold border-border",
-      className
-    )}
-    {...props}
-  />
+  <Button
+    asChild
+    variant={isActive ? "outline" : "ghost"}
+    size={size}
+    data-slot="pagination-link"
+    data-active={isActive}
+    className={cn(isActive && "font-semibold", className)}
+  >
+    <a aria-current={isActive ? "page" : undefined} {...props} />
+  </Button>
 )
 PaginationLink.displayName = "PaginationLink"
 
@@ -67,8 +68,8 @@ const PaginationPrevious = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    size="sm"
-    className={cn("gap-1 pl-2 pr-2.5", className)}
+    size="default"
+    className={cn("gap-1 pl-2", className)}
     {...props}
   >
     <ChevronLeft className="size-3.5" />
@@ -83,8 +84,8 @@ const PaginationNext = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
-    size="sm"
-    className={cn("gap-1 pl-2.5 pr-2", className)}
+    size="default"
+    className={cn("gap-1 pr-2", className)}
     {...props}
   >
     <span>Next</span>
@@ -99,7 +100,8 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<"span">) => (
   <span
     aria-hidden
-    className={cn("flex h-7 w-7 items-center justify-center text-muted-foreground", className)}
+    data-slot="pagination-ellipsis"
+    className={cn("flex size-8 items-center justify-center text-muted-foreground", className)}
     {...props}
   >
     <MoreHorizontal className="size-3.5" />

@@ -171,7 +171,7 @@
     --btn-glass-accent-bg: hsl(var(--primary) / 0.22);
     --btn-glass-accent-hover: hsl(var(--primary) / 0.30);
     --btn-glass-accent-active: hsl(var(--primary) / 0.38);
-    --btn-glass-accent-text: hsl(var(--primary));
+    --btn-glass-accent-text: hsl(239 92% 78%);
     --btn-glass-rim: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 
     --btn-danger-bg: hsl(2 70% 65% / 0.16);

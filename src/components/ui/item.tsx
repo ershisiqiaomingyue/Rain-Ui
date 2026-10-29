@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const itemVariants = cva(
-  "group/item flex items-center gap-3 rounded-lg border border-transparent p-2 text-sm transition-colors",
+  "group/item flex w-full items-center gap-2.5 rounded-[10px] border border-transparent px-3 py-2.5 text-sm transition-colors",
   {
     variants: {
       variant: {
@@ -12,9 +12,9 @@ const itemVariants = cva(
         muted: "bg-muted/50 hover:bg-muted",
       },
       size: {
-        default: "p-2",
-        sm: "p-1.5 text-xs",
-        lg: "p-3",
+        default: "",
+        sm: "px-2.5 py-2 text-xs",
+        lg: "px-3.5 py-3",
       },
     },
     defaultVariants: {
