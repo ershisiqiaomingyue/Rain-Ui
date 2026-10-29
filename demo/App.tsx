@@ -1,9 +1,11 @@
+"use client"
+
 import * as React from "react"
 import {
   Sun, Moon, Terminal, Plus, Trash2, Check, Sparkles,
   Smartphone, AlertTriangle, Search, Info, Settings,
   Folder, Layers, ChevronRight, ArrowRight, ExternalLink,
-  MoreHorizontal, Play, RefreshCw, X, Shield, Sliders
+  MoreHorizontal, Play, RefreshCw, X, Shield, Sliders, Menu
 } from "lucide-react"
 
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
@@ -14,6 +16,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
+import { ButtonGroupDemo } from "@/components/ui/button-group-demo"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Combobox } from "@/components/ui/combobox"
@@ -27,6 +30,10 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter,
   DialogHeader, DialogTitle, DialogTrigger
 } from "@/components/ui/dialog"
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
+  DropdownMenuSeparator as DropdownSeparator, DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu"
 import { Empty } from "@/components/ui/empty"
 import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
@@ -61,16 +68,62 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-function Section({ id, title, count, children }: { id: string; title: string; count: number; children: React.ReactNode }) {
+interface NavItem {
+  id: string
+  title: string
+  label: string
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { id: "alert", title: "Alert", label: "警告提示" },
+  { id: "alert-dialog", title: "Alert Dialog", label: "确认对话框" },
+  { id: "button", title: "Button", label: "按钮 (sm 28px)" },
+  { id: "button-group", title: "Button Group", label: "按钮组 (带下拉)" },
+  { id: "card", title: "Card", label: "卡片" },
+  { id: "checkbox", title: "Checkbox", label: "复选框" },
+  { id: "combobox", title: "Combobox", label: "组合框" },
+  { id: "command", title: "Command", label: "命令面板" },
+  { id: "context-menu", title: "Context Menu", label: "右键菜单" },
+  { id: "dialog", title: "Dialog", label: "模态弹窗" },
+  { id: "dropdown-menu", title: "Dropdown Menu", label: "下拉菜单" },
+  { id: "empty", title: "Empty", label: "空状态" },
+  { id: "field", title: "Field", label: "表单字段" },
+  { id: "input", title: "Input", label: "输入框 (32px)" },
+  { id: "input-group", title: "Input Group", label: "输入框组" },
+  { id: "item", title: "Item", label: "列表项" },
+  { id: "label", title: "Label", label: "标签" },
+  { id: "menubar", title: "Menubar", label: "菜单栏" },
+  { id: "pagination", title: "Pagination", label: "分页" },
+  { id: "popover", title: "Popover", label: "气泡浮层" },
+  { id: "radio-group", title: "Radio Group", label: "单选框组" },
+  { id: "resizable", title: "Resizable", label: "可调整面板" },
+  { id: "scroll-area", title: "Scroll Area", label: "滚动区域" },
+  { id: "select", title: "Select", label: "选择器" },
+  { id: "separator", title: "Separator", label: "分割线" },
+  { id: "sheet", title: "Sheet / Sidebar", label: "抽屉侧边栏" },
+  { id: "skeleton", title: "Skeleton", label: "骨架屏" },
+  { id: "sonner", title: "Sonner", label: "Toast 消息" },
+  { id: "spinner", title: "Spinner", label: "加载中" },
+  { id: "switch", title: "Switch", label: "开关 (20px Apple绿)" },
+  { id: "table", title: "Table", label: "表格" },
+  { id: "tabs", title: "Tabs", label: "分段标签页" },
+  { id: "textarea", title: "Textarea", label: "多行文本输入" },
+  { id: "tooltip", title: "Tooltip", label: "文字提示" },
+]
+
+function Section({ id, title, label, count, children }: { id: string; title: string; label: string; count: number; children: React.ReactNode }) {
   return (
     <section id={id} className="scroll-mt-16 space-y-3 pb-8 border-b border-border/50 last:border-b-0">
       <div className="flex items-center gap-2">
         <span className="flex h-5 w-5 items-center justify-center rounded bg-muted text-[11px] font-mono text-muted-foreground">
           {count}
         </span>
-        <h2 className="text-base font-semibold text-foreground tracking-tight">{title}</h2>
+        <h2 className="text-sm font-semibold tracking-tight text-foreground flex items-center gap-2">
+          {title}
+          <span className="text-xs font-normal text-muted-foreground">({label})</span>
+        </h2>
       </div>
-      <div className="rounded-lg border border-border/60 bg-card/60 p-5 shadow-2xs backdrop-blur-sm">
+      <div className="p-4 rounded-lg border border-border/60 bg-card/40 backdrop-blur-sm">
         {children}
       </div>
     </section>
@@ -78,559 +131,673 @@ function Section({ id, title, count, children }: { id: string; title: string; co
 }
 
 export function App() {
-  const [theme, setTheme] = React.useState<"light" | "dark">("light")
-  const [comboboxVal, setComboboxVal] = React.useState("pixel-8")
+  const [dark, setDark] = React.useState(false)
+  const [activeId, setActiveId] = React.useState("button")
+  const [filter, setFilter] = React.useState("")
 
   React.useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark")
-    document.documentElement.setAttribute("data-theme", theme)
-  }, [theme])
+    if (dark) {
+      document.documentElement.classList.add("dark")
+    } else {
+      document.documentElement.classList.remove("dark")
+    }
+  }, [dark])
+
+  const filteredNav = NAV_ITEMS.filter(
+    (item) =>
+      item.title.toLowerCase().includes(filter.toLowerCase()) ||
+      item.label.includes(filter)
+  )
+
+  const scrollTo = (id: string) => {
+    setActiveId(id)
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
 
   return (
-    <TooltipProvider delayDuration={150}>
-      <Toaster />
-      <div className="min-h-screen bg-background text-foreground flex flex-col font-sans transition-colors duration-200">
-        
-        {/* Sticky Header */}
-        <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/90 backdrop-blur-md">
-          <div className="flex h-12 items-center px-6 justify-between max-w-7xl mx-auto">
-            <div className="flex items-center gap-2 font-semibold text-sm">
-              <span className="h-5 w-5 rounded bg-primary flex items-center justify-center text-primary-foreground text-xs font-bold">
-                R
-              </span>
-              <span>rain-ui</span>
-              <span className="text-[11px] px-1.5 py-0.2 rounded bg-muted font-normal text-muted-foreground">
-                33+ 原子组件一览表 (无业务嵌套)
-              </span>
+    <div className="min-h-screen bg-background text-foreground antialiased flex flex-col">
+      {/* 顶部 Header */}
+      <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/85 backdrop-blur-md">
+        <div className="flex h-12 items-center justify-between px-6">
+          <div className="flex items-center gap-2.5">
+            <div className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground font-semibold text-xs shadow-xs">
+              R
             </div>
-
-            <ButtonGroup>
-              <Button
-                size="xs"
-                variant={theme === "light" ? "secondary" : "ghost"}
-                onClick={() => setTheme("light")}
-              >
-                <Sun className="h-3 w-3 mr-1" /> 明亮
-              </Button>
-              <Button
-                size="xs"
-                variant={theme === "dark" ? "secondary" : "ghost"}
-                onClick={() => setTheme("dark")}
-              >
-                <Moon className="h-3 w-3 mr-1" /> 暗色
-              </Button>
-            </ButtonGroup>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-sm tracking-tight">rain-ui</span>
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary border border-primary/20">
+                  shadcn/ui · Apple HIG
+                </span>
+              </div>
+            </div>
           </div>
-        </header>
 
-        {/* Catalog Body */}
-        <main className="flex-1 max-w-5xl w-full mx-auto p-6 md:p-8 space-y-6">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground hidden sm:inline">
+              默认按钮高度: <strong className="font-mono text-foreground">sm 28px</strong>
+            </span>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setDark(!dark)}
+              aria-label="Toggle theme"
+            >
+              {dark ? <Sun className="size-3.5 text-amber-400" /> : <Moon className="size-3.5 text-slate-700" />}
+            </Button>
+          </div>
+        </div>
+      </header>
 
-          {/* 1. Button */}
-          <Section id="button" title="1. Button (精致桌面尺寸 24/28/32/36)" count={1}>
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-center gap-2">
-                <Button>Primary</Button>
-                <Button variant="secondary">Secondary</Button>
-                <Button variant="outline">Outline</Button>
-                <Button variant="ghost">Ghost</Button>
-                <Button variant="destructive">Destructive</Button>
-                <Button variant="link">Link</Button>
-                <Button disabled>Disabled</Button>
-              </div>
-              <div className="flex items-center gap-2 pt-1 border-t border-border/40">
-                <span className="text-xs text-muted-foreground w-16">尺寸规格:</span>
-                <Button size="xs">xs · 24px</Button>
-                <Button size="sm">sm · 28px</Button>
-                <Button size="default">default · 32px</Button>
-                <Button size="lg">lg · 36px</Button>
-                <Button size="icon"><Plus className="h-3.5 w-3.5" /></Button>
-              </div>
-            </div>
-          </Section>
-
-          {/* 2. Button Group */}
-          <Section id="button-group" title="2. Button Group (按钮组)" count={2}>
-            <div className="flex flex-wrap items-center gap-4">
-              <ButtonGroup>
-                <Button size="sm" variant="ghost">日</Button>
-                <Button size="sm" variant="secondary">周</Button>
-                <Button size="sm" variant="ghost">月</Button>
-                <Button size="sm" variant="ghost">年</Button>
-              </ButtonGroup>
-              <ButtonGroup orientation="vertical">
-                <Button size="xs" variant="ghost">顶部动作</Button>
-                <Button size="xs" variant="ghost">底部动作</Button>
-              </ButtonGroup>
-            </div>
-          </Section>
-
-          {/* 3. Switch */}
-          <Section id="switch" title="3. Switch (Apple 经典绿 20px 原生手感)" count={3}>
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <Switch id="s1" defaultChecked />
-                <Label htmlFor="s1" className="text-xs">开启状态 (已选)</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Switch id="s2" />
-                <Label htmlFor="s2" className="text-xs">未激活</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Switch id="s3" disabled defaultChecked />
-                <Label htmlFor="s3" className="text-xs text-muted-foreground">禁用</Label>
-              </div>
-            </div>
-          </Section>
-
-          {/* 4. Checkbox */}
-          <Section id="checkbox" title="4. Checkbox (复选框)" count={4}>
-            <div className="flex items-center gap-6">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="c1" defaultChecked />
-                <Label htmlFor="c1" className="text-xs font-normal">记住选择</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="c2" />
-                <Label htmlFor="c2" className="text-xs font-normal">未勾选</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="c3" disabled />
-                <Label htmlFor="c3" className="text-xs text-muted-foreground font-normal">不可用</Label>
-              </div>
-            </div>
-          </Section>
-
-          {/* 5. Radio Group */}
-          <Section id="radio-group" title="5. Radio Group (单选框组)" count={5}>
-            <RadioGroup defaultValue="opt1" className="flex gap-6">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="opt1" id="opt1" />
-                <Label htmlFor="opt1" className="text-xs font-normal">单选选项 A</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="opt2" id="opt2" />
-                <Label htmlFor="opt2" className="text-xs font-normal">单选选项 B</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="opt3" id="opt3" disabled />
-                <Label htmlFor="opt3" className="text-xs text-muted-foreground font-normal">禁用选项 C</Label>
-              </div>
-            </RadioGroup>
-          </Section>
-
-          {/* 6. Input & Input Group */}
-          <Section id="input" title="6. Input & Input Group (输入框与复合组)" count={6}>
-            <div className="grid gap-3 max-w-md">
-              <Input placeholder="标准紧凑单行输入框 (h-8 · 32px)..." />
-              <InputGroup lead={<Search className="h-3.5 w-3.5" />}>
-                <Input placeholder="带前缀搜索图标的 InputGroup..." />
-              </InputGroup>
-              <InputGroup tail={<span className="text-[11px] text-muted-foreground">.com</span>}>
-                <Input placeholder="自定义后缀域名..." />
-              </InputGroup>
-              <Input disabled placeholder="禁用输入状态..." />
-            </div>
-          </Section>
-
-          {/* 7. Textarea */}
-          <Section id="textarea" title="7. Textarea (多行文本域)" count={7}>
-            <div className="max-w-md">
-              <Textarea placeholder="输入多行配置描述或日志备注..." rows={3} />
-            </div>
-          </Section>
-
-          {/* 8. Field & Label */}
-          <Section id="field" title="8. Field & Label (表单域封装)" count={8}>
-            <div className="grid gap-3 max-w-md">
-              <Field label="设备标识名" description="局域网内唯一名称，不可重复" required>
-                <Input placeholder="Pixel-8-Pro" />
-              </Field>
-              <Field label="IP 校验" error="输入的 IP 格式不合法">
-                <Input defaultValue="999.999.999" className="border-destructive" />
-              </Field>
-            </div>
-          </Section>
-
-          {/* 9. Select */}
-          <Section id="select" title="9. Select (下拉选择器)" count={9}>
-            <div className="max-w-xs">
-              <Select defaultValue="arm64">
-                <SelectTrigger>
-                  <SelectValue placeholder="选择目标架构" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="arm64">arm64-v8a (64位原生)</SelectItem>
-                  <SelectItem value="armeabi">armeabi-v7a (32位兼容)</SelectItem>
-                  <SelectItem value="x86_64">x86_64 (模拟器镜像)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </Section>
-
-          {/* 10. Combobox */}
-          <Section id="combobox" title="10. Combobox (可检索下拉输入)" count={10}>
-            <div className="max-w-xs">
-              <Combobox
-                value={comboboxVal}
-                onChange={setComboboxVal}
-                options={[
-                  { value: "pixel-8", label: "Google Pixel 8 Pro" },
-                  { value: "s24", label: "Samsung Galaxy S24" },
-                  { value: "mi-14", label: "Xiaomi 14 Ultra" },
-                ]}
+      {/* 主体两栏布局：左侧导航 + 右侧一一陈列 */}
+      <div className="flex-1 flex max-w-7xl w-full mx-auto">
+        {/* 左侧固钉导航栏 */}
+        <aside className="w-64 shrink-0 border-r border-border/60 hidden md:flex flex-col sticky top-12 h-[calc(100vh-3rem)]">
+          <div className="p-3 border-b border-border/50">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2 size-3.5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="搜索组件..."
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="w-full h-7 pl-8 pr-2.5 rounded-md text-xs bg-muted/60 border border-border/50 focus:outline-none focus:ring-1 focus:ring-ring text-foreground placeholder:text-muted-foreground"
               />
             </div>
-          </Section>
+          </div>
+          <ScrollArea className="flex-1 p-2">
+            <nav className="space-y-0.5 text-xs">
+              {filteredNav.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollTo(item.id)}
+                  className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-md text-left transition-colors ${
+                    activeId === item.id
+                      ? "bg-primary text-primary-foreground font-medium"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
+                  }`}
+                >
+                  <span className="truncate">{item.title}</span>
+                  <span className={`text-[10px] truncate ml-1 ${activeId === item.id ? "text-primary-foreground/80" : "text-muted-foreground/70"}`}>
+                    {item.label}
+                  </span>
+                </button>
+              ))}
+            </nav>
+          </ScrollArea>
+          <div className="p-3 border-t border-border/50 text-[11px] text-muted-foreground flex items-center justify-between">
+            <span>共 {NAV_ITEMS.length} 个原子组件</span>
+            <span className="font-mono text-[10px]">v0.1.0</span>
+          </div>
+        </aside>
 
-          {/* 11. Card */}
-          <Section id="card" title="11. Card (卡片面板容器)" count={11}>
-            <div className="grid gap-4 md:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>标准卡片标题</CardTitle>
-                  <CardDescription>副标题与说明性文字</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    这是 CardContent 区块，遵循发丝边框与精细内投影。
-                  </p>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button variant="ghost" size="xs">取消</Button>
-                  <Button size="xs">确定</Button>
-                </CardFooter>
-              </Card>
-            </div>
-          </Section>
-
-          {/* 12. Alert */}
-          <Section id="alert" title="12. Alert (提示横幅)" count={12}>
-            <div className="grid gap-3 max-w-xl">
+        {/* 右侧组件逐项平铺 */}
+        <main className="flex-1 min-w-0 p-6 md:p-8 space-y-10">
+          {/* 1. Alert */}
+          <Section id="alert" title="Alert" label="警告提示" count={1}>
+            <div className="space-y-3">
               <Alert>
-                <Info className="h-4 w-4" />
-                <AlertTitle>标准提示信息</AlertTitle>
-                <AlertDescription className="text-xs">已成功同步 12 条连接规则。</AlertDescription>
+                <Terminal className="size-3.5" />
+                <AlertTitle>Heads up!</AlertTitle>
+                <AlertDescription>
+                  You can add components to your app using the cli.
+                </AlertDescription>
               </Alert>
               <Alert variant="destructive">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>操作失败</AlertTitle>
-                <AlertDescription className="text-xs">设备未授权 USB 调试协议。</AlertDescription>
+                <AlertTriangle className="size-3.5" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  Your session has expired. Please log in again.
+                </AlertDescription>
               </Alert>
             </div>
           </Section>
 
-          {/* 13. Alert Dialog */}
-          <Section id="alert-dialog" title="13. Alert Dialog (破坏性二次确认框)" count={13}>
+          {/* 2. Alert Dialog */}
+          <Section id="alert-dialog" title="Alert Dialog" label="确认对话框" count={2}>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm">触发 AlertDialog</Button>
+                <Button variant="outline">Show Alert Dialog</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>确认删除此环境配置？</AlertDialogTitle>
-                  <AlertDialogDescription className="text-xs">
-                    该操作为破坏性动作，无法被撤销。
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete your account
+                    and remove your data from our servers.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>取消</AlertDialogCancel>
-                  <AlertDialogAction>确认删除</AlertDialogAction>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction>Continue</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
           </Section>
 
-          {/* 14. Dialog */}
-          <Section id="dialog" title="14. Dialog (标准模态弹窗)" count={14}>
+          {/* 3. Button (默认 sm 28px) */}
+          <Section id="button" title="Button" label="按钮 (默认 sm 28px)" count={3}>
+            <div className="space-y-4">
+              <div>
+                <p className="text-xs text-muted-foreground mb-2">默认样式变体 (默认尺寸 sm · 28px)：</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button variant="default">Default (sm: 28px)</Button>
+                  <Button variant="secondary">Secondary</Button>
+                  <Button variant="outline">Outline</Button>
+                  <Button variant="ghost">Ghost</Button>
+                  <Button variant="destructive">Destructive</Button>
+                  <Button variant="link">Link</Button>
+                  <Button disabled>Disabled</Button>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-xs text-muted-foreground mb-2">全尺寸阶梯：</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button size="xs">xs (24px)</Button>
+                  <Button size="sm">sm / default (28px)</Button>
+                  <Button size="md">md (32px)</Button>
+                  <Button size="lg">lg (36px)</Button>
+                  <Button size="icon" variant="outline"><Plus className="size-3.5" /></Button>
+                </div>
+              </div>
+            </div>
+          </Section>
+
+          {/* 4. Button Group */}
+          <Section id="button-group" title="Button Group" label="按钮组 (带下拉及复合状态)" count={4}>
+            <div className="space-y-3">
+              <p className="text-xs text-muted-foreground">官方 1:1 ButtonGroup 交互实装（支持 Icon、分段组合与 DropdownMenu 下拉）：</p>
+              <ButtonGroupDemo />
+            </div>
+          </Section>
+
+          {/* 5. Card */}
+          <Section id="card" title="Card" label="卡片" count={5}>
+            <Card className="max-w-md">
+              <CardHeader>
+                <CardTitle>Create project</CardTitle>
+                <CardDescription>Deploy your new project in one-click.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground">
+                  Your project will be deployed immediately with global CDN edge routing.
+                </p>
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Button variant="outline">Cancel</Button>
+                <Button>Deploy</Button>
+              </CardFooter>
+            </Card>
+          </Section>
+
+          {/* 6. Checkbox */}
+          <Section id="checkbox" title="Checkbox" label="复选框" count={6}>
+            <div className="flex items-center space-x-2">
+              <Checkbox id="terms" defaultChecked />
+              <Label htmlFor="terms" className="text-xs cursor-pointer">
+                Accept terms and conditions
+              </Label>
+            </div>
+          </Section>
+
+          {/* 7. Combobox */}
+          <Section id="combobox" title="Combobox" label="组合框" count={7}>
+            <div className="w-64">
+              <Combobox
+                options={[
+                  { label: "React", value: "react" },
+                  { label: "Vue", value: "vue" },
+                  { label: "Svelte", value: "svelte" },
+                  { label: "Next.js", value: "next" },
+                ]}
+                placeholder="Select framework..."
+              />
+            </div>
+          </Section>
+
+          {/* 8. Command */}
+          <Section id="command" title="Command" label="命令面板" count={8}>
+            <Command className="rounded-lg border border-border/70 shadow-xs max-w-sm">
+              <CommandInput placeholder="Type a command or search..." />
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup heading="Suggestions">
+                  <CommandItem>Calendar</CommandItem>
+                  <CommandItem>Search Emoji</CommandItem>
+                  <CommandItem>Calculator</CommandItem>
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </Section>
+
+          {/* 9. Context Menu */}
+          <Section id="context-menu" title="Context Menu" label="右键上下文菜单" count={9}>
+            <ContextMenu>
+              <ContextMenuTrigger className="flex h-24 w-full max-w-sm items-center justify-center rounded-md border border-dashed border-border/80 text-xs text-muted-foreground select-none bg-muted/20">
+                在此区域右键点击
+              </ContextMenuTrigger>
+              <ContextMenuContent className="w-48">
+                <ContextMenuItem>Back</ContextMenuItem>
+                <ContextMenuItem>Forward</ContextMenuItem>
+                <ContextMenuItem>Reload</ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem>Inspect</ContextMenuItem>
+              </ContextMenuContent>
+            </ContextMenu>
+          </Section>
+
+          {/* 10. Dialog */}
+          <Section id="dialog" title="Dialog" label="模态对话框" count={10}>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm">打开 Dialog 弹窗</Button>
+                <Button variant="outline">Open Dialog</Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                  <DialogTitle>新建设备连接</DialogTitle>
-                  <DialogDescription className="text-xs">输入 ADB 连接参数。</DialogDescription>
+                  <DialogTitle>Edit Profile</DialogTitle>
+                  <DialogDescription>
+                    Make changes to your profile here. Click save when you're done.
+                  </DialogDescription>
                 </DialogHeader>
-                <div className="py-2 space-y-2">
-                  <Input placeholder="IP 地址" />
-                  <Input placeholder="端口 (默认 5555)" />
+                <div className="space-y-3 py-2">
+                  <Field label="Name">
+                    <Input defaultValue="Apple HIG" />
+                  </Field>
+                  <Field label="Username">
+                    <Input defaultValue="@rain-ui" />
+                  </Field>
                 </div>
                 <DialogFooter>
-                  <Button size="sm">立即连接</Button>
+                  <Button type="submit">Save changes</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
           </Section>
 
-          {/* 15. Popover */}
-          <Section id="popover" title="15. Popover (浮层悬浮板)" count={15}>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">打开 Popover 浮层</Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-64 space-y-2">
-                <h4 className="text-xs font-semibold">快速调整</h4>
-                <p className="text-[11.5px] text-muted-foreground">Popover 浮层内容区展示</p>
-                <Input placeholder="输入临时参数" />
-              </PopoverContent>
-            </Popover>
+          {/* 11. Dropdown Menu */}
+          <Section id="dropdown-menu" title="Dropdown Menu" label="下拉菜单" count={11}>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  Open Options
+                  <MoreHorizontal className="size-3.5 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownSeparator />
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Billing</DropdownMenuItem>
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownSeparator />
+                <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </Section>
 
-          {/* 16. Tooltip */}
-          <Section id="tooltip" title="16. Tooltip (文字提示气泡)" count={16}>
-            <div className="flex gap-4">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="secondary" size="sm">悬停查看 Tooltip</Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-xs">轻量提示气泡已触发</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          </Section>
-
-          {/* 17. Context Menu */}
-          <Section id="context-menu" title="17. Context Menu (右键菜单)" count={17}>
-            <ContextMenu>
-              <ContextMenuTrigger className="flex h-16 w-full max-w-sm items-center justify-center rounded-md border border-dashed border-border/80 text-xs text-muted-foreground bg-muted/20">
-                在此卡片内点击鼠标右键触发 ContextMenu
-              </ContextMenuTrigger>
-              <ContextMenuContent className="w-44">
-                <ContextMenuItem>查看属性</ContextMenuItem>
-                <ContextMenuItem>复制 ID</ContextMenuItem>
-                <ContextMenuSeparator />
-                <ContextMenuItem className="text-destructive">删除条目</ContextMenuItem>
-              </ContextMenuContent>
-            </ContextMenu>
-          </Section>
-
-          {/* 18. Command */}
-          <Section id="command" title="18. Command (命令行调色板)" count={18}>
-            <div className="max-w-md rounded-lg border border-border/70 shadow-sm overflow-hidden">
-              <Command>
-                <CommandInput placeholder="搜索系统命令..." />
-                <CommandList>
-                  <CommandEmpty>未找到对应命令</CommandEmpty>
-                  <CommandGroup heading="建议">
-                    <CommandItem><Terminal className="mr-2 h-3.5 w-3.5" /> 启动 Shell 终端</CommandItem>
-                    <CommandItem><RefreshCw className="mr-2 h-3.5 w-3.5" /> 重新扫描设备</CommandItem>
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </div>
-          </Section>
-
-          {/* 19. Item */}
-          <Section id="item" title="19. Item (列表项通用组件)" count={19}>
-            <div className="max-w-md border border-border/60 rounded-md divide-y divide-border/40">
-              <Item
-                icon={<Smartphone className="h-4 w-4" />}
-                title="Pixel 8 Pro"
-                subtitle="Android 14 · USB"
-                action={<Button size="xs" variant="ghost">进入</Button>}
-              />
-              <Item
-                icon={<Smartphone className="h-4 w-4" />}
-                title="Xiaomi 14 Ultra"
-                subtitle="HyperOS · Wi-Fi"
-                action={<Button size="xs" variant="ghost">进入</Button>}
-              />
-            </div>
-          </Section>
-
-          {/* 20. Empty */}
-          <Section id="empty" title="20. Empty (空状态占位)" count={20}>
+          {/* 12. Empty */}
+          <Section id="empty" title="Empty" label="空状态" count={12}>
             <Empty
-              icon={<Smartphone className="h-5 w-5 text-primary" />}
-              title="当前无在线设备"
-              description="请使用 USB 数据线将 Android 手机连接至电脑。"
-              action={<Button size="xs"><Plus className="h-3 w-3 mr-1" /> 重新扫描</Button>}
+              icon={<Folder className="size-8 text-muted-foreground/60" />}
+              title="No files yet"
+              description="Get started by uploading your first document."
+              action={<Button size="sm"><Plus className="size-3.5 mr-1" />New File</Button>}
             />
           </Section>
 
-          {/* 21. Table */}
-          <Section id="table" title="21. Table (表格)" count={21}>
-            <div className="border border-border/60 rounded-md overflow-hidden">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>进程名</TableHead>
-                    <TableHead>PID</TableHead>
-                    <TableHead>内存</TableHead>
-                    <TableHead className="text-right">状态</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow>
-                    <TableCell className="font-mono text-xs">com.android.systemui</TableCell>
-                    <TableCell className="text-xs">1042</TableCell>
-                    <TableCell className="text-xs">142 MB</TableCell>
-                    <TableCell className="text-right text-xs text-emerald-500">正常</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="font-mono text-xs">com.google.android.gms</TableCell>
-                    <TableCell className="text-xs">2180</TableCell>
-                    <TableCell className="text-xs">88 MB</TableCell>
-                    <TableCell className="text-right text-xs text-emerald-500">正常</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+          {/* 13. Field */}
+          <Section id="field" title="Field" label="表单字段" count={13}>
+            <div className="max-w-sm space-y-3">
+              <Field label="Email Address" hint="We will never share your email.">
+                <Input placeholder="m@example.com" />
+              </Field>
+              <Field label="Password" error="Password must be at least 8 characters.">
+                <Input type="password" defaultValue="12345" />
+              </Field>
             </div>
           </Section>
 
-          {/* 22. Pagination */}
-          <Section id="pagination" title="22. Pagination (分页器)" count={22}>
-            <div className="flex justify-start">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" className="h-7 text-xs" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" isActive className="h-7 w-7 text-xs">1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" className="h-7 w-7 text-xs">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext href="#" className="h-7 text-xs" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+          {/* 14. Input (32px) */}
+          <Section id="input" title="Input" label="输入框 (统一 h-8 · 32px)" count={14}>
+            <div className="max-w-sm space-y-2">
+              <Input placeholder="Default input (32px)" />
+              <Input disabled placeholder="Disabled input" />
+              <Input type="search" placeholder="Search..." />
             </div>
           </Section>
 
-          {/* 23. Tabs */}
-          <Section id="tabs" title="23. Tabs (标签页)" count={23}>
-            <Tabs defaultValue="t1" className="w-full max-w-sm">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="t1" className="text-xs">账户设置</TabsTrigger>
-                <TabsTrigger value="t2" className="text-xs">安全偏好</TabsTrigger>
-              </TabsList>
-              <TabsContent value="t1" className="p-2 text-xs text-muted-foreground">
-                账户设置标签页内容区。
-              </TabsContent>
-              <TabsContent value="t2" className="p-2 text-xs text-muted-foreground">
-                安全偏好标签页内容区。
-              </TabsContent>
-            </Tabs>
-          </Section>
-
-          {/* 24. Separator */}
-          <Section id="separator" title="24. Separator (分割线)" count={24}>
-            <div className="space-y-2 max-w-sm">
-              <div className="text-xs">上方段落内容</div>
-              <Separator />
-              <div className="text-xs">下方段落内容</div>
+          {/* 15. Input Group */}
+          <Section id="input-group" title="Input Group" label="输入框组" count={15}>
+            <div className="max-w-sm space-y-2">
+              <InputGroup prefix={<Search className="size-3.5" />}>
+                <Input placeholder="Search documents..." className="border-0 shadow-none focus-visible:ring-0" />
+              </InputGroup>
+              <InputGroup suffix={<span className="text-[10px] font-mono text-muted-foreground">⌘K</span>}>
+                <Input placeholder="Quick action..." className="border-0 shadow-none focus-visible:ring-0" />
+              </InputGroup>
             </div>
           </Section>
 
-          {/* 25. Skeleton */}
-          <Section id="skeleton" title="25. Skeleton (骨架屏)" count={25}>
-            <div className="flex items-center space-x-4 max-w-sm">
-              <Skeleton className="h-10 w-10 rounded-full" />
-              <div className="space-y-2 flex-1">
-                <Skeleton className="h-3 w-full" />
-                <Skeleton className="h-3 w-4/5" />
-              </div>
+          {/* 16. Item */}
+          <Section id="item" title="Item" label="列表项" count={16}>
+            <div className="max-w-md divide-y divide-border/50 rounded-lg border border-border/60 bg-card/60">
+              <Item
+                icon={<Smartphone className="size-4 text-primary" />}
+                title="iPhone 16 Pro"
+                description="Connected via Wi-Fi · 98% Battery"
+                action={<Button variant="ghost" size="xs">Manage</Button>}
+              />
+              <Item
+                icon={<Settings className="size-4 text-muted-foreground" />}
+                title="System Settings"
+                description="Preferences & configuration"
+                action={<ChevronRight className="size-3.5 text-muted-foreground" />}
+              />
             </div>
           </Section>
 
-          {/* 26. Spinner */}
-          <Section id="spinner" title="26. Spinner (加载指示器)" count={26}>
-            <div className="flex items-center gap-4">
-              <Spinner size="sm" />
-              <Spinner size="default" />
-              <Spinner size="lg" />
-            </div>
+          {/* 17. Label */}
+          <Section id="label" title="Label" label="标签" count={17}>
+            <Label className="text-xs">This is a standard Accessible Label</Label>
           </Section>
 
-          {/* 27. Sonner */}
-          <Section id="sonner" title="27. Sonner (Toast 气泡通知)" count={27}>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => toast.success("ADB 命令执行完成", { description: "已成功重启守护进程。" })}
-            >
-              弹出 Sonner Toast
-            </Button>
-          </Section>
-
-          {/* 28. Menubar */}
-          <Section id="menubar" title="28. Menubar (原生菜单栏)" count={28}>
+          {/* 18. Menubar */}
+          <Section id="menubar" title="Menubar" label="菜单栏" count={18}>
             <Menubar className="w-fit">
               <MenubarMenu>
-                <MenubarTrigger className="text-xs">文件</MenubarTrigger>
+                <MenubarTrigger>File</MenubarTrigger>
                 <MenubarContent>
-                  <MenubarItem>新建连接</MenubarItem>
+                  <MenubarItem>New Tab <MenubarShortcut>⌘T</MenubarShortcut></MenubarItem>
+                  <MenubarItem>New Window <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
                   <MenubarSeparator />
-                  <MenubarItem>退出</MenubarItem>
+                  <MenubarItem>Print... <MenubarShortcut>⌘P</MenubarShortcut></MenubarItem>
                 </MenubarContent>
               </MenubarMenu>
               <MenubarMenu>
-                <MenubarTrigger className="text-xs">编辑</MenubarTrigger>
+                <MenubarTrigger>Edit</MenubarTrigger>
                 <MenubarContent>
-                  <MenubarItem>撤销</MenubarItem>
-                  <MenubarItem>重做</MenubarItem>
+                  <MenubarItem>Undo <MenubarShortcut>⌘Z</MenubarShortcut></MenubarItem>
+                  <MenubarItem>Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut></MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+              <MenubarMenu>
+                <MenubarTrigger>View</MenubarTrigger>
+                <MenubarContent>
+                  <MenubarItem>Reload <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem>
                 </MenubarContent>
               </MenubarMenu>
             </Menubar>
           </Section>
 
-          {/* 29. Resizable */}
-          <Section id="resizable" title="29. Resizable (可拖拽调节分栏)" count={29}>
-            <div className="h-28 rounded-md border border-border/70 overflow-hidden">
+          {/* 19. Pagination */}
+          <Section id="pagination" title="Pagination" label="分页" count={19}>
+            <Pagination className="justify-start">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" size="sm" />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" isActive size="sm">1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" size="sm">2</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#" size="sm">3</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href="#" size="sm" />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </Section>
+
+          {/* 20. Popover */}
+          <Section id="popover" title="Popover" label="气泡浮层" count={20}>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline">Open Popover</Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-64 p-3 text-xs space-y-2">
+                <h4 className="font-semibold text-foreground">Dimensions</h4>
+                <p className="text-muted-foreground">Set the width and height for your canvas.</p>
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <Input placeholder="Width" defaultValue="100%" />
+                  <Input placeholder="Height" defaultValue="250px" />
+                </div>
+              </PopoverContent>
+            </Popover>
+          </Section>
+
+          {/* 21. Radio Group */}
+          <Section id="radio-group" title="Radio Group" label="单选框组" count={21}>
+            <RadioGroup defaultValue="comfortable" className="gap-2">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="default" id="r1" />
+                <Label htmlFor="r1" className="text-xs cursor-pointer">Default spacing</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="comfortable" id="r2" />
+                <Label htmlFor="r2" className="text-xs cursor-pointer">Comfortable spacing</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="compact" id="r3" />
+                <Label htmlFor="r3" className="text-xs cursor-pointer">Compact (HIG Desktop)</Label>
+              </div>
+            </RadioGroup>
+          </Section>
+
+          {/* 22. Resizable */}
+          <Section id="resizable" title="Resizable" label="可调整尺寸面板" count={22}>
+            <div className="h-40 rounded-lg border border-border/70 overflow-hidden">
               <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel defaultSize={40}>
-                  <div className="flex h-full items-center justify-center p-3 text-xs text-muted-foreground">
-                    左侧面板 (40%)
+                <ResizablePanel defaultSize={35} minSize={20}>
+                  <div className="flex h-full items-center justify-center p-3 text-xs text-muted-foreground bg-muted/20">
+                    Sidebar (35%)
                   </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={60}>
-                  <div className="flex h-full items-center justify-center p-3 text-xs text-muted-foreground">
-                    右侧面板 (拖拽手柄调节)
+                <ResizablePanel defaultSize={65}>
+                  <div className="flex h-full items-center justify-center p-3 text-xs text-foreground bg-card">
+                    Content Panel (65%)
                   </div>
                 </ResizablePanel>
               </ResizablePanelGroup>
             </div>
           </Section>
 
-          {/* 30. Scroll Area */}
-          <Section id="scroll-area" title="30. Scroll Area (精致滚动区)" count={30}>
-            <ScrollArea className="h-24 max-w-sm rounded-md border border-border/70 p-3">
-              <div className="space-y-1 font-mono text-[11px] text-muted-foreground">
-                {Array.from({ length: 8 }).map((_, i) => (
-                  <p key={i}>[10:45:0{i}] ActivityManager: service updated #{i}</p>
+          {/* 23. Scroll Area */}
+          <Section id="scroll-area" title="Scroll Area" label="定制轻量滚动条" count={23}>
+            <ScrollArea className="h-32 w-64 rounded-md border border-border/60 p-3 text-xs">
+              <div className="space-y-2">
+                <p className="font-semibold text-foreground">Apple HIG Guidelines</p>
+                {Array.from({ length: 10 }).map((_, i) => (
+                  <p key={i} className="text-muted-foreground text-[11px]">
+                    Item {i + 1}: Clear hierarchy, responsive layout, refined typography and consistent touch targets.
+                  </p>
                 ))}
               </div>
             </ScrollArea>
           </Section>
 
-          {/* 31. Sheet */}
-          <Section id="sheet" title="31. Sheet (抽屉侧滑栏)" count={31}>
+          {/* 24. Select */}
+          <Section id="select" title="Select" label="下拉选择框" count={24}>
+            <div className="w-56">
+              <Select defaultValue="apple">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select platform" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="apple">Apple macOS / iOS</SelectItem>
+                  <SelectItem value="android">Android</SelectItem>
+                  <SelectItem value="windows">Windows</SelectItem>
+                  <SelectItem value="linux">Linux</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </Section>
+
+          {/* 25. Separator */}
+          <Section id="separator" title="Separator" label="分割线" count={25}>
+            <div className="space-y-2">
+              <div className="text-xs">Section Header</div>
+              <Separator />
+              <div className="flex h-4 items-center space-x-3 text-xs text-muted-foreground">
+                <span>Blog</span>
+                <Separator orientation="vertical" />
+                <span>Docs</span>
+                <Separator orientation="vertical" />
+                <span>Source</span>
+              </div>
+            </div>
+          </Section>
+
+          {/* 26. Sheet / Sidebar */}
+          <Section id="sheet" title="Sheet / Sidebar" label="抽屉侧边栏" count={26}>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" size="sm">打开 Sheet 抽屉</Button>
+                <Button variant="outline">
+                  <Menu className="size-3.5 mr-1" />
+                  Open Sidebar Drawer
+                </Button>
               </SheetTrigger>
-              <SheetContent>
+              <SheetContent side="left" className="w-72">
                 <SheetHeader>
-                  <SheetTitle>侧滑配置抽屉</SheetTitle>
-                  <SheetDescription className="text-xs">
-                    这是从边缘滑出的 Sheet 面板组件。
+                  <SheetTitle>Navigation Sidebar</SheetTitle>
+                  <SheetDescription>
+                    Browse applications and workspace tools.
                   </SheetDescription>
                 </SheetHeader>
-                <div className="py-4 space-y-2">
-                  <Input placeholder="抽屉内的输入测试..." />
+                <div className="py-4 space-y-1 text-xs">
+                  <Button variant="ghost" className="w-full justify-start"><Layers className="size-3.5 mr-2" />Projects</Button>
+                  <Button variant="ghost" className="w-full justify-start"><Smartphone className="size-3.5 mr-2" />Devices</Button>
+                  <Button variant="ghost" className="w-full justify-start"><Settings className="size-3.5 mr-2" />Settings</Button>
                 </div>
               </SheetContent>
             </Sheet>
           </Section>
 
+          {/* 27. Skeleton */}
+          <Section id="skeleton" title="Skeleton" label="骨架屏" count={27}>
+            <div className="flex items-center space-x-3">
+              <Skeleton className="size-10 rounded-full" />
+              <div className="space-y-1.5">
+                <Skeleton className="h-3.5 w-44" />
+                <Skeleton className="h-3 w-28" />
+              </div>
+            </div>
+          </Section>
+
+          {/* 28. Sonner */}
+          <Section id="sonner" title="Sonner" label="Toast 消息提示" count={28}>
+            <Button
+              variant="outline"
+              onClick={() =>
+                toast("Event created", {
+                  description: "Sunday, December 03, 2026 at 9:00 AM",
+                  action: {
+                    label: "Undo",
+                    onClick: () => console.log("Undo"),
+                  },
+                })
+              }
+            >
+              Trigger Sonner Toast
+            </Button>
+          </Section>
+
+          {/* 29. Spinner */}
+          <Section id="spinner" title="Spinner" label="加载中微动效" count={29}>
+            <div className="flex items-center gap-3">
+              <Spinner size="xs" />
+              <Spinner size="sm" />
+              <Spinner size="md" />
+              <Spinner size="lg" />
+            </div>
+          </Section>
+
+          {/* 30. Switch */}
+          <Section id="switch" title="Switch" label="开关 (20px Apple 绿胶囊)" count={30}>
+            <div className="flex items-center space-x-3">
+              <Switch id="airplane-mode" defaultChecked />
+              <Label htmlFor="airplane-mode" className="text-xs cursor-pointer">
+                Airplane Mode
+              </Label>
+            </div>
+          </Section>
+
+          {/* 31. Table */}
+          <Section id="table" title="Table" label="表格" count={31}>
+            <div className="rounded-md border border-border/70 overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-24">Invoice</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Method</TableHead>
+                    <TableHead className="text-right">Amount</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="font-medium">INV-001</TableCell>
+                    <TableCell className="text-emerald-500 font-medium">Paid</TableCell>
+                    <TableCell>Apple Pay</TableCell>
+                    <TableCell className="text-right">$250.00</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">INV-002</TableCell>
+                    <TableCell className="text-amber-500 font-medium">Pending</TableCell>
+                    <TableCell>Credit Card</TableCell>
+                    <TableCell className="text-right">$150.00</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          </Section>
+
+          {/* 32. Tabs */}
+          <Section id="tabs" title="Tabs" label="分段选项卡" count={32}>
+            <Tabs defaultValue="account" className="w-80">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="account">Account</TabsTrigger>
+                <TabsTrigger value="password">Password</TabsTrigger>
+              </TabsList>
+              <TabsContent value="account" className="text-xs text-muted-foreground p-3 border rounded-md mt-2">
+                Manage your account credentials and email addresses.
+              </TabsContent>
+              <TabsContent value="password" className="text-xs text-muted-foreground p-3 border rounded-md mt-2">
+                Change and rotate your account passwords.
+              </TabsContent>
+            </Tabs>
+          </Section>
+
+          {/* 33. Textarea */}
+          <Section id="textarea" title="Textarea" label="多行文本框" count={33}>
+            <Textarea placeholder="Type your message here..." className="max-w-md h-20 text-xs" />
+          </Section>
+
+          {/* 34. Tooltip */}
+          <Section id="tooltip" title="Tooltip" label="文字提示浮层" count={34}>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline">Hover over me</Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Add to library</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </Section>
         </main>
       </div>
-    </TooltipProvider>
+
+      <Toaster />
+    </div>
   )
 }
