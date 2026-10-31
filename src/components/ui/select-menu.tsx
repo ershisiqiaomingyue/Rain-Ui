@@ -174,7 +174,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         <PopoverContent
           align="start"
           sideOffset={6}
-          className="w-[max(220px,var(--radix-popover-trigger-width))] rounded-lg p-0 shadow-md"
+          className="w-[var(--radix-popover-trigger-width)] min-w-[112px] rounded-lg p-0 shadow-md"
           onOpenAutoFocus={(event) => {
             // 可搜索时让输入框先拿焦点，避免 cmdk 抢走后光标又跳回列表。
             if (!searchable) event.preventDefault()
@@ -190,7 +190,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                 className="h-8 text-xs"
               />
             )}
-            <CommandList className="max-h-[320px]">
+            <CommandList className="max-h-[200px]">
               {searchable && <CommandEmpty>{emptyText}</CommandEmpty>}
               {grouped.map((chunk, chunkIndex) => {
                 const items = chunk.options.map((option) => {
@@ -261,12 +261,10 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                     </CommandItem>
                   )
                 })
-                return chunk.label ? (
+                return (
                   <CommandGroup key={chunk.id ?? chunkIndex} heading={chunk.label}>
                     {items}
                   </CommandGroup>
-                ) : (
-                  <React.Fragment key={chunkIndex}>{items}</React.Fragment>
                 )
               })}
             </CommandList>
