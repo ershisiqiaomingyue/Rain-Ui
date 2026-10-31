@@ -3,10 +3,10 @@
 import * as React from "react"
 import { AlertCircle, Check } from "lucide-react"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { StepSpinner } from "@/components/ui/step-spinner"
-import { cn } from "@/lib/utils"
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
+import { Badge } from "../ui/badge"
+import { StepSpinner } from "../ui/step-spinner"
+import { cn } from "../../lib/utils"
 
 export type TaskStatus = "done" | "running" | "pending" | "error"
 

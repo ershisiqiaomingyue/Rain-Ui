@@ -4,7 +4,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
 /* Badge：与 Button default 同族 —— 高 24px、圆角 6px、字号 12px */
 const badgeVariants = cva(

@@ -3,8 +3,8 @@
 import * as React from "react"
 import { AlertCircle, Check, CircleDashed } from "lucide-react"
 
-import { Spinner } from "@/components/ui/spinner"
-import { cn } from "@/lib/utils"
+import { Spinner } from "../ui/spinner"
+import { cn } from "../../lib/utils"
 
 export type CompactionStatus = "running" | "completed" | "interrupted" | "failed"
 

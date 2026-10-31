@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 
 export interface SegmentedOption<T extends string> {
   value: T
@@ -16,6 +16,8 @@ export interface SegmentedControlProps<T extends string> {
   options: readonly SegmentedOption<T>[]
   label: string
   className?: string
+  /** 附加到每个分段项（TabsTrigger）上的类名。 */
+  buttonClassName?: string
 }
 
 /**
@@ -28,12 +30,18 @@ export function SegmentedControl<T extends string>({
   options,
   label,
   className,
+  buttonClassName,
 }: SegmentedControlProps<T>) {
   return (
     <Tabs value={value} onValueChange={(next) => onChange(next as T)}>
       <TabsList aria-label={label} className={className}>
         {options.map((option) => (
-          <TabsTrigger key={option.value} value={option.value} disabled={option.disabled}>
+          <TabsTrigger
+            key={option.value}
+            value={option.value}
+            disabled={option.disabled}
+            className={buttonClassName}
+          >
             {option.label}
           </TabsTrigger>
         ))}

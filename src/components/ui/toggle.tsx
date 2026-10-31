@@ -4,7 +4,7 @@ import * as React from "react"
 import * as TogglePrimitive from "@radix-ui/react-toggle"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
 /* Toggle 复用 Button 度量：h-8 / rounded-[10px] / text-xs */
 const toggleVariants = cva(

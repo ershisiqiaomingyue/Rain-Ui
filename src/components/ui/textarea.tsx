@@ -1,5 +1,5 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
 /* 与 Input 同一度量：rounded-[10px] / text-xs / px-3；高度由 min-h 控制 */
 const Textarea = React.forwardRef<

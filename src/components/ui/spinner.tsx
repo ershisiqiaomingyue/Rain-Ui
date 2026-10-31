@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
 export interface SpinnerProps extends React.SVGAttributes<SVGSVGElement> {
   size?: "xs" | "sm" | "md" | "lg" | "default"

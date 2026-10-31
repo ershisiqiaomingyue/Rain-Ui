@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
 const itemVariants = cva(
   "group/item flex w-full items-center gap-2.5 rounded-[10px] border border-transparent px-3 py-2.5 text-sm transition-colors",

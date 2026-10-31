@@ -1,7 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AlertTriangle, X } from "lucide-react";
-import { Button } from "../ui";
+import { Button } from "../ui/Button";
 import { Checkbox } from "../ui/Checkbox";
 
 export interface ConfirmDialogProps {
@@ -155,3 +155,4 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 };
 
 export default ConfirmDialog;
+

@@ -3,7 +3,7 @@
 import * as React from "react"
 import { LoaderCircle } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
 export interface StepSpinnerProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** 外圈直径，默认与 Android-Tool 的任务步骤圆一致。 */

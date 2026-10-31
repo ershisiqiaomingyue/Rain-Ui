@@ -1003,7 +1003,7 @@ export function App() {
           <Section id="command" title="Command" label="命令面板 (支持点击按钮展开 & 快捷键 ⌘K)" count={17}>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <Button size="sm" onClick={() => setOpenCommand(true)} className="gap-2">
+                <Button onClick={() => setOpenCommand(true)} className="gap-2">
                   <Search className="size-3.5" />
                   <span>打开命令面板</span>
                   <kbd className="pointer-events-none inline-flex h-4 select-none items-center gap-0.5 rounded border bg-muted px-1 font-mono text-[9px] font-medium text-muted-foreground opacity-100">
@@ -1180,8 +1180,8 @@ export function App() {
                 </EmptyHeader>
                 <EmptyContent>
                   <div className="flex flex-wrap items-center justify-center gap-2">
-                    <Button size="sm">Create Project</Button>
-                    <Button variant="outline" size="sm">Import Project</Button>
+                    <Button>Create Project</Button>
+                    <Button variant="outline">Import Project</Button>
                   </div>
                   <Button variant="link" size="sm" className="text-muted-foreground hover:text-foreground text-xs gap-1 mt-1">
                     Learn More <ArrowUpRight className="size-3.5" />

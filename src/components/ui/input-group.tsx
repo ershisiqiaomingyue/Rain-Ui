@@ -1,5 +1,5 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
 /* 与 Input / Button 同一度量：h-8 / rounded-[10px] / text-xs */
 const InputGroup = React.forwardRef<

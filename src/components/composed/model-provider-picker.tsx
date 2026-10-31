@@ -3,13 +3,13 @@
 import * as React from "react"
 import { Check, ChevronDown, ChevronRight, Cpu, Plus, Settings2 } from "lucide-react"
 
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Separator } from "@/components/ui/separator"
-import { ReasoningEffort, REASONING_EFFORT_LEVELS } from "@/components/ui/reasoning-effort"
-import { cn } from "@/lib/utils"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
+import { Button } from "../ui/button"
+import { ButtonGroup } from "../ui/button-group"
+import { Separator } from "../ui/separator"
+import { ReasoningEffort, REASONING_EFFORT_LEVELS } from "../ui/reasoning-effort"
+import { cn } from "../../lib/utils"
 
 export type ModelOption = {
   id: string
