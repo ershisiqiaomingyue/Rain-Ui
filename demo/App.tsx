@@ -2,7 +2,7 @@
 import * as React from "react"
 import {
   Sun, Moon, Terminal, Plus, Trash2, Check, Sparkles,
-  Smartphone, AlertTriangle, Search, Info, Settings,
+  Smartphone, AlertTriangle, Search, Info, Settings, Eye, EyeOff, LockKeyhole,
   Folder, Layers, ChevronRight, ArrowRight, ExternalLink,
   MoreHorizontal, Play, RefreshCw, X, Shield, Sliders, Menu,
   Home, Inbox, Calendar, User2, ChevronUp, ChevronsUpDown,
@@ -51,7 +51,7 @@ import {
 } from "@/components/ui/empty"
 import { Field } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group"
+import { InputGroup, InputGroupInput, InputGroupAddon, InputGroupButton, InputGroupText } from "@/components/ui/input-group"
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription } from "@/components/ui/item"
 import { Label } from "@/components/ui/label"
 import {
@@ -73,6 +73,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
+import { Portal, usePortal } from "rain-ui"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Slider } from "@/components/ui/slider"
@@ -133,6 +134,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: "accordion", title: "Accordion", label: "折叠面板", group: "base" },
   { id: "hover-card", title: "Hover Card", label: "悬停卡片", group: "base" },
   { id: "alert", title: "Alert", label: "提示条", group: "base" },
+  { id: "portal", title: "Portal", label: "全局反馈", group: "base" },
   { id: "alert-dialog", title: "AlertDialog", label: "确认对话框", group: "base" },
   { id: "dialog", title: "Dialog", label: "模态对话框", group: "base" },
   { id: "popover", title: "Popover", label: "气泡浮层", group: "base" },
@@ -198,6 +200,9 @@ export function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false)
   const [toggleItalic, setToggleItalic] = React.useState(false)
   const [toggleUnderline, setToggleUnderline] = React.useState(false)
+  const portal = usePortal()
+  const [showInputGroupSecret, setShowInputGroupSecret] = React.useState(false)
+  const [inputGroupSecret, setInputGroupSecret] = React.useState("rain-ui-demo-key")
   // 组合组件演示状态
   const [providerId, setProviderId] = React.useState("anthropic")
   const [modelId, setModelId] = React.useState("claude-sonnet-4")
@@ -1211,26 +1216,83 @@ export function App() {
           </Section>
           {/* 15. Input Group */}
           {/* 15. Input Group */}
-          <Section id="input-group" title="Input Group" label="输入框组 (严格对齐 shadcn skill 规范)" count={24}>
-            <div className="max-w-sm space-y-3">
+          <Section id="input-group" title="Input Group" label="输入框组 (前置装饰 · 后置操作)" count={24}>
+            <div className="flex max-w-sm flex-col gap-3">
               <InputGroup>
                 <InputGroupAddon align="start">
-                  <Search className="size-3.5 text-muted-foreground" />
+                  <InputGroupText>
+                    <Search aria-hidden="true" />
+                  </InputGroupText>
                 </InputGroupAddon>
-                <InputGroupInput placeholder="Search documents..." />
-              </InputGroup>
-              <InputGroup>
-                <InputGroupInput placeholder="Quick action..." />
+                <InputGroupInput aria-label="搜索文档" placeholder="搜索文档..." />
                 <InputGroupAddon align="end">
-                  <kbd className="pointer-events-none inline-flex h-4 select-none items-center rounded border border-border/60 bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">⌘K</kbd>
+                  <kbd className="inline-flex h-4 select-none items-center rounded border border-border/60 bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">⌘K</kbd>
                 </InputGroupAddon>
               </InputGroup>
+
               <InputGroup>
-                <InputGroupInput placeholder="Search with button..." />
+                <InputGroupAddon align="start">
+                  <InputGroupText>
+                    <LockKeyhole aria-hidden="true" />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <InputGroupInput
+                  aria-label="演示密钥"
+                  type={showInputGroupSecret ? "text" : "password"}
+                  value={inputGroupSecret}
+                  onChange={(event) => setInputGroupSecret(event.target.value)}
+                  placeholder="输入访问密钥"
+                />
                 <InputGroupAddon align="end">
-                  <Button size="icon" variant="ghost" className="size-6 text-muted-foreground hover:text-foreground">
-                    <ArrowRight className="size-3.5" data-icon="inline-end" />
-                  </Button>
+                  {inputGroupSecret && (
+                    <InputGroupButton
+                      aria-label="清空密钥"
+                      title="清空密钥"
+                      onClick={() => setInputGroupSecret("")}
+                    >
+                      <X aria-hidden="true" />
+                    </InputGroupButton>
+                  )}
+                  <InputGroupButton
+                    aria-label={showInputGroupSecret ? "隐藏密钥" : "显示密钥"}
+                    title={showInputGroupSecret ? "隐藏密钥" : "显示密钥"}
+                    aria-pressed={showInputGroupSecret}
+                    onClick={() => setShowInputGroupSecret((visible) => !visible)}
+                  >
+                    {showInputGroupSecret ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+
+              <InputGroup>
+                <InputGroupInput
+                  aria-label="添加成员"
+                  placeholder="输入邮箱添加成员"
+                  onKeyDown={(event) => {
+                    if (event.key !== "Enter") return
+                    event.preventDefault()
+                    toast.success(`已添加 ${event.currentTarget.value || "成员"}`)
+                    event.currentTarget.value = ""
+                  }}
+                />
+                <InputGroupAddon align="end">
+                  <InputGroupButton
+                    aria-label="添加成员"
+                    title="添加成员"
+                    onClick={(event) => {
+                      const input = event.currentTarget
+                        .closest("[data-slot=input-group]")
+                        ?.querySelector<HTMLInputElement>("[data-slot=input-group-control]")
+                      if (!input?.value.trim()) {
+                        input?.focus()
+                        return
+                      }
+                      toast.success(`已添加 ${input.value.trim()}`)
+                      input.value = ""
+                    }}
+                  >
+                    <ArrowRight aria-hidden="true" />
+                  </InputGroupButton>
                 </InputGroupAddon>
               </InputGroup>
             </div>
@@ -1574,6 +1636,27 @@ export function App() {
               <div className="space-y-1.5">
                 <Skeleton className="h-3.5 w-44" />
                 <Skeleton className="h-3 w-28" />
+              </div>
+            </div>
+          </Section>
+          {/* 28. Portal */}
+          <Section id="portal" title="Portal" label="全局反馈（success / error / warning / info）" count={37}>
+            <div className="space-y-4">
+              <p className="text-xs text-muted-foreground">
+                业务层直接调用 <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">usePortal()</code>，
+                固定底部居中展示，最多同时保留 3 条。
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={() => portal.success("设置已保存。")}>成功</Button>
+                <Button variant="outline" onClick={() => portal.error("连接失败，请检查地址和密钥。")}>失败</Button>
+                <Button variant="outline" onClick={() => portal.warning("当前配置尚未测试。")}>警告</Button>
+                <Button variant="outline" onClick={() => portal.info("已切换到简体中文。")}>信息</Button>
+              </div>
+              <div className="grid max-w-xl gap-2">
+                <Portal tone="success" appearance="solid" message="终端设置已恢复默认值。" />
+                <Portal tone="error" appearance="solid" message="模型连接失败，请检查 API Key。" />
+                <Portal tone="warning" appearance="solid" message="上下文窗口超过模型已知上限。" />
+                <Portal tone="info" appearance="solid" message="设置会在保存后立即生效。" />
               </div>
             </div>
           </Section>

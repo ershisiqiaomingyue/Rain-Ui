@@ -57,6 +57,7 @@ export interface SelectProps {
   searchPlaceholder?: string
   emptyText?: string
   className?: string
+  contentClassName?: string
   style?: React.CSSProperties
   /** 渲染在选项列表上方。 */
   header?: React.ReactNode
@@ -89,6 +90,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       searchPlaceholder = "搜索选项",
       emptyText = "未找到匹配项",
       className,
+      contentClassName,
       style,
       header,
       footer,
@@ -102,6 +104,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
     const isControlled = value !== undefined
     const currentVal = isControlled ? value : uncontrolledValue
     const currentOption = options.find((option) => option.value === currentVal)
+    const displayText = options.length === 0 ? "暂无数据" : currentOption?.label ?? currentVal ?? placeholder
     const [search, setSearch] = React.useState("")
 
     const handleSelect = (optionValue: string) => {
@@ -137,6 +140,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       return chunks
     }, [options, searchable, search])
 
+    // 未展开且没有任何选项时只展示空状态，不允许打开空弹层。
     const unavailable = disabled || options.length === 0
 
     return (
@@ -158,14 +162,77 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             aria-haspopup="listbox"
             aria-label={ariaLabel}
             disabled={unavailable}
-            title={currentOption?.label || currentVal || placeholder}
-            className={cn("w-full justify-between gap-2 px-3 font-normal", className)}
+            title={displayText}
+            className={cn("w-fit min-w-0 max-w-full justify-between gap-2 px-3 font-normal", className)}
             style={style}
           >
-            <span className="flex min-w-0 items-center gap-2 truncate">
-              {currentOption?.leading}
-              <span className={cn("truncate", !currentOption && !currentVal && "text-muted-foreground/60")}>
-                {currentOption?.label ?? currentVal ?? placeholder}
+            {/*
+             * 宽度取所有可选项里最长的一行，而不是随当前选中项伸缩。
+             *
+             * 隐藏探针按弹层 item 的真实结构测量：图标、说明文字、右侧徽标、
+             * 勾选槽和行内操作都会参与。弹层相对触发器多出的 20px 内边距
+             * 用 -mx-2.5 抵消，末尾 pr-2 是统一预留的 8px。
+             */}
+            <span className="grid min-w-0 max-w-full">
+              {options.map((option, index) => (
+                <span
+                  key={`measure-option-${option.value}-${index}`}
+                  aria-hidden="true"
+                  className="invisible col-start-1 row-start-1 -mx-2.5 flex w-max items-center gap-2 whitespace-nowrap pr-2"
+                >
+                  {option.leading && <span className="flex shrink-0 items-center">{option.leading}</span>}
+                  <span className="flex flex-col items-start">
+                    <span>{option.label}</span>
+                    {option.description && (
+                      <span className="text-[11px] text-muted-foreground">{option.description}</span>
+                    )}
+                  </span>
+                  {option.trailing && (
+                    <span className="ml-auto shrink-0 text-[11px] text-muted-foreground">{option.trailing}</span>
+                  )}
+                  <Check className="size-3.5 shrink-0" />
+                  {option.actions?.map((action) => (
+                    <span
+                      key={`measure-action-${action.label}`}
+                      className="ml-1 inline-flex size-6 shrink-0 items-center justify-center"
+                    >
+                      {action.icon}
+                    </span>
+                  ))}
+                  {option.onRemove && (
+                    <span className="ml-1 inline-flex size-6 shrink-0 items-center justify-center">
+                      <Trash2 className="size-3.5" />
+                    </span>
+                  )}
+                </span>
+              ))}
+              {Array.from(new Set(options.flatMap((option) => option.group?.label ?? []))).map((groupLabel, index) => (
+                <span
+                  key={`measure-group-${groupLabel}-${index}`}
+                  aria-hidden="true"
+                  className="invisible col-start-1 row-start-1 -mx-2.5 w-max whitespace-nowrap pr-2 text-xs font-medium"
+                >
+                  {groupLabel}
+                </span>
+              ))}
+              {[
+                ...(currentVal && !currentOption ? [{ label: currentVal, leading: undefined }] : []),
+                ...(!currentVal && !currentOption ? [{ label: displayText, leading: undefined }] : []),
+              ].map((measureOption, index) => (
+                <span
+                  key={`measure-value-${measureOption.label}-${index}`}
+                  aria-hidden="true"
+                  className="invisible col-start-1 row-start-1 flex items-center gap-2 whitespace-nowrap"
+                >
+                  {measureOption.leading}
+                  {measureOption.label}
+                </span>
+              ))}
+              <span className="col-start-1 row-start-1 flex min-w-0 items-center gap-2">
+                {currentOption?.leading}
+                <span className={cn("truncate", !currentOption && !currentVal && "text-muted-foreground/60")}>
+                  {displayText}
+                </span>
               </span>
             </span>
             <ChevronsUpDown className="size-3.5 shrink-0 opacity-50" />
@@ -174,7 +241,10 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
         <PopoverContent
           align="start"
           sideOffset={6}
-          className="w-[var(--radix-popover-trigger-width)] min-w-[112px] rounded-lg p-0 shadow-md"
+          className={cn(
+            "w-[var(--radix-popover-trigger-width)] min-w-0 rounded-lg p-0 shadow-md",
+            contentClassName
+          )}
           onOpenAutoFocus={(event) => {
             // 可搜索时让输入框先拿焦点，避免 cmdk 抢走后光标又跳回列表。
             if (!searchable) event.preventDefault()
@@ -191,7 +261,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               />
             )}
             <CommandList className="max-h-[200px]">
-              {searchable && <CommandEmpty>{emptyText}</CommandEmpty>}
+              {searchable && <CommandEmpty>{options.length === 0 ? "暂无数据" : emptyText}</CommandEmpty>}
               {grouped.map((chunk, chunkIndex) => {
                 const items = chunk.options.map((option) => {
                   const isSelected = option.value === currentVal
@@ -203,7 +273,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                       onSelect={() => handleSelect(option.value)}
                     >
                       {option.leading && (
-                        <span className="shrink-0" title={option.label}>
+                        <span className="flex shrink-0 items-center" title={option.label}>
                           {option.leading}
                         </span>
                       )}

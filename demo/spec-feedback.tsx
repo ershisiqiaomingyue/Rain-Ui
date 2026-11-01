@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════════
-   反馈：Spinner / StepSpinner / Toast / Modal / Tooltip / ContextMenu /
+   反馈：Spinner / StepSpinner / Portal / Modal / Tooltip / ContextMenu /
         ProgressRing / ToolEmptyState / ToolBackButton
    ══════════════════════════════════════════════════════════════════════════ */
 
@@ -30,9 +30,9 @@ import {
   ToolBackButton,
   ToolEmptyState,
   Tooltip,
-  ToastCard,
-  ToastProvider,
-  useToast,
+  Portal,
+  PortalProvider,
+  usePortal,
 } from "rain-ui";
 import type { ContextMenuItem } from "rain-ui";
 import { Cell, Group, Note, Row, Stack } from "./kit";
@@ -85,61 +85,67 @@ export function SpecSpinner() {
   );
 }
 
-/* ── Toast ──────────────────────────────────────────────────────────────── */
+/* ── Portal ─────────────────────────────────────────────────────────────── */
 
-function ToastTrigger() {
-  const toast = useToast();
+function PortalTrigger() {
+  const portal = usePortal();
   return (
     <Row>
-      <Button variant="secondary" onClick={() => toast.success("已复制到剪贴板")}>
+      <Button variant="secondary" onClick={() => portal.success("已复制到剪贴板")}>
         success
       </Button>
-      <Button variant="secondary" onClick={() => toast.error("设备已断开，命令未执行")}>
+      <Button variant="secondary" onClick={() => portal.error("设备已断开，命令未执行")}>
         error
       </Button>
-      <Button variant="secondary" onClick={() => toast.info("后台任务已开始采集")}>
+      <Button variant="secondary" onClick={() => portal.warning("目标设备存储空间不足")}>
+        warning
+      </Button>
+      <Button variant="secondary" onClick={() => portal.info("后台任务已开始采集")}>
         info
       </Button>
       <Button
         variant="secondary"
         onClick={() =>
-          toast.push({
+          portal.push({
             message: "已写入 3 个文件",
             tone: "success",
-            action: { label: "撤销", onClick: () => toast.info("已撤销") },
+            action: { label: "撤销", onClick: () => portal.info("已撤销") },
           })
         }
       >
         带动作
       </Button>
-      <Button variant="secondary" onClick={() => toast.push({ message: "这条会停 8 秒", duration: 8000 })}>
+      <Button variant="secondary" onClick={() => portal.push({ message: "这条会停 8 秒", duration: 8000 })}>
         duration 8000
       </Button>
     </Row>
   );
 }
 
-export function SpecToast() {
+export function SpecPortal() {
   return (
     <Stack gap={20}>
-      <Group title="触发（真实堆栈，右下角）" hint="最多同时 3 条，超出时最旧的一条先走；error 默认 4.8s，其余 3s。">
-        <ToastProvider>
-          <ToastTrigger />
-        </ToastProvider>
+      <Group title="触发（真实堆栈，底部居中）" hint="最多同时 3 条，超出时最旧的一条先走；error 默认 4.8s，其余 3s。">
+        <PortalProvider position="bottom-center" appearance="solid">
+          <PortalTrigger />
+        </PortalProvider>
       </Group>
-      <Group title="静态样式（四态排开）" hint="左侧 2px tone 竖条 + 图标 + 文案；动作按钮是文字按钮，不用实心。">
+      <Group title="静态样式（四态排开）" hint="胶囊圆角 + 色调底色；图标、文案和动作在同一行，成功绿、失败红、警告黄、信息强调色。">
         <Stack gap={8}>
           <div style={{ maxWidth: 420 }}>
-            <ToastCard message="已复制到剪贴板" tone="success" onClose={() => {}} />
+            <Portal message="已复制到剪贴板" tone="success" appearance="solid" onClose={() => {}} />
           </div>
           <div style={{ maxWidth: 420 }}>
-            <ToastCard message="设备已断开，命令未执行" tone="error" onClose={() => {}} />
+            <Portal message="设备已断开，命令未执行" tone="error" appearance="solid" onClose={() => {}} />
           </div>
           <div style={{ maxWidth: 420 }}>
-            <ToastCard message="后台任务已开始采集" tone="info" onClose={() => {}} />
+            <Portal message="目标设备存储空间不足" tone="warning" appearance="solid" onClose={() => {}} />
           </div>
           <div style={{ maxWidth: 420 }}>
-            <ToastCard message="已写入 3 个文件" tone="success" actionLabel="撤销" onClose={() => {}} />
+            <Portal message="后台任务已开始采集" tone="info" appearance="solid" onClose={() => {}} />
+          </div>
+          <div style={{ maxWidth: 420 }}>
+            <Portal message="已写入 3 个文件" tone="success" appearance="solid" actionLabel="撤销" onClose={() => {}} />
           </div>
         </Stack>
       </Group>
@@ -420,9 +426,9 @@ export function SpecEmptyStates() {
           <span>主机状态仅在桌面应用内可读取。</span>
         </div>
       </Group>
-      <Group title="请勿这样用" hint="空状态不是错误提示：不要说「失败」「异常」，那是 NoticePanel / Toast 的职责。">
+      <Group title="请勿这样用" hint="空状态不是错误提示：不要说「失败」「异常」，那是 NoticePanel / Portal 的职责。">
         <Note>
-          错误 → NoticePanel tone=&quot;danger&quot; 或 Toast；空 → ToolEmptyState；加载中 → Spinner + 真实尺寸骨架。
+          错误 → NoticePanel tone=&quot;danger&quot; 或 Portal；空 → ToolEmptyState；加载中 → Spinner + 真实尺寸骨架。
         </Note>
       </Group>
     </Stack>

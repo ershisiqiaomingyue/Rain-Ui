@@ -47,7 +47,7 @@
   --radius-lg: var(--radius-overlay);
 
   /* ---- 层叠阶梯 ----------------------------------------------------------
-     以前每个弹层自己写数字：access-mode 25、toast 90、tooltip 10000、
+     以前每个弹层自己写数字：access-mode 25、portal 90、tooltip 10000、
      modal/confirm 100000、select/context-menu 999999。数字互不相干，于是同一
      层级的两个浮层谁盖谁全靠运气，调一个就撞另一个。这里只留一条阶梯，所有
      浮层引用它，不再出现裸数字。 */
@@ -56,7 +56,7 @@
   --z-menu: 60;        /* 下拉菜单、审批方式菜单、右键菜单 */
   --z-overlay: 70;     /* 模态/确认框遮罩 */
   --z-popover: 80;     /* 气泡提示——必须高过菜单和模态 */
-  --z-toast: 90;       /* 全局提示永远在最上 */
+  --z-portal: 90;      /* 全局提示永远在最上 */
 
   --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-base: 0.22s cubic-bezier(0.16, 1, 0.3, 1);
@@ -97,9 +97,10 @@
   --overlay-bg: color-mix(in srgb, #000000 36%, transparent);
   --tooltip-bg: var(--text-primary);
   --tooltip-text: var(--bg-canvas);
-  --toast-bg: var(--popover-bg);
-  --toast-text: var(--text-primary);
-  --toast-shadow: var(--popover-shadow);
+  --portal-neutral-bg: var(--popover-bg);
+  --portal-neutral-text: var(--text-primary);
+  --portal-neutral-border: var(--divider-color, var(--border-color, transparent));
+  --portal-neutral-shadow: var(--popover-shadow);
   --progress-track-bg: color-mix(in srgb, var(--text-primary) 10%, var(--bg-canvas));
   --terminal-foreground: var(--text-primary);
   --badge-bg: var(--status-neutral-bg);
@@ -772,3 +773,4 @@ html[data-theme] {
 html[data-theme="light"] {
   --status-pending-border: 1.5px solid rgba(15, 23, 42, 0.35);
 }
+

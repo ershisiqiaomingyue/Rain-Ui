@@ -41,17 +41,17 @@ pnpm add file:../rain-ui
 ## 使用
 
 ```tsx
-import { Button, Input, Card, ToastProvider, useToast } from "rain-ui";
+import { Button, Input, Card, PortalProvider, usePortal } from "rain-ui";
 import "rain-ui/styles.css"; // 只需一次，通常在 main.tsx
 
 export function App() {
   return (
-    <ToastProvider>
+    <PortalProvider position="bottom-center" appearance="solid">
       <Card>
         <Input placeholder="搜索设备" clearable />
         <Button variant="primary">开始采集</Button>
       </Card>
-    </ToastProvider>
+    </PortalProvider>
   );
 }
 ```
@@ -74,7 +74,7 @@ import { readAppTheme, setAppTheme, toggleAppTheme, subscribeAppTheme } from "ra
 | --- | --- |
 | 表单 | `Button` `Input` `Select` `Switch` `Checkbox` `SegmentedControl` `Badge` |
 | 布局 | `Card`(`CardHeader/CardBody/CardFooter`) `Divider` `Table` `PropertyGrid` `ListItem` `SessionTabs` `ResizablePane` |
-| 反馈 | `Spinner` `StepSpinner` `Toast` `Modal` `Tooltip` `ContextMenu` `ProgressRing` `TaskStepList` `NoticePanel`(含 `NoticeQueueRow` / `NoticeFileList`) `CompactionProgress` `ToolEmptyState` `ToolBackButton` |
+| 反馈 | `Spinner` `StepSpinner` `Portal` `Modal` `Tooltip` `ContextMenu` `ProgressRing` `TaskStepList` `NoticePanel`(含 `NoticeQueueRow` / `NoticeFileList`) `CompactionProgress` `ToolEmptyState` `ToolBackButton` |
 | 对话 | `UsageMetrics` `Attachment` `FileChangeCard` `FileChangeNotice` `FileDiffView` `FilePreviewPanel` `AccessModeMenu` |
 | 应用级 | `BootScreen` `BorderGlow` `ToolIcon` `ConfirmDialog` `RenameDialog` |
 

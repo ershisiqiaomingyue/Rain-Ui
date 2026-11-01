@@ -33,7 +33,7 @@
 @import "../../components/ToolIcon/tool-icon.css";
 @import "../../components/BorderGlow/border-glow.css";
 @import "../../components/BootScreen/boot-screen.css";
-@import "../../components/ui/toast.css";
+@import "../../components/ui/portal.css";
 @import "../../components/ui/list-item.css";
 @import "../../components/ui/notice-panel.css";
 @import "../../components/ui/attachment.css";
@@ -52,3 +52,4 @@
 @import "../../components/ui/access-mode-menu.css";
 @import "../../components/ResizablePane/resizable-pane.css";
 @import "../../src/components/ui/reasoning-effort.css";
+

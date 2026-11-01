@@ -1,5 +1,5 @@
 // UI Components - shadcn / Apple HIG style
-// Terminal 自有 kit（Card/Badge/Table/Checkbox/Spinner/Tooltip/Modal/Toast 等）。
+// Terminal 自有 kit（Card/Badge/Table/Checkbox/Spinner/Tooltip/Modal/Portal 等）。
 // 注意：kit 的 Button/Input/Select/Switch 已由下方 shadcn 版本取代（default 尺寸 32px）。
 export * from "../components/ui"
 // shadcn Card 以别名导出：kit 的 Card（CSS 版）仍被旧视图使用，迁移完成后统一移除。
@@ -72,5 +72,6 @@ export {
   type AppFont,
   type AppMonoFont,
 } from "./lib/font"
+
 
 

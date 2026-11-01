@@ -13,7 +13,7 @@ import {
 } from "./spec-layout";
 import {
   SpecSpinner,
-  SpecToast,
+  SpecPortal,
   SpecModal,
   SpecTooltip,
   SpecContextMenu,
@@ -85,7 +85,7 @@ export const SECTIONS: DemoSection[] = [
 
   /* ── 反馈 ─────────────────────────────────────────────────────────── */
   { id: "spinner", title: "Spinner 加载", note: "全库唯一的旋转图形，自带 reduced-motion 降级。", group: "feedback", render: () => <SpecSpinner /> },
-  { id: "toast", title: "Toast 轻提示", note: "一个 Provider 管全站堆栈，最多同时 3 条。", group: "feedback", render: () => <SpecToast /> },
+  { id: "portal", title: "Portal 全局提示", note: "直接调用 usePortal()；底部居中堆栈，最多同时 3 条。", group: "feedback", render: () => <SpecPortal /> },
   { id: "modal", title: "Modal 弹窗", note: "普通 / 危险确认 / 执行中三种形态，Esc 关闭。", group: "feedback", render: () => <SpecModal /> },
   { id: "tooltip", title: "Tooltip 提示", note: "悬停或键盘聚焦才出现；图标按钮必须配一个。", group: "feedback", render: () => <SpecTooltip /> },
   { id: "context-menu", title: "ContextMenu 右键菜单", note: "方向键移动、Enter 选中、Esc 归还焦点。", group: "feedback", render: () => <SpecContextMenu /> },

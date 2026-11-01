@@ -1,0 +1,155 @@
+/* ==========================================================================
+   Portal / Global feedback
+   --------------------------------------------------------------------------
+   One stack per surface. `neutral` is the quiet app-wide treatment; `solid`
+   adds a low-saturation tone wash for dense settings dialogs. The capsule is
+   intentionally compact so it reads as feedback, not as another dialog.
+   ========================================================================== */
+
+.ui-portal-stack {
+  position: fixed;
+  z-index: var(--z-portal-layer, 15000);
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: max-content;
+  max-width: min(380px, calc(100vw - 40px));
+  pointer-events: none;
+}
+
+.ui-portal-stack.is-bottom-right {
+  right: 20px;
+  align-items: flex-end;
+}
+
+.ui-portal-stack.is-bottom-center {
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.ui-portal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: 100%;
+  min-height: 36px;
+  padding: 6px 8px 6px 12px;
+  border: 1px solid var(--portal-border);
+  border-radius: var(--radius-full);
+  background: var(--portal-bg);
+  color: var(--portal-text);
+  box-shadow: var(--portal-shadow);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  pointer-events: auto;
+  animation: ui-portal-rise 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ui-portal.is-neutral {
+  --portal-bg: var(--portal-neutral-bg);
+  --portal-text: var(--portal-neutral-text);
+  --portal-border: var(--portal-neutral-border);
+  --portal-shadow: var(--portal-neutral-shadow);
+}
+
+.ui-portal.is-solid.is-success {
+  --portal-bg: color-mix(in srgb, var(--success-text) 11%, var(--popover-bg));
+  --portal-text: var(--status-success-text);
+  --portal-border: color-mix(in srgb, var(--success-text) 24%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, var(--success-text) 13%, transparent);
+}
+
+.ui-portal.is-solid.is-error {
+  --portal-bg: color-mix(in srgb, var(--danger-text) 11%, var(--popover-bg));
+  --portal-text: var(--status-danger-text);
+  --portal-border: color-mix(in srgb, var(--danger-text) 24%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, var(--danger-text) 13%, transparent);
+}
+
+.ui-portal.is-solid.is-warning {
+  --portal-bg: color-mix(in srgb, var(--warning-text) 12%, var(--popover-bg));
+  --portal-text: var(--status-warning-text);
+  --portal-border: color-mix(in srgb, var(--warning-text) 26%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, var(--warning-text) 13%, transparent);
+}
+
+.ui-portal.is-solid.is-info {
+  --portal-bg: color-mix(in srgb, var(--accent-primary) 10%, var(--popover-bg));
+  --portal-text: var(--accent-ink);
+  --portal-border: color-mix(in srgb, var(--accent-primary) 22%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, var(--accent-primary) 12%, transparent);
+}
+
+/* Static previews sit in page flow instead of the fixed stack. */
+.ui-portal.is-static {
+  width: 100%;
+  min-height: 36px;
+  animation: none;
+}
+
+.ui-portal-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: currentColor;
+}
+
+.ui-portal.is-neutral.is-success .ui-portal-icon { color: var(--status-success-text); }
+.ui-portal.is-neutral.is-error .ui-portal-icon { color: var(--status-danger-text); }
+.ui-portal.is-neutral.is-warning .ui-portal-icon { color: var(--status-warning-text); }
+.ui-portal.is-neutral.is-info .ui-portal-icon { color: var(--accent-ink); }
+
+.ui-portal-text {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ui-portal .ui-portal-action.btn {
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+.ui-portal .ui-portal-close.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  align-self: center;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background: transparent;
+  box-shadow: none;
+  color: currentColor;
+  opacity: 0.62;
+  transition: background-color var(--transition-fast), color var(--transition-fast),
+    border-color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.ui-portal .ui-portal-close.btn:hover:not(:disabled) {
+  color: var(--status-danger-text);
+  background: color-mix(in srgb, var(--danger-text) 12%, transparent);
+  border-color: transparent;
+  opacity: 1;
+}
+
+.ui-portal .ui-portal-close.btn:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 1px;
+}
+
+@keyframes ui-portal-rise {
+  from { transform: translateY(6px); }
+  to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-portal { animation: none; }
+  .ui-portal .ui-portal-close.btn { transition: none; }
+}
