@@ -298,7 +298,7 @@ export function App() {
       root.setAttribute("data-theme", "dark")
     } else {
       root.classList.remove("dark")
-      root.removeAttribute("data-theme")
+      root.setAttribute("data-theme", "light")
     }
     root.setAttribute("data-accent", accentColor)
   }, [dark, accentColor])

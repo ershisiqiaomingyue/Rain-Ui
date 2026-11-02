@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "./tailwind.css";
+import "../assets/styles/index.css";
 import { App } from "./App";
 import { PortalProvider } from "rain-ui";
 
