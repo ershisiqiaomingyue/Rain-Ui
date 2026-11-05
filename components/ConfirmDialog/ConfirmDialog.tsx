@@ -139,7 +139,8 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             {additionalAction}
             <Button
               size="sm"
-              variant={variant === "danger" ? "danger" : "primary"}
+              variant="primary"
+              className={variant === "danger" ? "confirm-dialog-confirm-danger" : undefined}
               disabled={busy || confirmDisabled || (Boolean(acknowledgeLabel) && !acknowledged)}
               loading={busy}
               onClick={onConfirm}

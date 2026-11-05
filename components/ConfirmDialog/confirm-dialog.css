@@ -146,7 +146,20 @@
   --btn-primary-text: var(--btn-confirm-text);
 }
 
-.confirm-dialog-actions .btn-primary:disabled {
+/* 删除确认是唯一的破坏性主操作，必须比“取消”更醒目；
+   .btn-danger 的静默描边适合工具栏，放在这里会看起来像禁用态。 */
+.confirm-dialog-actions .confirm-dialog-confirm-danger {
+  --btn-primary-bg: #e5484d;
+  --btn-primary-hover: #d93d42;
+  --btn-primary-text: #ffffff;
+  --btn-primary-rim: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.confirm-dialog-actions .confirm-dialog-confirm-danger:active:not(:disabled) {
+  background: #c73539;
+}
+
+.confirm-dialog-actions .btn-primary:disabled:not(.btn-loading) {
   background: var(--btn-secondary-bg);
   color: var(--text-tertiary);
   opacity: .65;
