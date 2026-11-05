@@ -3,7 +3,7 @@
 Android Toolkit 沉淀出来的 React 组件库：一套 token、一批控件、一组对话/通知组件，
 亮暗双主题，桌面工具类应用可以直接拿来搭界面。
 
-- React 18 / 19，**只依赖** `react`、`react-dom`、`clsx`、`lucide-react`
+- React 18 / 19，**只依赖** `react`、`react-dom`、`clsx`
 - 不引用 Tauri、不读业务 store、不含路由 —— 纯展示层
 - 样式是手写 CSS + 一层 token 变量，没有 Tailwind / CSS-in-JS / 组件框架
 - 117 KB CSS（gzip 19.7 KB），字体走系统栈，不额外加载
@@ -102,7 +102,7 @@ rain-ui/
 
 | 文件 | 说明 |
 | --- | --- |
-| `dist/rain-ui.js` / `.cjs` | ESM / CJS 两份代码，`react`、`lucide-react` 等留在外部 |
+| `dist/rain-ui.js` / `.cjs` | ESM / CJS 两份代码，`react`、`react-dom` 等留在外部 |
 | `dist/rain-ui.css` | 合并后的全部样式（117 KB / gzip 20 KB） |
 | `dist/index.d.ts` | 类型入口（109 个 .d.ts，指向 `dist/components` 与 `dist/types`） |
 | `dist/components/**` | 46 个独立入口，可按需深层引入 |
