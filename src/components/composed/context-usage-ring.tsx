@@ -24,6 +24,8 @@ export interface ContextUsageRingProps {
   /** 读数正在获取：轨道保持不动，只让填充弧呼吸，绝不整圈旋转 */
   busy?: boolean
   readingModelId?: string
+  /** 产品补充说明：拼进按钮 title，并在面板底部单独一行显示 */
+  hint?: string
   anomaly?: boolean
   className?: string
   onRefresh?: () => void
@@ -51,6 +53,7 @@ export function ContextUsageRing({
   messageTokens,
   busy = false,
   readingModelId,
+  hint,
   anomaly = false,
   className,
   onRefresh,
@@ -131,15 +134,15 @@ export function ContextUsageRing({
           title={
             anomaly
               ? "上下文读数自相矛盾"
-              : `上下文用量 ${displayPercent}（~${formatTokens(tokens)} / ${formatTokens(capacity)}）`
+              : `上下文用量 ${displayPercent}（~${formatTokens(tokens)} / ${formatTokens(capacity)}）${hint ? `；${hint}` : ""}`
           }
         >
-          <span className="relative flex size-5 shrink-0 items-center justify-center">
-            <svg className="-rotate-90" viewBox="0 0 20 20" width="20" height="20">
+          <span className="relative flex size-6 shrink-0 items-center justify-center">
+            <svg className="-rotate-90" viewBox="0 0 20 20" width="22" height="22">
               <circle
                 className="text-muted-foreground/20"
                 stroke="currentColor"
-                strokeWidth="2.4"
+                strokeWidth="2.2"
                 fill="none"
                 cx="10"
                 cy="10"
@@ -152,7 +155,7 @@ export function ContextUsageRing({
                   busy && "animate-pulse"
                 )}
                 stroke="currentColor"
-                strokeWidth="2.4"
+                strokeWidth="2.2"
                 strokeLinecap="round"
                 fill="none"
                 cx="10"
@@ -163,7 +166,7 @@ export function ContextUsageRing({
               />
             </svg>
           </span>
-          <span className="font-mono text-[11px] tabular-nums">{displayPercent}</span>
+          <span className="font-mono text-xs tabular-nums">{displayPercent}</span>
         </Button>
       </PopoverTrigger>
 
@@ -207,9 +210,10 @@ export function ContextUsageRing({
           ))}
         </ul>
 
-        {readingModelId && (
-          <div className="border-t border-border/60 pt-1.5 text-[10.5px] text-muted-foreground/80">
-            读数上报来源：{readingModelId}
+        {(readingModelId || hint) && (
+          <div className="space-y-1 border-t border-border/60 pt-1.5 text-[10.5px] text-muted-foreground/80">
+            {readingModelId && <div>读数上报来源：{readingModelId}</div>}
+            {hint && <div>{hint}</div>}
           </div>
         )}
       </PopoverContent>

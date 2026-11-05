@@ -1,0 +1,35 @@
+/* 行距、行高、截断都写在组件自己的样式表里：库内的 Tailwind 工具类要靠使用方扫描
+   dist 才能生效，一旦使用方的构建没重新扫描，就会退回「行贴在一起 / g、p 被裁掉」。
+   这些是选择器的基本度量，不该依赖使用方的构建产物。 */
+
+/* 供应商清单与模型清单使用同一档行距：4px。选中的底色与 hover 底色是两条相邻的行，
+   没有间距时两块底色会连成一片。 */
+.ui-model-picker-providers,
+.ui-model-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ui-model-picker-list {
+  max-height: 14rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* 行内文字：12px / 1.6 行高。名字要能省略号截断，但行盒必须比字号高出足够的
+   下伸部空间，否则 g、p、q、y 的尾巴会被 overflow:hidden 切掉。 */
+.ui-model-picker-label {
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.6;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 触发器上的模型名：名字太长就省略，整体在按钮里居中。 */
+.ui-model-picker-trigger-label {
+  max-width: 9.5rem;
+  min-width: 0;
+  text-align: center;
+}

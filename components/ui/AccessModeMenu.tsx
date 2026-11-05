@@ -4,11 +4,12 @@ import { useEffect, useRef, type RefObject } from "react";
 export type AccessMode = "ask" | "risk" | "full";
 
 const modes = [
-  { value: "ask", label: "请求批准", description: "执行命令、shell、写入文件和 MCP 操作时始终询问" },
-  { value: "risk", label: "替我审批", description: "只读检查自动执行，写入、命令和 shell 请求批准" },
+  // 描述一律压到一行：菜单是选档位用的，不是说明书，长了就没人读。
+  { value: "ask", label: "请求批准", description: "执行命令、写入文件时始终询问" },
+  { value: "risk", label: "替我审批", description: "只读操作自动执行，其余请求批准" },
   // G3-D：语义诚实——这是权限模式不是沙盒。full = 完全信任（无隔离）：
   // 模型生成的命令与你本人的权限完全相同，没有任何强制边界兜底。
-  { value: "full", label: "完全信任（无隔离）", description: "不再逐次询问；无沙盒隔离——模型以你的完整权限执行，请仅在可信环境使用" },
+  { value: "full", label: "完全信任（无隔离）", description: "以你的完整权限执行，无沙箱隔离" },
 ] as const;
 
 /** Selection only: the caller retains approval and full-access confirmation. */

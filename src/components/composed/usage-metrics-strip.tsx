@@ -33,17 +33,23 @@ export interface UsageMetricsStripProps {
   cost?: { label: string; value: string | null; detail?: string }
   /** 带图标的那一项（图1：Token 用量浮层） */
   tokenUsage?: TokenUsageBreakdown
+  /** 浮层底部的操作区（例如「刷新余额」按钮） */
+  popoverFooter?: React.ReactNode
   className?: string
 }
 
-/** 单条指标：有 detail 时包 Tooltip，可 hover 展开 */
+/**
+ * 单条指标：有 detail 时包 Tooltip，可 hover 展开；没有 detail 的条目不可交互，
+ * 因此不给 hover 底色。数值限宽截断（完整值始终在 detail 里），避免某一条读数变长
+ * 时把同一行的其他条目推开。
+ */
 function Metric({ metric }: { metric: UsageMetric }) {
   const body = (
     <>
       <span className="text-muted-foreground">{metric.label}</span>
       <b
         className={cn(
-          "font-medium tabular-nums",
+          "min-w-0 max-w-[14ch] truncate font-medium tabular-nums",
           metric.emphasis ? "text-primary" : "text-foreground"
         )}
       >
@@ -51,14 +57,16 @@ function Metric({ metric }: { metric: UsageMetric }) {
       </b>
     </>
   )
-  const hitArea = "inline-flex min-h-9 cursor-default items-center gap-1 rounded-[10px] px-2.5 transition-colors hover:bg-muted/70"
+  const hitArea = "inline-flex min-h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-2.5"
 
-  if (!metric.detail) return <span className={hitArea}>{body}</span>
+  if (!metric.detail) return <span className={cn(hitArea, "cursor-default")}>{body}</span>
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <span className={hitArea}>{body}</span>
+        <span className={cn(hitArea, "cursor-default transition-colors hover:bg-muted/70")}>
+          {body}
+        </span>
       </TooltipTrigger>
       <TooltipContent side="top" className="max-w-72 whitespace-pre-line leading-relaxed">
         {metric.detail}
@@ -80,6 +88,7 @@ export function UsageMetricsStrip({
   onRefreshBalance,
   cost,
   tokenUsage,
+  popoverFooter,
   className,
 }: UsageMetricsStripProps) {
   const nodes: React.ReactNode[] = []
@@ -90,13 +99,12 @@ export function UsageMetricsStrip({
         <PopoverTrigger asChild>
           <button
             type="button"
-            aria-label="Token 用量明细"
-            className="inline-flex min-h-9 items-center gap-1 rounded-[10px] px-2.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40"
+            aria-label="会话用量明细"
+            className="inline-flex min-h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-2.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             <Database className="size-3 text-muted-foreground" />
-            <b className="font-medium tabular-nums text-foreground">{tokenUsage.total}</b>
             <span className="text-muted-foreground">缓存命中</span>
-            <b className="font-medium tabular-nums text-foreground">
+            <b className="max-w-[14ch] truncate font-medium tabular-nums text-foreground">
               {tokenUsage.rows.find((row) => row.id === "cache")?.value ?? "—"}
             </b>
           </button>
@@ -114,12 +122,17 @@ export function UsageMetricsStrip({
           <Separator className="my-2" />
           <ul className="space-y-2">
             {tokenUsage.rows.map((row) => (
-              <li key={row.id} className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">{row.label}</span>
-                <span className="font-mono tabular-nums text-foreground">{row.value}</span>
+              <li key={row.id} className="flex items-center justify-between gap-2 text-xs">
+                <span className="shrink-0 text-muted-foreground">{row.label}</span>
+                <span className="min-w-0 truncate text-right font-mono tabular-nums text-foreground">
+                  {row.value}
+                </span>
               </li>
             ))}
           </ul>
+          {popoverFooter && (
+            <div className="mt-2 border-t border-border/60 pt-2">{popoverFooter}</div>
+          )}
         </PopoverContent>
       </Popover>
     )
@@ -144,10 +157,12 @@ export function UsageMetricsStrip({
         onClick={onRefreshBalance}
         disabled={balance.refreshing}
         title={balance.detail}
-        className="inline-flex min-h-9 items-center gap-1 rounded-[10px] px-2.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
+        className="inline-flex min-h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-2.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
       >
         <span className="text-muted-foreground">{balance.label}</span>
-        <b className="font-medium tabular-nums text-foreground">{balance.value ?? "—"}</b>
+        <b className="max-w-[14ch] truncate font-medium tabular-nums text-foreground">
+          {balance.value ?? "—"}
+        </b>
         {balance.refreshing && <Spinner size="xs" className="size-2.5 text-muted-foreground" />}
       </button>
     )
@@ -157,7 +172,8 @@ export function UsageMetricsStrip({
     <TooltipProvider delayDuration={120}>
       <div
         className={cn(
-          "flex flex-wrap items-center gap-x-1 gap-y-1 text-[11px] leading-none",
+          // 一行到底：窗口变窄时不换行、不把其他读数挤走，放不下的条目靠 hover / 浮层展开。
+          "flex min-h-8 flex-nowrap items-center gap-x-1 overflow-hidden text-[11px] leading-none",
           className
         )}
         aria-label="会话用量"

@@ -12,6 +12,7 @@ import { StepSpinner } from "../ui/step-spinner"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Input } from "../ui/input"
 import { ScrollArea } from "../ui/scroll-area"
+import { NoticeQueueDot } from "../../../components/ui/NoticeContent"
 import { cn } from "../../lib/utils"
 
 export type NoticeItemKind =
@@ -264,16 +265,6 @@ function QueueActions({
   )
 }
 
-/** 与 Android-Tool 排队提示一致：8px 主色圆点 + 外扩呼吸环。 */
-function QueueDot() {
-  return (
-    <span
-      aria-hidden="true"
-      className="relative mx-0.5 size-2 shrink-0 rounded-full bg-primary before:absolute before:-inset-[3px] before:animate-ping before:rounded-full before:border-[1.5px] before:border-primary before:[animation-duration:1.8s] before:[animation-iteration-count:3] motion-reduce:before:animate-none"
-    />
-  )
-}
-
 function QueueRow({
   message,
   index,
@@ -316,7 +307,7 @@ function QueueRow({
       )}
     >
       {single ? (
-        <QueueDot />
+        <NoticeQueueDot />
       ) : (
         <span className="w-[18px] shrink-0 text-center font-mono text-[11px] font-semibold tabular-nums text-muted-foreground">
           {String(index + 1).padStart(2, "0")}
@@ -483,7 +474,7 @@ function QueueNotice({
             onClick={onToggle}
             className="h-auto min-h-9 w-full justify-start gap-2 rounded-none px-3 py-2 text-left hover:bg-muted/45"
           >
-            <QueueDot />
+            <NoticeQueueDot />
             <span className="min-w-0 flex-1 truncate text-xs font-semibold text-foreground">
               {messages.length} 条追加消息等待中
             </span>

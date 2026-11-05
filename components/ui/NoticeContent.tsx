@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import clsx from "clsx";
 import { ArrowUp, ChevronRight, GripVertical, Pencil, Trash2 } from "lucide-react";
 import { Button } from "./Button";
 import { Card } from "./Card";
@@ -19,7 +20,7 @@ export function NoticePermissionContent({ command, environment, instruction, bus
       <Button variant="danger" size="xs" disabled={busy} onClick={() => onResolve?.("deny")}>拒绝</Button>
     </div>
     {onInstructionChange && <div className="ui-notice-reply">
-      <Input size="sm" value={instruction ?? ""} disabled={busy} maxLength={8000} aria-label="回复执行说明"
+      <Input size="sm" variant="surface" value={instruction ?? ""} disabled={busy} maxLength={8000} aria-label="回复执行说明"
         placeholder="输入调整要求或限制，交给 AI 重新处理"
         onChange={(event) => onInstructionChange(event.target.value)} onKeyDown={(event) => {
           if (event.key === "Enter" && !event.nativeEvent.isComposing && instruction?.trim() && !busy) {
@@ -31,23 +32,43 @@ export function NoticePermissionContent({ command, environment, instruction, bus
   </div>;
 }
 
+/** 追加消息的蓝点：8px 实心点 + 呼吸环。环靠 `inset: -3px` 定位，放大到 2.4 倍
+ *  时仍与点同心；用负 margin 定位的旧写法一放大就会偏心，是这个图标的病根。 */
+export function NoticeQueueDot({ className }: { className?: string }) {
+  return <span aria-hidden="true" className={clsx("ui-notice-queue-dot", className)} />;
+}
+
+/**
+ * AI 询问的回答区。
+ * 建议答案排成一行（放不下才换行），点它就是直接交付这条回答，不需要再按一次「回答」。
+ * 末行是自由输入的输入框，右侧跟着「回答 / 跳过」——两个动作都在输入框右边，
+ * 所以「跳过」必须是实心控件（`subtle` 是透明变体，落在这里会看不见）。
+ */
 export function NoticeQuestionContent({ options, value, busy, onChange, onAnswer, onSkip }: {
   options: string[]; value: string; busy?: boolean; onChange: (value: string) => void;
-  onAnswer?: () => void; onSkip?: () => void;
+  onAnswer?: (value: string) => void; onSkip?: () => void;
 }) {
+  const submit = (answer: string) => {
+    const text = answer.trim();
+    if (busy || !text) return;
+    onAnswer?.(text);
+  };
   return <div className="ui-notice-body-stack" aria-busy={busy}>
-    <div className="ui-notice-body-actions" aria-label="建议答案">
-      {options.map((option) => <Button key={option} variant="secondary" size="xs" aria-pressed={value === option} disabled={busy} onClick={() => onChange(option)}>{option}</Button>)}
-    </div>
-    <Input size="sm" placeholder="或输入自己的回答" value={value} disabled={busy} maxLength={8000} aria-label="回答 AI"
-      onChange={(event) => onChange(event.target.value)} onKeyDown={(event) => {
-        if (event.key === "Enter" && !event.nativeEvent.isComposing && value.trim() && !busy) {
-          event.preventDefault(); onAnswer?.();
-        }
-      }} />
-    <div className="ui-notice-body-actions">
-      <Button variant="primary" size="xs" loading={busy} disabled={busy || !value.trim()} onClick={onAnswer}>回答</Button>
-      <Button variant="subtle" size="xs" className="btn-danger-hover" disabled={busy} onClick={onSkip}>跳过</Button>
+    {options.length > 0 && <div className="ui-notice-answer-list" aria-label="建议答案">
+      {options.map((option) => <Button key={option} variant="secondary" size="xs" className="ui-notice-answer-option"
+        disabled={busy} title={`回答：${option}`} onClick={() => submit(option)}>
+        <span className="ui-notice-answer-text">{option}</span>
+      </Button>)}
+    </div>}
+    <div className="ui-notice-reply">
+      <Input size="md" variant="surface" placeholder="或输入自己的回答" value={value} disabled={busy} maxLength={8000} aria-label="回答 AI"
+        onChange={(event) => onChange(event.target.value)} onKeyDown={(event) => {
+          if (event.key === "Enter" && !event.nativeEvent.isComposing) {
+            event.preventDefault(); submit(value);
+          }
+        }} />
+      <Button variant="primary" size="md" loading={busy} disabled={busy || !value.trim()} onClick={() => submit(value)}>回答</Button>
+      <Button variant="secondary" size="md" className="btn-danger-hover" disabled={busy} onClick={onSkip}>跳过</Button>
     </div>
   </div>;
 }

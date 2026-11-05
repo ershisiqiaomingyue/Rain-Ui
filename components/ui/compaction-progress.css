@@ -33,8 +33,11 @@
 .ui-compaction-label { color: var(--text-primary); }
 
 /* The completed tick reuses the tool-status circle verbatim: a filled accent
-   disc with a white 2.8-stroke check. Without the disc the bare green glyph
-   reads as a different icon family from the tool rows. */
+   disc with a 2.8-stroke check. Without the disc the bare green glyph
+   reads as a different icon family from the tool rows.
+   The glyph and halo are accent-derived rather than hard white/indigo, so the
+   check stays legible on the disc (--accent-text is picked per accent) and the
+   shadow never reads as a glow borrowed from another hue. */
 .ui-compaction.is-completed .ui-compaction-icon {
   width: 18px;
   height: 18px;
@@ -43,14 +46,14 @@
   border-radius: 50%;
   border: 1px solid transparent;
   background: var(--accent-primary, #6366f1);
-  color: #ffffff;
-  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
+  color: var(--accent-text);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-primary) 40%, transparent);
 }
 
 .ui-compaction.is-completed .ui-compaction-icon svg {
   width: 11px;
   height: 11px;
-  stroke: #ffffff;
+  stroke: var(--accent-text);
   stroke-width: 2.8;
 }
 

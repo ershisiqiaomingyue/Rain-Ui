@@ -252,24 +252,26 @@
   --card-tone-deep: #0c1017;
   --bg-muted: var(--bg-surface);
   --bg-hover: rgba(255, 255, 255, 0.06);
-  --bg-selected: rgba(99, 102, 241, 0.22);
+  --bg-selected: color-mix(in srgb, var(--accent-primary) 22%, transparent);
   --bg-input: rgba(255, 255, 255, 0.05);
   --card-rim: 0 0 0 0 transparent;
   --accent-color: var(--accent-primary);
-  --btn-primary-bg: #5b5ee2;
-  --btn-primary-hover: #4f46e5;
-  --btn-primary-text: #ffffff;
-  --btn-confirm-bg: #5b5ee2;
-  --btn-confirm-hover: #4f46e5;
-  --btn-confirm-text: #ffffff;
+  /* 主按钮/确认按钮：填充走 --accent-deep 而不是主色本身，
+     因为主色是图形色（白字压在上面只有 4.47:1），实体按钮要 4.5:1。 */
+  --btn-primary-bg: var(--accent-deep);
+  --btn-primary-hover: var(--accent-hover);
+  --btn-primary-text: var(--accent-text);
+  --btn-confirm-bg: var(--accent-deep);
+  --btn-confirm-hover: var(--accent-hover);
+  --btn-confirm-text: var(--accent-text);
 
   /* 下拉浮层面板专属：精工悬浮岛 (深色) */
   --popover-bg: rgba(22, 26, 35, 0.96);
   --popover-border: 1px solid rgba(255, 255, 255, 0.1);
   --popover-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   --popover-item-hover: rgba(255, 255, 255, 0.08);
-  --popover-item-active-bg: rgba(99, 102, 241, 0.22);
-  --popover-item-active-text: #a5b4fc;
+  --popover-item-active-bg: color-mix(in srgb, var(--accent-primary) 22%, transparent);
+  --popover-item-active-text: var(--accent-ink-soft);
 
   /* ── 表单控件 (暗色) ───────────────────────────────────────────────────
      同样是"比所在表面亮一档"的冷调阶梯。用的不是纯白叠加（那会偏灰发闷，
@@ -286,7 +288,7 @@
   --input-surface-focus-bg: #232b3d;
   --control-unchecked-bg: rgba(255, 255, 255, 0.14);
   --control-checked-bg: var(--accent-primary);
-  --control-checked-mark: #ffffff;
+  --control-checked-mark: var(--accent-text);
   --input-placeholder: var(--input-muted);
   --input-focus-border: 1px solid transparent;
   --input-focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 30%, transparent);
@@ -371,15 +373,29 @@
   --btn-danger-hover: color-mix(in srgb, var(--danger-text) 12%, var(--bg-canvas));
   --btn-danger-text: var(--status-danger-text);
 
-  /* 品牌主色 - 方案 2: 雾霾冷靛青 (Slate Indigo) */
-  --accent-gradient: linear-gradient(135deg, #6366f1, #4f46e5);
+  /* 品牌主色：雾霾冷靛青 (Slate Indigo)，全库唯一的强调色。
+     沿用 Tivano 主题系统的一条规则：主题只提供主色与状态色，绝不涂不透明的表面；
+     换主色时改下面这组 token 就够了，画布与表面不动。
+
+     --accent-primary   图形/填充色（进度、勾选、圆点、焦点环、占位块）
+     --accent-deep      实体按钮的静止填充（--accent-text 是它上面那层字）
+     --accent-hover     交互态填充，比静止再让一档
+     --accent-ink       主色当 13px 文字用：深底浅一档、浅底深一档，过 4.5:1
+     --accent-ink-soft  再浅一档，给「选中项标题」这种叠在 22% 主色底上的字
+     --accent-*-hsl     给 shadcn 层用（tailwind.config.cjs 里颜色是 hsl(var(--x)) 三元组，
+                        不填这几个，--primary / --ring / 玻璃按钮的字色会失效） */
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
   --accent-primary: #6366f1;
   --accent-hover: #4f46e5;
+  --accent-deep: #5b5ee2;
   --accent-ink: #818cf8;
-  /* 主色当文字用时的专用值：深底用浅一档，浅底用深一档，否则 13px 强调文字不足 4.5:1；主色本身（背景/描边/焦点环）不变。 */
-  --accent-glow: 0 4px 16px rgba(99, 102, 241, 0.35);
-  --accent-subtle: rgba(99, 102, 241, 0.12);
-  --accent-border: rgba(99, 102, 241, 0.35);
+  --accent-ink-soft: #a5b4fc;
+  --accent-primary-hsl: 239 84% 67%;
+  --accent-text-hsl: 0 0% 100%;
+  --accent-ink-hsl: 239 84% 76%;
+  --accent-glow: 0 4px 16px color-mix(in srgb, var(--accent-primary) 35%, transparent);
+  --accent-subtle: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  --accent-border: color-mix(in srgb, var(--accent-primary) 35%, transparent);
   --accent-text: #ffffff;
   /* 分类色板：只给图表/占比这类同层级并列的分段用，不参与状态语义。
      两两可区分，且随主题换深浅，深色底上不会糊成一片。 */
@@ -416,7 +432,7 @@
   --table-border-subtle: 1px solid var(--divider-color);
   --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
   --card-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-  --focus-glow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  --focus-glow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 25%, transparent);
   --markdown-code-bg: rgba(18, 22, 30, 0.92);
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -474,22 +490,22 @@ html[data-theme="light"] {
   --card-tone-subtle: #f2f5f9;
   --card-tone-deep: #e9eef5;
   --bg-muted: rgba(240, 245, 255, 0.7);
-  --bg-hover: rgba(99, 102, 241, 0.06);
-  --bg-selected: rgba(99, 102, 241, 0.12);
-  --btn-primary-bg: #5b5ee2;
-  --btn-primary-hover: #4f46e5;
-  --btn-primary-text: #ffffff;
-  --btn-confirm-bg: #5b5ee2;
-  --btn-confirm-hover: #4f46e5;
-  --btn-confirm-text: #ffffff;
+  --bg-hover: color-mix(in srgb, var(--accent-primary) 6%, transparent);
+  --bg-selected: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  --btn-primary-bg: var(--accent-deep);
+  --btn-primary-hover: var(--accent-hover);
+  --btn-primary-text: var(--accent-text);
+  --btn-confirm-bg: var(--accent-deep);
+  --btn-confirm-hover: var(--accent-hover);
+  --btn-confirm-text: var(--accent-text);
 
   /* 下拉浮层面板专属 (亮色)：苹果质感悬浮岛 (发丝边 + 细腻双层光影) */
   --popover-bg: rgba(255, 255, 255, 0.96);
   --popover-border: 1px solid rgba(0, 0, 0, 0.08);
   --popover-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.04), inset 0 1px 0 #ffffff;
-  --popover-item-hover: rgba(99, 102, 241, 0.06);
-  --popover-item-active-bg: rgba(99, 102, 241, 0.12);
-  --popover-item-active-text: #4f46e5;
+  --popover-item-hover: color-mix(in srgb, var(--accent-primary) 6%, transparent);
+  --popover-item-active-bg: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  --popover-item-active-text: var(--accent-ink-soft);
 
   /* ── 表单控件 (亮色) ───────────────────────────────────────────────────
      内凹槽位 = 比所在表面深一档的冷灰，混的是 slate 蓝而不是文字色。
@@ -513,8 +529,8 @@ html[data-theme="light"] {
   /* 对话输入区保留白色底，内部控件使用独立的 composer 配色。 */
   --composer-bg: #ffffff;
   --control-unchecked-bg: #cbd5e1;
-  --control-checked-bg: #6366f1;
-  --control-checked-mark: #ffffff;
+  --control-checked-bg: var(--accent-primary);
+  --control-checked-mark: var(--accent-text);
   --switch-thumb-bg: #ffffff;
   --input-placeholder: var(--input-muted);
   /* Focus is ONE cue, not three stacked purples.
@@ -623,15 +639,19 @@ html[data-theme="light"] {
   --btn-danger-hover: color-mix(in srgb, var(--danger-text) 12%, var(--bg-canvas));
   --btn-danger-text: var(--status-danger-text);
 
-  /* 品牌核心主色：雾霾冷靛青 (Slate Indigo) */
-  --accent-gradient: linear-gradient(135deg, #6366f1, #4f46e5);
+  /* 品牌核心主色：雾霾冷靛青 (Slate Indigo)（说明见深色那一段）。 */
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
   --accent-primary: #6366f1;
   --accent-hover: #4f46e5;
+  --accent-deep: #5b5ee2;
   --accent-ink: #4f46e5;
-  /* 主色当文字用时的专用值：深底用浅一档，浅底用深一档，否则 13px 强调文字不足 4.5:1；主色本身（背景/描边/焦点环）不变。 */
-  --accent-glow: 0 4px 16px rgba(99, 102, 241, 0.35);
-  --accent-subtle: rgba(99, 102, 241, 0.12);
-  --accent-border: rgba(99, 102, 241, 0.25);
+  --accent-ink-soft: #4f46e5;
+  --accent-primary-hsl: 239 84% 67%;
+  --accent-text-hsl: 0 0% 100%;
+  --accent-ink-hsl: 243 75% 59%;
+  --accent-glow: 0 4px 16px color-mix(in srgb, var(--accent-primary) 35%, transparent);
+  --accent-subtle: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  --accent-border: color-mix(in srgb, var(--accent-primary) 25%, transparent);
   --accent-text: #ffffff;
   /* 分类色板：只给图表/占比这类同层级并列的分段用，不参与状态语义。
      两两可区分，且随主题换深浅，深色底上不会糊成一片。 */
@@ -664,7 +684,7 @@ html[data-theme="light"] {
   --table-border-subtle: 1px solid var(--divider-color);
   --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 18px -2px rgba(15, 23, 42, 0.06);
   --card-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
-  --focus-glow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+  --focus-glow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 25%, transparent);
   --markdown-code-bg: rgba(255, 255, 255, 0.95);
 
   --shadow-sm: 0 2px 6px rgba(30, 58, 110, 0.05);

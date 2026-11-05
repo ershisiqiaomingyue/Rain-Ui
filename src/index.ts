@@ -43,6 +43,25 @@ export {
 } from "./components/ui/select"
 // options 式 Select（options/onChange/footer 等 API），trigger 默认 32px
 export * from "./components/ui/select-menu"
+// composed 组合件：模型/供应商选择器、上下文用量环、状态徽标、任务状态行、
+// 权限请求条、输入框通知坞、终端范围滑块、用量指标条。
+export * from "./components/composed/model-provider-picker"
+export * from "./components/composed/context-usage-ring"
+export * from "./components/composed/composer-notice-dock"
+export * from "./components/composed/permission-request-bar"
+export * from "./components/composed/status-badge"
+export * from "./components/composed/task-status-row"
+export * from "./components/composed/terminal-range-slider"
+// 与 kit 的 UsageMetrics 同名类型（UsageMetric）冲突，显式导出让组合件这份胜出。
+export {
+  UsageMetricsStrip,
+  type UsageMetric,
+  type TokenUsageBreakdown,
+  type UsageMetricsStripProps,
+} from "./components/composed/usage-metrics-strip"
+// 注意：composed/compaction-progress 不导出。它与 kit 的 CompactionProgress 同名，
+// 而 kit 那份多了 `variant="row"`（时间线行内样式），demo 与 Android-Toolkit 都在用；
+// 让 Tailwind 版把它顶掉会直接丢样式。组合件那份先留在库里当草稿。
 export * from "./components/composed/segmented-control"
 export * from "./components/ui/separator"
 export * from "./components/ui/slider"

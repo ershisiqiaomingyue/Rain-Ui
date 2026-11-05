@@ -190,7 +190,6 @@ function Section({ id, title, label, count, children }: { id: string; title: str
 }
 export function App() {
   const [dark, setDark] = React.useState(false)
-  const [accentColor, setAccentColor] = React.useState<"emerald" | "indigo" | "amber" | "mint" | "violet" | "graphite">("indigo")
   const [activeId, setActiveId] = React.useState("button")
   const [filter, setFilter] = React.useState("")
   const [openCommand, setOpenCommand] = React.useState(false)
@@ -300,8 +299,7 @@ export function App() {
       root.classList.remove("dark")
       root.setAttribute("data-theme", "light")
     }
-    root.setAttribute("data-accent", accentColor)
-  }, [dark, accentColor])
+  }, [dark])
   // 每个组件一个页面，可用 URL hash 直达：/#button、/#dialog ...
   React.useEffect(() => {
     const fromHash = () => {
@@ -395,28 +393,6 @@ export function App() {
                 ⌘K
               </kbd>
             </Button>
-            <div className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-border/60 bg-muted/30">
-              <span className="text-[11px] text-muted-foreground mr-1 hidden sm:inline">主题色:</span>
-              {[
-                { id: "emerald", label: "Emerald Jade (极光松石绿 · 幽绿漫射)", bg: "bg-[#10B981]" },
-                { id: "indigo", label: "Slate Indigo (雾霾靛青 · Raycast 冷靛)", bg: "bg-[#6366F1]" },
-                { id: "amber", label: "Warm Bronze Amber (曜石琥珀金 · 钛金暖调)", bg: "bg-[#F59E0B]" },
-                { id: "mint", label: "Glacier Mint (冰川薄荷青 · 清澈透光)", bg: "bg-[#06B6D4]" },
-                { id: "violet", label: "Cosmic Violet (深空暗紫星霓 · 晶石暗紫)", bg: "bg-[#8B5CF6]" },
-                { id: "graphite", label: "Graphite (原生桌面钛灰 · 中性石墨)", bg: "bg-[#4B5563]" },
-              ].map((c) => (
-                <button
-                  key={c.id}
-                  title={c.label}
-                  onClick={() => setAccentColor(c.id as any)}
-                  className={cn(
-                    "size-4 rounded-full transition-transform",
-                    c.bg,
-                    accentColor === c.id ? "ring-2 ring-primary ring-offset-2 scale-110" : "opacity-70 hover:opacity-100"
-                  )}
-                />
-              ))}
-            </div>
             <Button
               variant="outline"
               size="sm"
@@ -840,6 +816,21 @@ export function App() {
               <Badge variant="outline">
                 <Check className="size-3" /> 带图标
               </Badge>
+            </div>
+          </Section>
+
+          <Section id="alert" title="Alert" label="页面内提示；Sonner 用于短暂的全局通知" count={19}>
+            <div className="grid max-w-xl gap-3">
+              <Alert>
+                <Info />
+                <AlertTitle>连接已建立</AlertTitle>
+                <AlertDescription>终端已连接到开发服务器，可以开始操作。</AlertDescription>
+              </Alert>
+              <Alert variant="destructive">
+                <AlertTriangle />
+                <AlertTitle>连接失败</AlertTitle>
+                <AlertDescription>无法连接到服务器，请检查地址或网络后重试。</AlertDescription>
+              </Alert>
             </div>
           </Section>
 

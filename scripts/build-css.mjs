@@ -50,7 +50,6 @@ const REQUIRED = [
   ".ui-list-item",
   ".ui-notice",
   ".ui-usage",
-  ".ui-toast",
   ".ui-modal",
   ".ui-tooltip",
   ".context-menu",

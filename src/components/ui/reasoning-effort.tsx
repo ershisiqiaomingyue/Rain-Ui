@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { RotateCcw } from "lucide-react"
+import { RotateCcw, X } from "lucide-react"
 
 import { Button } from "./button"
 import { cn } from "../../lib/utils"
@@ -31,6 +31,8 @@ export interface ReasoningEffortProps {
   subtitle?: React.ReactNode
   /** 展示「恢复默认」按钮 */
   onReset?: () => void
+  /** 展示关闭按钮（面板右上角），在 Popover / 抽屉里由调用方收起面板 */
+  onClose?: () => void
   /** 说明文字，显示在底部 */
   footer?: React.ReactNode
   className?: string
@@ -52,6 +54,7 @@ export function ReasoningEffort({
   title = "思考强度",
   subtitle,
   onReset,
+  onClose,
   footer,
   className,
   disabled = false,
@@ -67,26 +70,41 @@ export function ReasoningEffort({
       data-slot="reasoning-effort"
       className={cn("w-full select-none", disabled && "opacity-60", className)}
     >
-      {(title || onReset) && (
+      {(title || onReset || onClose) && (
         <div className="flex h-7 items-center justify-between gap-2">
           {title ? (
             <span className="text-xs font-medium text-foreground">{title}</span>
           ) : (
             <span />
           )}
-          {onReset && (
-            <Button
-              type="button"
-              variant="bare"
-              size="icon-xs"
-              onClick={onReset}
-              disabled={disabled}
-              aria-label="恢复默认思考强度"
-              title="恢复默认思考强度"
-            >
-              <RotateCcw />
-            </Button>
-          )}
+          <span className="flex items-center gap-0.5">
+            {onReset && (
+              <Button
+                type="button"
+                variant="bare"
+                size="icon-xs"
+                onClick={onReset}
+                disabled={disabled}
+                aria-label="恢复默认思考强度"
+                title="恢复默认思考强度"
+              >
+                <RotateCcw />
+              </Button>
+            )}
+            {onClose && (
+              <Button
+                type="button"
+                variant="bare"
+                size="icon-xs"
+                onClick={onClose}
+                disabled={disabled}
+                aria-label="关闭"
+                title="关闭"
+              >
+                <X />
+              </Button>
+            )}
+          </span>
         </div>
       )}
 

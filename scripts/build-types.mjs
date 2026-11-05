@@ -46,13 +46,8 @@ walk(tmp);
 const entry = join(out, "index.d.ts");
 const fromSrc = join(tmp, "src/index.d.ts");
 if (!existsSync(fromSrc)) throw new Error("找不到 dist/types/src/index.d.ts");
-cpSync(fromSrc, entry);
-/* 提升后相对路径少一层：../assets → ./assets, ../components → ./components, ./lib → ./types/src/lib */
-const text = readFileSync(entry, "utf8")
-  .replace(/from "\.\.\/assets\//g, 'from "./assets/')
-  .replace(/from "\.\.\/components\//g, 'from "./components/')
-  .replace(/from "\.\/lib"/g, 'from "./types/src/lib"');
-writeFileSync(entry, text);
+// Preserve relative imports for the shadcn source tree and the legacy kit.
+writeFileSync(entry, 'export * from "./src/index";\n');
 
 /** 声明文件里的 `import "x.css"` 只剩副作用语义，vite 已把样式抽到 rain-ui.css；
  *  留着会让消费端 tsc 去解析 .css 并报 Cannot find module。统一删掉。 */

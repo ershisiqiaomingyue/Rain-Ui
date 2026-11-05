@@ -422,6 +422,66 @@
 .ui-notice-code { margin: 0; padding: 10px; border-radius: var(--radius-control); background-color: var(--bg-surface); background-image: linear-gradient(var(--markdown-code-bg), var(--markdown-code-bg)); font: var(--text-label)/1.6 var(--font-mono); overflow: auto; white-space: pre; }
 .ui-notice-reply { display: flex; align-items: center; gap: 8px; }
 .ui-notice-reply > .input-shell { flex: 1; min-width: 0; }
+.ui-notice-reply > .btn { flex: 0 0 auto; }
+/* 照抄 rain-ui 自己那颗「Default input (32px)」（src/components/ui/input.tsx）的度量：
+   高 32 · 圆角 10px · 12px 字 · px-3 · 白底 + primary/40 描边 + primary/15 的 2px
+   光晕。那张卡里这是唯一要填的地方，所以把它的 focus-visible 配色常驻化——不用等
+   聚焦，一眼就看得见这里能写；聚焦时描边和光晕再各深一档。 */
+.ui-notice .ui-notice-reply .input {
+  height: 32px;
+  padding: 4px 12px;
+  font-size: var(--text-label);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 40%, transparent);
+  border-radius: 10px;
+  background: var(--bg-surface);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-primary) 15%, transparent);
+}
+.ui-notice .ui-notice-reply .input:hover:not(:disabled):not(:focus) {
+  border-color: color-mix(in srgb, var(--accent-primary) 40%, transparent);
+  background: var(--bg-surface);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-primary) 15%, transparent);
+}
+.ui-notice .ui-notice-reply .input:focus {
+  border-color: color-mix(in srgb, var(--accent-primary) 55%, transparent);
+  background: var(--bg-surface);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 22%, transparent);
+}
+/* 同一张卡里的按钮也照同一套度量走：default = h-8 / rounded-[10px] / px-3 / 12px，
+   xs = h-6 / px-2 / 11px（候选项就是 xs 那种标签尺寸）。 */
+.ui-notice .ui-notice-reply .btn {
+  height: 32px;
+  padding: 0 12px;
+  font-size: var(--text-label);
+  border-radius: 10px;
+}
+.ui-notice-answer-option.btn {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 11px;
+  border-radius: 10px;
+}
+/* 候选项是白板药丸：hover 只压一层极淡的底色，不加投影、也不把描边换成
+   --border-hover，否则同一行里被指到的那一颗会"凸"出来，看着像已经按下去了。 */
+.ui-notice-answer-option.btn:hover:not(:disabled) {
+  background: var(--bg-hover);
+  border-color: var(--btn-secondary-border);
+  box-shadow: none;
+  color: var(--text-primary);
+}
+.ui-notice-answer-option.btn[aria-pressed="true"]:hover,
+.ui-notice-answer-option.btn.is-active:hover {
+  background: var(--bg-selected);
+  color: var(--accent-ink);
+}
+/* AI 询问的回答区：建议答案排成一行（一行放不下才换行），末行是输入框 + 回答 / 跳过，
+   两个动作都在输入框右侧。一行一条会把卡片撑成三四十像素一条的长列表，一行一条
+   药丸既省高度，也更像「快捷选项」。 */
+.ui-notice-answer-list { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.ui-notice-answer-option.btn { width: auto; max-width: 100%; justify-content: center; text-align: center; }
+.ui-notice-answer-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* 候选胶囊是单向动作，尾部不该再挂一个发送箭头。组件已不再渲染它，这条兜底
+   是给缓存里可能还留着旧 bundle 的运行环境准备的。 */
+.ui-notice-answer-send { display: none; }
 .ui-notice-detail { color: var(--text-tertiary); font-size: var(--text-label); }
 .ui-notice-background-task { gap: 8px; }
 .ui-notice-background-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: var(--text-label); }
