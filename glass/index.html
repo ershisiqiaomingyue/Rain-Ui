@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en" data-wallpaper="on">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#1a0a22" />
+    <title>Rain · Workflow studio</title>
+    <meta
+      name="description"
+      content="Rain is a workflow studio: glass panels, live runs and an approval queue, drawn in HTML and CSS."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%2319191d'/%3E%3Cpath d='M12 4.5c3.2 3.8 5.2 6.4 5.2 8.8a5.2 5.2 0 1 1-10.4 0c0-2.4 2-5 5.2-8.8Z' fill='%23f2f2f5'/%3E%3C/svg%3E"
+    />
+    <link rel="preload" href="fonts/Inter-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="glass.css" />
+  </head>
+  <body>
+    <div class="field" aria-hidden="true">
+      <span class="blob blob-a"></span>
+      <span class="blob blob-b"></span>
+      <span class="blob blob-c"></span>
+      <span class="blob blob-d"></span>
+      <span class="blob blob-e"></span>
+      <span class="field-grain"></span>
+    </div>
+
+    <a class="skip-link" href="#appBody">Skip to the content</a>
+
+    <div class="app glass">
+      <header class="titlebar">
+        <span class="window-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+
+        <button
+          class="icon-btn menu-btn"
+          id="menuBtn"
+          type="button"
+          aria-label="Open navigation"
+          aria-controls="sidebar"
+          aria-expanded="false"
+        >
+          <svg class="i" aria-hidden="true"><use href="#i-menu" /></svg>
+        </button>
+
+        <span class="app-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="mark-svg">
+            <path d="M12 3.4c3.3 3.9 5.4 6.6 5.4 9.1a5.4 5.4 0 0 1-10.8 0c0-2.5 2.1-5.2 5.4-9.1Z" />
+            <path d="M9.4 13.1a2.8 2.8 0 0 0 2.5 2.7" class="mark-shine" />
+          </svg>
+        </span>
+        <span class="app-name">Rain</span>
+        <svg class="i tb-slash" aria-hidden="true"><use href="#i-chev-right" /></svg>
+        <h1 class="doc-title" id="docTitle">Dashboard</h1>
+
+        <div class="titlebar-end">
+          <label class="search" for="searchInput">
+            <svg class="i" aria-hidden="true"><use href="#i-search" /></svg>
+            <span class="sr-only">Search workflows and runs</span>
+            <input id="searchInput" type="search" placeholder="Search workflows and runs" autocomplete="off" />
+            <kbd aria-hidden="true">/</kbd>
+          </label>
+          <button class="btn wall-toggle" type="button" id="wallToggle" aria-pressed="true" title="Hide the coloured wallpaper and show the interface on its own">
+            <svg class="i" aria-hidden="true"><use href="#i-drop" /></svg>
+            <span>Wallpaper</span>
+          </button>
+          <button class="icon-btn" type="button" id="shareBtn" aria-label="Copy a link to this workspace">
+            <svg class="i" aria-hidden="true"><use href="#i-link" /></svg>
+          </button>
+          <span class="avatar avatar-sm" aria-hidden="true">RC</span>
+        </div>
+      </header>
+
+      <div class="app-body" id="appBody" tabindex="-1">
+        <aside class="sidebar" id="sidebar" aria-label="Workspace navigation">
+          <div class="workspace">
+            <span class="ws-badge" id="wsBadge" aria-hidden="true">K</span>
+            <span class="ws-text">
+              <span id="wsName">Kretya</span>
+              <small id="wsScope">Team · 6 members</small>
+            </span>
+            <button class="icon-btn sidebar-close" id="sidebarClose" type="button" aria-label="Close navigation">
+              <svg class="i" aria-hidden="true"><use href="#i-close" /></svg>
+            </button>
+          </div>
+
+        <nav class="nav" aria-label="Sections">
+          <button class="nav-item" type="button" data-view="dashboard" aria-current="page">
+            <svg class="i" aria-hidden="true"><use href="#i-grid" /></svg>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item" type="button" data-view="runs">
+            <svg class="i" aria-hidden="true"><use href="#i-activity" /></svg>
+            <span>Runs</span>
+          </button>
+          <button class="nav-item" type="button" data-view="approvals">
+            <svg class="i" aria-hidden="true"><use href="#i-check-circle" /></svg>
+            <span>Approvals</span>
+            <span class="nav-count" id="approvalCount" hidden>0</span>
+          </button>
+        </nav>
+
+        <div class="tree-group">
+          <div class="tree-head">
+            <span>Projects</span>
+            <button class="icon-btn icon-btn-xs" type="button" data-action="new-project" aria-label="Create a project">
+              <svg class="i" aria-hidden="true"><use href="#i-plus" /></svg>
+            </button>
+          </div>
+          <div class="tree" id="projectTree"></div>
+        </div>
+
+        <div class="sidebar-foot">
+          <span class="avatar avatar-sm" aria-hidden="true">RC</span>
+          <span class="user-text">
+            <strong>Rae Chen</strong>
+            <small>Owner · Kretya</small>
+          </span>
+          <button class="icon-btn icon-btn-xs" type="button" data-action="shortcuts" aria-label="Keyboard shortcuts">
+            <svg class="i" aria-hidden="true"><use href="#i-command" /></svg>
+          </button>
+        </div>
+      </aside>
+
+        <div class="scrim" id="scrim" hidden></div>
+
+        <main class="main">
+          <div class="panel">
+          <!-- Dashboard -->
+          <section class="view" id="view-dashboard" aria-label="Dashboard">
+            <div class="view-head">
+              <p class="lede" id="dashboardLede"></p>
+              <div class="head-actions">
+                <span class="period" id="periodLabel">
+                  <svg class="i" aria-hidden="true"><use href="#i-calendar" /></svg>
+                  Nov 3 – Nov 9
+                </span>
+                <button class="btn btn-primary" type="button" id="newWorkflowBtn">
+                  <svg class="i" aria-hidden="true"><use href="#i-plus" /></svg>
+                  New workflow
+                </button>
+              </div>
+            </div>
+
+            <div class="kpis" id="kpis"></div>
+
+            <div class="split">
+              <section class="card chart-card" aria-labelledby="chartTitle">
+                <div class="card-head">
+                  <div>
+                    <h2 class="card-title" id="chartTitle">Executions per day</h2>
+                    <p class="card-sub" id="chartSub"></p>
+                  </div>
+                  <span class="card-meta" id="chartTotal"></span>
+                </div>
+                <div class="chart" id="chart"></div>
+                <p class="chart-note" id="chartNote"></p>
+              </section>
+
+              <section class="card approvals-card" aria-labelledby="approvalTitle">
+                <div class="card-head">
+                  <h2 class="card-title" id="approvalTitle">Waiting on you</h2>
+                  <span class="card-meta" id="approvalMeta"></span>
+                </div>
+                <div class="approval-list" id="approvalList"></div>
+                <p class="card-note">Unanswered requests go to the project owner after 6 hours.</p>
+                <button class="link-btn card-foot" type="button" data-view="approvals">
+                  Open approvals
+                  <svg class="i" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+                </button>
+              </section>
+            </div>
+
+            <section class="flows-section" aria-label="Workflows and executions">
+              <div class="section-head">
+                <div class="segmented" role="tablist" aria-label="Workflows and executions" id="dashTabs">
+                  <button
+                    type="button"
+                    role="tab"
+                    id="tab-workflows"
+                    aria-selected="true"
+                    aria-controls="dashList"
+                    data-tab="workflows"
+                  >
+                    Workflows
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    id="tab-executions"
+                    aria-selected="false"
+                    aria-controls="dashList"
+                    data-tab="executions"
+                  >
+                    Executions
+                  </button>
+                </div>
+                <span class="section-meta" id="listMeta"></span>
+                <button class="link-btn section-link" type="button" data-view="runs">
+                  All runs
+                  <svg class="i" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+                </button>
+              </div>
+              <div class="list-card" id="dashList" role="tabpanel" aria-labelledby="tab-workflows" tabindex="0"></div>
+            </section>
+          </section>
+
+          <!-- Runs -->
+          <section class="view" id="view-runs" aria-label="Runs" hidden>
+            <div class="view-head">
+              <p class="lede" id="runsLede"></p>
+              <div class="head-actions">
+                <button class="btn btn-quiet" type="button" id="exportBtn">
+                  <svg class="i" aria-hidden="true"><use href="#i-download" /></svg>
+                  Export CSV
+                </button>
+              </div>
+            </div>
+            <div class="list-card" id="runsTable"></div>
+          </section>
+
+          <!-- Approvals -->
+          <section class="view" id="view-approvals" aria-label="Approvals" hidden>
+            <div class="view-head">
+              <p class="lede" id="approvalsLede"></p>
+              <div class="head-actions">
+                <span class="period">
+                  <svg class="i" aria-hidden="true"><use href="#i-clock" /></svg>
+                  Oldest first
+                </span>
+              </div>
+            </div>
+            <div class="approval-cards" id="approvalCards"></div>
+            <p class="queue-note" id="approvalNote"></p>
+          </section>
+
+          <!-- Workflow builder -->
+          <section class="view view-canvas" id="view-canvas" aria-labelledby="flowTitle" hidden>
+            <div class="canvas-head">
+              <button class="icon-btn back-btn" type="button" data-view="dashboard" aria-label="Back to the dashboard">
+                <svg class="i" aria-hidden="true"><use href="#i-arrow-left" /></svg>
+              </button>
+              <div class="canvas-title">
+                <h2 id="flowTitle">Invoice &amp; Expense Review</h2>
+                <p id="flowMeta"></p>
+              </div>
+              <div class="canvas-actions">
+                <label class="switch">
+                  <input type="checkbox" id="activeToggle" checked />
+                  <span class="switch-track" aria-hidden="true"><span class="switch-knob"></span></span>
+                  <span class="switch-label">Active</span>
+                </label>
+                <button class="btn btn-primary" type="button" id="runFlow">
+                  <svg class="i" aria-hidden="true"><use href="#i-play" /></svg>
+                  Execute workflow
+                  <kbd aria-hidden="true">⌘↵</kbd>
+                </button>
+              </div>
+            </div>
+
+            <div class="canvas-bar">
+              <div class="segmented" role="tablist" aria-label="Diagram and history" id="canvasTabs">
+                <button
+                  type="button"
+                  role="tab"
+                  data-canvas-tab="diagram"
+                  aria-selected="true"
+                  aria-controls="canvasScroll"
+                  id="tab-diagram"
+                >
+                  <svg class="i" aria-hidden="true"><use href="#i-layers" /></svg>
+                  Diagram
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  data-canvas-tab="history"
+                  aria-selected="false"
+                  aria-controls="flowHistory"
+                  id="tab-history"
+                >
+                  <svg class="i" aria-hidden="true"><use href="#i-clock" /></svg>
+                  History
+                </button>
+              </div>
+              <span class="canvas-status" id="canvasStatus">Saved just now</span>
+              <div class="zoom">
+                <button class="icon-btn icon-btn-xs" type="button" data-zoom="out" aria-label="Zoom out">
+                  <svg class="i" aria-hidden="true"><use href="#i-minus" /></svg>
+                </button>
+                <span id="zoomLabel" aria-live="polite">100%</span>
+                <button class="icon-btn icon-btn-xs" type="button" data-zoom="in" aria-label="Zoom in">
+                  <svg class="i" aria-hidden="true"><use href="#i-plus" /></svg>
+                </button>
+                <button class="icon-btn icon-btn-xs" type="button" data-zoom="fit" aria-label="Fit the diagram">
+                  <svg class="i" aria-hidden="true"><use href="#i-fit" /></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="canvas-body">
+              <div class="canvas-scroll" id="canvasScroll">
+                <div class="stage-frame" id="stageFrame">
+                  <div class="stage" id="stage">
+                    <svg class="wires" id="wires" aria-hidden="true"></svg>
+                    <div class="nodes" id="nodes"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow-history" id="flowHistory" hidden></div>
+            </div>
+          </section>
+        </div>
+
+          <footer class="statusbar">
+            <span class="status-item" id="statusScope"></span>
+            <span class="status-item status-end">
+              <span id="statusMeta"></span>
+              <span class="status-hint" aria-hidden="true"><kbd>⌘</kbd><kbd>K</kbd></span>
+            </span>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+    <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <symbol id="i-grid" viewBox="0 0 24 24">
+          <rect x="3.2" y="3.2" width="7" height="7" rx="1.8" />
+          <rect x="13.8" y="3.2" width="7" height="7" rx="1.8" />
+          <rect x="3.2" y="13.8" width="7" height="7" rx="1.8" />
+          <rect x="13.8" y="13.8" width="7" height="7" rx="1.8" />
+        </symbol>
+        <symbol id="i-activity" viewBox="0 0 24 24">
+          <path d="M3 12h4l2.4-6 4.2 12L16 12h5" />
+        </symbol>
+        <symbol id="i-check-circle" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="8.6" />
+          <path d="M8.6 12.2l2.4 2.4 4.6-5" />
+        </symbol>
+        <symbol id="i-search" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="6.4" />
+          <path d="M15.8 15.8L20 20" />
+        </symbol>
+        <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="M9.5 5.5l6.5 6.5-6.5 6.5" /></symbol>
+        <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="M5.5 9l6.5 6.5L18.5 9" /></symbol>
+        <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+        <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>
+        <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6" /></symbol>
+        <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19.5 12h-15M10.5 6l-6 6 6 6" /></symbol>
+        <symbol id="i-play" viewBox="0 0 24 24"><path d="M7.5 4.8l11.5 7.2-11.5 7.2z" /></symbol>
+        <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.2 2.5L5 13.7h5.7L10.3 21.5 19 10.2h-5.9z" /></symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" /></symbol>
+        <symbol id="i-calendar" viewBox="0 0 24 24">
+          <rect x="3.6" y="5" width="16.8" height="15.2" rx="3" />
+          <path d="M3.6 10h16.8M8.2 3.4v3.2M15.8 3.4v3.2" />
+        </symbol>
+        <symbol id="i-clock" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="8.6" />
+          <path d="M12 7.4V12l3.2 2" />
+        </symbol>
+        <symbol id="i-branch" viewBox="0 0 24 24">
+          <circle cx="6.2" cy="6.2" r="2.4" />
+          <circle cx="6.2" cy="17.8" r="2.4" />
+          <circle cx="17.8" cy="12" r="2.4" />
+          <path d="M6.2 8.6v6.8M8.6 6.2h3.6a3 3 0 013 3v.6M8.6 17.8h3.6a3 3 0 003-3v-.6" />
+        </symbol>
+        <symbol id="i-send" viewBox="0 0 24 24">
+          <path d="M20.6 3.4L10.2 13.8M20.6 3.4l-6.4 17.8-4-8.2-8.2-4z" />
+        </symbol>
+        <symbol id="i-filter" viewBox="0 0 24 24">
+          <path d="M3.6 5h16.8l-6.5 8v6.2l-3.8 1.8v-8z" />
+        </symbol>
+        <symbol id="i-user-check" viewBox="0 0 24 24">
+          <circle cx="9.4" cy="7.8" r="3.6" />
+          <path d="M2.8 20.2a6.6 6.6 0 0113.2 0M16.4 13.4l2 2 3.8-3.8" />
+        </symbol>
+        <symbol id="i-download" viewBox="0 0 24 24">
+          <path d="M12 3.8v10.4M7.6 10l4.4 4.4L16.4 10M4.5 20h15" />
+        </symbol>
+        <symbol id="i-link" viewBox="0 0 24 24">
+          <path d="M10 13.8a4 4 0 005.7 0l2.8-2.8a4 4 0 00-5.7-5.7l-1.4 1.4" />
+          <path d="M14 10.2a4 4 0 00-5.7 0l-2.8 2.8a4 4 0 005.7 5.7l1.4-1.4" />
+        </symbol>
+        <symbol id="i-command" viewBox="0 0 24 24">
+          <path
+            d="M9 6.5a2.5 2.5 0 10-2.5 2.5H9m0-2.5V9m0 9a2.5 2.5 0 11-2.5-2.5H9M9 15v2.5M15 6.5A2.5 2.5 0 1117.5 9H15m0-2.5V9m0 6h2.5A2.5 2.5 0 1115 17.5V15M9 9h6v6H9z"
+          />
+        </symbol>
+        <symbol id="i-layers" viewBox="0 0 24 24">
+          <path d="M12 3.4l8.6 4.6-8.6 4.6L3.4 8z" />
+          <path d="M3.4 12.6L12 17.2l8.6-4.6M3.4 16.8L12 21.4l8.6-4.6" />
+        </symbol>
+        <symbol id="i-fit" viewBox="0 0 24 24">
+          <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+        </symbol>
+        <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8" /></symbol>
+        <symbol id="i-drop" viewBox="0 0 24 24">
+          <path d="M12 3.6c3.2 3.8 5.2 6.5 5.2 9a5.2 5.2 0 01-10.4 0c0-2.5 2-5.2 5.2-9z" />
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" /></symbol>
+        <symbol id="i-more" viewBox="0 0 24 24">
+          <circle cx="6" cy="12" r="1.5" fill="currentColor" stroke="none" />
+          <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+          <circle cx="18" cy="12" r="1.5" fill="currentColor" stroke="none" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
