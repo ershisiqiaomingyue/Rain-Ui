@@ -1,8 +1,7 @@
 import * as React from "react"
+import { AppIcon } from "../icons/AppIcon"
 import { cva, type VariantProps } from "class-variance-authority"
 import { Slot } from "@radix-ui/react-slot"
-import { Loader2 } from "lucide-react"
-
 import { cn } from "../../lib/utils"
 
 /*
@@ -129,7 +128,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size: resolvedSize, className }))}
         {...props}
       >
-        {loading ? <Loader2 className="animate-spin" aria-hidden /> : icon}
+        {loading ? <AppIcon name="loader" className="animate-spin" aria-hidden /> : icon}
         {children}
       </Comp>
     )

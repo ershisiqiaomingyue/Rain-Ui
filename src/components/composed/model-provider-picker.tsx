@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronDown, ChevronRight, Cpu, Plus, Search, Settings2 } from "lucide-react"
+import { AppIcon } from "../icons/AppIcon"
 
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card"
@@ -111,7 +111,7 @@ function ProviderModelsPanel({
           onChange={(event) => setQuery(event.target.value)}
           placeholder="搜索模型"
           aria-label={`搜索 ${provider.name} 的模型`}
-          prefixIcon={<Search className="size-3.5" />}
+          prefixIcon={<AppIcon name="search" size={14} className="size-3.5" />}
           clearable
           onClear={() => setQuery("")}
           className="mb-1"
@@ -132,7 +132,7 @@ function ProviderModelsPanel({
               )}
             >
               <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
-                {model.icon || <Cpu className="size-3.5" />}
+                {model.icon || <AppIcon name="cpu" size={14} className="size-3.5" />}
               </span>
               {/* 行高与截断由 .ui-model-picker-label 给出：行高必须留足下伸部空间，
                   否则 g/p/q/y 的尾巴会被 overflow:hidden 切掉。 */}
@@ -148,7 +148,7 @@ function ProviderModelsPanel({
                 <span className="flex shrink-0 items-center gap-1 self-center">{model.meta}</span>
               ) : null}
               <span className="flex size-3.5 shrink-0 items-center justify-center">
-                {selected && <Check className="size-3 text-primary" />}
+                {selected && <AppIcon name="check" size={12} className="size-3 text-primary" />}
               </span>
             </button>
           )
@@ -223,7 +223,7 @@ export function ModelProviderPicker({
               className="h-8 min-w-0 items-center gap-1.5 px-2.5 font-normal leading-none"
             >
               <span className="flex size-4 shrink-0 items-center justify-center text-primary">
-                {currentModel?.icon || currentProvider?.icon || <Cpu className="size-3.5" />}
+                {currentModel?.icon || currentProvider?.icon || <AppIcon name="cpu" size={14} className="size-3.5" />}
               </span>
               <span className="ui-model-picker-label ui-model-picker-trigger-label text-foreground">
                 {currentModel?.name || "未配置模型"}
@@ -233,7 +233,9 @@ export function ModelProviderPicker({
                   {formatWindow(currentModel.contextWindow)}
                 </span>
               ) : null}
-              <ChevronDown
+              <AppIcon
+                name="chevron-down"
+                size={14}
                 className={cn(
                   "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
                   modelOpen && "rotate-180"
@@ -265,7 +267,7 @@ export function ModelProviderPicker({
                         )}
                       >
                         <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
-                          {provider.icon || <Cpu className="size-3.5" />}
+                          {provider.icon || <AppIcon name="cpu" size={14} className="size-3.5" />}
                         </span>
                         <span className="ui-model-picker-label min-w-0 flex-1 self-center text-foreground">
                           {provider.name}
@@ -274,9 +276,9 @@ export function ModelProviderPicker({
                           {provider.models.length}
                         </span>
                         <span className="flex size-3.5 shrink-0 items-center justify-center">
-                          {active && <Check className="size-3 text-primary" />}
+                          {active && <AppIcon name="check" size={12} className="size-3 text-primary" />}
                         </span>
-                        <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />
+                        <AppIcon name="chevron-right" size={14} className="size-3.5 shrink-0 text-muted-foreground" />
                       </button>
                     </HoverCardTrigger>
                     <HoverCardContent side="right" align="start" sideOffset={6} collisionPadding={8} className={cn("w-max min-w-44 max-w-72 p-0", modelPanelClassName)}>
@@ -307,9 +309,9 @@ export function ModelProviderPicker({
                   }}
                   className="flex h-8 w-full items-center gap-2 rounded-[8px] px-2 text-xs text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
                 >
-                  <Settings2 className="size-3.5" />
+                  <AppIcon name="settings" size={14} className="size-3.5" />
                   管理模型与密钥
-                  <Plus className="ml-auto size-3.5" />
+                  <AppIcon name="plus" size={14} className="ml-auto size-3.5" />
                 </button>
               </>
             )}
@@ -328,7 +330,9 @@ export function ModelProviderPicker({
               >
                 <span className="shrink-0 self-center text-[11px] leading-none text-muted-foreground">思考</span>
                 <span className="inline-flex w-7 shrink-0 items-center justify-center self-center text-xs font-medium leading-none text-foreground">{effortLabel}</span>
-                <ChevronDown
+                <AppIcon
+                  name="chevron-down"
+                  size={14}
                   className={cn(
                     "size-3.5 shrink-0 transition-transform duration-150",
                     reasoningOpen && "rotate-180"

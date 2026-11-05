@@ -62,6 +62,7 @@ export {
 // 注意：composed/compaction-progress 不导出。它与 kit 的 CompactionProgress 同名，
 // 而 kit 那份多了 `variant="row"`（时间线行内样式），demo 与 Android-Toolkit 都在用；
 // 让 Tailwind 版把它顶掉会直接丢样式。组合件那份先留在库里当草稿。
+export * from "./components/icons/AppIcon"
 export * from "./components/composed/segmented-control"
 export * from "./components/ui/separator"
 export * from "./components/ui/slider"

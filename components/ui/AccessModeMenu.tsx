@@ -1,5 +1,5 @@
-import { Check } from "lucide-react";
 import { useEffect, useRef, type RefObject } from "react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 
 export type AccessMode = "ask" | "risk" | "full";
 
@@ -46,7 +46,7 @@ export function AccessModeMenu({ value, onChange, inline = false, onClose, trigg
     {modes.map((mode) => <button key={mode.value} type="button" className={`ui-access-menu-row${value === mode.value ? " is-selected" : ""}${mode.value === "full" ? " is-full" : ""}`}
       aria-pressed={value === mode.value} onClick={() => onChange(mode.value)}>
       <span><b>{mode.label}</b><small>{mode.description}</small></span>
-      <Check
+      <AppIcon name="check"
         size={14}
         aria-hidden="true"
         className={`ui-access-menu-check${value === mode.value ? "" : " is-placeholder"}`}

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { RotateCcw, X } from "lucide-react"
+import { AppIcon } from "../icons/AppIcon"
 
 import { Button } from "./button"
 import { cn } from "../../lib/utils"
@@ -88,7 +88,7 @@ export function ReasoningEffort({
                 aria-label="恢复默认思考强度"
                 title="恢复默认思考强度"
               >
-                <RotateCcw />
+                <AppIcon name="refresh" />
               </Button>
             )}
             {onClose && (
@@ -101,7 +101,7 @@ export function ReasoningEffort({
                 aria-label="关闭"
                 title="关闭"
               >
-                <X />
+                <AppIcon name="close" />
               </Button>
             )}
           </span>

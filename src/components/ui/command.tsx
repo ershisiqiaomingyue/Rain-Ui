@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
+import { AppIcon } from "../icons/AppIcon"
 import { type DialogProps } from "@radix-ui/react-dialog"
 import { Command as CommandPrimitive } from "cmdk"
-import { Search } from "lucide-react"
-
 import { cn } from "../../lib/utils"
 import { Dialog, DialogContent } from "./dialog"
 
@@ -40,7 +39,7 @@ const CommandInput = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
   <div className="flex h-8 shrink-0 items-center gap-2 border-b px-3 focus-within:border-primary/40" cmdk-input-wrapper="">
-    <Search className="size-3.5 shrink-0 opacity-50" />
+    <AppIcon name="search" className="size-3.5 shrink-0 opacity-50" />
     <CommandPrimitive.Input
       ref={ref}
       className={cn(

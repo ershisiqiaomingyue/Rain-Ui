@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Database } from "lucide-react"
+import { AppIcon } from "../icons/AppIcon"
 
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip"
@@ -102,7 +102,7 @@ export function UsageMetricsStrip({
             aria-label="会话用量明细"
             className="inline-flex min-h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-2.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40"
           >
-            <Database className="size-3 text-muted-foreground" />
+            <AppIcon name="database" size={12} className="size-3 text-muted-foreground" />
             <span className="text-muted-foreground">缓存命中</span>
             <b className="max-w-[14ch] truncate font-medium tabular-nums text-foreground">
               {tokenUsage.rows.find((row) => row.id === "cache")?.value ?? "—"}
@@ -112,7 +112,7 @@ export function UsageMetricsStrip({
         <PopoverContent side="top" align="start" sideOffset={6} className="w-64 p-3">
           <div className="flex items-center justify-between gap-2">
             <span className="flex items-center gap-1.5 text-xs font-medium text-foreground">
-              <Database className="size-3.5 text-muted-foreground" />
+              <AppIcon name="database" size={14} className="size-3.5 text-muted-foreground" />
               Token 用量
             </span>
             <span className="font-mono text-xs font-medium tabular-nums text-foreground">

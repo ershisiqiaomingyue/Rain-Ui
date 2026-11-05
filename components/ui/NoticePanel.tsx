@@ -1,5 +1,5 @@
 import React, { useEffect, useId, useRef, useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Button } from "./Button";
 
 /**
@@ -88,8 +88,6 @@ export const NoticePanel: React.FC<NoticePanelProps> = ({
   const root = useRef<HTMLElement>(null);
   // 「展开/收起」的箭头方向统一给所有 variant：收起朝右（>）、展开朝下（v）。
   // 形状永远是直角箭头，展开态靠 CSS `rotate(90deg)` 转成下箭头，这样在两种
-  // 尺寸（compact / 普通）下转轴和留白都一致，不会左右跳。
-  const Chevron = ChevronRight;
 
   useEffect(() => {
     if (!expanded) return;
@@ -168,7 +166,7 @@ export const NoticePanel: React.FC<NoticePanelProps> = ({
               onClick={toggle}
             >
               {heading}
-              <Chevron size={14} className="ui-notice-chevron" aria-hidden="true" />
+              <AppIcon name="chevron-right" size={14} className="ui-notice-chevron" aria-hidden="true" />
             </Button>
           ) : (
             <div className="ui-notice-summary is-static">{heading}</div>
@@ -210,7 +208,7 @@ export const NoticePanel: React.FC<NoticePanelProps> = ({
           )}
           {meta && <span className="ui-notice-meta">{meta}</span>}
           {badge}
-          <Chevron size={14} className="ui-notice-chevron" aria-hidden="true" />
+          <AppIcon name="chevron-right" size={14} className="ui-notice-chevron" aria-hidden="true" />
         </Button>
         {actions && <div className="ui-notice-actions">{actions}</div>}
       </div>

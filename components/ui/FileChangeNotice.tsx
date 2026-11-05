@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from "react";
-import { ChevronRight, FolderOpen } from "lucide-react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Button } from "./Button";
 import type { FileChangeEntry, FileChangeStatus } from "./FileChangeCard";
 import { NoticeFileList } from "./NoticeContent";
@@ -106,7 +106,7 @@ export const FileChangeNotice: React.FC<FileChangeNoticeProps> = ({
           onClick={() => apply(!expanded)}
         >
           <span className="ui-file-notice-icon" aria-hidden="true">
-            <FolderOpen size={15} />
+            <AppIcon name="folder-open" size={15} />
           </span>
           <span className="ui-file-notice-label">文件改动</span>
           <span className="ui-file-notice-diff">
@@ -114,7 +114,7 @@ export const FileChangeNotice: React.FC<FileChangeNoticeProps> = ({
             <i>−{totalRemoved}</i>
           </span>
           <small className="ui-file-notice-count">{files.length} 个文件</small>
-          <ChevronRight size={14} className="ui-file-notice-chevron" aria-hidden="true" />
+          <AppIcon name="chevron-right" size={14} className="ui-file-notice-chevron" aria-hidden="true" />
         </Button>
         {expanded && (
           <div id={contentId} className="ui-file-notice-body" role="region" aria-label="文件改动列表">

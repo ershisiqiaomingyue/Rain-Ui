@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { X } from "lucide-react"
-
+import { AppIcon } from "../icons/AppIcon"
 import { cn } from "../../lib/utils"
 
 /* 与 Button default 同一度量：h-8 / rounded-[10px] / text-xs / px-3 */
@@ -100,7 +99,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               suffixAction && "right-7"
             )}
           >
-            <X className="size-3" />
+            <AppIcon name="close" className="size-3" />
           </button>
         )}
         {suffixAction && (

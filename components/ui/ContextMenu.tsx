@@ -1,7 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { createPortal } from "react-dom";
-import { Check } from "lucide-react";
-
 export interface ContextMenuItem {
   label: string;
   icon?: ReactNode;
@@ -103,6 +102,6 @@ export function ContextMenu({ x, y, label, items, trigger, onClose, placement = 
   }}>
     {items.map((item, index) => <button key={index} type="button" role="menuitem" disabled={item.disabled} className={item.danger ? "is-danger" : undefined} onClick={() => {
       onClose(); trigger.focus({ preventScroll: true }); item.onSelect();
-    }}>{item.icon}<span>{item.label}</span>{item.checked && <Check className="context-menu-check" aria-hidden="true" size={14} />}</button>)}
+    }}>{item.icon}<span>{item.label}</span>{item.checked && <AppIcon name="check" className="context-menu-check" aria-hidden="true" size={14} />}</button>)}
   </div>, document.body);
 }

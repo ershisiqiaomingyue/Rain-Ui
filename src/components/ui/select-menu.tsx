@@ -5,7 +5,7 @@
 // 支持分组、说明行、leading/trailing、行内删除、header/footer、keepOpenOnSelect。
 
 import * as React from "react"
-import { Check, ChevronsUpDown, Trash2 } from "lucide-react"
+import { AppIcon } from "../icons/AppIcon"
 import { cn } from "../../lib/utils"
 import { Popover, PopoverContent, PopoverTrigger } from "./popover"
 import { Button } from "./button"
@@ -190,7 +190,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   {option.trailing && (
                     <span className="ml-auto shrink-0 text-[11px] text-muted-foreground">{option.trailing}</span>
                   )}
-                  <Check className="size-3.5 shrink-0" />
+                  <AppIcon name="check" className="size-3.5 shrink-0" />
                   {option.actions?.map((action) => (
                     <span
                       key={`measure-action-${action.label}`}
@@ -201,7 +201,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   ))}
                   {option.onRemove && (
                     <span className="ml-1 inline-flex size-6 shrink-0 items-center justify-center">
-                      <Trash2 className="size-3.5" />
+                      <AppIcon name="trash" className="size-3.5" />
                     </span>
                   )}
                 </span>
@@ -235,7 +235,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                 </span>
               </span>
             </span>
-            <ChevronsUpDown className="size-3.5 shrink-0 opacity-50" />
+            <AppIcon name="chevrons-up-down" className="size-3.5 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent
@@ -288,8 +288,8 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                           {option.trailing}
                         </span>
                       )}
-                      {isSelected && !option.trailing && <Check className="ml-auto size-3.5" />}
-                      {isSelected && option.trailing && <Check className="size-3.5" />}
+                      {isSelected && !option.trailing && <AppIcon name="check" className="ml-auto size-3.5" />}
+                      {isSelected && option.trailing && <AppIcon name="check" className="size-3.5" />}
                       {option.actions?.map((action) => (
                         <button
                           key={action.label}
@@ -325,7 +325,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                             if (STOP_KEYS.includes(event.key)) event.stopPropagation()
                           }}
                         >
-                          <Trash2 className="size-3.5" />
+                          <AppIcon name="trash" className="size-3.5" />
                         </button>
                       )}
                     </CommandItem>

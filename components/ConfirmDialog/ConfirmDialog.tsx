@@ -1,6 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from "react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { createPortal } from "react-dom";
-import { AlertTriangle, X } from "lucide-react";
 import { Button } from "../ui/Button";
 import { Checkbox } from "../ui/Checkbox";
 
@@ -100,7 +100,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="confirm-dialog-icon-wrapper" aria-hidden="true">
-          <AlertTriangle size={20} className="confirm-dialog-icon" />
+          <AppIcon name="alert-triangle" size={20} className="confirm-dialog-icon" />
         </div>
 
         <div className="confirm-dialog-body">
@@ -113,7 +113,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
               disabled={busy}
               title="关闭"
             >
-              <X size={15} />
+              <AppIcon name="close" size={15} />
             </button>
           </div>
 

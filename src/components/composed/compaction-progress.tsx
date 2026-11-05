@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { AlertCircle, Check, CircleDashed } from "lucide-react"
-
+import { AppIcon } from "../icons/AppIcon"
 import { Spinner } from "../ui/spinner"
 import { cn } from "../../lib/utils"
 
@@ -58,9 +57,9 @@ export function CompactionProgress({
         )}
       >
         {status === "running" && <Spinner size="xs" className="size-3" />}
-        {status === "completed" && <Check className="size-2.5" strokeWidth={3.2} />}
-        {status === "interrupted" && <CircleDashed className="size-3" />}
-        {status === "failed" && <AlertCircle className="size-3" />}
+        {status === "completed" && <AppIcon name="check" className="size-2.5" strokeWidth={3.2} />}
+        {status === "interrupted" && <AppIcon name="circle-dashed" className="size-3" />}
+        {status === "failed" && <AppIcon name="alert" className="size-3" />}
       </span>
 
       <span className="shrink-0 font-medium">{LABELS[status]}</span>

@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { AlertCircle, Check } from "lucide-react"
-
+import { AppIcon } from "../icons/AppIcon"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { Badge } from "../ui/badge"
 import { StepSpinner } from "../ui/step-spinner"
@@ -37,7 +36,7 @@ function TaskMark({ status }: { status: TaskStatus }) {
   if (status === "done") {
     return (
       <span className="flex size-[18px] shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-        <Check className="size-2.5" strokeWidth={3.2} />
+        <AppIcon name="check" className="size-2.5" strokeWidth={3.2} />
       </span>
     )
   }
@@ -51,7 +50,7 @@ function TaskMark({ status }: { status: TaskStatus }) {
   if (status === "error") {
     return (
       <span className="flex size-[18px] shrink-0 items-center justify-center rounded-full bg-destructive text-destructive-foreground">
-        <AlertCircle className="size-3" />
+        <AppIcon name="alert" className="size-3" />
       </span>
     )
   }

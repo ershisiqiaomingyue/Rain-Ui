@@ -1,5 +1,5 @@
 import React, { useId, useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Button } from "./Button";
 
 /**
@@ -109,7 +109,7 @@ export const ListItem: React.FC<ListItemProps> = ({
     <>
       {canExpand && showChevron && (
         <span className="ui-list-item-chevron" aria-hidden="true">
-          <ChevronRight size={14} />
+          <AppIcon name="chevron-right" size={14} />
         </span>
       )}
       {leading && <span className="ui-list-item-leading">{leading}</span>}

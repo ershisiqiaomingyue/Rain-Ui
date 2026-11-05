@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowDown, ArrowUp, Check, Copy, RefreshCw, Search, X } from "lucide-react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Button } from "./Button";
 
 /**
@@ -130,7 +130,7 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
               variant="subtle"
               size="xs"
               className="ui-preview-tool"
-              icon={<Search size={14} />}
+              icon={<AppIcon name="search" size={14} />}
               title="搜索文件内容"
               aria-label="搜索文件内容"
               aria-expanded={searchOpen}
@@ -144,7 +144,7 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
               variant="subtle"
               size="xs"
               className="ui-preview-tool"
-              icon={copied ? <Check size={14} /> : <Copy size={14} />}
+              icon={copied ? <AppIcon name="check" size={14} /> : <AppIcon name="copy" size={14} />}
               title={copied ? "已复制" : "复制文件内容"}
               aria-label={copied ? "已复制" : "复制文件内容"}
               disabled={loading}
@@ -157,7 +157,7 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
               variant="subtle"
               size="xs"
               className="ui-preview-tool"
-              icon={<RefreshCw size={14} />}
+              icon={<AppIcon name="refresh" size={14} />}
               title="重新读取文件"
               aria-label="重新读取文件"
               onClick={onRetry}
@@ -169,7 +169,7 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
               variant="subtle"
               size="xs"
               className="ui-preview-tool"
-              icon={<X size={16} />}
+              icon={<AppIcon name="close" size={16} />}
               title="关闭文件预览"
               aria-label="关闭文件预览"
               onClick={onClose}
@@ -229,7 +229,7 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
             variant="subtle"
             size="xs"
             className="ui-preview-tool"
-            icon={<ArrowUp size={13} />}
+            icon={<AppIcon name="arrow-up" size={13} />}
             title="上一个匹配"
             aria-label="上一个匹配"
             disabled={!matches}
@@ -240,7 +240,7 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
             variant="subtle"
             size="xs"
             className="ui-preview-tool"
-            icon={<ArrowDown size={13} />}
+            icon={<AppIcon name="arrow-down" size={13} />}
             title="下一个匹配"
             aria-label="下一个匹配"
             disabled={!matches}

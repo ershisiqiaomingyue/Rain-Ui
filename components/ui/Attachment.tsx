@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  FileArchive,
-  FileCode2,
-  FileImage,
-  FileJson,
-  FileText,
-  FolderOpen,
-  X,
-} from "lucide-react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Button } from "./Button";
 
 /**
@@ -68,13 +60,13 @@ const KIND_LABEL: Record<AttachmentKind, string> = {
 };
 
 const KIND_GLYPH: Record<AttachmentKind, React.ReactNode> = {
-  image: <FileImage size={17} />,
-  directory: <FolderOpen size={17} />,
-  code: <FileCode2 size={17} />,
-  text: <FileText size={17} />,
-  archive: <FileArchive size={17} />,
-  json: <FileJson size={17} />,
-  document: <FileText size={17} />,
+  image: <AppIcon name="file-image" size={17} />,
+  directory: <AppIcon name="folder-open" size={17} />,
+  code: <AppIcon name="file-code" size={17} />,
+  text: <AppIcon name="file-text" size={17} />,
+  archive: <AppIcon name="file-archive" size={17} />,
+  json: <AppIcon name="file-json" size={17} />,
+  document: <AppIcon name="file-text" size={17} />,
 };
 
 /** Extension-based kind, for callers that only have a filename. */
@@ -123,7 +115,7 @@ export const Attachment: React.FC<AttachmentProps> = ({
       type="button"
       variant="bare"
       className="ui-attachment-remove"
-      icon={<X size={11} />}
+      icon={<AppIcon name="close" size={11} />}
       aria-label={`移除 ${name}`}
       title={`移除 ${name}`}
       onClick={onRemove}

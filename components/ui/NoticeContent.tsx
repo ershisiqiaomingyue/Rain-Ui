@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import clsx from "clsx";
-import { ArrowUp, ChevronRight, GripVertical, Pencil, Trash2 } from "lucide-react";
 import { Button } from "./Button";
 import { Card } from "./Card";
 import { Input } from "./Input";
@@ -87,7 +87,7 @@ export function NoticeQueueRow({ queueId, content, preview, busy, onGuide, onEdi
       {single ? <span className="ui-notice-queue-dot" aria-hidden="true" /> : index != null && <span className="ui-notice-queue-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>}
       {!single && <Button variant="bare" className="ui-notice-queue-drag" title="按住拖动调整顺序" aria-label={`拖动调整消息顺序：${content}`} onPointerDown={onPointerDown} onKeyDown={event => {
         if (event.key === "ArrowUp" || event.key === "ArrowDown") { event.preventDefault(); onMove?.(event.key === "ArrowUp" ? -1 : 1); }
-      }} disabled={Boolean(busy)} icon={<GripVertical size={16} />} />}
+      }} disabled={Boolean(busy)} icon={<AppIcon name="grip-vertical" size={16} />} />}
       {single && <span className="ui-notice-queue-single-label">一条追加消息等待中：</span>}
       {preview}
       <span className={`ui-notice-queue-text${single ? " is-single-text" : ""}`} title={content}>{content}</span>
@@ -102,9 +102,9 @@ export function NoticeQueueActions({ content, busy, onGuide, onEdit, onRemove }:
   onGuide?: () => void; onEdit?: () => void; onRemove?: () => void;
 }) {
   return <div className="ui-notice-queue-actions">
-    <Button variant="bare" className="ui-notice-queue-send" title="追加到当前任务（立即发出这条消息）" aria-label={`追加到当前任务：${content}`} icon={<ArrowUp size={15} />} loading={busy === "guide"} disabled={Boolean(busy)} onClick={onGuide} />
-    <Button variant="bare" title="编辑消息" aria-label={`编辑排队消息：${content}`} icon={<Pencil size={15} />} disabled={Boolean(busy)} onClick={onEdit} />
-    <Button variant="bare" className="btn-danger-hover" title="删除" aria-label={`删除排队消息：${content}`} icon={<Trash2 size={15} />} loading={busy === "remove"} disabled={Boolean(busy)} onClick={onRemove} />
+    <Button variant="bare" className="ui-notice-queue-send" title="追加到当前任务（立即发出这条消息）" aria-label={`追加到当前任务：${content}`} icon={<AppIcon name="arrow-up" size={15} />} loading={busy === "guide"} disabled={Boolean(busy)} onClick={onGuide} />
+    <Button variant="bare" title="编辑消息" aria-label={`编辑排队消息：${content}`} icon={<AppIcon name="pencil" size={15} />} disabled={Boolean(busy)} onClick={onEdit} />
+    <Button variant="bare" className="btn-danger-hover" title="删除" aria-label={`删除排队消息：${content}`} icon={<AppIcon name="trash" size={15} />} loading={busy === "remove"} disabled={Boolean(busy)} onClick={onRemove} />
   </div>;
 }
 
@@ -148,7 +148,7 @@ export function NoticeBackgroundTask({ title, log, running, stopping, onStop, me
     <div className="ui-notice-background-heading">
       <Button variant="bare" className="ui-notice-background-toggle" aria-expanded={expanded} aria-controls={contentId}
         title={expanded ? "收起这个任务" : "展开这个任务"} onClick={() => setExpanded((current) => !current)}>
-        <ChevronRight size={13} className="ui-notice-background-chevron" />
+        <AppIcon name="chevron-right" size={13} className="ui-notice-background-chevron" />
         <span>{title}</span>
       </Button>
       {meta}

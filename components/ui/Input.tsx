@@ -1,6 +1,6 @@
 import React from "react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import clsx from "clsx";
-import { X } from "lucide-react";
 import { Button } from "./Button";
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
@@ -64,7 +64,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type="button"
             variant="bare"
             className="input-clear-pill"
-            icon={<X size={12} />}
+            icon={<AppIcon name="close" size={12} />}
             onClick={onClear}
             title="清空"
           />

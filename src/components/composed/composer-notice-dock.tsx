@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ArrowUp, Check, ChevronRight, ClipboardList, FolderOpen, GripVertical, ListPlus, MessageCircleQuestion, Pencil, ShieldCheck, Sparkles, Trash2 } from "lucide-react"
-
+import { AppIcon, type AppIconName } from "../icons/AppIcon"
 import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "../ui/item"
@@ -77,15 +76,15 @@ export interface ComposerNoticeDockProps {
 
 const toneOf: Record<
   NoticeItemKind,
-  { icon: React.ComponentType<{ className?: string }>; accent: string; text: string; edge: string }
+  { icon: AppIconName; accent: string; text: string; edge: string }
 > = {
-  permission: { icon: ShieldCheck, accent: "text-primary", text: "text-foreground", edge: "border-primary/30" },
-  question: { icon: MessageCircleQuestion, accent: "text-primary", text: "text-foreground", edge: "border-primary/25" },
-  plan: { icon: ClipboardList, accent: "text-muted-foreground", text: "text-foreground", edge: "border-border" },
-  background: { icon: Sparkles, accent: "text-primary", text: "text-foreground", edge: "border-border" },
-  queue: { icon: ListPlus, accent: "text-muted-foreground", text: "text-foreground", edge: "border-border" },
-  files: { icon: FolderOpen, accent: "text-muted-foreground", text: "text-foreground", edge: "border-border" },
-  compaction: { icon: Sparkles, accent: "text-primary", text: "text-foreground", edge: "border-border" },
+  permission: { icon: "shield-check", accent: "text-primary", text: "text-foreground", edge: "border-primary/30" },
+  question: { icon: "message-question", accent: "text-primary", text: "text-foreground", edge: "border-primary/25" },
+  plan: { icon: "clipboard-list", accent: "text-muted-foreground", text: "text-foreground", edge: "border-border" },
+  background: { icon: "sparkles", accent: "text-primary", text: "text-foreground", edge: "border-border" },
+  queue: { icon: "list-plus", accent: "text-muted-foreground", text: "text-foreground", edge: "border-border" },
+  files: { icon: "folder-open", accent: "text-muted-foreground", text: "text-foreground", edge: "border-border" },
+  compaction: { icon: "sparkles", accent: "text-primary", text: "text-foreground", edge: "border-border" },
 }
 
 /** 状态圆点：运行态复用组件库 StepSpinner，完成态使用主题色对勾。 */
@@ -96,7 +95,7 @@ function StateMark({ state }: { state?: NoticeState }) {
   if (state === "done") {
     return (
       <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-        <Check className="size-2.5" strokeWidth={3} />
+        <AppIcon name="check" className="size-2.5" strokeWidth={3} />
       </span>
     )
   }
@@ -177,7 +176,7 @@ function FilesNotice({
           aria-label={`文件改动：${files.length} 个文件，新增 ${added} 行，删除 ${removed} 行`}
           className="group/file-change h-8 w-[280px] max-w-full justify-start gap-2 px-2.5 text-xs font-normal shadow-none max-[720px]:w-full"
         >
-          <FolderOpen className="size-3.5 shrink-0 text-muted-foreground" />
+          <AppIcon name="folder-open" className="size-3.5 shrink-0 text-muted-foreground" />
           <span className="shrink-0 font-medium">文件改动</span>
           <span className="inline-flex shrink-0 gap-1.5 font-mono text-[11px] tabular-nums">
             <em className="not-italic text-emerald-600 dark:text-emerald-400">+{added}</em>
@@ -186,7 +185,7 @@ function FilesNotice({
           <span className="ml-auto shrink-0 text-[11px] tabular-nums text-muted-foreground">
             {files.length} 个文件
           </span>
-          <ChevronRight className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 group-data-[state=open]/file-change:rotate-90" />
+          <AppIcon name="chevron-right" className="size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 group-data-[state=open]/file-change:rotate-90" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -248,10 +247,10 @@ function QueueActions({
   return (
     <div className="flex shrink-0 items-center gap-0.5">
       <QueueIconButton title="立即追加这条消息" aria-label={`追加到当前任务：${content}`} onClick={onGuide}>
-        <ArrowUp />
+        <AppIcon name="arrow-up" />
       </QueueIconButton>
       <QueueIconButton title="编辑消息" aria-label={`编辑排队消息：${content}`} onClick={onEdit}>
-        <Pencil />
+        <AppIcon name="pencil" />
       </QueueIconButton>
       <QueueIconButton
         title="删除"
@@ -259,7 +258,7 @@ function QueueActions({
         className="hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/15"
         onClick={onRemove}
       >
-        <Trash2 />
+        <AppIcon name="trash" />
       </QueueIconButton>
     </div>
   )
@@ -326,7 +325,7 @@ function QueueRow({
             onMove?.(event.key === "ArrowUp" ? -1 : 1)
           }}
         >
-          <GripVertical />
+          <AppIcon name="grip-vertical" />
         </QueueIconButton>
       )}
 
@@ -478,7 +477,7 @@ function QueueNotice({
             <span className="min-w-0 flex-1 truncate text-xs font-semibold text-foreground">
               {messages.length} 条追加消息等待中
             </span>
-            <ChevronRight
+            <AppIcon name="chevron-right"
               className={cn(
                 "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
                 expanded && "rotate-90"
@@ -586,7 +585,6 @@ export function ComposerNoticeDock({
         }
 
         const tone = toneOf[item.kind]
-        const Icon = tone.icon
         const expanded = expandedId === item.id
         const contentId = `${item.id}-content`
 
@@ -605,7 +603,7 @@ export function ComposerNoticeDock({
               className="h-auto min-h-9 w-full justify-start gap-2 rounded-none border-0 px-3 py-1 text-left text-foreground hover:bg-muted/45"
             >
               <span className={cn("flex shrink-0 items-center justify-center", item.running ? "size-5" : "size-[15px]", tone.accent)}>
-                {item.running ? <StepSpinner size={20} /> : <Icon className="size-[15px]" />}
+                {item.running ? <StepSpinner size={20} /> : <AppIcon name={tone.icon} className="size-[15px]" />}
               </span>
               <span className={cn("shrink-0 text-xs font-medium", tone.text)}>{item.label}</span>
               <span className="min-w-0 flex-1 truncate text-xs font-normal text-muted-foreground">{item.summary}</span>
@@ -616,7 +614,7 @@ export function ComposerNoticeDock({
                     {item.badge}
                   </Badge>
                 )}
-                <ChevronRight
+                <AppIcon name="chevron-right"
                   className={cn(
                     "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
                     expanded && "rotate-90"

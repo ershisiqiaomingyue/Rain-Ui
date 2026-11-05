@@ -1,7 +1,6 @@
 import React, { useEffect, useId, useRef } from "react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { createPortal } from "react-dom";
-import { X } from "lucide-react";
-
 export interface ModalProps {
   open: boolean;
   title: string;
@@ -109,7 +108,7 @@ export const Modal: React.FC<ModalProps> = ({
             {description && <p className="ui-modal-description" id={descriptionId}>{description}</p>}
           </div>
           <button type="button" className="ui-modal-close" title="关闭" aria-label="关闭" disabled={busy} onClick={onClose}>
-            <X size={15} />
+            <AppIcon name="close" size={15} />
           </button>
         </div>
         <div className="ui-modal-content">{children}</div>

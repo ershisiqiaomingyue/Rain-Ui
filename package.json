@@ -290,7 +290,6 @@
     "@radix-ui/react-toggle-group": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.4.1",
     "cmdk": "^1.1.1",
-    "lucide-react": "^0.475.0",
     "next-themes": "^0.4.6",
     "react-resizable-panels": "^2.1.9",
     "sonner": "^2.0.8"
@@ -303,6 +302,7 @@
     "autoprefixer": "^10.6.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "lucide-react": "^0.475.0",
     "postcss": "^8.5.32",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -322,4 +322,3 @@
     "desktop"
   ]
 }
-

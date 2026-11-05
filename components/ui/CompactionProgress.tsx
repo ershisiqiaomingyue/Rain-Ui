@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertCircle, Check, CircleDashed } from "lucide-react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Spinner } from "./Spinner";
 
 /**
@@ -45,9 +45,9 @@ const ICON: Record<CompactionStatus, React.ReactNode> = {
   running: <Spinner size={14} />,
   // Same check as the tool-status circle: 11px, heavy stroke, white on a
   // filled accent circle (the fill comes from CSS, not from the glyph).
-  completed: <Check size={11} strokeWidth={2.8} />,
-  interrupted: <CircleDashed size={14} />,
-  failed: <AlertCircle size={14} />,
+  completed: <AppIcon name="check" size={11} strokeWidth={2.8} />,
+  interrupted: <AppIcon name="circle-dashed" size={14} />,
+  failed: <AppIcon name="alert" size={14} />,
 };
 
 export const CompactionProgress: React.FC<CompactionProgressProps> = ({

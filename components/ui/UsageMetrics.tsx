@@ -1,5 +1,5 @@
 import React from "react";
-import { RefreshCw } from "lucide-react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Button } from "./Button";
 
 /**
@@ -75,7 +75,7 @@ export const UsageMetrics: React.FC<UsageMetricsProps> = ({
         onClick={onRefreshBalance}
       >
         <span className="ui-usage-label">{balance.label}</span> <b>{balance.value ?? "—"}</b>
-        {balance.refreshing && <RefreshCw size={10} className="ui-usage-spin" aria-hidden="true" />}
+        {balance.refreshing && <AppIcon name="refresh" size={10} className="ui-usage-spin" aria-hidden="true" />}
       </Button>
     )}
 

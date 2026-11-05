@@ -1,5 +1,5 @@
 import React, { useId, useState } from "react";
-import { ArrowUpRight, ChevronDown, ChevronUp, FileDiff, Undo2 } from "lucide-react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Button } from "./Button";
 import { Card } from "./Card";
 
@@ -100,7 +100,7 @@ export const FileChangeCard: React.FC<FileChangeCardProps> = ({
     >
       <header>
         <span className="ui-file-changes-icon" aria-hidden="true">
-          <FileDiff size={18} />
+          <AppIcon name="file-diff" size={18} />
         </span>
         <div className="ui-file-changes-heading">
           <b>已编辑 {visible.length} 个文件</b>
@@ -115,7 +115,7 @@ export const FileChangeCard: React.FC<FileChangeCardProps> = ({
               type="button"
               variant="subtle"
               size="xs"
-              icon={<Undo2 size={13} />}
+              icon={<AppIcon name="undo" size={13} />}
               title="撤销本轮全部文件改动"
               onClick={onUndo}
             >
@@ -127,7 +127,7 @@ export const FileChangeCard: React.FC<FileChangeCardProps> = ({
               type="button"
               variant="secondary"
               size="xs"
-              icon={<ArrowUpRight size={13} />}
+              icon={<AppIcon name="arrow-up-right" size={13} />}
               title="查看文件变更"
               onClick={onReview}
             >
@@ -174,7 +174,7 @@ export const FileChangeCard: React.FC<FileChangeCardProps> = ({
           variant="subtle"
           size="xs"
           className="ui-file-changes-expand"
-          icon={expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+          icon={expanded ? <AppIcon name="chevron-up" size={13} /> : <AppIcon name="chevron-down" size={13} />}
           aria-controls={listId}
           aria-expanded={expanded}
           onClick={() => {

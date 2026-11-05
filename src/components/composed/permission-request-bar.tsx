@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ShieldAlert, ShieldCheck, ShieldX, Timer } from "lucide-react"
-
+import { AppIcon } from "../icons/AppIcon"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Badge } from "../ui/badge"
@@ -50,7 +49,7 @@ export function PermissionRequestBar({
     >
       <div className="flex items-center gap-2">
         <span className="flex size-5 shrink-0 items-center justify-center rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400">
-          <ShieldAlert className="size-3" />
+          <AppIcon name="shield-alert" className="size-3" />
         </span>
         <span className="text-xs font-semibold text-foreground">需要授权</span>
         <span className="min-w-0 truncate text-xs text-muted-foreground">
@@ -59,7 +58,7 @@ export function PermissionRequestBar({
         </span>
         {expiresIn != null && (
           <Badge variant="warning" className="ml-auto h-5 shrink-0 gap-1 px-1.5 font-mono text-[10.5px]">
-            <Timer className="size-2.5" />
+            <AppIcon name="timer" className="size-2.5" />
             {expiresIn}s
           </Badge>
         )}
@@ -83,15 +82,15 @@ export function PermissionRequestBar({
 
       <div className="flex items-center justify-end gap-2">
         <Button variant="ghost" disabled={busy} onClick={onDeny} className="gap-1.5">
-          <ShieldX className="size-3.5" />
+          <AppIcon name="shield-x" className="size-3.5" />
           拒绝
         </Button>
         <Button variant="outline" disabled={busy} onClick={onAlwaysAllow} className="gap-1.5">
-          <ShieldCheck className="size-3.5" />
+          <AppIcon name="shield-check" className="size-3.5" />
           本会话始终允许
         </Button>
         <Button disabled={busy} onClick={onAllow} className="gap-1.5">
-          <ShieldCheck className="size-3.5" />
+          <AppIcon name="shield-check" className="size-3.5" />
           允许执行
         </Button>
       </div>

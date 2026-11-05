@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { LoaderCircle } from "lucide-react"
-
+import { AppIcon } from "../icons/AppIcon"
 import { cn } from "../../lib/utils"
 
 export interface StepSpinnerProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -29,7 +28,7 @@ export const StepSpinner = React.forwardRef<HTMLSpanElement, StepSpinnerProps>(
       aria-hidden={label ? undefined : true}
       {...props}
     >
-      <LoaderCircle size={Math.max(8, Math.round(size * 0.65))} strokeWidth={2.6} />
+      <AppIcon name="loader" size={Math.max(8, Math.round(size * 0.65))} strokeWidth={2.6} />
     </span>
   )
 )

@@ -1,6 +1,5 @@
 import React from "react";
-import { LoaderCircle } from "lucide-react";
-
+import { AppIcon } from "../../src/components/icons/AppIcon"
 /**
  * StepSpinner —— TaskStepList（组件 07）运行态的「旋转虚线弧」加载图标：
  * 主色淡底圆 + 旋转弧线。抽成独立组件供各处加载态复用（用户指定口径）。
@@ -19,7 +18,7 @@ export const StepSpinner: React.FC<StepSpinnerProps> = ({ size = 20, label }) =>
     aria-label={label}
     aria-hidden={label ? undefined : true}
   >
-    <LoaderCircle size={Math.round(size * 0.65)} strokeWidth={2.6} />
+    <AppIcon name="loader" size={Math.round(size * 0.65)} strokeWidth={2.6} />
   </span>
 );
 

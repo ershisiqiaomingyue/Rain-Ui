@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { createPortal } from "react-dom";
-import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from "lucide-react";
 import { Button } from "./Button";
 import { formatInvokeError } from "../../src/lib/errorText";
 
@@ -69,10 +69,10 @@ export type PortalProps = {
 const PortalContext = createContext<PortalApi | null>(null);
 
 const TONE_ICON: Record<PortalTone, React.ReactNode> = {
-  success: <CheckCircle2 size={15} />,
-  error: <AlertCircle size={15} />,
-  warning: <AlertTriangle size={15} />,
-  info: <Info size={15} />,
+  success: <AppIcon name="check-circle" size={15} />,
+  error: <AppIcon name="alert" size={15} />,
+  warning: <AppIcon name="alert-triangle" size={15} />,
+  info: <AppIcon name="info" size={15} />,
 };
 
 /** Visible cards at once. Older ones are dropped, not queued forever. */
@@ -104,7 +104,7 @@ export const Portal: React.FC<PortalProps> = ({
         variant="subtle"
         size="xs"
         className="ui-portal-close"
-        icon={<X size={13} />}
+        icon={<AppIcon name="close" size={13} />}
         aria-label="关闭提示"
         onClick={onClose}
       />

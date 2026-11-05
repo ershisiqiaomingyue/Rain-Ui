@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useId } from "react";
+import { AppIcon } from "../../src/components/icons/AppIcon"
 import { createPortal } from "react-dom";
 import clsx from "clsx";
-import { ChevronDown, Check, Search, Trash2 } from "lucide-react";
 import { Input } from "./Input";
 
 export interface SelectOptionAction {
@@ -253,7 +253,7 @@ export const Select: React.FC<SelectProps> = ({
       >
         {header && <div className="select-menu-header">{header}</div>}
         {searchable && <div className="select-search">
-          <Input size="sm" type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder={searchPlaceholder} aria-label={searchPlaceholder} prefixIcon={<Search size={14} />} autoFocus />
+          <Input size="sm" type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder={searchPlaceholder} aria-label={searchPlaceholder} prefixIcon={<AppIcon name="search" size={14} />} autoFocus />
         </div>}
         <div className="select-options-list menu-options-list" role="listbox">
           {visibleOptions.map((opt, index) => {
@@ -310,7 +310,7 @@ export const Select: React.FC<SelectProps> = ({
                   </span>
                 )}
                 {isSelected && !opt.submenu && (
-                  <Check
+                  <AppIcon name="check"
                     size={14}
                     style={{ color: "inherit", flexShrink: 0, marginLeft: opt.trailing ? 6 : "auto" }}
                   />
@@ -333,11 +333,11 @@ export const Select: React.FC<SelectProps> = ({
                 event.stopPropagation();
                 opt.onRemove?.();
                 triggerRef.current?.focus();
-              }}><Trash2 size={13} /></button>}
+              }}><AppIcon name="trash" size={13} /></button>}
               {opt.submenu && <button type="button" className={clsx("select-option-expand", isSubmenuOpen && "is-open")} aria-label={`展开 ${opt.label}`} aria-expanded={isSubmenuOpen} title={`展开 ${opt.label}`} onClick={(event) => {
                 event.stopPropagation();
                 setOpenSubmenu(isSubmenuOpen ? null : opt.value);
-              }}><ChevronDown size={13} /></button>}
+              }}><AppIcon name="chevron-down" size={13} /></button>}
               {isSubmenuOpen && opt.submenu && <div className="select-submenu" role="dialog" aria-label={opt.label} onClick={(event) => event.stopPropagation()}>
                 {opt.submenu(() => setOpenSubmenu(null))}
               </div>}
@@ -384,7 +384,7 @@ export const Select: React.FC<SelectProps> = ({
           {currentOption ? currentOption.label : (currentVal || placeholder)}
         </span>
         <span className="select-arrow select-chevron-icon">
-          <ChevronDown size={14} />
+          <AppIcon name="chevron-down" size={14} />
         </span>
       </button>
 
