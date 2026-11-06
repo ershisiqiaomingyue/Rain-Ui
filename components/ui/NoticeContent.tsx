@@ -103,7 +103,9 @@ export function NoticeQueueActions({ content, busy, onGuide, onEdit, onRemove }:
 }) {
   return <div className="ui-notice-queue-actions">
     <Button variant="bare" className="ui-notice-queue-send" title="追加到当前任务（立即发出这条消息）" aria-label={`追加到当前任务：${content}`} icon={<AppIcon name="arrow-up" size={15} />} loading={busy === "guide"} disabled={Boolean(busy)} onClick={onGuide} />
-    <Button variant="bare" title="编辑消息" aria-label={`编辑排队消息：${content}`} icon={<AppIcon name="pencil" size={15} />} disabled={Boolean(busy)} onClick={onEdit} />
+    {/* 编辑按钮统一用 "edit"（铅笔 + 底线）。图标集里原先的 "pencil" 是 Solar 的笔尖
+        （两支脚 + 顶上尖角的四边形），15px 下像个小帐篷，已从图标集中删除。 */}
+    <Button variant="bare" title="编辑消息" aria-label={`编辑排队消息：${content}`} icon={<AppIcon name="edit" size={15} />} disabled={Boolean(busy)} onClick={onEdit} />
     <Button variant="bare" className="btn-danger-hover" title="删除" aria-label={`删除排队消息：${content}`} icon={<AppIcon name="trash" size={15} />} loading={busy === "remove"} disabled={Boolean(busy)} onClick={onRemove} />
   </div>;
 }

@@ -250,7 +250,7 @@ function QueueActions({
         <AppIcon name="arrow-up" />
       </QueueIconButton>
       <QueueIconButton title="编辑消息" aria-label={`编辑排队消息：${content}`} onClick={onEdit}>
-        <AppIcon name="pencil" />
+        <AppIcon name="edit" />
       </QueueIconButton>
       <QueueIconButton
         title="删除"
