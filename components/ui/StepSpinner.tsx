@@ -1,8 +1,9 @@
 import React from "react";
-import { AppIcon } from "../../src/components/icons/AppIcon"
+import { Spinner } from "./Spinner";
 /**
- * StepSpinner —— TaskStepList（组件 07）运行态的「旋转虚线弧」加载图标：
- * 主色淡底圆 + 旋转弧线。抽成独立组件供各处加载态复用（用户指定口径）。
+ * StepSpinner —— TaskStepList（组件 07）运行态的加载图标：主色淡底圆 + 旋转弧线。
+ * 弧线本体就是全站的 Spinner（同一个形状、同一份渐变尾巴），这里只补那层淡底圆，
+ * 免得「步骤里转的」和「状态行里转的」长得不一样。
  */
 export type StepSpinnerProps = {
   /** 外圈直径（默认 20，与任务步骤圆一致）。 */
@@ -18,7 +19,7 @@ export const StepSpinner: React.FC<StepSpinnerProps> = ({ size = 20, label }) =>
     aria-label={label}
     aria-hidden={label ? undefined : true}
   >
-    <AppIcon name="loader" size={Math.round(size * 0.65)} strokeWidth={2.6} />
+    <Spinner size={Math.max(8, Math.round(size * 0.68))} strokeWidth={2.4} />
   </span>
 );
 

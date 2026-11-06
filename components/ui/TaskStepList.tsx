@@ -1,4 +1,5 @@
 import React from "react";
+import { Spinner } from "./Spinner";
 
 /** Status of one task step, mirroring the card-showcase.html spec. */
 export type TaskStepStatus = "done" | "running" | "pending" | "error" | "cancelled";
@@ -31,7 +32,7 @@ export const TaskStepStatusIcon: React.FC<{ status: TaskStepStatus; className?: 
   <span className={["task-step-icon", status, className].filter(Boolean).join(" ")} aria-hidden="true">
     {status === "done" && <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" /></svg>}
     {(status === "error" || status === "cancelled") && <svg viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17" /></svg>}
-    {status === "running" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="9" strokeDasharray="32" strokeLinecap="round" /></svg>}
+    {status === "running" && <Spinner size={13} strokeWidth={2.5} />}
   </span>
 );
 

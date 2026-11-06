@@ -24,7 +24,8 @@
   .ui-spinner { animation: none; }
 }
 
-/* StepSpinner：TaskStepList 运行态同款（主色淡底圆 + 旋转虚线弧）。 */
+/* StepSpinner：TaskStepList 运行态——主色淡底圆托着同一个 Spinner。
+   圆本身不转：里面那颗弧线自己在转，两层叠着转会变成双倍速。 */
 .ui-step-spinner {
   display: inline-flex;
   align-items: center;
@@ -33,13 +34,4 @@
   border-radius: 50%;
   background: var(--accent-subtle);
   color: var(--accent-ink);
-  animation: task-step-spin 1s linear infinite;
-}
-
-@keyframes task-step-spin {
-  100% { transform: rotate(360deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ui-step-spinner { animation: none; }
 }

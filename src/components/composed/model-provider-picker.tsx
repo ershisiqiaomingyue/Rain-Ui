@@ -36,7 +36,7 @@ export type ProviderOption = {
   models: ModelOption[]
 }
 
-export type ReasoningLevel = "low" | "medium" | "high" | "xhigh" | "max"
+export type ReasoningLevel = "off" | "low" | "medium" | "high" | "xhigh" | "max"
 
 export interface ModelProviderPickerProps {
   providers?: ProviderOption[]

@@ -1,5 +1,6 @@
 import * as React from "react"
 import { AppIcon } from "../icons/AppIcon"
+import { Spinner } from "../../../components/ui/Spinner"
 import { cva, type VariantProps } from "class-variance-authority"
 import { Slot } from "@radix-ui/react-slot"
 import { cn } from "../../lib/utils"
@@ -128,7 +129,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size: resolvedSize, className }))}
         {...props}
       >
-        {loading ? <AppIcon name="loader" className="animate-spin" aria-hidden /> : icon}
+        {loading ? <Spinner aria-hidden /> : icon}
         {children}
       </Comp>
     )
