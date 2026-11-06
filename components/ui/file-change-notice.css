@@ -95,7 +95,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.ui-file-notice-diff em { font-style: normal; color: var(--status-success-text); }
+.ui-file-notice-diff em { font-style: normal; color: var(--change-added, var(--success-text)); }
 .ui-file-notice-diff i { font-style: normal; color: var(--status-danger-text); }
 
 .ui-file-notice-count {

@@ -76,6 +76,7 @@ import { readAppTheme, setAppTheme, toggleAppTheme, subscribeAppTheme } from "ra
 | 布局 | `Card`(`CardHeader/CardBody/CardFooter`) `Divider` `Table` `PropertyGrid` `ListItem` `SessionTabs` `ResizablePane` |
 | 反馈 | `Spinner` `StepSpinner` `Portal` `Modal` `Tooltip` `ContextMenu` `ProgressRing` `TaskStepList` `NoticePanel`(含 `NoticeQueueRow` / `NoticeFileList`) `CompactionProgress` `ToolEmptyState` `ToolBackButton` |
 | 对话 | `UsageMetrics` `Attachment` `FileChangeCard` `FileChangeNotice` `FileDiffView` `FilePreviewPanel` `AccessModeMenu` |
+| 数据 | `StatTile` `RankBar` `DataTable` `DailyHeatmap` `ToneDot` `Constellation` —— 分类色接口 `DATA_TONES` / `dataToneFor` / `registerDataTones` |
 | 应用级 | `BootScreen` `BorderGlow` `ToolIcon` `ConfirmDialog` `RenameDialog` |
 
 演示站的 42 个用例覆盖了上面全部组件与状态：tokens（色/字/圆角/间距/动效）、

@@ -45,6 +45,14 @@ export {
 export * from "./components/ui/select-menu"
 // composed 组合件：模型/供应商选择器、上下文用量环、状态徽标、任务状态行、
 // 权限请求条、输入框通知坞、终端范围滑块、用量指标条。
+// 统计面板三件套（指标卡 / 排行行 / 数据表）与它们的配色接口（tone）。
+export * from "./components/composed/stat-tile"
+export * from "./components/composed/rank-bar"
+export * from "./components/composed/data-table"
+export * from "./components/composed/daily-heatmap"
+export * from "./components/composed/tone-dot"
+export * from "./components/composed/constellation"
+export * from "./lib/tone"
 export * from "./components/composed/model-provider-picker"
 export * from "./components/composed/context-usage-ring"
 export * from "./components/composed/composer-notice-dock"
