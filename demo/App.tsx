@@ -103,6 +103,7 @@ import {
   type TaskItem,
 } from "@/components/composed"
 import { cn } from "@/lib/utils"
+import { SpecIcons } from "./spec-icons"
 interface NavItem {
   id: string
   title: string
@@ -153,6 +154,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: "scroll-area", title: "Scroll Area", label: "滚动区域", group: "base" },
   { id: "resizable", title: "Resizable", label: "可调整面板", group: "base" },
   { id: "sidebar", title: "Sidebar", label: "侧边栏布局", group: "base" },
+  { id: "icons", title: "AppIcon", label: "统一图标集", group: "base" },
   // 组合组件
   { id: "context-usage-ring", title: "Context Ring", label: "上下文圆环", group: "composed" },
   { id: "model-provider-picker", title: "Model Picker", label: "模型选择器", group: "composed" },
@@ -1830,6 +1832,10 @@ export function App() {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+          </Section>
+          {/* 45. AppIcon · 统一图标集（清单来自库里的 APP_ICON_NAMES） */}
+          <Section id="icons" title="AppIcon" label="统一图标集（Hugeicons 4.4.0 基底）" count={45}>
+            <SpecIcons />
           </Section>
           </PageContext.Provider>
           {/* 底部翻页 */}
