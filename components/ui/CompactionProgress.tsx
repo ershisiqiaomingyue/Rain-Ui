@@ -12,9 +12,13 @@ import { Spinner } from "./Spinner";
  * Running and completed are one continuous strip, not two different widgets:
  * the same row, the same track and the same percent slot, so the moment the
  * compaction finishes the line does not jump, resize or re-order — the spinner
- * becomes a tick and the track settles at 100%. `detail` carries the sentence
- * the caller builds, e.g. "12,400 → 3,200 Token" when finished, or the message
- * counts while running.
+ * hands over to the neutral glyph and the track settles at 100%. `detail`
+ * carries the sentence the caller builds, e.g. "12,400 → 3,200 Token" when
+ * finished, or the message counts while running.
+ *
+ * In `row` mode the percent is only drawn while running: once it is finished the
+ * detail already states the real numbers, and "Token 100%" on every past
+ * compaction reads as a success badge that means nothing.
  */
 
 export type CompactionStatus = "running" | "completed" | "interrupted" | "failed";
@@ -43,11 +47,12 @@ const LABEL: Record<CompactionStatus, string> = {
 
 const ICON: Record<CompactionStatus, React.ReactNode> = {
   running: <Spinner size={14} />,
-  // Same check as the tool-status circle: 11px, heavy stroke, white on a
-  // filled accent circle (the fill comes from CSS, not from the glyph).
-  completed: <AppIcon name="check" size={11} strokeWidth={2.8} />,
-  interrupted: <AppIcon name="circle-dashed" size={14} />,
-  failed: <AppIcon name="alert" size={14} />,
+  // 和工具行同一套：图标回答「做了什么」（把旧消息归档成检查点），状态交给颜色
+  // 和文案。以前这里是「蓝底 + 白勾」的圆片，时间线上于是出现第二种图标家族，
+  // 而且每个已完成行都在喊「成功」——压缩完成不是成功，是它发生了。
+  completed: <AppIcon name="archive" size={14} strokeWidth={1.9} />,
+  interrupted: <AppIcon name="circle-dashed" size={14} strokeWidth={1.9} />,
+  failed: <AppIcon name="alert" size={14} strokeWidth={1.9} />,
 };
 
 export const CompactionProgress: React.FC<CompactionProgressProps> = ({
@@ -92,7 +97,9 @@ export const CompactionProgress: React.FC<CompactionProgressProps> = ({
           <span className="ui-compaction-percent">{percentText}</span>
         </>
       )}
-      {row && showTrack && <span className="ui-compaction-percent">{percentText}</span>}
+      {row && status === "running" && (
+        <span className="ui-compaction-percent">{percentText}</span>
+      )}
       {!row && detail && <small className="ui-compaction-detail">{detail}</small>}
     </div>
   );

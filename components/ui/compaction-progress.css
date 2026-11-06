@@ -32,32 +32,9 @@
 
 .ui-compaction-label { color: var(--text-primary); }
 
-/* The completed tick reuses the tool-status circle verbatim: a filled accent
-   disc with a 2.8-stroke check. Without the disc the bare green glyph
-   reads as a different icon family from the tool rows.
-   The glyph and halo are accent-derived rather than hard white/indigo, so the
-   check stays legible on the disc (--accent-text is picked per accent) and the
-   shadow never reads as a glow borrowed from another hue. */
-.ui-compaction.is-completed .ui-compaction-icon {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
-  box-sizing: border-box;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  background: var(--accent-primary, #6366f1);
-  color: var(--accent-text);
-  box-shadow: 0 2px 6px color-mix(in srgb, var(--accent-primary) 40%, transparent);
-}
-
-.ui-compaction.is-completed .ui-compaction-icon svg {
-  width: 11px;
-  height: 11px;
-  stroke: var(--accent-text);
-  stroke-width: 2.8;
-}
-
-.ui-compaction.is-running .ui-compaction-icon { color: var(--accent-ink); }
+/* 已完成不再是「蓝底白勾」的圆片：这一列和工具行共用一套图标（归档、虚线圆、
+   警告三角），颜色只表达状态。进行中也不染强调色——它已经在转，运动本身就是
+   「正在进行」，字形保持次级灰，和 AI 回复前后那些图标一个色系。 */
 .ui-compaction.is-interrupted .ui-compaction-icon { color: var(--status-warning-text); }
 .ui-compaction.is-failed .ui-compaction-icon { color: var(--status-danger-text); }
 
@@ -128,6 +105,13 @@
 }
 
 .ui-compaction.is-row .ui-compaction-copy { gap: 7px; }
+
+/* 图标占和工具行相同的 18px 槽：换成无底板的字形以后整行不能左移 4px。 */
+.ui-compaction.is-row .ui-compaction-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
 
 /* 标签跟着整行取色（不用 --text-primary），这样「已完成」的行和最下面的
    工具行一样是次级字色，只有进行中那行才吃强调色。 */

@@ -65,15 +65,13 @@
 /* Tool buttons are library Buttons (variant="subtle" size="xs"). No size or
    hover rules here — .btn-xs + .btn-subtle own them. */
 
-/* Modes row */
+/* Modes group: lives inside the header tools row, right before headerExtra. */
 .ui-preview-modes {
-  display: flex;
+  display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 2px;
 }
 
 .ui-preview-modes > div {

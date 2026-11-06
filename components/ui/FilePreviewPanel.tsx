@@ -123,6 +123,34 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
           {titleNote ? <small title={titleNote}>{titleNote}</small> : null}
         </div>
         <div className="ui-preview-tools">
+          {/* 源码/差异 与 +N −N 都贴在标题这一行、放在调用方的 headerExtra
+              （比如预览环境下拉）左边，省掉单独一条模式栏。 */}
+          {showModes && (
+            <div className="ui-preview-modes">
+              <div role="group" aria-label="文件显示模式">
+                {(["source", "diff"] as const).map((value) => (
+                  <Button
+                    key={value}
+                    type="button"
+                    variant="subtle"
+                    size="xs"
+                    className={`ui-preview-mode${mode === value ? " is-active" : ""}`}
+                    aria-pressed={mode === value}
+                    onClick={() => onModeChange?.(value)}
+                  >
+                    {value === "source" ? "源码" : "差异"}
+                  </Button>
+                ))}
+              </div>
+              {mode === "diff" && (
+                <span className="ui-preview-counts" title="本次修改与当前磁盘文件的差异">
+                  <b>+{added}</b>
+                  <i>−{removed}</i>
+                  {partial && <small>部分差异</small>}
+                </span>
+              )}
+            </div>
+          )}
           {headerExtra}
           {searchable && (
             <Button
@@ -177,33 +205,6 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
           )}
         </div>
       </header>
-
-      {showModes && (
-        <div className="ui-preview-modes">
-          <div role="group" aria-label="文件显示模式">
-            {(["source", "diff"] as const).map((value) => (
-              <Button
-                key={value}
-                type="button"
-                variant="subtle"
-                size="xs"
-                className={`ui-preview-mode${mode === value ? " is-active" : ""}`}
-                aria-pressed={mode === value}
-                onClick={() => onModeChange?.(value)}
-              >
-                {value === "source" ? "源码" : "差异"}
-              </Button>
-            ))}
-          </div>
-          {mode === "diff" && (
-            <span className="ui-preview-counts" title="本次修改与当前磁盘文件的差异">
-              <b>+{added}</b>
-              <i>−{removed}</i>
-              {partial && <small>部分差异</small>}
-            </span>
-          )}
-        </div>
-      )}
 
       {searchOpen && (
         <div className="ui-preview-search" role="search">
