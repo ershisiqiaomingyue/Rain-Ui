@@ -85,12 +85,15 @@ function ProviderModelsPanel({
   selectedModelId,
   searchable,
   onChoose,
+  className = "p-1",
 }: {
   provider: ProviderOption
   active: boolean
   selectedModelId: string
   searchable: boolean
   onChoose: (providerId: string, modelId: string) => void
+  /** 直接铺在弹层里(单供应商)时不带内边距，行才会和「管理模型与密钥」对齐。 */
+  className?: string
 }) {
   const [query, setQuery] = React.useState("")
   const keyword = query.trim().toLowerCase()
@@ -103,7 +106,7 @@ function ProviderModelsPanel({
   const showSearch = searchable && provider.models.length > 8
 
   return (
-    <div className="p-1">
+    <div className={className}>
       {showSearch && (
         <Input
           size="sm"
@@ -193,6 +196,10 @@ export function ModelProviderPicker({
     currentProvider?.models.find((model) => model.id === selectedModelId) ||
     currentProvider?.models[0]
 
+  // 只有一个供应商时(外部 ACP 引擎就是这种:一家引擎一套模型),供应商这一层
+  // 只剩一次多余的点击 —— 直接把它的模型清单铺在弹层里。
+  const soloProvider = providers.length === 1 ? providers[0] : null
+
   const effortLabel =
     reasoningOptions.find((level) => level.value === reasoningLevel)?.label ??
     REASONING_EFFORT_LEVELS.find((level) => level.value === reasoningLevel)?.label ??
@@ -251,52 +258,66 @@ export function ModelProviderPicker({
             collisionPadding={8}
             avoidCollisions={false}
             onOpenAutoFocus={(event) => event.preventDefault()}
-            className="w-max min-w-[var(--radix-popover-trigger-width)] max-w-[17rem] p-1.5"
+            className={cn(
+              "w-max min-w-[var(--radix-popover-trigger-width)] max-w-[17rem] p-1.5",
+              soloProvider && modelPanelClassName
+            )}
           >
-            <div className="ui-model-picker-providers">
-              {providers.map((provider) => {
-                const active = provider.id === currentProvider?.id
-                return (
-                  <HoverCard key={provider.id} openDelay={80} closeDelay={120}>
-                    <HoverCardTrigger asChild>
-                      <button
-                        type="button"
-                        className={cn(
-                          "flex h-8 w-full items-center gap-2 rounded-[8px] px-2 text-left text-xs outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40",
-                          active && "bg-muted/70"
-                        )}
-                      >
-                        <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
-                          {provider.icon || <AppIcon name="cpu" size={14} className="size-3.5" />}
-                        </span>
-                        <span className="ui-model-picker-label min-w-0 flex-1 self-center text-foreground">
-                          {provider.name}
-                        </span>
-                        <span className="shrink-0 self-center font-mono text-[10.5px] leading-none tabular-nums text-muted-foreground">
-                          {provider.models.length}
-                        </span>
-                        <span className="flex size-3.5 shrink-0 items-center justify-center">
-                          {active && <AppIcon name="check" size={12} className="size-3 text-primary" />}
-                        </span>
-                        <AppIcon name="chevron-right" size={14} className="size-3.5 shrink-0 text-muted-foreground" />
-                      </button>
-                    </HoverCardTrigger>
-                    <HoverCardContent side="right" align="start" sideOffset={6} collisionPadding={8} className={cn("w-max min-w-44 max-w-72 p-0", modelPanelClassName)}>
-                      <ProviderModelsPanel
-                        provider={provider}
-                        active={active}
-                        selectedModelId={currentModel?.id ?? ""}
-                        searchable={searchable}
-                        onChoose={choose}
-                      />
-                    </HoverCardContent>
-                  </HoverCard>
-                )
-              })}
-              {providers.length === 0 && (
-                <p className="px-2 py-2 text-center text-[11px] text-muted-foreground">还没有供应商</p>
-              )}
-            </div>
+            {soloProvider ? (
+              <ProviderModelsPanel
+                className="p-0"
+                provider={soloProvider}
+                active
+                selectedModelId={currentModel?.id ?? ""}
+                searchable={searchable}
+                onChoose={choose}
+              />
+            ) : (
+              <div className="ui-model-picker-providers">
+                {providers.map((provider) => {
+                  const active = provider.id === currentProvider?.id
+                  return (
+                    <HoverCard key={provider.id} openDelay={80} closeDelay={120}>
+                      <HoverCardTrigger asChild>
+                        <button
+                          type="button"
+                          className={cn(
+                            "flex h-8 w-full items-center gap-2 rounded-[8px] px-2 text-left text-xs outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40",
+                            active && "bg-muted/70"
+                          )}
+                        >
+                          <span className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
+                            {provider.icon || <AppIcon name="cpu" size={14} className="size-3.5" />}
+                          </span>
+                          <span className="ui-model-picker-label min-w-0 flex-1 self-center text-foreground">
+                            {provider.name}
+                          </span>
+                          <span className="shrink-0 self-center font-mono text-[10.5px] leading-none tabular-nums text-muted-foreground">
+                            {provider.models.length}
+                          </span>
+                          <span className="flex size-3.5 shrink-0 items-center justify-center">
+                            {active && <AppIcon name="check" size={12} className="size-3 text-primary" />}
+                          </span>
+                          <AppIcon name="chevron-right" size={14} className="size-3.5 shrink-0 text-muted-foreground" />
+                        </button>
+                      </HoverCardTrigger>
+                      <HoverCardContent side="right" align="start" sideOffset={6} collisionPadding={8} className={cn("w-max min-w-44 max-w-72 p-0", modelPanelClassName)}>
+                        <ProviderModelsPanel
+                          provider={provider}
+                          active={active}
+                          selectedModelId={currentModel?.id ?? ""}
+                          searchable={searchable}
+                          onChoose={choose}
+                        />
+                      </HoverCardContent>
+                    </HoverCard>
+                  )
+                })}
+                {providers.length === 0 && (
+                  <p className="px-2 py-2 text-center text-[11px] text-muted-foreground">还没有供应商</p>
+                )}
+              </div>
+            )}
 
             {onOpenSettings && (
               <>
