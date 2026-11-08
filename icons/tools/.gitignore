@@ -1,0 +1,8 @@
+__pycache__/
+
+# 生成物：本地跑出来的评审页 / 自检页，不入库
+preview.html
+preview.png
+entries.tsx
+final-check.html
+final-check.png

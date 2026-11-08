@@ -21,8 +21,9 @@ const body = data.icons["search-01"].body; // <path .../>
 2. 在 `AppIcon.tsx` 的 `AppIconName` 联合类型和 `BODIES` 表里各加一条。
 3. 调用处统一写 `<AppIcon name="..." size={14} />`，不要再直接引第三方图标库。
 
-需要批量或可复现时用 `icons/new/gen_icons.py`（候选表 → 评审页 → 写进 `AppIcon.tsx`，
-`icons/new/` 不参与组件库构建）。
+要批量加、或者想让「选哪个字形」这件事可复现，用 [`tools/`](tools/README.md)：
+`tools/gen_icons.py` 按候选表生成评审页，`tools/merge_icons.py` 写进 `AppIcon.tsx`。
+`tools/` 只在本地跑，不参与组件库构建。
 
 ## 对话场景补充（2026-11）
 
