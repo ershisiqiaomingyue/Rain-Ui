@@ -21,6 +21,34 @@ const body = data.icons["search-01"].body; // <path .../>
 2. 在 `AppIcon.tsx` 的 `AppIconName` 联合类型和 `BODIES` 表里各加一条。
 3. 调用处统一写 `<AppIcon name="..." size={14} />`，不要再直接引第三方图标库。
 
+需要批量或可复现时用 `icons/new/gen_icons.py`（候选表 → 评审页 → 写进 `AppIcon.tsx`，
+`icons/new/` 不参与组件库构建）。
+
+## 对话场景补充（2026-11）
+
+下面这批是给对话界面补的，`AppIcon` 名是语义名，括号里是上游 Hugeicons 名。
+都是 24 网格描边字形，调用处照常 `<AppIcon name="..." />`。
+
+| AppIcon | 语义 | 上游 |
+| --- | --- | --- |
+| `reset` | 重置 | `refresh-ccw-dot` |
+| `test` | 测试 | `test-tubes` |
+| `todo` | 待办 | `list-todo` |
+| `mic` / `mic-off` | 语音输入 / 关闭语音 | `mic-01` / `mic-off-01` |
+| `globe` | 联网、浏览器 | `globe` |
+| `bell` | 通知 | `bell` |
+| `share` | 分享、导出 | `share-08` |
+| `star` | 星标、收藏 | `star` |
+| `redo` | 重做（与 `undo` 成对） | `redo` |
+| `reply` | 引用回复 | `reply` |
+| `thumbs-up` / `thumbs-down` | 赞 / 踩 | 同名 |
+| `zap` | 极速模式 | `zap` |
+| `menu` | 菜单 | `menu-01` |
+| `balance` | 余额、剩余额度 | `wallet-01` |
+| `user` | 账户 | `user` |
+| `lightbulb` | 提示、想法 | `lightbulb` |
+| `translate` | 翻译 | `translate` |
+
 ## 有意保留的例外
 
 - `branch`：Tabler `git-fork`，分叉会话专用。
