@@ -57,7 +57,8 @@ function Metric({ metric }: { metric: UsageMetric }) {
       </b>
     </>
   )
-  const hitArea = "inline-flex min-h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-2.5"
+  // 11px 字配 22px 的 hit-area：上下各留 11px 呼吸，再高一行读数就和上面的控件分家了。
+  const hitArea = "inline-flex min-h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-[7px] px-2"
 
   if (!metric.detail) return <span className={cn(hitArea, "cursor-default")}>{body}</span>
 
@@ -100,7 +101,7 @@ export function UsageMetricsStrip({
           <button
             type="button"
             aria-label="会话用量明细"
-            className="inline-flex min-h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-2.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40"
+            className="inline-flex min-h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-[7px] px-2 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             <AppIcon name="database" size={12} className="size-3 text-muted-foreground" />
             <span className="text-muted-foreground">缓存命中</span>
@@ -157,13 +158,21 @@ export function UsageMetricsStrip({
         onClick={onRefreshBalance}
         disabled={balance.refreshing}
         title={balance.detail}
-        className="inline-flex min-h-8 shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-2.5 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
+        className="inline-flex min-h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-[7px] px-2 transition-colors outline-none hover:bg-muted/70 focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
       >
+        <AppIcon name="balance" size={12} className="size-3 text-muted-foreground" />
         <span className="text-muted-foreground">{balance.label}</span>
-        <b className="max-w-[14ch] truncate font-medium tabular-nums text-foreground">
+        {/* 数值槽位定宽：查询中 / 查询失败 / 正常余额之间来回切时整行不跟着横跳，
+            超长余额（例如带 6 位小数加币种）截断，完整值仍在 title 里。 */}
+        <b className="w-[10ch] min-w-0 truncate text-left font-medium tabular-nums text-foreground">
           {balance.value ?? "—"}
         </b>
-        {balance.refreshing && <Spinner size="xs" className="size-2.5 text-muted-foreground" />}
+        {/* 传了 refreshing 就常驻一个转圈位，避免刷新中多出一个图标把整行推走。 */}
+        {balance.refreshing === undefined ? null : (
+          <span className="inline-flex size-2.5 shrink-0 items-center justify-center">
+            {balance.refreshing && <Spinner size="xs" className="size-2.5 text-muted-foreground" />}
+          </span>
+        )}
       </button>
     )
   }
@@ -173,7 +182,8 @@ export function UsageMetricsStrip({
       <div
         className={cn(
           // 一行到底：窗口变窄时不换行、不把其他读数挤走，放不下的条目靠 hover / 浮层展开。
-          "flex min-h-8 flex-nowrap items-center gap-x-1 overflow-hidden text-[11px] leading-none",
+          // 行高跟着 22px 的 hit-area 走，不再给整行垫 32px 的 min-h-8。
+          "flex min-h-[22px] flex-nowrap items-center gap-x-1 overflow-hidden text-[11px] leading-none",
           className
         )}
         aria-label="会话用量"
