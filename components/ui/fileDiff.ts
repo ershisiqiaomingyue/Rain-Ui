@@ -53,7 +53,8 @@ export function parseFileDiff(diff: string) {
     }
     if (rows.length < MAX_DIFF_ROWS) rows.push(row); else truncated = true;
   }
-  // `partial` 也覆盖后端用单独的省略行（`...` / `…`，行首无空格）标记截断的情况；
-  // 用行首锚定，避免真实上下文行 " ..." 被误判。
-  return { rows, added, removed, truncated, partial: truncated || /^(?:\.\.\.|…)\s*$/m.test(diff) };
+  // `partial` 也覆盖后端用单独的省略行标记截断的情况：`...` / `…` 独占一行，
+  // 或者 `… 差异内容过长，已截断` 这种「省略号打头 + 一句说明」。
+  // 行首锚定即可：差异内容行一定带 `+` / `-` / 空格前缀，所以行首就是省略号的只可能是标记行。
+  return { rows, added, removed, truncated, partial: truncated || /^(?:\.\.\.|…)/m.test(diff) };
 }
