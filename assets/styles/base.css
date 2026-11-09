@@ -52,14 +52,16 @@ svg {
   max-width: 100%;
 }
 
-/* 焦点：全库只有一个可见焦点环。
+/* 焦点：全库只有一个可见焦点环，且只加在外框外面。
    原应用把 :focus-visible 写成"换一层背景"，结果键盘焦点和"选中态"长得一样，
-   按 Tab 时按钮从实心变白，反而更像失效了。这里统一用 outline，
-   并且用 :where() 把权重压到极低，组件自己的写法可以正常覆盖。 */
+   按 Tab 时按钮从实心变白，反而更像失效了。
+   这里用 box-shadow 的 spread，不用 outline —— outline-offset 在圆角上对不齐，
+   圆角处会露直角（design.md §5.4）。:where() 把权重压到极低，
+   组件自己那条「原阴影 + 焦点环」的写法可以正常覆盖它。 */
 /* These controls own their focus treatment (InputGroup owns it on the group). */
 :where(button, [role="button"], a, input, textarea, select, summary, [tabindex]):not(:where([data-slot="input"], [data-slot="input-group-control"], [cmdk-input])):focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+  outline: none; /* 环已经由 box-shadow 画出来了；不清 ua 轮廓就会是两圈 */
+  box-shadow: var(--focus-ring);
 }
 
 /* 鼠标焦点保持透明轮廓。不要用 outline: none：它会把颜色重置为

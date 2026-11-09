@@ -130,10 +130,9 @@
   padding: 14px 18px 18px;
 }
 
-.ui-modal :focus-visible {
-  outline: 2px solid rgba(82, 119, 220, 0.36);
-  outline-offset: 2px;
-}
+/* 这里原来挂了一条 `.ui-modal :focus-visible { outline: 2px solid rgba(82,119,220,.36) }`：
+   既是硬编码颜色，又比所有组件自己的焦点规则权重高（0,2,0）—— 改成 box-shadow 就会把
+   按钮 / 输入框自己的阴影顶掉。全局焦点规则已经覆盖弹层里的所有可聚焦元素，这条删掉。 */
 
 @media (prefers-reduced-motion: reduce) {
   .ui-modal-overlay,

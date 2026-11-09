@@ -78,4 +78,4 @@
 }
 .ui-access-menu-row > .ui-access-menu-check.is-placeholder { visibility: hidden; }
 .ui-access-menu-row.is-full b, .ui-access-menu-row.is-full > svg { color: var(--danger-text); }
-.ui-access-menu-row:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: -2px; }
+.ui-access-menu-row:focus-visible { box-shadow: var(--focus-ring-inset); }

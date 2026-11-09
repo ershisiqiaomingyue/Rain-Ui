@@ -52,14 +52,28 @@
   opacity: 1;
 }
 
-/* Nested component cards use an inset fill instead of a second floating shell. */
-html[data-theme] :is(.card, .glass-card-surface) :is(.card, .glass-card-surface):not([class*="card-tone-"]),
+/* 嵌套卡片：每层都带线，但每层的线比上一层淡一档（design.md §2.3）。
+   底色不动 —— L1/L2/L3 同值。一旦让每层各配一个灰，嵌套三层就会算出
+   三种不同的灰，读起来是「脏」而不是「深」。深度全部由线承担。
+   半径也逐级收：11 → 8 → 6（design.md §9.3），和线一起讲清「往里一层」。
+   只画到 L3：第 4 层开始靠间距，不再画框。 */
+html[data-theme] :is(.card, .glass-card-surface) :is(.card, .glass-card-surface):not([class*="card-tone-"]) {
+  box-shadow: none !important;
+  border-color: var(--line-2) !important;
+  border-radius: calc(var(--card-radius) - 3px);
+}
+
+html[data-theme] :is(.card, .glass-card-surface) :is(.card, .glass-card-surface) :is(.card, .glass-card-surface):not([class*="card-tone-"]) {
+  border-color: var(--line-3) !important;
+  border-radius: calc(var(--card-radius) - 5px);
+}
+
+/* 归档页的哈希框是「凹槽」而不是嵌套层级，保留内凹底色。 */
 html[data-theme] .archive-telemetry-panel :is(.property-grid-card, .archive-hash-box) {
   background: var(--surface-inset-bg) !important;
   box-shadow: none !important;
-  /* 父级已经画了外框，内层再留一条 1px 就是两道线；改用底色分层。 */
-  border-color: transparent !important;
-  border-radius: var(--radius-panel);
+  border-color: var(--line-2) !important;
+  border-radius: calc(var(--card-radius) - 3px);
 }
 
 /* 嵌在卡片里的表格同理：外框由父卡片负责，表格只保留自己的表头线。 */
@@ -186,15 +200,11 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
   margin-top: 4px;
 }
 
-
-
 /* ==========================================================================
-   Card surface levels (neutral only, for page layout)
-   surface : plainest white panel, the default look
-   muted   : one step back, light gray
-   subtle  : two steps back, mid gray
-   deep    : three steps back, deepest gray
-   Each level also tints its own section hairlines to stay readable.
+   Card surface levels (tone) —— 故意「凹下去」的卡片，不是嵌套层级
+   surface : 默认抬起一层（= --surface-1）
+   muted / subtle / deep : 依次凹得更深，值在同色相的中性档里取，不新开灰阶
+   嵌套层级（L1/L2/L3）不换底色，只换线 —— 见上面的嵌套规则与 design.md §2.3。
    ========================================================================== */
 html[data-theme] .card.card-tone-surface {
   background: var(--bg-surface) !important;
@@ -211,16 +221,6 @@ html[data-theme] .card.card-tone-subtle {
 html[data-theme] .card.card-tone-deep {
   background: var(--card-tone-deep) !important;
 }
-
-/* Hairlines: each level gets a divider that stays visible on its own surface. */
-html[data-theme] .card.card-tone-surface.card-divided > .card-header,
-html[data-theme] .card.card-tone-surface.card-divided > .card-body + .card-footer { border-color: var(--divider-color) !important; }
-html[data-theme] .card.card-tone-muted.card-divided > .card-header,
-html[data-theme] .card.card-tone-muted.card-divided > .card-body + .card-footer { border-color: color-mix(in srgb, var(--text-primary) 7%, transparent) !important; }
-html[data-theme] .card.card-tone-subtle.card-divided > .card-header,
-html[data-theme] .card.card-tone-subtle.card-divided > .card-body + .card-footer { border-color: color-mix(in srgb, var(--text-primary) 10%, transparent) !important; }
-html[data-theme] .card.card-tone-deep.card-divided > .card-header,
-html[data-theme] .card.card-tone-deep.card-divided > .card-body + .card-footer { border-color: color-mix(in srgb, var(--text-primary) 13%, transparent) !important; }
 
 /* Titled hairlines stay neutral; no colored glow behind gray surfaces. */
 html[data-theme] .card[class*="card-tone-"]::after { display: none; }
@@ -247,9 +247,4 @@ html[data-theme] .card[class*="card-tone-"].card-interactive:hover {
   border-color: var(--border-hover) !important;
   box-shadow: none !important;
 }
-/* Property-row separators follow the surface level too: the neutral divider is
-   tuned for white panels and disappears on the deeper shades. */
-html[data-theme] .card.card-tone-surface .card-property-row + .card-property-row { border-top-color: var(--divider-color); }
-html[data-theme] .card.card-tone-muted .card-property-row + .card-property-row { border-top-color: color-mix(in srgb, var(--text-primary) 8%, transparent); }
-html[data-theme] .card.card-tone-subtle .card-property-row + .card-property-row { border-top-color: color-mix(in srgb, var(--text-primary) 12%, transparent); }
-html[data-theme] .card.card-tone-deep .card-property-row + .card-property-row { border-top-color: color-mix(in srgb, var(--text-primary) 16%, transparent); }
+

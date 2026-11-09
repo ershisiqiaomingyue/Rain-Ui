@@ -4,7 +4,7 @@
    浮层。这里改成和菜单/弹层同一族的底色 + 描边 + 阴影，明暗各取自己的一套。 */
 
 .ui-tooltip-trigger { display: inline-flex; align-items: center; }
-.ui-tooltip-trigger:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 3px; border-radius: var(--radius-control); }
+.ui-tooltip-trigger:focus-visible { box-shadow: var(--focus-ring); border-radius: var(--radius-control); }
 
 .ui-tooltip {
   position: fixed;

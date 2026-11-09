@@ -8,4 +8,4 @@
 .session-tab.active .session-tab-select { font-weight: 600; }
 .session-tab-close { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 19px; height: 19px; margin-right: 4px; padding: 0; border: 0; border-radius: var(--radius-control); color: inherit; background: transparent; cursor: pointer; }
 .session-tab-close:hover { background: var(--session-tab-active-hover-bg); }
-.session-tab-select:focus-visible, .session-tab-close:focus-visible { outline: 1px solid currentColor; outline-offset: -2px; }
+.session-tab-select:focus-visible, .session-tab-close:focus-visible { box-shadow: var(--focus-ring-inset); }

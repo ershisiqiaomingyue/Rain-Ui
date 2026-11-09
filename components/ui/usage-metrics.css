@@ -73,8 +73,7 @@
 .ui-usage-action:disabled { cursor: default; }
 
 .ui-usage-action:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 1px;
+  box-shadow: var(--focus-ring);
 }
 
 .ui-usage-spin { animation: ui-usage-rotate 0.9s linear infinite; }

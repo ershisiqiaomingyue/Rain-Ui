@@ -40,8 +40,7 @@
 .ui-list-item.is-selected > .ui-list-item-row { background: var(--bg-selected); }
 
 .ui-list-item-hit:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: -2px;
+  box-shadow: var(--focus-ring-inset);
 }
 
 .ui-list-item.is-dense > .ui-list-item-row { padding-block: 6px; }

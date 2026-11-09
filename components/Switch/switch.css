@@ -145,7 +145,7 @@
 }
 
 .checkbox:focus-visible,
-.desk-chk:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
+.desk-chk:focus-visible { box-shadow: var(--focus-ring); }
 .checkbox:disabled,
 .desk-chk:disabled { cursor: not-allowed; opacity: .55; }
 
@@ -189,14 +189,11 @@
   background: var(--segmented-active-hover-bg);
 }
 
-/* 分段按钮原来只清了 box-shadow，没有声明 outline —— 键盘聚焦时露出的是浏览器
-   默认的 3px 灰环，和全库其它控件的 2px 强调色环不是一套。 */
+/* 分段按钮在轨道里面，外环会被相邻段和轨道边缘吃掉，所以用内环。 */
 html[data-theme] .segmented-glass .seg-btn:focus-visible {
   background: var(--segmented-hover-bg);
   color: var(--text-primary);
-  box-shadow: none;
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+  box-shadow: var(--focus-ring-inset);
 }
 
 html[data-theme] .segmented-glass .seg-btn.active:focus-visible {

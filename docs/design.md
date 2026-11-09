@@ -226,6 +226,17 @@ border: 1px solid var(--line-1);
 - 亮色 `--ring: 239 84% 88%`，透明度提到 `.9`（白底上 .22 根本看不见）。
 - 用 `box-shadow` 的 spread，不用 `outline` —— `outline-offset` 在圆角上对不齐，圆角处会露直角。
 - **不要「染色边框 + 外圈」双层**。两层就是重影。
+- **例外：内环。** 全宽行、标签页、分段按钮、拖拽条这些位置，外环会被父级的
+  `overflow: hidden` 或相邻元素吃掉，改用 `--focus-ring-inset`（画在元素自己的边框盒里）：
+
+  ```css
+  --focus-ring-inset: inset 0 0 0 2px hsl(var(--accent-strong) / 0.5);   /* 暗色 */
+  --focus-ring-inset: inset 0 0 0 2px hsl(var(--accent-strong) / 0.6);   /* 亮色 */
+  ```
+
+  内环压在控件自己的底色上，不能用 `--ring` —— 亮色 `--ring` 是 88% 亮度，叠在淡色
+  按钮上等于没有；所以内环用深一档的 `--accent-strong`。判断标准一句话：
+  **外环会被裁掉就换内环，其余一律外环。** 两种环都不许用 `outline`。
 
 > 名字为什么是两个：`--focus-ring` 在旧 `tokens.css` 里已经是**一个完整的 box-shadow**，
 > 且被多处引用。把它改成颜色会静默改坏所有引用点，所以圈的颜色另起名 `--ring`
@@ -492,7 +503,8 @@ C 段里还有一大批 `--btn-*` / `--status-*` / `--bg-*` / `--card-*` / `--te
 2. ✅ **`typography.css`** —— 五级改六级，`--text-*`（字号）改名 `--fs-*`，同步改所有引用点。
 3. ✅ **Tailwind 词表** —— 新建 `tailwind-preset.cjs`，把 §9 的 token 映射成类名；
    库的 `tailwind.config.cjs` 与消费方引同一个文件，见 §11.2。
-4. **`Card` / `Button` / `Badge`** —— 三个最常用的，先落这一批，暗亮两套各过一遍。
+4. ✅ **`Card` / `Button` / `Badge`** —— 三个最常用的，已落这一批（Badge 本来就合规，
+   只改了 Card / Button）；同时把全库的焦点环统一成 `box-shadow`（§5.4），暗亮两套各过一遍。
 5. **其余 §7.1 组件** —— 按使用频率排。
 6. **宿主 `rain.css` / `tokens.css`** —— 桥接到新 token，退役 `--accent-primary: #6366f1`
    及其派生的 `--accent-glow` / `--accent-subtle` / `--bg-selected` / `--hover-tint` /

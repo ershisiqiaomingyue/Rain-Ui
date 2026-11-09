@@ -1,6 +1,8 @@
 /* ==========================================================================
    Button Component Styles - 按钮组件规范
-   - 物理底座手感、鲜红危险态、平滑加载态与微回弹动效
+   - 平面填充：没有玻璃、没有发光，抬起感只来自 --shadow-btn（暗色为空）
+   - 危险 / 成功是淡色实心 + 同色相深字，不是描边染色
+   - 焦点环统一走 --focus-ring，见文件末尾
    ========================================================================== */
 
 .btn {
@@ -91,22 +93,27 @@ html[data-theme] .btn:not(.btn-icon-only) > * {
 }
 
 /* 样式变体 */
+/* 主按钮：淡靛实心 + 同色相深字（亮色绝不配黑字）。
+   阴影全部来自 token —— 暗色下那几个 token 都是空值，按钮就是一块平面，
+   不再有「黑底 + 黑阴影」那种边缘发脏的效果。 */
 .btn-primary {
   background: var(--btn-primary-bg);
   color: var(--btn-primary-text);
   border-color: transparent;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), var(--btn-primary-rim);
+  box-shadow: var(--shadow-btn), var(--shadow-inset-highlight), var(--btn-primary-rim);
   font-weight: 550;
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--btn-primary-hover);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18), var(--btn-primary-rim);
+  box-shadow: var(--shadow-btn-hover), var(--shadow-inset-highlight), var(--btn-primary-rim);
 }
 
+/* 按下 = 阴影收平 + 下沉 0.5px，那就是「按下去」的全部暗示；
+   再叠一层黑色内阴影只会让暗色主题里的按钮变脏。 */
 .btn-primary:active:not(:disabled) {
-  background: var(--btn-primary-hover);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.14), inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  background: var(--btn-primary-active);
+  box-shadow: var(--btn-primary-rim);
   transform: translateY(0.5px);
 }
 
@@ -114,13 +121,13 @@ html[data-theme] .btn:not(.btn-icon-only) > * {
   background: var(--btn-secondary-bg);
   color: var(--btn-secondary-text);
   border-color: var(--btn-secondary-border);
-  box-shadow: var(--btn-secondary-shadow, 0 1px 2px rgba(0, 0, 0, 0.05));
+  box-shadow: var(--btn-secondary-shadow, var(--shadow-btn));
 }
 
 .btn-secondary:hover:not(:disabled) {
   background: var(--btn-secondary-hover);
   border-color: var(--border-hover);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-btn-hover);
 }
 
 /* aria-pressed="true" 是「已选中」的无样式语义，按钮必须自己把它画出来，
@@ -138,15 +145,16 @@ html[data-theme] .btn.btn-secondary[aria-pressed="true"]:not(:disabled),
   color: var(--btn-primary-text);
 }
 
+/* 只在 hover 时才现出危险色的按钮（列表行里的「删除」）：
+   静止时是普通文本按钮，指上去才变成淡玫瑰实心。 */
 .btn.btn-danger-hover:hover:not(:disabled) {
   color: var(--btn-danger-text) !important;
-  background: color-mix(in srgb, var(--danger-text) 12%, transparent) !important;
-  border-color: color-mix(in srgb, var(--danger-text) 34%, transparent) !important;
+  background: var(--btn-danger-bg) !important;
 }
 
 .btn.btn-danger-hover:active:not(:disabled) {
   color: var(--btn-danger-text) !important;
-  background: color-mix(in srgb, var(--danger-text) 18%, transparent) !important;
+  background: var(--btn-danger-active-bg) !important;
 }
 
 .btn-subtle {
@@ -166,36 +174,51 @@ html[data-theme] .btn.btn-secondary[aria-pressed="true"]:not(:disabled),
   background: var(--btn-subtle-hover);
 }
 
+/* 危险按钮：淡玫瑰实心 + 同色相深字，用来表示「可以撤销的破坏性动作」。
+   不再描边染色 —— 半透明的染色边压在卡片底色上会糊成一层，看着像没渲染完。
+   不可逆的删除不用这个形态，用 --btn-destructive-*（实心深粉 + 白字）。 */
 .btn-danger {
-  background: color-mix(in srgb, var(--danger-text) 10%, transparent);
-  color: var(--btn-danger-text) !important;
-  border: 1px solid color-mix(in srgb, var(--danger-text) 26%, transparent);
+  background: var(--btn-danger-bg);
+  color: var(--btn-danger-text);
+  border-color: transparent;
   box-shadow: none;
 }
 
 .btn-danger:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--danger-text) 18%, transparent) !important;
-  color: var(--btn-danger-text) !important;
-  box-shadow: none;
+  background: var(--btn-danger-hover);
 }
 
 .btn-danger:active:not(:disabled) {
-  background: color-mix(in srgb, var(--danger-text) 26%, transparent) !important;
-  color: var(--btn-danger-text) !important;
+  background: var(--btn-danger-active-bg);
+  transform: translateY(0.5px);
 }
 
 .btn-success {
-  background: color-mix(in srgb, var(--success-text) 10%, transparent);
+  background: var(--btn-success-bg);
   color: var(--btn-success-text);
-  border-color: color-mix(in srgb, var(--success-text) 26%, transparent);
+  border-color: transparent;
   box-shadow: none;
 }
 
 .btn-success:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--success-text) 18%, transparent);
+  background: var(--btn-success-hover);
 }
 
-/* Neutral surface actions: a filled neutral slab, no border, one hover step. */
+/* 焦点环：一律「元素本来的阴影 + 外圈」，所以不能只留一条通用规则 ——
+   通用那条整体覆盖 box-shadow，会把 primary / secondary 自己的抬起感顶掉。
+   用 box-shadow 而不是 outline：outline-offset 在圆角上对不齐，四个角会露直角
+   （design.md §5.4）。 */
+.btn:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible {
+  box-shadow: var(--shadow-btn), var(--shadow-inset-highlight), var(--focus-ring);
+}
+
+/* 最安静的一档：没有边框也没有底色，只有 hover 时才浮出一层底。
+   工具栏里的图标动作走这个，不抢视线。 */
 html[data-theme] .btn.btn-surface {
   background: var(--btn-secondary-bg);
   color: var(--control-text);
@@ -217,8 +240,7 @@ html[data-theme] .btn.btn-surface:active:not(:disabled) {
 }
 
 html[data-theme] .btn.btn-surface:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
 }
 
 /* 加载态 Spinner */
@@ -280,6 +302,5 @@ html[data-theme] .btn.btn-loading:disabled,
 .btn.btn-bare:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .btn.btn-bare:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
 }

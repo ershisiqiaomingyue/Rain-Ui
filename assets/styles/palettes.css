@@ -128,6 +128,9 @@
   /* 焦点：只在外框外面加一圈，底色和边框都不动。用 box-shadow 的 spread
      而不是 outline —— outline-offset 在圆角上对不齐，圆角处会露直角。 */
   --focus-ring: 0 0 0 3px hsl(var(--ring) / 0.22);
+  /* 内环：画在元素自己的边框盒里面，给会被父级 overflow 裁掉的位置用
+     （全宽行、标签页、分段按钮、拖拽条）—— 那些地方外环左右两边会被切掉。 */
+  --focus-ring-inset: inset 0 0 0 2px hsl(var(--accent-strong) / 0.5);
   --focus-glow: var(--focus-ring);
 
   /* 阴影：暗色一律不投。暗底上阴影看不见，只会让边缘发脏。 */
@@ -241,6 +244,9 @@ html[data-theme="light"] {
   --selected-fg: hsl(243 60% 40%);
 
   --focus-ring: 0 0 0 3px hsl(var(--ring) / 0.9);
+  /* 内环压在控件自己的底色上（不是压在页面白底上），所以要用深一档的强调色，
+     否则 88% 亮度的淡靛叠在淡色按钮上等于没有。 */
+  --focus-ring-inset: inset 0 0 0 2px hsl(var(--accent-strong) / 0.6);
   --focus-glow: var(--focus-ring);
 
   /* 亮色要阴影：白底白卡片，没有阴影就分不出层。 */
@@ -248,7 +254,9 @@ html[data-theme="light"] {
   --shadow-popover: 0 8px 24px -6px rgba(30, 41, 59, 0.12);
   --shadow-btn: 0 1px 2px rgba(30, 41, 59, 0.06);
   --shadow-btn-hover: 0 2px 5px rgba(30, 41, 59, 0.10);
-  --shadow-inset-highlight: 0 1px 0 0 rgba(255, 255, 255, 0.55);
+  /* 「内侧上高光」必须是 inset：不加 inset 的话 1px 白线会落在元素**下面**，
+     白底上等于什么都没有，那道抬起感就凭空消失了。暗色清空见上面。 */
+  --shadow-inset-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.55);
 
   --segmented-active-bg: #ffffff;
   --segmented-active-hover-bg: hsl(230 30% 99%);
@@ -344,6 +352,8 @@ html[data-theme] {
   --workspace-panel-bg: hsl(var(--card));
   --bg-card-hover: var(--surface-hover);
   --bg-muted: var(--surface-inset);
+  /* 输入框/图标底座：不是「又一个灰」，就是凹槽那一档。 */
+  --bg-input: var(--surface-inset);
   --card-border: 1px solid var(--line-1);
   --card-shadow: var(--shadow-card);
   --card-rim: 0 0 0 0 transparent;
