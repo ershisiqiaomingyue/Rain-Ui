@@ -1,4 +1,5 @@
 export * from "./context-usage-ring"
+export * from "./radial-progress"
 export * from "./model-provider-picker"
 export * from "./composer-notice-dock"
 export * from "./terminal-range-slider"

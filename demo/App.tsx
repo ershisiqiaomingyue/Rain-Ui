@@ -90,6 +90,7 @@ import { Toggle } from "@/components/ui/toggle"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   ContextUsageRing,
+  RadialProgress,
   ComposerNoticeDock,
   ModelProviderPicker,
   TaskStatusRow,
@@ -160,6 +161,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: "icons", title: "AppIcon", label: "统一图标集", group: "base" },
   // 组合组件
   { id: "context-usage-ring", title: "Context Ring", label: "上下文圆环", group: "composed" },
+  { id: "radial-progress", title: "Radial Progress", label: "环形进度", group: "composed" },
   { id: "model-provider-picker", title: "Model Picker", label: "模型选择器", group: "composed" },
   { id: "composer-notice-dock", title: "Notice Dock", label: "通知停靠区", group: "composed" },
   { id: "task-status-row", title: "Task Status", label: "任务进度", group: "composed" },
@@ -544,6 +546,30 @@ export function App() {
               <div className="flex max-w-md flex-wrap items-center gap-4 rounded-xl border border-border/70 bg-card p-3">
                 <span className="text-xs text-muted-foreground">带读数来源：</span>
                 <ContextUsageRing percent={62} tokens={186000} capacity={300000} systemTokens={12400} toolTokens={23100} readingModelId="claude-sonnet-4" />
+              </div>
+            </div>
+          </Section>
+
+          {/* 组合组件 · 环形进度 */}
+          <Section id="radial-progress" title="Radial Progress" label="环形进度（有总量、要盯百分比）" count={0}>
+            <div className="space-y-4">
+              <p className="text-xs text-muted-foreground">
+                只有环和读数：不可点、不开面板、不带阈值色。进度未知（null）时填充弧呼吸，不整圈旋转。
+              </p>
+              <div className="flex flex-wrap items-center gap-4 rounded-xl border border-border/70 bg-muted/20 p-3">
+                <RadialProgress percent={0} />
+                <RadialProgress percent={12} />
+                <RadialProgress percent={48} />
+                <RadialProgress percent={99} />
+                <RadialProgress percent={null} />
+                <RadialProgress percent={48} size={20} strokeWidth={2} />
+                <RadialProgress percent={48} size={44} strokeWidth={3} />
+              </div>
+              <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border/70 bg-card p-3">
+                <RadialProgress percent={26} size={32} ariaLabel="下载进度" />
+                <span className="text-[12.5px] text-muted-foreground">
+                  下载中 <span className="font-mono tabular-nums text-foreground">12.3 MB / 48.0 MB</span>
+                </span>
               </div>
             </div>
           </Section>
