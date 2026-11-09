@@ -29,7 +29,7 @@
   background: var(--surface-popover);
   border: 1px solid var(--line-1);
   border-radius: var(--radius-overlay);
-  box-shadow: var(--shadow-popover), inset 0 1px 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow-popover), var(--shadow-inset-highlight);
   animation: uiModalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 

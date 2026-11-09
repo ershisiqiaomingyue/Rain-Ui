@@ -89,7 +89,7 @@
 .input-surface .input:focus {
   color: hsl(var(--foreground));
   background: var(--input-surface-focus-bg, var(--input-surface-bg));
-  border-color: hsl(var(--accent-strong));
+  /* 不再染边框：有一道环就够了，染色边框 + 外环会变成两层（design.md §5.4）。 */
   box-shadow: var(--focus-ring);
 }
 

@@ -158,6 +158,27 @@
   --inference-fill-deep: hsl(243 50% 40%);
   --inference-spark: hsl(239 80% 92%);
   --inference-spark-warm: hsl(38 80% 90%);
+
+  /* 开关 / 勾选。白色滑块两个主题都用白 —— 那是物理感，不是配色，
+     所以字面值放主题块，桥接层只写派生关系。
+     这两个阴影只有亮色给得起：暗色底上投影看不见，给了也是白给。 */
+  --control-checked-mark: hsl(0 0% 100%);
+  --knob-bg: hsl(0 0% 100%);
+  --knob-shadow: none;
+  --switch-track-shadow: none;
+
+  /* 星图的夜空。两个主题给同一套值 —— 亮色下也刻意保持深色，
+     浅色星图看着像气泡图（见 constellation.css 文件头）。 */
+  --stellar-sky-core: hsl(230 44% 19%);
+  --stellar-sky-mid: hsl(226 48% 11%);
+  --stellar-sky-edge: hsl(228 50% 4%);
+  --stellar-star: hsl(226 100% 96%);
+
+  /* 遮罩。两个主题都得压黑：亮色主题下用浅色遮罩等于没遮。
+     比旧的纯黑 36% 稍微偏靛一点，跟整片底色同色相。 */
+  --scrim: color-mix(in srgb, hsl(230 30% 3%) 36%, transparent);
+  /* 凹槽底部那一层内阴影：一点点就够暗示“凹”，多了就回到拟物。 */
+  --input-inner-shadow: inset 0 1px 1px hsl(0 0% 0% / 0.28);
 }
 
 /* ============================================================================
@@ -270,6 +291,22 @@ html[data-theme="light"] {
   --inference-fill-deep: hsl(243 55% 34%);
   --inference-spark: hsl(239 84% 96%);
   --inference-spark-warm: hsl(38 84% 94%);
+
+  /* 见暗色块同一段的说明。 */
+  --control-checked-mark: hsl(0 0% 100%);
+  --knob-bg: hsl(0 0% 100%);
+  --knob-shadow: 0 1px 2px hsl(232 26% 20% / 0.18);
+  --switch-track-shadow: inset 0 0 0 1px hsl(232 26% 20% / 0.04), 0 1px 2px hsl(232 26% 20% / 0.1);
+
+  /* 见暗色块同一段的说明：星图夜空在亮色下也是深色。 */
+  --stellar-sky-core: hsl(230 44% 19%);
+  --stellar-sky-mid: hsl(226 48% 11%);
+  --stellar-sky-edge: hsl(228 50% 4%);
+  --stellar-star: hsl(226 100% 96%);
+
+  /* 见暗色块同一段的说明。亮色下遮罩浅一点就够，白底本来就亮。 */
+  --scrim: color-mix(in srgb, hsl(230 30% 3%) 30%, transparent);
+  --input-inner-shadow: inset 0 1px 1px hsl(232 26% 20% / 0.05);
 }
 
 /* ============================================================================
@@ -426,6 +463,8 @@ html[data-theme] {
   --btn-destructive-bg: hsl(var(--destructive));
   --btn-destructive-hover: hsl(var(--destructive-hover));
   --btn-destructive-text: hsl(var(--destructive-foreground));
+  /* 按下态：往 ink-high 挪一点（暗色变亮、亮色变深），跟其它按钮同一个约定。 */
+  --btn-destructive-active-bg: color-mix(in srgb, hsl(var(--destructive)) 84%, hsl(var(--ink-high)));
 
   /* 玻璃按钮：这一版不要材质了，退化成平面填充。
      blur/sheen/rim/lift 全部清掉，只留底色与文字。
@@ -449,9 +488,8 @@ html[data-theme] {
   /* ── 控件家族 ─────────────────────────────────────────────────────────── */
   /* 勾选盘/开关只分「开/关」两态，用实心靛填充 + 白勾。 */
   --control-checked-bg: hsl(var(--accent-solid));
-  --control-checked-mark: #ffffff;
   --switch-active-bg: hsl(var(--accent-solid));
-  --switch-thumb-bg: #ffffff;
+  --switch-thumb-bg: var(--knob-bg);
   --segmented-bg: var(--surface-inset);
   --segmented-text: hsl(var(--ink-secondary));
   --segmented-hover-bg: var(--surface-hover);
@@ -503,4 +541,44 @@ html[data-theme] {
   --inference-track: var(--surface-inset);
   --inference-accent: hsl(var(--primary-foreground));
   --inference-thumb: hsl(var(--ink-high));
+
+  /* ── 输入类控件 ───────────────────────────────────────────────────────── */
+  /* input / select / rename-dialog 直接读的一组旧名。凹槽语义：默认比周围深一档
+     （well），悬停稍亮，聚焦回到正常表面 —— 就是 design.md §2.2 的 inset。
+     输入框不加投影、不加染色边框：聚焦只出一道环（§5.4 不许“染色边框 + 外圈”）。 */
+  --input-bg-sunken: var(--surface-inset);
+  --input-bg-hover: var(--surface-hover);
+  --input-bg-focus: var(--surface-1);
+  --input-border: 1px solid var(--line-1);
+  --input-focus-border: 1px solid var(--line-1);
+  --input-muted: hsl(var(--ink-tertiary));
+  /* 旧的“输入框投影”打包值。现在一律平面，但仍然写成一个零尺寸透明阴影：
+     select.css 里是 `box-shadow: var(--focus-ring), var(--input-glass)`，
+     填 none 会让整条声明作废，连焦点环一起丢掉。 */
+  --input-glass: 0 0 0 0 transparent;
+  --input-lift-hover: 0 0 0 0 transparent;
+
+  /* ── 代码 / diff ──────────────────────────────────────────────────────── */
+  /* 增删行用 status 家族的淡底 + 深字，跟徽标同一套（design.md §4）。 */
+  --code-background: var(--surface-inset);
+  --code-foreground: hsl(var(--foreground));
+  --code-line-number: hsl(var(--ink-tertiary));
+  --code-diff-added-bg: hsl(var(--success-bg));
+  --code-diff-added-text: hsl(var(--success-bg-foreground));
+  --code-diff-removed-bg: hsl(var(--destructive-soft-bg));
+  --code-diff-removed-text: hsl(var(--destructive-soft-bg-foreground));
+  --markdown-code-bg: var(--surface-inset);
+
+  /* ── 零散：滚动条、遮罩、未选中控件 ───────────────────────────────────── */
+  /* 滚动条滑块 = 弱化的墨色；比旧值更安静，也不再是纯粹的白色蒙层。 */
+  --scrollbar-thumb: hsl(var(--ink-muted) / 0.45);
+  --overlay-bg: var(--scrim);
+  /* 关掉的开关轨道 / 未勾选的框。这里不能用 --surface-inset：
+     轨道自己没有描边，而 inset 和背景只差 1% 明度，暗色下等于看不见
+     （实拍确认过，旧的 rgba(255,255,255,0.14) 才是能看见的量级）。
+     改用最重的那根线色当底：暗色 = 16% 白（≈ 旧值），亮色 = 84% 灰，
+     两个主题都读得出来，也不用额外造一个 token。 */
+  --control-unchecked-bg: var(--line-strong);
+  --status-pending-border: 1.5px solid var(--line-strong);
+  --composer-divider: var(--line-2);
 }

@@ -57,17 +57,17 @@
   left: 2px;
   width: 16px;
   height: 16px;
-  background: #ffffff !important;
+  background: var(--switch-thumb-bg) !important;
   border-radius: 50%;
-  box-shadow: var(--switch-thumb-shadow, 0 2px 4px rgba(0, 0, 0, 0.18), 0 1px 1px rgba(0, 0, 0, 0.1));
+  box-shadow: var(--knob-shadow);
   transition: transform 0.22s var(--ease-bounce);
 }
 
 .switch-wrapper input:checked + .switch-slider,
 .desk-toggle input:checked + .toggle-track {
-  background: var(--switch-active-bg, #34c759) !important;
+  background: var(--switch-active-bg) !important;
   border-color: transparent !important;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: var(--switch-track-shadow) !important;
 }
 
 .switch-wrapper input:checked + .switch-slider::before,
@@ -131,7 +131,7 @@
   content: "";
   width: 4px;
   height: 8px;
-  border: solid #ffffff;
+  border: solid var(--control-checked-mark);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg) translate(-0.5px, -1px);
 }
@@ -182,7 +182,7 @@
 .segmented-glass .seg-btn.active {
   background: var(--segmented-active-bg);
   color: hsl(var(--ink-high));
-  box-shadow: var(--segmented-active-shadow, 0 1px 3px rgba(0, 0, 0, 0.1));
+  box-shadow: var(--segmented-active-shadow);
 }
 
 .segmented-glass .seg-btn.active:hover:not(:disabled) {

@@ -76,10 +76,12 @@ html[data-theme] .archive-telemetry-panel :is(.property-grid-card, .archive-hash
   border-radius: calc(var(--card-radius) - 3px);
 }
 
-/* 嵌在卡片里的表格同理：外框由父卡片负责，表格只保留自己的表头线。 */
+/* 嵌在卡片里的表格还是一个「块」，给它 L2 那一道线：比卡片自己的外框淡一档，
+   两道线不会一样重（variant B）。原来是 transparent，表格在卡里就没有轮廓了。 */
 html[data-theme] .card :is(.table-container, .desk-table-container),
 html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
-  border-color: transparent;
+  border-color: var(--line-2);
+  border-radius: calc(var(--card-radius) - 3px);
 }
 
 /* 卡片头部、主体、底部 (上下结构间带很虚的分割线) */

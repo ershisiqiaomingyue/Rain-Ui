@@ -2,17 +2,19 @@
    星座图 = 星空
    - 天空底、微星、闪烁、标签描边都放这里，组件里只留下坐标计算。
    - 夜空是刻意的：星图配浅色卡片看着像气泡图，配夜空才像星图。
+     所以 --stellar-sky-* / --stellar-star 在亮色主题下也是深色的一套值
+     （见 assets/styles/palettes.css 主题块里的说明）。
    ========================================================================== */
 
 .constellation-sky {
   background:
-    radial-gradient(120% 130% at 50% 40%, #1b2246 0%, #0e1428 44%, #05070f 100%);
+    radial-gradient(120% 130% at 50% 40%, var(--stellar-sky-core) 0%, var(--stellar-sky-mid) 44%, var(--stellar-sky-edge) 100%);
 }
 
 .constellation-sky-star {
   position: absolute;
   border-radius: 9999px;
-  background: #e9eeff;
+  background: var(--stellar-star);
   transform: translate(-50%, -50%);
 }
 

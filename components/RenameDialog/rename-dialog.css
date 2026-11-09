@@ -24,7 +24,7 @@
 }
 
 .rename-dialog-input:focus {
-  border-color: hsl(var(--accent-strong));
+  /* 边框保持那一根发丝线，聚焦靠环（base.css 里统一给的 --focus-ring）。 */
   background: var(--input-bg-focus);
 }
 

@@ -29,7 +29,7 @@
   background: var(--surface-popover);
   border: 1px solid var(--line-1);
   border-radius: var(--radius-overlay);
-  box-shadow: var(--shadow-popover), inset 0 1px 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow-popover), var(--shadow-inset-highlight);
   animation: confirmScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -146,18 +146,19 @@
   --btn-primary-text: hsl(var(--primary-foreground));
 }
 
-/* 删除确认是唯一的破坏性主操作，必须比“取消”更醒目；
-   .btn-danger 的静默描边适合工具栏，放在这里会看起来像禁用态。 */
+/* 删除确认是唯一的破坏性主操作：实心深红，必须比“取消”醒目。
+   .btn-danger 是淡蔷薇底 + 描边，适合工具栏，放这里会看起来像禁用态。
+   色值一律走 --btn-destructive-* 这组 token，不在这里写死（design.md §10）。 */
 .confirm-dialog-actions .confirm-dialog-confirm-danger {
-  --btn-primary-bg: #e5484d;
-  --btn-primary-hover: #d93d42;
-  --btn-primary-text: #ffffff;
-  --btn-primary-rim: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  --btn-primary-bg: var(--btn-destructive-bg);
+  --btn-primary-hover: var(--btn-destructive-hover);
+  --btn-primary-active: var(--btn-destructive-active-bg);
+  --btn-primary-text: var(--btn-destructive-text);
+  --btn-primary-rim: 0 0 0 0 transparent;
 }
 
-.confirm-dialog-actions .confirm-dialog-confirm-danger:active:not(:disabled) {
-  background: #c73539;
-}
+/* 按下态由 --btn-primary-active 接管，不再单独覆盖 background —— 单独覆盖会漏掉
+   box-shadow / transform 那两行，按下时阴影留在 hover 的重影上。 */
 
 .confirm-dialog-actions .btn-primary:disabled:not(.btn-loading) {
   background: transparent;
