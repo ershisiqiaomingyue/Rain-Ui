@@ -197,6 +197,22 @@ SLOTS: list[dict] = [
         "why": "",
         "options": ["translate", "translation", "ai-translate"],
     },
+    {
+        "name": "browser",
+        "label": "浏览器 / 打开网页",
+        "note": "用默认程序打开链接、唤起外部浏览器、联网浏览入口",
+        "compare": "globe",
+        "why": "globe 是带底座和海岸线的地球仪，14px 下缩成一个小摆件，读不出“浏览器”；换成罗盘这种整体轮廓，小尺寸下更清楚",
+        "pick": "compass",
+        # 以下均为自绘（24 网格，线宽交给组件统一给 1.7）；默认方案由上面的 pick 指定
+        "options": [
+            {"id": "tab", "body": '<path d="M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z"/><path d="M3 8.5h18"/><path d="M9 3v5.5"/>'},
+            {"id": "tab-address", "body": '<path d="M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z"/><path d="M3 8.5h18"/><path d="M9 3v5.5"/><path d="M11.5 5.75h6"/>'},
+            {"id": "address", "body": '<path d="M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z"/><path d="M3 8.5h18"/><circle cx="6.2" cy="5.75" r=".9"/><path d="M8.7 5.75h8.3"/>'},
+            {"id": "web", "body": '<path d="M6 3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z"/><path d="M3 7.5h18"/><circle cx="12" cy="14.4" r="3.4"/><path d="M12 11v6.8M8.6 14.4h6.8"/>'},
+            {"id": "compass", "body": '<g fill="none" stroke="currentColor" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M8 16l2-6l6-2l-2 6z"/></g>'},
+        ],
+    },
 ]
 
 STROKE_WIDTH_RE = re.compile(r'\s*stroke-width="[^"]*"')
@@ -234,17 +250,28 @@ def build(upstream: dict, existing: dict) -> tuple[list, list]:
     slots, problems = [], []
     for slot in SLOTS:
         options = []
-        for name in slot["options"]:
-            if name not in upstream:
-                problems.append(f"{slot['name']}: 上游不存在字形 {name}")
+        for entry in slot["options"]:
+            # 上游字形写名字，自绘字形写 {"id": ..., "body": ...}
+            if isinstance(entry, dict):
+                name, body, source = entry["id"], normalize(entry["body"]), "自绘"
+            elif entry in upstream:
+                name, body, source = entry, normalize(upstream[entry]["body"]), f"Hugeicons {entry}"
+            else:
+                problems.append(f"{slot['name']}: 上游不存在字形 {entry}")
                 continue
-            body = normalize(upstream[name]["body"])
             if RISKY_RE.search(body):
                 problems.append(f"{slot['name']}: {name} 含 defs/mask/id 引用，内联会有风险")
-            options.append({"id": name, "body": body})
+            options.append({"id": name, "body": body, "source": source})
         if not options:
             problems.append(f"{slot['name']}: 没有任何可用候选")
             continue
+        # pick 指定评审选中的方案：挪到 options[0]，merge_icons 据此写库
+        pick = slot.get("pick")
+        if pick:
+            hit = [o for o in options if o["id"] == pick]
+            if not hit:
+                problems.append(f"{slot['name']}: pick={pick} 不在候选里")
+            options = hit + [o for o in options if o["id"] != pick]
         slots.append({
             "name": slot["name"],
             "label": slot["label"],
@@ -263,25 +290,25 @@ def build(upstream: dict, existing: dict) -> tuple[list, list]:
 def entries_tsx(slots: list, pinned: dict | None = None) -> str:
     """生成可直接抄进 AppIcon.tsx 的两段：union 追加 + BODIES 条目。"""
     pinned = pinned or {}
-    picked = [(s, pinned.get(s["name"], s["options"][0]["id"])) for s in slots]
-    pick_body = {
-        name: next(o["body"] for o in s["options"] if o["id"] == name) for s, name in picked
-    }
+    picked = [
+        (s, next(o for o in s["options"] if o["id"] == pinned.get(s["name"], s["options"][0]["id"])))
+        for s in slots
+    ]
 
     lines = ["// 评审通过后，把下面两段按同样顺序追加到 src/components/icons/AppIcon.tsx", ""]
     lines.append("/* 1) AppIconName 联合类型追加（放在 \"undo\" 之前，保持成对语义相邻） */")
-    for s, name in picked:
+    for s, _ in picked:
         lines.append(f'  | "{s["name"]}"')
     lines.append("")
     lines.append("/* 2) BODIES 表追加 */")
-    for s, name in picked:
-        body = pick_body[name].replace("\\", "\\\\").replace('"', '\\"')
+    for s, o in picked:
+        body = o["body"].replace("\\", "\\\\").replace('"', '\\"')
         lines.append(f'  "{s["name"]}":')
         lines.append(f'    "{body}",')
     lines.append("")
     lines.append("/* 3) icons/README.md 记录：")
-    for s, name in picked:
-        lines.append(f'     AppIcon "{s["name"]}" ({s["label"]}) ← Hugeicons {name}')
+    for s, o in picked:
+        lines.append(f'     AppIcon "{s["name"]}" ({s["label"]}) ← {o["source"]}')
     lines.append("*/")
     return "\n".join(lines)
 
@@ -326,23 +353,23 @@ TEMPLATE = r"""<!doctype html>
   }
   button:hover { border-color: var(--accent); }
   button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(390px, 1fr)); gap: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 16px; }
   .card { border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 16px 16px 14px; }
   .head { display: flex; align-items: baseline; gap: 8px; }
   .head .name { font-family: ui-monospace, Consolas, monospace; font-size: 13px; color: var(--accent); }
   .head .label { font-size: 15px; font-weight: 600; }
   .head .src { margin-left: auto; font-family: ui-monospace, Consolas, monospace; font-size: 11px; color: var(--muted); }
   .note { color: var(--muted); font-size: 12.5px; margin: 6px 0 12px; min-height: 34px; }
-  .stage { display: flex; align-items: center; gap: 22px; padding: 14px 12px; border-radius: 10px; background: var(--bg); border: 1px dashed var(--line); }
+  .stage { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 22px; padding: 14px 12px; border-radius: 10px; background: var(--bg); border: 1px dashed var(--line); }
   .stage .big { display: grid; place-items: center; width: 64px; height: 64px; }
   .sizes { display: flex; align-items: flex-end; gap: 14px; color: var(--fg); }
   .sizes figure { margin: 0; display: grid; justify-items: center; gap: 6px; }
   .sizes figcaption { font-size: 10px; color: var(--muted); }
   .strokes { margin-left: auto; display: flex; gap: 12px; align-items: flex-end; }
-  .opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-  .opt { display: flex; align-items: center; gap: 7px; padding: 5px 9px 5px 7px; border: 1px solid var(--line);
+  .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; margin-top: 12px; }
+  .opt { display: grid; justify-items: center; gap: 6px; padding: 10px 4px 8px; border: 1px solid var(--line);
          border-radius: 8px; background: var(--chip); cursor: pointer; font-family: ui-monospace, Consolas, monospace;
-         font-size: 11px; color: var(--muted); }
+         font-size: 10px; color: var(--muted); word-break: break-all; }
   .opt:hover { border-color: var(--accent); }
   .opt[aria-pressed="true"] { border-color: var(--accent); color: var(--fg); box-shadow: inset 0 0 0 1px var(--accent); }
   .why { margin-top: 11px; font-size: 12px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 9px; }
@@ -403,7 +430,10 @@ function renderTsx() {
   });
   lines.push("");
   lines.push("/* 3) icons/README.md 记录 */");
-  DATA.slots.forEach(s => lines.push('     AppIcon "' + s.name + '" (' + s.label + ') ← Hugeicons ' + picked[s.name]));
+  DATA.slots.forEach(s => {
+    const o = s.options.find(o => o.id === picked[s.name]);
+    lines.push('     AppIcon "' + s.name + '" (' + s.label + ') ← ' + o.source);
+  });
   return lines.join("\n");
 }
 
@@ -432,7 +462,7 @@ function render() {
       </div>
       <div class="opts">
         ${s.options.map(o => `<button class="opt" aria-pressed="${o.id === picked[s.name]}" data-slot="${s.name}" data-id="${o.id}">
-            ${glyph(o.body, 16)}<span>${o.id}</span></button>`).join("")}
+            ${glyph(o.body, 40)}<span>${o.id}</span></button>`).join("")}
       </div>
       ${s.why ? `<div class="why"><b>为什么不用 ${s.compare}</b>：${s.why}</div>` : ""}
       ${compare}
@@ -471,6 +501,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true", help="只校验，不写文件")
     ap.add_argument("--search", metavar="关键词", help="在上游字形名里搜关键字（不区分大小写），只列名字")
+    ap.add_argument("--only", action="append", metavar="槽位名", help="只评审这些槽位（可重复），比如 --only browser")
     args = ap.parse_args()
 
     upstream = load_upstream()
@@ -484,6 +515,13 @@ def main() -> int:
 
     existing = existing_bodies()
     slots, problems = build(upstream, existing)
+
+    if args.only:
+        known = {s["name"] for s in slots}
+        unknown = [n for n in args.only if n not in known]
+        if unknown:
+            sys.exit(f"没有这些槽位：{', '.join(unknown)}")
+        slots = [s for s in slots if s["name"] in args.only]
 
     for p in problems:
         print(f"[warn] {p}", file=sys.stderr)

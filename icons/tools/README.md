@@ -33,13 +33,19 @@ python gen_icons.py --search wallet
     "compare": "chart",        # 库里最容易混的那个已有图标，没有就 None
     "why": "chart 是花掉多少的曲线，钱包才是还剩多少",
     "options": ["wallet-01", "wallet-minimal", "coins-01"],  # 第一个是默认方案
+    "pick": "wallet-minimal",  # 评审定下来的那个；写了就挪到最前面再写库
 },
 ```
+
+`options` 里的每一项可以是上游字形名，也可以是自绘字形
+`{"id": "compass", "body": "<circle …/>"}`——上游没有合适的语义时（比如带品牌的浏览器图标）
+自己画，来源会记成「自绘」。`pick` 可以省略，省略时就是 `options[0]`。
 
 ### 3. 出评审页
 
 ```bash
 python gen_icons.py            # 生成 preview.html + entries.tsx
+python gen_icons.py --only browser  # 只评审这一个槽位，页面短一点
 python gen_icons.py --check    # 只校验，不写文件
 ```
 
@@ -89,7 +95,7 @@ demo 的 AppIcon 演示页遍历 `APP_ICON_NAMES`，新图标自动出现，不�
 
 | 文件 | 用途 |
 | --- | --- |
-| `gen_icons.py` | 候选表 + 评审页生成；`--search` 搜上游、`--check` 只校验 |
+| `gen_icons.py` | 候选表 + 评审页生成；`--search` 搜上游、`--only` 只评审指定槽位、`--check` 只校验 |
 | `merge_icons.py` | 把默认方案写进 `AppIcon.tsx`（幂等） |
 | `final_check.py` | 写库后的真实尺寸自检页 |
 | `preview.html` / `entries.tsx` / `final-check.html` / `*.png` | 产物，不入库 |
@@ -100,3 +106,9 @@ demo 的 AppIcon 演示页遍历 `APP_ICON_NAMES`，新图标自动出现，不�
 `thumbs-up` `thumbs-down` `zap` `menu` `balance` `user` `lightbulb` `translate`）已写进
 `src/components/icons/AppIcon.tsx`，来源对照见 [`../README.md`](../README.md)。
 `SLOTS` 里保留这批当范例：再加图标时照着某个槽位的写法追加即可。
+
+## 已进库：2026-11-09
+
+`browser`（自绘罗盘，5 个候选里选的 `compass`）。上游的浏览器类字形要么带品牌
+（`chrome`、`arc-browser`），要么是「窗口 + 三个圆点」、14px 下糊成一片，所以这一支自绘；
+顺带把 `FilePreviewPanel`「用默认程序打开」按钮借用的 `globe` 换成它，`globe` 现在只表示「联网 / 地球」。

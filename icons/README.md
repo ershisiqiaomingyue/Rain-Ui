@@ -36,7 +36,7 @@ const body = data.icons["search-01"].body; // <path .../>
 | `test` | 测试 | `test-tubes` |
 | `todo` | 待办 | `list-todo` |
 | `mic` / `mic-off` | 语音输入 / 关闭语音 | `mic-01` / `mic-off-01` |
-| `globe` | 联网、浏览器 | `globe` |
+| `globe` | 联网、地球 | `globe` |
 | `bell` | 通知 | `bell` |
 | `share` | 分享、导出 | `share-08` |
 | `star` | 星标、收藏 | `star` |
@@ -49,6 +49,11 @@ const body = data.icons["search-01"].body; // <path .../>
 | `user` | 账户 | `user` |
 | `lightbulb` | 提示、想法 | `lightbulb` |
 | `translate` | 翻译 | `translate` |
+| `browser` | 浏览器、打开网页 | 自绘（罗盘） |
+
+`browser` 没有可用的上游字形：Hugeicons 的浏览器类图标要么带品牌（`chrome`、`arc-browser`），
+要么在 14px 下糊成一片（窗口 + 三个圆点）。这里是自绘的罗盘，仍是 24 网格描边，
+线宽照旧由 `AppIcon` 统一给。
 
 ## 有意保留的例外
 

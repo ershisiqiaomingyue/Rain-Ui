@@ -147,7 +147,7 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
     secondary.push({
       key: "open",
       label: "用默认程序打开",
-      icon: <AppIcon name="globe" size={14} />,
+      icon: <AppIcon name="browser" size={14} />,
       onClick: onOpenWithSystem,
     });
   }
