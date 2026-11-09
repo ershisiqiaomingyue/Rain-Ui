@@ -73,7 +73,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
-import { Portal, usePortal } from "rain-ui"
+import { Portal, usePortal, ToolEmptyState, ToolLoadingState } from "rain-ui"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Slider } from "@/components/ui/slider"
@@ -151,6 +151,9 @@ const NAV_ITEMS: NavItem[] = [
   { id: "skeleton", title: "Skeleton", label: "骨架屏", group: "base" },
   { id: "spinner", title: "Spinner", label: "加载指示器", group: "base" },
   { id: "empty", title: "Empty", label: "空状态", group: "base" },
+  // 工具视图那一层的「一块区域空了 / 一块区域在等」，和上面 shadcn 的复合结构分开找
+  { id: "tool-empty-state", title: "ToolEmptyState", label: "整块空态", group: "base" },
+  { id: "tool-loading-state", title: "ToolLoadingState", label: "整块等待态", group: "base" },
   { id: "scroll-area", title: "Scroll Area", label: "滚动区域", group: "base" },
   { id: "resizable", title: "Resizable", label: "可调整面板", group: "base" },
   { id: "sidebar", title: "Sidebar", label: "侧边栏布局", group: "base" },
@@ -1186,6 +1189,46 @@ export function App() {
                   </Button>
                 </EmptyContent>
               </Empty>
+            </div>
+          </Section>
+          {/* kit · 整块空态 / 整块等待态：业务视图那一层，不是 shadcn 的复合结构 */}
+          <Section id="tool-empty-state" title="ToolEmptyState" label="整块空态（一句话 + 一个动作，工具视图用）" count={0}>
+            <div className="space-y-4">
+              <p className="text-xs text-muted-foreground">
+                Empty 那套是页面级的复合结构；视图里一块区域空了用它：两行字说清为什么空、下一步做什么，
+                不画插画，也不许长得像加载中（虚线圆圈读过一次就被当成转圈了）。
+              </p>
+              <div className="rounded-xl border border-border/70 bg-card p-3">
+                <ToolEmptyState
+                  title="还没有连接任何设备"
+                  description="接上 USB 并打开 USB 调试，设备会出现在这里。"
+                  action={<Button size="sm">刷新设备</Button>}
+                />
+              </div>
+              <div className="rounded-xl border border-border/70 bg-muted/20 p-3">
+                <ToolEmptyState compact title="暂无已保存的 SSH 配置" description="在终端里连一次，就会出现在这里。" />
+              </div>
+            </div>
+          </Section>
+          <Section id="tool-loading-state" title="ToolLoadingState" label="整块等待态（居中在本区域，不贴左上角）" count={0}>
+            <div className="space-y-4">
+              <p className="text-xs text-muted-foreground">
+                以前「正在读取…」常被写成一行为文本节点，按文档流落在容器左上角，右边一大片空白；换成它：
+                一颗居中 Spinner + 一句在等什么，占住马上要被填满的那块区域。骨架屏仍是形状已知时的首选。
+              </p>
+              <div className="rounded-xl border border-border/70 bg-card p-3">
+                <ToolLoadingState title="正在读取插件…" description="插件清单、启用状态和安装版本都从本机读取。" />
+              </div>
+              <div className="flex h-[220px] rounded-xl border border-border/70 bg-muted/20">
+                <ToolLoadingState fill title="正在加载当前设置…" description="fill：撑满所在区域，上下左右都居中。" />
+              </div>
+              <div className="rounded-xl border border-border/70 bg-card px-3">
+                <ToolLoadingState compact title="正在检查插件更新…" />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                按钮、列表行、状态栏里的等待仍然只用 Spinner；对着真实卡片画的骨架屏保持贴左上，
+                它模仿的是内容形状，不该被居中成一个等待块。
+              </p>
             </div>
           </Section>
           {/* 13. Field */}
