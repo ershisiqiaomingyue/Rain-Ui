@@ -147,9 +147,10 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
     secondary.push({
       key: "open",
       label: "用默认程序打开",
-      // 「交给系统程序打开」不是网页导航：指南针（browser）在这个尺寸下会被读成
-      // 定位/浏览器，和「打开网页预览」撞语义；外链图标才是全站「在外面打开」的写法。
-      icon: <AppIcon name="external-link" size={14} />,
+      // 「交给系统程序打开」不是把东西分享出去：外链图标是方框加一支指到框外的箭头，
+      // 各个 App 都拿它当分享/外链，用户第一眼读到的就是「分享」。应用窗口图标直说
+      // 「一个程序」，和斜杠菜单里用 app-window 表示「应用工具」也是同一套语义。
+      icon: <AppIcon name="app-window" size={14} />,
       onClick: onOpenWithSystem,
     });
   }
