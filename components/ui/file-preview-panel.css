@@ -121,6 +121,7 @@
 
 .ui-preview-counts {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: baseline;
   gap: 6px;
   font: var(--text-label)/1 var(--font-mono);

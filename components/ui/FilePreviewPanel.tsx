@@ -175,13 +175,22 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
       }}
     >
       <header className="ui-preview-header">
+        {/* 改动量贴在面板最左：一眼看到这文件改了多少，不用先去数正文。
+            跟着「有没有 diff 数据」出现，不跟模式走——切源码/差异时它不会忽隐忽现。 */}
+        {showModes && (added > 0 || removed > 0) && (
+          <span className="ui-preview-counts" title="与当前磁盘文件相比的增删行数">
+            <b>+{added}</b>
+            <i>−{removed}</i>
+            {partial && <small>部分差异</small>}
+          </span>
+        )}
         <div className="ui-preview-title">
           <strong title={path || shortName}>{shortName}</strong>
           {titleNote ? <small title={titleNote}>{titleNote}</small> : null}
         </div>
         <div className="ui-preview-tools">
-          {/* 源码/差异 与 +N −N 都贴在标题这一行、放在调用方的 headerExtra
-              （比如预览环境下拉）左边，省掉单独一条模式栏。 */}
+          {/* 源码/差异 贴在标题这一行、放在调用方的 headerExtra（比如预览环境下拉）左边，
+              省掉单独一条模式栏。 */}
           {showModes && (
             <div className="ui-preview-modes">
               <div role="group" aria-label="文件显示模式">
@@ -199,13 +208,6 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
                   </Button>
                 ))}
               </div>
-              {mode === "diff" && (
-                <span className="ui-preview-counts" title="本次修改与当前磁盘文件的差异">
-                  <b>+{added}</b>
-                  <i>−{removed}</i>
-                  {partial && <small>部分差异</small>}
-                </span>
-              )}
             </div>
           )}
           {headerExtra ? <div className="ui-preview-extra">{headerExtra}</div> : null}
