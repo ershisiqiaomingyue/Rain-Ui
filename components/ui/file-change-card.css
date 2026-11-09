@@ -11,9 +11,10 @@
 
   display: flex;
   flex-direction: column;
+  /* 宽度跟父级走：卡片不自己定宽，谁装它就铺满谁。 */
   width: 100%;
-  max-width: 760px;
-  margin: 12px auto 0;
+  max-width: 640px;
+  margin: 8px auto 0;
   color: var(--text-primary);
   container-type: inline-size;
 }
@@ -21,9 +22,9 @@
 .ui-file-changes > header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-height: 56px;
-  padding: 14px 18px;
+  gap: 7px;
+  min-height: 42px;
+  padding: 9px 12px;
   border-bottom: 1px solid var(--divider-color);
 }
 
@@ -31,10 +32,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 36px;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-panel);
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-control);
   background: var(--accent-subtle);
   color: var(--accent-ink);
 }
@@ -44,13 +45,13 @@
   flex: 1;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 4px 12px;
+  gap: 4px 8px;
   min-width: 0;
 }
 
 .ui-file-changes-heading > b {
-  font-size: var(--text-title);
-  font-weight: 600;
+  font-size: var(--text-body);
+  font-weight: 500;
   line-height: 1.4;
 }
 
@@ -59,7 +60,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   gap: 5px;
-  font-size: var(--text-label);
+  font-size: var(--text-meta);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
@@ -76,23 +77,23 @@
 
 /* Restore the historical inset rows. Match the bare Button specificity so
    its reset cannot replace the row typography, alignment or hover fill. */
-.ui-file-changes-files { padding: 6px 8px; }
+.ui-file-changes-files { padding: 4px 6px; }
 
 .ui-file-changes-file.btn.btn-bare {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  min-height: 28px;
-  margin: 2px 0;
-  padding: 6px 10px;
+  min-height: 24px;
+  margin: 1px 0;
+  padding: 4px 8px;
   border: 0;
   border-radius: var(--radius-control);
   background: transparent;
   color: var(--text-secondary);
   font: inherit;
-  font-size: var(--text-label);
+  font-size: var(--text-meta);
   text-align: left;
   cursor: pointer;
   transition: background-color var(--transition-fast), color var(--transition-fast);
@@ -117,14 +118,28 @@
 /* Expand toggle uses the library Button; only the offset is local. */
 .ui-file-changes-expand.btn {
   align-self: flex-start;
-  margin: 6px 12px 12px;
+  margin: 4px 8px 8px;
+}
+
+/* 「再显示 N 个文件」读作一枚中性实心片：有了底色才不像一行纯文字，
+   也才跟同排有底的 撤销 / 查看变更 落在同一层级。
+   底色按正文墨色的百分比混（7% → 悬停 11%），不用 --surface-action-bg：
+   那档几乎等于卡片自身的底，片和卡片糊在一起看不出边界。 */
+.ui-file-changes-expand.btn.btn-subtle {
+  background: color-mix(in srgb, var(--text-primary) 7%, transparent);
+  color: var(--text-secondary);
+}
+
+.ui-file-changes-expand.btn.btn-subtle:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--text-primary) 11%, transparent);
+  color: var(--text-primary);
 }
 
 /* A split pane can be narrow even on a wide desktop window. */
 @container (max-width: 480px) {
-  .ui-file-changes > header { flex-wrap: wrap; padding: 12px; }
-  .ui-file-changes-heading { flex-basis: calc(100% - 44px); }
-  .ui-file-changes-actions { margin-left: 44px; }
+  .ui-file-changes > header { flex-wrap: wrap; padding: 10px; }
+  .ui-file-changes-heading { flex-basis: calc(100% - 35px); }
+  .ui-file-changes-actions { margin-left: 35px; }
   .ui-file-changes-file.btn.btn-bare { gap: 8px; }
 }
 

@@ -67,7 +67,7 @@
   /* card-showcase.html: glass track, secondary fill and accent selected text. */
   --segmented-bg: var(--input-bg-sunken);
   --segmented-text: var(--control-text);
-  --segmented-hover-bg: color-mix(in srgb, var(--segmented-bg) 94%, var(--text-primary));
+  --segmented-hover-bg: var(--hover-tint-strong);
   /* 选中段是「抬起来」的，不是「染上主色」的：底比轨道亮一档，字用正文色。
      用 accent 上色会把每个分段控件都变成彩色控件，一屏全是色点。 */
   --segmented-active-bg: color-mix(in srgb, var(--segmented-bg) 76%, var(--text-primary));
@@ -83,7 +83,7 @@
   --control-text: color-mix(in srgb, var(--text-secondary) 80%, var(--text-primary));
   --surface-inset-bg: color-mix(in srgb, var(--bg-surface) 98%, var(--text-primary));
   --surface-action-bg: color-mix(in srgb, var(--bg-surface) 96%, var(--text-primary));
-  --surface-action-hover-bg: color-mix(in srgb, var(--bg-surface) 91%, var(--text-primary));
+  --surface-action-hover-bg: var(--hover-tint);
   --surface-action-active-bg: color-mix(in srgb, var(--bg-surface) 86%, var(--text-primary));
   --status-success-bg: color-mix(in srgb, var(--success-text) 6%, var(--bg-canvas));
   --status-success-text: color-mix(in srgb, var(--success-text) 88%, var(--text-primary));
@@ -142,21 +142,21 @@
   --table-header-bg: color-mix(in srgb, var(--table-bg) 96%, var(--text-primary));
   --table-header-text: var(--table-text);
   --table-stripe-bg: color-mix(in srgb, var(--table-bg) 97.5%, var(--accent-primary));
-  --table-hover-bg: color-mix(in srgb, var(--table-bg) 95%, var(--text-primary));
+  --table-hover-bg: var(--hover-tint-strong);
   --table-divider: color-mix(in srgb, var(--table-bg) 92%, var(--table-text));
   --terminal-tabs-bg: color-mix(in srgb, var(--bg-surface) 94%, var(--text-primary));
   --terminal-surround-bg: color-mix(in srgb, var(--bg-canvas) 94%, var(--text-primary));
   --session-tab-bg: color-mix(in srgb, var(--terminal-tabs-bg) 96%, var(--text-primary));
   --session-tab-text: var(--control-text);
-  --session-tab-hover-bg: color-mix(in srgb, var(--session-tab-bg) 94%, var(--text-primary));
+  --session-tab-hover-bg: var(--hover-tint);
   --session-tab-active-bg: color-mix(in srgb, var(--session-tab-bg) 92%, var(--text-primary));
-  --session-tab-active-hover-bg: color-mix(in srgb, var(--session-tab-bg) 88%, var(--text-primary));
+  --session-tab-active-hover-bg: var(--hover-tint-strong);
   --session-tab-active-text: var(--text-primary);
   --task-surface: var(--bg-card);
   --task-title: var(--text-primary);
   --task-detail: var(--control-text);
   --task-action: var(--control-text);
-  --task-action-hover-bg: var(--segmented-hover-bg);
+  --task-action-hover-bg: var(--hover-tint);
   --inference-accent: var(--btn-primary-text);
   --inference-track: var(--input-bg-sunken);
   --inference-fill: #9a59e0;
@@ -201,7 +201,7 @@
   --processing-status-icon: var(--accent-primary);
   --processing-status-shimmer: color-mix(in srgb, var(--accent-primary) 18%, transparent);
   --execution-status-text: var(--text-secondary);
-  --row-hover-bg: color-mix(in srgb, var(--bg-card) 97.5%, var(--text-primary));
+  --row-hover-bg: var(--hover-tint-strong);
   --page-header-bg: var(--bg-canvas);
   --page-pane-bg: var(--bg-canvas);
   --switch-thumb-bg: var(--control-checked-mark);
@@ -216,17 +216,21 @@
   /* UA 默认滚动条/原生控件跟随主题：不声明时 WebView2 一律按 light 渲染，
      所有没写滚动条样式的滚动元素在暗色主题下都是刺眼的浅色滚动条。 */
   color-scheme: dark;
+  /* Hover 只认强调靛青一个来源：hover 淡一档，active/选中（22%/12%）保持原样。
+     两主题浓度不同是因为同一透明度在深底与浅底上的感知强度不同，语义仍是同一档。 */
+  --hover-tint: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  --hover-tint-strong: color-mix(in srgb, var(--accent-primary) 17%, transparent);
   --bg-ambient: #090b10;
   --bg-app: #151a23;
   --context-navigation-bg: #151a23;
   --context-navigation-divider: rgba(255, 255, 255, 0.07);
-  --button-hover-bg: rgba(255, 255, 255, 0.08);
+  --button-hover-bg: var(--hover-tint);
   --button-hover-text: var(--text-primary);
   --chrome-hover-text: var(--chrome-ink);
   --selection-text: var(--text-primary);
   --input-text: var(--text-primary);
   --input-hover-text: var(--text-primary);
-  --rail-hover-bg: rgba(255, 255, 255, 0.08);
+  --rail-hover-bg: var(--hover-tint);
   --rail-active-bg: rgba(255, 255, 255, 0.10);
   /* 可点击卡片悬停时叠加的一档中性底：只用透明度，不引入第二个色相。 */
   --card-interactive-hover: rgba(255, 255, 255, 0.045);
@@ -238,7 +242,7 @@
   --workspace-panel-bg: #121720;
   --chrome-ink: #f8fafc;
   --chrome-muted: #94a3b8;
-  --chrome-hover: rgba(255, 255, 255, 0.08);
+  --chrome-hover: var(--hover-tint);
   --ambient-glow: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, rgba(99, 102, 241, 0.03) 30%, transparent 60%);
   --card-bg: var(--bg-surface);
   --bg-card: var(--card-bg);
@@ -254,7 +258,7 @@
   --card-tone-subtle: #10141c;
   --card-tone-deep: #0c1017;
   --bg-muted: var(--bg-surface);
-  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-hover: var(--hover-tint);
   --bg-selected: color-mix(in srgb, var(--accent-primary) 22%, transparent);
   --bg-input: rgba(255, 255, 255, 0.05);
   --card-rim: 0 0 0 0 transparent;
@@ -272,7 +276,7 @@
   --popover-bg: rgba(22, 26, 35, 0.96);
   --popover-border: 1px solid rgba(255, 255, 255, 0.1);
   --popover-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --popover-item-hover: rgba(255, 255, 255, 0.08);
+  --popover-item-hover: var(--hover-tint);
   --popover-item-active-bg: color-mix(in srgb, var(--accent-primary) 22%, transparent);
   --popover-item-active-text: var(--accent-ink-soft);
 
@@ -459,9 +463,12 @@
  * ============================================================================ */
 html[data-theme="light"] {
   color-scheme: light;
+  /* 亮色底浅，浓度低一档；strong 仍低于选中态 --bg-selected 的 12%。 */
+  --hover-tint: color-mix(in srgb, var(--accent-primary) 7%, transparent);
+  --hover-tint-strong: color-mix(in srgb, var(--accent-primary) 11%, transparent);
   --chrome-ink: #151e32;
   --chrome-muted: #64748b;
-  --chrome-hover: rgba(255, 255, 255, 0.65);
+  --chrome-hover: var(--hover-tint);
   --chrome-selected: rgba(255, 255, 255, 0.95);
   --bg-ambient: #f1f4f9;
   --bg-app: #f1f4f9;
@@ -477,9 +484,9 @@ html[data-theme="light"] {
   --terminal-surround-bg: rgba(244, 247, 254, 0.7);
   --session-tab-bg: rgba(255, 255, 255, 0.6);
   --session-tab-text: #4d5b76;
-  --session-tab-hover-bg: rgba(255, 255, 255, 0.9);
+  --session-tab-hover-bg: var(--hover-tint);
   --session-tab-active-bg: #ffffff;
-  --session-tab-active-hover-bg: #ffffff;
+  --session-tab-active-hover-bg: var(--hover-tint-strong);
   --ambient-glow: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, rgba(99, 102, 241, 0.03) 30%, transparent 60%);
   --card-bg: #ffffff;
   --bg-card: var(--card-bg);
@@ -493,7 +500,7 @@ html[data-theme="light"] {
   --card-tone-subtle: #f2f5f9;
   --card-tone-deep: #e9eef5;
   --bg-muted: rgba(240, 245, 255, 0.7);
-  --bg-hover: color-mix(in srgb, var(--accent-primary) 6%, transparent);
+  --bg-hover: var(--hover-tint);
   --bg-selected: color-mix(in srgb, var(--accent-primary) 12%, transparent);
   --btn-primary-bg: var(--accent-deep);
   --btn-primary-hover: var(--accent-hover);
@@ -506,7 +513,7 @@ html[data-theme="light"] {
   --popover-bg: rgba(255, 255, 255, 0.96);
   --popover-border: 1px solid rgba(0, 0, 0, 0.08);
   --popover-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.04), inset 0 1px 0 #ffffff;
-  --popover-item-hover: color-mix(in srgb, var(--accent-primary) 6%, transparent);
+  --popover-item-hover: var(--hover-tint);
   --popover-item-active-bg: color-mix(in srgb, var(--accent-primary) 12%, transparent);
   --popover-item-active-text: var(--accent-ink-soft);
 
@@ -608,11 +615,11 @@ html[data-theme="light"] {
 
   /* 按钮专属 (亮色) */
   --surface-action-bg: color-mix(in srgb, var(--bg-surface) 94%, var(--text-primary));
-  --surface-action-hover-bg: color-mix(in srgb, var(--bg-surface) 89%, var(--text-primary));
+  --surface-action-hover-bg: var(--hover-tint);
   --surface-action-active-bg: color-mix(in srgb, var(--bg-surface) 84%, var(--text-primary));
-  --button-hover-bg: var(--surface-action-hover-bg);
+  --button-hover-bg: var(--hover-tint);
   --button-hover-text: #151e32;
-  --rail-hover-bg: rgba(255, 255, 255, 0.7);
+  --rail-hover-bg: var(--hover-tint);
   --rail-active-bg: rgba(255, 255, 255, 0.95);
   --card-interactive-hover: rgba(15, 23, 42, 0.035);
   --btn-secondary-bg: var(--bg-surface);
@@ -721,7 +728,7 @@ html[data-custom-theme] {
   --topbar-bg: var(--bg-app);
   --bg-panel: var(--bg-canvas);
   --bg-muted: var(--bg-surface);
-  --rail-hover-bg: var(--button-hover-bg);
+  --rail-hover-bg: var(--hover-tint);
   --rail-active-bg: var(--chrome-selected);
   --popover-item-hover: var(--bg-hover);
   --accent-gradient: linear-gradient(135deg, var(--btn-primary-bg), var(--btn-primary-hover));

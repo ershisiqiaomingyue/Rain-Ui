@@ -100,7 +100,7 @@ export const FileChangeCard: React.FC<FileChangeCardProps> = ({
     >
       <header>
         <span className="ui-file-changes-icon" aria-hidden="true">
-          <AppIcon name="file-diff" size={18} />
+          <AppIcon name="file-diff" size={15} />
         </span>
         <div className="ui-file-changes-heading">
           <b>已编辑 {visible.length} 个文件</b>
@@ -113,7 +113,7 @@ export const FileChangeCard: React.FC<FileChangeCardProps> = ({
           {onUndo && (
             <Button
               type="button"
-              variant="subtle"
+              variant="danger"
               size="xs"
               icon={<AppIcon name="undo" size={13} />}
               title="撤销本轮全部文件改动"
