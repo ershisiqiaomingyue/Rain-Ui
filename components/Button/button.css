@@ -48,25 +48,25 @@ html[data-theme] .btn.btn-subtle.btn-icon-only:hover:not(:disabled) {
 .btn-xs {
   height: 24px;
   padding: 0 8px;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
 }
 
 .btn-sm {
   height: 28px;
   padding: 0 12px;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
 }
 
 .btn-md {
   height: 32px;
   padding: 0 14px;
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
 }
 
 .btn-lg {
   height: 38px;
   padding: 0 18px;
-  font-size: var(--text-title);
+  font-size: var(--fs-title);
 }
 
 /* One neutral ladder, one filled action.

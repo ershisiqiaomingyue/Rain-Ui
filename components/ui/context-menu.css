@@ -25,7 +25,7 @@
   background: transparent;
   color: inherit;
   font: inherit;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   text-align: left;
   cursor: pointer;
 }

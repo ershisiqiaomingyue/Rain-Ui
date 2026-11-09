@@ -81,7 +81,7 @@
 .ui-ring-control.is-unknown .ui-ring-percent { stroke: var(--text-tertiary); color: var(--text-tertiary); }
 
 .ui-ring-percent {
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   font-variant-numeric: tabular-nums;
   color: var(--text-tertiary);
   white-space: nowrap;
@@ -104,7 +104,7 @@
   background: rgb(from var(--popover-bg) r g b / 1);
   box-shadow: var(--popover-shadow);
   color: var(--text-primary);
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
 }
 
 .ui-ring-panel header {
@@ -120,7 +120,7 @@
 .ui-ring-panel header b { margin-left: 8px; color: var(--text-primary); font-weight: 600; }
 
 .ui-ring-panel header strong {
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   color: var(--text-primary);
@@ -152,7 +152,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   line-height: 18px;
   color: var(--text-secondary);
 }
@@ -167,7 +167,7 @@
 .ui-ring-legend li.is-used i { background: var(--series-1); }
 .ui-ring-legend li.is-remaining i { background: color-mix(in srgb, var(--text-primary) 10%, var(--bg-canvas)); }
 .ui-ring-legend li span { flex: 1; min-width: 0; }
-.ui-ring-legend li strong { font-size: var(--text-label); font-weight: 500; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+.ui-ring-legend li strong { font-size: var(--fs-label); font-weight: 500; font-variant-numeric: tabular-nums; color: var(--text-primary); }
 
 @keyframes ui-ring-pulse {
   0%, 100% { opacity: 1; }

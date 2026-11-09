@@ -103,17 +103,18 @@ export function SpecColor() {
 /* ── 排版 ───────────────────────────────────────────────────────────────── */
 
 const TYPE_ROWS: { size: string; px: string; use: string; weight: number }[] = [
-  { size: "--text-display", px: "20px", use: "页面标题（一屏一个）", weight: 600 },
-  { size: "--text-title", px: "16px", use: "卡片 / 弹层标题、空状态主句", weight: 600 },
-  { size: "--text-body", px: "13px", use: "正文、按钮文字、表单值（body 默认）", weight: 400 },
-  { size: "--text-label", px: "12px", use: "表单标签、表头、次要说明", weight: 400 },
-  { size: "--text-meta", px: "11px", use: "时间戳、计数、脚注（字号下限）", weight: 400 },
+  { size: "--fs-headline", px: "20px", use: "页面标题（一屏一个）", weight: 600 },
+  { size: "--fs-title", px: "16px", use: "卡片 / 弹层标题、空状态主句", weight: 600 },
+  { size: "--fs-body", px: "13px", use: "正文、按钮文字、表单值（body 默认）", weight: 400 },
+  { size: "--fs-label", px: "12px", use: "表单标签、表头、分组小标题", weight: 500 },
+  { size: "--fs-meta", px: "11px", use: "时间戳、计数、次级说明", weight: 400 },
+  { size: "--fs-micro", px: "10px", use: "徽标、角标、键帽（字号下限）", weight: 500 },
 ];
 
 export function SpecType() {
   return (
     <Stack gap={20}>
-      <Group title="5 档字号" hint="全库只有 5 档；不允许 10px、10.5px、11.5px、12.5px、13.5px 这类中间值——它们是「层级看起来差不多」的来源。">
+      <Group title="6 档字号" hint="全库只有 6 档；不允许 10.5px、11.5px、12.5px、13.5px 这类中间值——它们是「层级看起来差不多」的来源。每档都配 --lh-* / --fw-* 同名变量。">
         <div className="kit-type-table">
           {TYPE_ROWS.map(({ size, px, use, weight }) => (
             <div key={size} className="kit-type-row">

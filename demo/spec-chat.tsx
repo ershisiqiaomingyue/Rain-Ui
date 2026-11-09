@@ -47,7 +47,7 @@ export function SpecUsageMetrics() {
     <Stack gap={20}>
       <Group
         title="完整一行"
-        hint="样式来自对话输入框底部的用量条：12px 字号（--text-label），label + 加粗数值，各项之间一条 1px 竖分割线（--divider），最后一项不带分割线。"
+        hint="样式来自对话输入框底部的用量条：12px 字号（--fs-label），label + 加粗数值，各项之间一条 1px 竖分割线（--divider），最后一项不带分割线。"
       >
         <Card>
           <CardBody>

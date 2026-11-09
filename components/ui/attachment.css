@@ -123,7 +123,7 @@
 }
 
 .ui-attachment-name {
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   font-weight: 550;
   line-height: 1.25;
   color: var(--text-primary);
@@ -133,7 +133,7 @@
 }
 
 .ui-attachment-meta small {
-  font-size: var(--text-meta);
+  font-size: var(--fs-meta);
   line-height: 1.2;
   color: var(--text-secondary);
   overflow: hidden;
@@ -157,7 +157,7 @@
   border: 0;
   background: transparent;
   font: inherit;
-  font-size: var(--text-meta);
+  font-size: var(--fs-meta);
   font-weight: 500;
   line-height: 1.2;
   text-align: left;

@@ -17,7 +17,7 @@
   box-sizing: border-box;
 }
 .ui-access-menu.is-inline { position: static; }
-.ui-access-menu-heading { padding: 2px 10px 5px; color: var(--text-tertiary); font-size: var(--text-meta); line-height: 1.4; }
+.ui-access-menu-heading { padding: 2px 10px 5px; color: var(--text-tertiary); font-size: var(--fs-meta); line-height: 1.4; }
 /* 行高跟内容走，不再给描述预留两行槽位。预留虽然能让三项等高，但只有一行
    描述的项下面会空出近 20px，整个菜单看着发虚。等高的副作用（选中项多出
    勾选槽位导致标题折行）已经由最下面那个常驻勾选槽位解决，不需要再靠留白。 */
@@ -49,7 +49,7 @@
 /* 标题允许折行：「完全信任（无隔离）」在窄面板里折成两行也不裁切；行高跟内容走。 */
 .ui-access-menu-row b {
   color: var(--text-primary);
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   font-weight: 500;
   line-height: 1.35;
   white-space: normal;
@@ -59,7 +59,7 @@
   /* 描述比标题低一档：11px + 次要色，并且限宽——文字不顶到右侧勾选列。 */
   max-width: 17rem;
   color: var(--text-secondary);
-  font-size: var(--text-meta);
+  font-size: var(--fs-meta);
   line-height: 1.45;
   /* 只留一行：三项等高，选中任何一项面板都不会长高；超出省略。 */
   white-space: nowrap;

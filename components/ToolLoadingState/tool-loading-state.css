@@ -32,14 +32,14 @@
 
 .tool-loading-title {
   color: var(--text-secondary);
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   line-height: 1.5;
   font-weight: 500;
 }
 
 .tool-loading-state p {
   margin: 0;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   line-height: 1.6;
   color: var(--text-tertiary);
   overflow-wrap: anywhere;
@@ -62,5 +62,5 @@
   max-width: none;
 }
 
-.tool-loading-state.compact .tool-loading-title { font-size: var(--text-body); }
-.tool-loading-state.compact p { font-size: var(--text-label); }
+.tool-loading-state.compact .tool-loading-title { font-size: var(--fs-body); }
+.tool-loading-state.compact p { font-size: var(--fs-label); }

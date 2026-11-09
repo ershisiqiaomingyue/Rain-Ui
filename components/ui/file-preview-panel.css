@@ -46,7 +46,7 @@
 }
 
 .ui-preview-title strong {
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   font-weight: 600;
   color: var(--text-primary);
   overflow: hidden;
@@ -55,7 +55,7 @@
 }
 
 .ui-preview-title small {
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   color: var(--text-tertiary);
 }
 
@@ -124,13 +124,13 @@
   flex: 0 0 auto;
   align-items: baseline;
   gap: 6px;
-  font: var(--text-label)/1 var(--font-mono);
+  font: var(--fs-label)/1 var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 
 .ui-preview-counts b { color: var(--change-added, var(--success-text)); font-weight: 600; }
 .ui-preview-counts i { color: var(--status-danger-text); font-style: normal; font-weight: 600; }
-.ui-preview-counts small { color: var(--text-tertiary); font-size: var(--text-label); }
+.ui-preview-counts small { color: var(--text-tertiary); font-size: var(--fs-label); }
 
 /* Search row */
 .ui-preview-search {
@@ -152,7 +152,7 @@
   background: var(--input-bg-sunken);
   color: var(--input-text);
   font: inherit;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
 }
 
 .ui-preview-search-input:focus {
@@ -162,7 +162,7 @@
 
 .ui-preview-search > span {
   flex: 0 0 auto;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   color: var(--text-tertiary);
   font-variant-numeric: tabular-nums;
 }
@@ -183,7 +183,7 @@
   flex: 0 0 auto;
   padding: 6px 10px;
   border-top: 1px solid var(--border-subtle);
-  font: var(--text-meta)/1.4 var(--font-mono);
+  font: var(--fs-meta)/1.4 var(--font-mono);
   color: var(--text-tertiary);
   overflow: hidden;
   text-overflow: ellipsis;

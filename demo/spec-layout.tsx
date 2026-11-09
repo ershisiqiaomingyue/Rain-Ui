@@ -205,7 +205,7 @@ const PROCESSES = [
 export function SpecTable() {
   return (
     <Stack gap={20}>
-      <Group title="基础表格" hint="表头 12px（--text-label）常体、行 13px（--text-body）；悬停整行换底，外框三面都可见。">
+      <Group title="基础表格" hint="表头 12px（--fs-label）常体、行 13px（--fs-body）；悬停整行换底，外框三面都可见。">
         <Table>
           <thead>
             <tr>

@@ -117,7 +117,7 @@ html[data-theme] .card-tool .property-row {
   align-items: center;
   gap: 10px;
   color: var(--text-secondary);
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   user-select: none;
   flex-shrink: 0;
   white-space: nowrap;
@@ -141,7 +141,7 @@ html[data-theme] .card-tool .property-row {
 }
 
 .property-value {
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   font-weight: 600;
   color: var(--property-value-text);
   font-family: var(--font-mono);

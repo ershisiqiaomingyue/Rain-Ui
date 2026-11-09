@@ -78,14 +78,14 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
 }
 
 .card-title {
-  font-size: var(--text-title);
+  font-size: var(--fs-title);
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: 0;
 }
 
 .card-subtitle {
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   color: var(--text-tertiary);
   margin-top: 2px;
 }
@@ -158,20 +158,20 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
 }
 
 .card-tool-title {
-  font-size: var(--text-title);
+  font-size: var(--fs-title);
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: 0;
 }
 
 .card-tool-desc {
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   color: var(--text-tertiary);
   margin-top: 1px;
 }
 
 .card-tool-body {
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   color: var(--text-secondary);
   line-height: 1.5;
   flex: 1;
@@ -232,9 +232,9 @@ html[data-theme] .card.card-divided > .card-body + .card-footer { border-top: 1p
 /* Property rows: icon + label left, value right, hairline between rows. */
 .card-property-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; padding: 10px 20px; }
 .card-property-row + .card-property-row { border-top: 1px solid var(--divider-color); }
-.card-property-label { display: inline-flex; align-items: center; gap: 9px; min-width: 0; color: var(--text-secondary); font-size: var(--text-body); }
+.card-property-label { display: inline-flex; align-items: center; gap: 9px; min-width: 0; color: var(--text-secondary); font-size: var(--fs-body); }
 .card-property-label svg { flex: 0 0 auto; color: var(--text-tertiary); }
-.card-property-value { flex: 0 0 auto; color: var(--text-primary); font-size: var(--text-body); font-weight: 600; }
+.card-property-value { flex: 0 0 auto; color: var(--text-primary); font-size: var(--fs-body); font-weight: 600; }
 
 /* Toned cards inherit the standard card shell and only swap the surface fill,
    so a toned card looks like a default card in a different shade. */

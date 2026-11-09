@@ -17,7 +17,7 @@
   padding: 8px 10px;
   /* 行级悬停底，跟随控件圆角：14px 的行放在 10px 卡片里会顶破内圆角。 */
   border-radius: var(--radius-control);
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   color: var(--text-primary);
   transition: background-color var(--transition-base);
   user-select: none;
@@ -42,7 +42,7 @@ html[data-theme] .task-step-row.is-clickable {
 
 .task-step-list.is-compact .task-step-row {
   padding: 3px 8px;
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
 }
 
 /* Status circle: strict single 20x20 geometry. */
@@ -131,7 +131,7 @@ html[data-theme] .task-step-row.is-clickable:hover .task-step-icon.pending {
   border-radius: var(--radius-control);
   background: var(--chrome-hover);
   color: var(--text-secondary);
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   font-weight: 500;
   line-height: 1.4;
 }

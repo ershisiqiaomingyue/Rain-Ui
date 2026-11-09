@@ -42,7 +42,7 @@
   background: var(--portal-bg);
   color: var(--portal-text);
   box-shadow: var(--portal-shadow);
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   line-height: 1.5;
   pointer-events: auto;
   animation: ui-portal-rise 0.2s cubic-bezier(0.16, 1, 0.3, 1);

@@ -23,14 +23,14 @@
 
 .tool-empty-title {
   color: var(--text-secondary);
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   line-height: 1.5;
   font-weight: 500;
 }
 
 .tool-empty-state p {
   margin: 0;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   line-height: 1.6;
   color: var(--text-tertiary);
   overflow-wrap: anywhere;
@@ -59,6 +59,6 @@
   max-width: none;
 }
 
-.tool-empty-state.compact .tool-empty-title { font-size: var(--text-body); }
-.tool-empty-state.compact p { font-size: var(--text-label); }
+.tool-empty-state.compact .tool-empty-title { font-size: var(--fs-body); }
+.tool-empty-state.compact p { font-size: var(--fs-label); }
 .tool-empty-state.compact .tool-empty-action { margin-left: auto; }

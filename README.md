@@ -128,8 +128,8 @@ rain-ui/
 
 | 阶梯 | 档位 | 说明 |
 | --- | --- | --- |
-| 字号 | `--text-display` 20 · `--text-title` 16 · `--text-body` 13 · `--text-label` 12 · `--text-meta` 11 | 全库 5 档，最低 11px。不要再用 10 / 10.5 / 11.5 / 12.5 / 13.5 这类中间值 |
-| 圆角 | `--radius-control` 6 · `--radius-panel` 10 · `--radius-overlay` 14 · `--radius-full` 9999 | 控件 / 面板 / 浮层 / 胶囊四档。7、8、9、12、16、18 一律不用 |
+| 字号 | `--fs-headline` 20 · `--fs-title` 16 · `--fs-body` 13 · `--fs-label` 12 · `--fs-meta` 11 · `--fs-micro` 10 | 全库 6 档，最低 10px。不要再用 10.5 / 11.5 / 12.5 / 13.5 这类中间值。配套 `--lh-*` / `--fw-*` 同名六级 |
+| 圆角 | `--radius-control` 7 · `--radius-panel` 11 · `--radius-overlay` 14 · `--radius-full` 9999 | 控件 / 面板 / 浮层 / 胶囊四档。8、9、12、16、18 一律不用（卡片内嵌的 8 / 6 见 design.md §9.3） |
 | 层级 | `--z-raised` 10 · `--z-sticky` 40 · `--z-menu` 60 · `--z-overlay` 70 · `--z-popover` 80 · `--z-toast` 90 | 浮层不许再写裸 z-index，否则同层级的两个浮层谁盖谁全靠运气 |
 
 一屏只放**一个** primary 按钮；强调色只用于当前项、链接、焦点环，不用来铺底。

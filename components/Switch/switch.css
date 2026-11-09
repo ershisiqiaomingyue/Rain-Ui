@@ -94,7 +94,7 @@
   gap: 9px;
   cursor: pointer;
   user-select: none;
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   color: var(--text-primary);
 }
 
@@ -163,7 +163,7 @@
 .segmented-glass .seg-btn {
   padding: 4px 12px;
   height: calc(var(--control-height) - 6px);
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   font-weight: 600;
   color: var(--segmented-text);
   background: transparent;

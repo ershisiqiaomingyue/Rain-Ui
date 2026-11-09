@@ -101,7 +101,7 @@
 }
 
 .ui-list-item-title {
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   font-weight: 600;
   color: var(--text-primary);
   overflow-wrap: anywhere;
@@ -115,7 +115,7 @@
 }
 
 .ui-list-item-desc {
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   line-height: 1.6;
   color: var(--control-text);
   overflow-wrap: anywhere;
@@ -126,7 +126,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
-  font-size: var(--text-meta);
+  font-size: var(--fs-meta);
   color: var(--control-text);
   overflow-wrap: anywhere;
 }

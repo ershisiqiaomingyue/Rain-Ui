@@ -13,7 +13,7 @@
   background: var(--input-bg-sunken);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   line-height: 20px;
   outline: none;
   transition: border-color var(--transition-fast), background-color var(--transition-fast);
@@ -32,7 +32,7 @@
 
 .rename-dialog-error {
   margin: 8px 0 0;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   line-height: 1.5;
   color: var(--status-danger-text);
   overflow-wrap: anywhere;

@@ -50,7 +50,7 @@
 }
 
 .ui-file-changes-heading > b {
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   font-weight: 500;
   line-height: 1.4;
 }
@@ -60,7 +60,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   gap: 5px;
-  font-size: var(--text-meta);
+  font-size: var(--fs-meta);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
@@ -93,7 +93,7 @@
   background: transparent;
   color: var(--text-secondary);
   font: inherit;
-  font-size: var(--text-meta);
+  font-size: var(--fs-meta);
   text-align: left;
   cursor: pointer;
   transition: background-color var(--transition-fast), color var(--transition-fast);

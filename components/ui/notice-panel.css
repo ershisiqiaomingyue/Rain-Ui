@@ -56,7 +56,7 @@
   background: transparent;
   box-shadow: none;
   font: inherit;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   text-align: left;
   cursor: pointer;
   transition: background-color var(--transition-fast);
@@ -119,7 +119,7 @@
 .ui-notice-count {
   flex: 0 0 auto;
   margin-left: auto;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   color: var(--text-tertiary);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -163,7 +163,7 @@
   min-width: 0;
   padding: 10px 12px;
   border-top: 1px solid var(--border-subtle);
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   color: var(--text-primary);
 }
 
@@ -269,7 +269,7 @@
   flex: 0 0 18px;
   width: 18px;
   font-family: var(--font-mono);
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   font-weight: 600;
   text-align: center;
   color: var(--text-tertiary);
@@ -309,7 +309,7 @@
 .ui-notice-queue-single-label {
   flex: 0 0 auto;
   margin-right: 5px;
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -322,14 +322,14 @@
 .ui-notice-queue-preview { display: flex; align-items: center; gap: 4px; flex: 0 0 auto; }
 .ui-notice-queue-thumbnail { display: grid; place-items: center; width: 18px; height: 18px; padding: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-control); background: var(--bg-surface); color: var(--text-tertiary); overflow: hidden; cursor: pointer; }
 .ui-notice-queue-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
-.ui-notice-queue-preview small { color: var(--text-tertiary); font-size: var(--text-label); }
-.ui-notice-queue-file { display: inline-flex; align-items: center; gap: 4px; max-width: 72px; min-width: 0; height: 18px; padding: 0 5px; border: 1px solid var(--border-subtle); border-radius: var(--radius-control); color: var(--text-secondary); background: var(--bg-surface); font-size: var(--text-label); }
+.ui-notice-queue-preview small { color: var(--text-tertiary); font-size: var(--fs-label); }
+.ui-notice-queue-file { display: inline-flex; align-items: center; gap: 4px; max-width: 72px; min-width: 0; height: 18px; padding: 0 5px; border: 1px solid var(--border-subtle); border-radius: var(--radius-control); color: var(--text-secondary); background: var(--bg-surface); font-size: var(--fs-label); }
 .ui-notice-queue-file > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ui-notice-queue-file .local-path-icon { width: 14px; height: 14px; flex: 0 0 auto; }
 .ui-notice-queue-text {
   flex: 1;
   min-width: 0;
-  font-size: var(--text-body);
+  font-size: var(--fs-body);
   font-weight: 450;
   line-height: 1.45;
   color: var(--text-secondary);
@@ -360,7 +360,7 @@
   gap: 8px;
   padding: 4px 8px;
   border-radius: var(--radius-control);
-  font: var(--text-label)/1.5 var(--font-mono);
+  font: var(--fs-label)/1.5 var(--font-mono);
 }
 
 .ui-notice-file-row:hover { background: var(--bg-hover); }
@@ -397,7 +397,7 @@
   border-radius: var(--radius-full);
   background: var(--accent-subtle);
   color: var(--accent-ink);
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -419,7 +419,7 @@
 /* Shared 09 bodies: the showcase and production adapters use these same rows. */
 .ui-notice-body-stack, .ui-notice-background-task { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .ui-notice-body-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.ui-notice-code { margin: 0; padding: 10px; border-radius: var(--radius-control); background-color: var(--bg-surface); background-image: linear-gradient(var(--markdown-code-bg), var(--markdown-code-bg)); font: var(--text-label)/1.6 var(--font-mono); overflow: auto; white-space: pre; }
+.ui-notice-code { margin: 0; padding: 10px; border-radius: var(--radius-control); background-color: var(--bg-surface); background-image: linear-gradient(var(--markdown-code-bg), var(--markdown-code-bg)); font: var(--fs-label)/1.6 var(--font-mono); overflow: auto; white-space: pre; }
 .ui-notice-reply { display: flex; align-items: center; gap: 8px; }
 .ui-notice-reply > .input-shell { flex: 1; min-width: 0; }
 .ui-notice-reply > .btn { flex: 0 0 auto; }
@@ -430,7 +430,7 @@
 .ui-notice .ui-notice-reply .input {
   height: 32px;
   padding: 4px 12px;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   border: 1px solid color-mix(in srgb, var(--accent-primary) 40%, transparent);
   border-radius: 10px;
   background: var(--bg-surface);
@@ -451,7 +451,7 @@
 .ui-notice .ui-notice-reply .btn {
   height: 32px;
   padding: 0 12px;
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   border-radius: 10px;
 }
 .ui-notice-answer-option.btn {
@@ -482,9 +482,9 @@
 /* 候选胶囊是单向动作，尾部不该再挂一个发送箭头。组件已不再渲染它，这条兜底
    是给缓存里可能还留着旧 bundle 的运行环境准备的。 */
 .ui-notice-answer-send { display: none; }
-.ui-notice-detail { color: var(--text-tertiary); font-size: var(--text-label); }
+.ui-notice-detail { color: var(--text-tertiary); font-size: var(--fs-label); }
 .ui-notice-background-task { gap: 8px; }
-.ui-notice-background-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: var(--text-label); }
+.ui-notice-background-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: var(--fs-label); }
 /* 标题行本身是折叠开关：整行可点，但只用 bare 按钮占住「图标+文字」那段，
    右侧的用时/停止按钮仍然是独立可点的动作，不会连带折叠。 */
 .ui-notice-background-toggle.btn.btn-bare {
@@ -498,7 +498,7 @@
   min-width: 0;
   padding: 0;
   color: var(--text-secondary);
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   font-weight: 500;
   text-align: left;
 }
@@ -513,8 +513,8 @@
 .ui-notice-background-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 /* `hidden` 必须显式压回 none：上面给了 display:flex，否则收起时内容照样在。 */
 .ui-notice-background-body[hidden] { display: none; }
-.ui-notice-background-log { max-height: 200px; font-size: var(--text-label); }
-.ui-notice-background-task details { min-width: 0; color: var(--text-secondary); font-size: var(--text-label); }
+.ui-notice-background-log { max-height: 200px; font-size: var(--fs-label); }
+.ui-notice-background-task details { min-width: 0; color: var(--text-secondary); font-size: var(--fs-label); }
 .ui-notice-background-task details summary { cursor: pointer; }
 .ui-notice-background-task details[open] > :not(summary) { margin-top: 8px; }
 @media (prefers-reduced-motion: reduce) {
@@ -578,7 +578,7 @@ html[data-theme="light"] .ui-notice .ui-notice-background-detail .ui-notice-code
 }
 .ui-notice-error { margin: 0; color: var(--status-danger-text); overflow-wrap: anywhere; }
 .ui-notice-file-list { display: flex; flex-direction: column; gap: 4px; }
-.ui-notice-file-row.btn.btn-bare { display: flex; width: 100%; min-width: 0; gap: 8px; padding: 4px 8px; border-radius: var(--radius-control); font: var(--text-label)/1.5 var(--font-mono); text-align: left; }
+.ui-notice-file-row.btn.btn-bare { display: flex; width: 100%; min-width: 0; gap: 8px; padding: 4px 8px; border-radius: var(--radius-control); font: var(--fs-label)/1.5 var(--font-mono); text-align: left; }
 .ui-notice-file-row.is-deleted > span { text-decoration: line-through; }
 /* 卡片外壳现在由 `.ui-notice.is-inline` 提供：这里只负责纵向排布，不再画第二圈
    描边/底色（否则卡片里套一层卡，圆角还会互相打架）。单条形态没有行分隔线，
@@ -591,7 +591,7 @@ html[data-theme="light"] .ui-notice .ui-notice-background-detail .ui-notice-code
 
 .ui-notice-plan-settings { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 10px; }
 .ui-notice-plan-fields { display: flex; gap: 12px; flex-wrap: wrap; }
-.ui-notice-plan-fields > label { display: flex; align-items: center; gap: 8px; font-size: var(--text-label); }
+.ui-notice-plan-fields > label { display: flex; align-items: center; gap: 8px; font-size: var(--fs-label); }
 .ui-notice-plan-fields .input-shell { width: 72px; }
 
 /* ── 追加消息卡：单条抬头即正文 ─────────────────────────────────────────────
@@ -606,6 +606,6 @@ html[data-theme="light"] .ui-notice .ui-notice-background-detail .ui-notice-code
 /* 单条抬头：点/圆环 → 8px → 「一条追加消息等待中：」 → 4px → 正文 → 按钮。
    正文只吃按钮左侧剩下的宽度，超出就省略号（title 里挂完整内容）。
    呼吸环外扩到 -3px，所以圆点旁边必须留出真正的间距，否则环会压到字上。 */
-.ui-notice-queue-single-head { display: flex; align-items: center; gap: 0; min-width: 0; overflow: hidden; white-space: nowrap; font-size: var(--text-body); font-weight: 400; color: var(--text-secondary); }
-.ui-notice-queue-single-head .ui-notice-queue-single-label { flex: 0 0 auto; margin-right: 4px; font-size: var(--text-body); font-weight: 600; color: var(--text-primary); }
+.ui-notice-queue-single-head { display: flex; align-items: center; gap: 0; min-width: 0; overflow: hidden; white-space: nowrap; font-size: var(--fs-body); font-weight: 400; color: var(--text-secondary); }
+.ui-notice-queue-single-head .ui-notice-queue-single-label { flex: 0 0 auto; margin-right: 4px; font-size: var(--fs-body); font-weight: 600; color: var(--text-primary); }
 .ui-notice-queue-single-head .ui-notice-queue-single-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); }

@@ -241,7 +241,9 @@ border: 1px solid var(--line-1);
 
 ### 6.1 字号：六级
 
-取代旧的 5 级（原 `display` 32px 已删除，实际没人用到那个尺寸）。
+取代旧的 5 级（20 / 16 / 13 / 12 / 11），往下补一级 10px。
+补这一级的理由：徽标、角标、键帽原本散着 9 / 9.5 / 10 / 10.5px，收进来比让它们
+继续在阶梯外面飘着好。更早一稿里的 32px `display` 已删除，实际没人用到那个尺寸。
 
 | token | 字号 | 行高 | 字重 | 用在哪 |
 | --- | --- | --- | --- | --- |
@@ -254,9 +256,10 @@ border: 1px solid var(--line-1);
 
 配套：`--lh-headline/-title/-body/-label/-meta/-micro`、`--fw-headline/-title/-body/-label/-meta/-micro`。
 
-> **命名变更**：旧 `typography.css` 用 `--text-headline` 这类名字表示**字号**，
-> 而 `tokens.css` 的 `--text-*` 表示**颜色**，同一个前缀两套语义是踩过的坑。
-> 字号统一改成 `--fs-*`，颜色统一改成 `--ink-*`。
+> **命名变更**：旧 `typography.css` 用 `--text-display` / `--text-body` 这类名字表示**字号**，
+> 而 `tokens.css` 的 `--text-primary` / `--text-secondary` 表示**颜色**，同一个
+> `--text-` 前缀下两套语义是踩过的坑。字号统一改成 `--fs-*`，颜色统一改成 `--ink-*`。
+> 宿主还有 6 处引用旧名，`typography.css` 里留了一小段兼容别名，第 6 步改完宿主即删。
 
 ### 6.2 文字色阶：五级
 
@@ -297,7 +300,7 @@ border: 1px solid var(--line-1);
 | `Item` / list-item | hover / selected 走 §5 |
 | `Dialog` / `Modal` | 边框 `--line-1`，亮色加浮层阴影 |
 | `Tooltip` | 中性反转，不用强调色 |
-| `Progress` | 轨道 `--line-3`，填充 `--primary` |
+| `Progress` | 轨道 `--surface-inset`（凹槽，不用 `--line-*`，线色是给 1px 发丝线的），填充 `--accent-strong` |
 | `DropdownMenu` / `ContextMenu` | 选中项走 §5.1 |
 | `Sidebar` 导航项 | 选中走 §5.1，无左侧竖条 |
 | `Toast`（sonner） | 按状态色映射 |

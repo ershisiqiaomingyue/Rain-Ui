@@ -15,7 +15,7 @@
   padding-top: 7px;
   border-top: 1px solid var(--composer-divider);
   color: var(--composer-muted);
-  font-size: var(--text-label);
+  font-size: var(--fs-label);
   line-height: 1.2;
   white-space: nowrap;
 }

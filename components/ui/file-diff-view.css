@@ -8,7 +8,7 @@
   scrollbar-width: thin;
   color: var(--code-foreground);
   background: var(--code-background);
-  font: var(--text-label)/22px var(--font-mono);
+  font: var(--fs-label)/22px var(--font-mono);
   tab-size: 2;
   white-space: pre;
 }
