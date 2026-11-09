@@ -147,7 +147,9 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
     secondary.push({
       key: "open",
       label: "用默认程序打开",
-      icon: <AppIcon name="browser" size={14} />,
+      // 「交给系统程序打开」不是网页导航：指南针（browser）在这个尺寸下会被读成
+      // 定位/浏览器，和「打开网页预览」撞语义；外链图标才是全站「在外面打开」的写法。
+      icon: <AppIcon name="external-link" size={14} />,
       onClick: onOpenWithSystem,
     });
   }
