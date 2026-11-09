@@ -366,6 +366,38 @@ export function SpecFileChanges() {
           </FilePreviewPanel>
         </div>
       </Group>
+
+      <Group
+        title="窄列：先保住关闭"
+        hint="右栏被拖窄时，头部按容器宽度逐档让位——次级动作（搜索 / 复制 / 重读 / 打开）整体收进「更多」，再让出 +N −N 和调用方的额外控件；关闭按钮永远在最右。"
+      >
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+          {[440, 320].map((width) => (
+            <div key={width} style={{ width, height: 240 }}>
+              <FilePreviewPanel
+                path="D:\\workspace\\demo\\app\\build.gradle.kts"
+                mode="diff"
+                onModeChange={() => {}}
+                showModes
+                added={6}
+                removed={0}
+                searchable
+                matches={0}
+                matchIndex={0}
+                onClose={() => {}}
+                onCopy={() => {}}
+                onRetry={() => {}}
+                onOpenWithSystem={() => {}}
+                docked
+                titleNote="只读预览"
+                headerExtra={<Badge>本机</Badge>}
+              >
+                <FileDiffView rows={DIFF} />
+              </FilePreviewPanel>
+            </div>
+          ))}
+        </div>
+      </Group>
     </Stack>
   );
 }

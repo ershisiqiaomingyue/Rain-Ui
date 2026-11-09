@@ -13,6 +13,10 @@
   background: var(--bg-card);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
+  /* 头部的取舍按面板自身宽度算，不看视口：面板是右栏里可拖宽的一列，
+     同一个窗口下它可能只有 360px。下面的 @container 全都挂在它上面。 */
+  container-type: inline-size;
+  container-name: preview;
 }
 
 /* Docked variant: the panel fills a pane that is flush with its container, so
@@ -60,6 +64,32 @@
   align-items: center;
   gap: 2px;
   flex: 0 0 auto;
+}
+
+/* 工具条里的东西一律不缩：压扁的按钮比收起来的按钮更难用，取舍交给下面的容器查询。 */
+.ui-preview-tools > * { flex: 0 0 auto; }
+
+/* 调用方塞进来的额外控件（预览环境下拉、元信息按钮…）。 */
+.ui-preview-extra {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+/* 次级动作：搜索 / 复制 / 重读 / 用默认程序打开。 */
+.ui-preview-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* 「更多」只在窄面板出现；外面套一层 span，避免和 .btn 抢 display。 */
+.ui-preview-more { display: none; }
+
+.ui-preview-menu-icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-secondary);
 }
 
 /* Tool buttons are library Buttons (variant="subtle" size="xs"). No size or
@@ -157,4 +187,25 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* ==========================================================================
+   窄面板下的取舍：关掉预览的按钮永远在，其余按「越不值钱越早丢」让位。
+   1. 头部的次级动作（搜索 / 复制 / 重读 / 打开）整体收进「更多」；
+   2. +N −N 计数 —— 对话里那张改动卡片上还有一份；
+   3. 调用方塞的额外控件（预览环境下拉）—— 下面的路径行仍指向同一个文件。
+   顺序和阈值都按实测的头部内容宽度定：全展开约 700px 起才不挤。
+   ========================================================================== */
+
+@container preview (max-width: 660px) {
+  .ui-preview-counts { display: none; }
+}
+
+@container preview (max-width: 540px) {
+  .ui-preview-actions { display: none; }
+  .ui-preview-more { display: inline-flex; }
+}
+
+@container preview (max-width: 430px) {
+  .ui-preview-extra { display: none; }
 }

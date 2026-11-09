@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Button } from "./Button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../src/components/ui/dropdown-menu";
 
 /**
  * FilePreviewPanel
@@ -40,6 +46,8 @@ export type FilePreviewPanelProps = {
   onCopy?: () => void;
   copied?: boolean;
   onRetry?: () => void;
+  /** Opens the file in whatever the OS registered for it — a browser for .html/.md. */
+  onOpenWithSystem?: () => void;
   /** Disables actions while the body is still loading. */
   loading?: boolean;
   children?: React.ReactNode;
@@ -78,6 +86,7 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
   onCopy,
   copied = false,
   onRetry,
+  onOpenWithSystem,
   loading = false,
   children,
   footerNote,
@@ -96,6 +105,52 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
     setSearchOpen((open) => !open);
     setQuery("");
   };
+
+  // 次级动作只有这一份清单：够宽时排成图标按钮，窄了整体收进「更多」，
+  // 两边的文案、图标、禁用状态因此不会走样。
+  const secondary: Array<{
+    key: string;
+    label: string;
+    icon: React.ReactNode;
+    disabled?: boolean;
+    expanded?: boolean;
+    onClick: () => void;
+  }> = [];
+  if (searchable) {
+    secondary.push({
+      key: "search",
+      label: searchOpen ? "收起搜索" : "搜索文件内容",
+      icon: <AppIcon name="search" size={14} />,
+      disabled: loading,
+      expanded: searchOpen,
+      onClick: toggleSearch,
+    });
+  }
+  if (onCopy) {
+    secondary.push({
+      key: "copy",
+      label: copied ? "已复制" : "复制文件内容",
+      icon: copied ? <AppIcon name="check" size={14} /> : <AppIcon name="copy" size={14} />,
+      disabled: loading,
+      onClick: onCopy,
+    });
+  }
+  if (onRetry) {
+    secondary.push({
+      key: "retry",
+      label: "重新读取文件",
+      icon: <AppIcon name="refresh" size={14} />,
+      onClick: onRetry,
+    });
+  }
+  if (onOpenWithSystem) {
+    secondary.push({
+      key: "open",
+      label: "用默认程序打开",
+      icon: <AppIcon name="globe" size={14} />,
+      onClick: onOpenWithSystem,
+    });
+  }
 
   return (
     <aside
@@ -151,52 +206,63 @@ export const FilePreviewPanel = React.forwardRef<HTMLElement, FilePreviewPanelPr
               )}
             </div>
           )}
-          {headerExtra}
-          {searchable && (
-            <Button
-              type="button"
-              variant="subtle"
-              size="xs"
-              className="ui-preview-tool"
-              icon={<AppIcon name="search" size={14} />}
-              title="搜索文件内容"
-              aria-label="搜索文件内容"
-              aria-expanded={searchOpen}
-              disabled={loading}
-              onClick={toggleSearch}
-            />
+          {headerExtra ? <div className="ui-preview-extra">{headerExtra}</div> : null}
+          {/* 次级动作：够宽时逐个露出来，窄了整体退进「更多」。关闭按钮不参与收起，
+              永远在最右——面板窄的时候先丢别的，别让人关不掉预览。 */}
+          {secondary.length > 0 && (
+            <div className="ui-preview-actions">
+              {secondary.map((action) => (
+                <Button
+                  key={action.key}
+                  type="button"
+                  variant="subtle"
+                  size="xs"
+                  className="ui-preview-tool"
+                  icon={action.icon}
+                  title={action.label}
+                  aria-label={action.label}
+                  aria-expanded={action.expanded}
+                  disabled={action.disabled}
+                  onClick={action.onClick}
+                />
+              ))}
+            </div>
           )}
-          {onCopy && (
-            <Button
-              type="button"
-              variant="subtle"
-              size="xs"
-              className="ui-preview-tool"
-              icon={copied ? <AppIcon name="check" size={14} /> : <AppIcon name="copy" size={14} />}
-              title={copied ? "已复制" : "复制文件内容"}
-              aria-label={copied ? "已复制" : "复制文件内容"}
-              disabled={loading}
-              onClick={onCopy}
-            />
-          )}
-          {onRetry && (
-            <Button
-              type="button"
-              variant="subtle"
-              size="xs"
-              className="ui-preview-tool"
-              icon={<AppIcon name="refresh" size={14} />}
-              title="重新读取文件"
-              aria-label="重新读取文件"
-              onClick={onRetry}
-            />
+          {secondary.length > 0 && (
+            <span className="ui-preview-more">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="subtle"
+                    size="xs"
+                    className="ui-preview-tool"
+                    icon={<AppIcon name="more" size={16} />}
+                    title="更多操作"
+                    aria-label="更多操作"
+                  />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {secondary.map((action) => (
+                    <DropdownMenuItem
+                      key={action.key}
+                      disabled={action.disabled}
+                      onSelect={action.onClick}
+                    >
+                      <span className="ui-preview-menu-icon">{action.icon}</span>
+                      {action.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </span>
           )}
           {onClose && (
             <Button
               type="button"
               variant="subtle"
               size="xs"
-              className="ui-preview-tool"
+              className="ui-preview-tool ui-preview-close"
               icon={<AppIcon name="close" size={16} />}
               title="关闭文件预览"
               aria-label="关闭文件预览"
