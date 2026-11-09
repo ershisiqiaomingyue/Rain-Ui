@@ -8,16 +8,16 @@
    （点击外侧收起属于弹窗语义，这一行是常驻的布局元素）。
 
    不透明：整张卡（收起和展开）都用 `--notice-fill` 盖一层去透明度的实色，
-   `var(--bg-card)` 在亮色是 0.85 的白，直接拿它当底色会让上方对话文字透出来。
+   `hsl(var(--card))` 在亮色是 0.85 的白，直接拿它当底色会让上方对话文字透出来。
    `--notice-fill` 由 notice-panel.css 定义成
-   `color-mix(in srgb, var(--bg-card) 100%, var(--bg-canvas))`；
+   `color-mix(in srgb, hsl(var(--card)) 100%, hsl(var(--background)))`；
    本组件也可能被单独渲染（不在 `.ui-notice` 里），所以下面自己也声明一次。
    -------------------------------------------------------------------------- */
 
 /* 外壳容器：收起是一行药丸，展开是同一列变成卡片。
    `--notice-fill` 在这里声明，药丸和展开后的外壳都继承同一枚去 alpha 的填充。 */
 .ui-file-notice {
-  --notice-fill: color-mix(in srgb, var(--bg-card) 100%, var(--bg-canvas));
+  --notice-fill: color-mix(in srgb, hsl(var(--card)) 100%, hsl(var(--background)));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -47,14 +47,14 @@
   min-width: 0;
   min-height: 32px;
   padding: 4px 10px;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--line-1);
   border-radius: var(--radius-panel);
   /* 与 NoticePanel 同一套不透明填充：垫底 `--bg-canvas` + 盖面 `--notice-fill`。
      `background` 简写会把这两层一起重置，所以下面只用 `background-color`
      做 hover 变色，否则 hover 时底又会透出来。 */
-  background-color: var(--bg-canvas);
+  background-color: hsl(var(--background));
   background-image: linear-gradient(var(--notice-fill), var(--notice-fill));
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   box-shadow: var(--shadow-sm);
   font: inherit;
   font-size: var(--fs-label);
@@ -64,7 +64,7 @@
 }
 
 .ui-file-notice-summary.btn.btn-bare:hover:not(:disabled) {
-  background-color: var(--button-hover-bg, var(--bg-hover));
+  background-color: var(--button-hover-bg, var(--surface-hover));
 }
 
 .ui-file-notice-summary.btn.btn-bare:focus-visible {
@@ -76,7 +76,7 @@
   flex: 0 0 15px;
   width: 15px;
   height: 15px;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
 }
 
 .ui-file-notice-icon svg { width: 15px; height: 15px; stroke-width: 1.7; }
@@ -94,13 +94,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-.ui-file-notice-diff em { font-style: normal; color: var(--change-added, var(--success-text)); }
-.ui-file-notice-diff i { font-style: normal; color: var(--status-danger-text); }
+.ui-file-notice-diff em { font-style: normal; color: var(--change-added, hsl(var(--success))); }
+.ui-file-notice-diff i { font-style: normal; color: hsl(var(--destructive-soft-bg-foreground)); }
 
 .ui-file-notice-count {
   flex: 0 0 auto;
   margin-left: auto;
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   font-size: var(--fs-label);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -109,7 +109,7 @@
 .ui-file-notice-chevron {
   flex: 0 0 auto;
   margin-left: 6px;
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   transition: transform 0.15s ease;
 }
 
@@ -125,9 +125,9 @@
   width: 100%;
   min-width: 0;
   max-height: min(380px, 50vh);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--line-1);
   border-radius: var(--radius-panel);
-  background-color: var(--bg-canvas);
+  background-color: hsl(var(--background));
   background-image: linear-gradient(var(--notice-fill), var(--notice-fill));
   box-shadow: var(--shadow-sm);
   overflow: hidden;
@@ -149,7 +149,7 @@ html[data-theme] .ui-file-notice.is-expanded > .ui-file-notice-row > .ui-file-no
    所以这里给一个不透明的 hover 色，别让 hover 一下又透出对话文字。 */
 html[data-theme] .ui-file-notice.is-expanded > .ui-file-notice-row > .ui-file-notice-summary.btn.btn-bare:hover:not(:disabled) {
   border-radius: 0;
-  background-color: var(--button-hover-bg, var(--bg-hover));
+  background-color: var(--button-hover-bg, var(--surface-hover));
   background-image: none;
   border-color: transparent;
 }
@@ -163,10 +163,10 @@ html[data-theme] .ui-file-notice.is-expanded > .ui-file-notice-row > .ui-file-no
   box-sizing: border-box;
   padding: 10px 10px 8px;
   border: 0;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--line-1);
   border-radius: 0;
   background-color: transparent;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   box-shadow: none;
   overflow: auto;
   overscroll-behavior: contain;

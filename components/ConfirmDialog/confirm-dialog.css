@@ -26,10 +26,10 @@
   gap: 16px;
   width: min(440px, 94vw);
   padding: 22px;
-  background: var(--popover-bg);
-  border: var(--popover-border);
+  background: var(--surface-popover);
+  border: 1px solid var(--line-1);
   border-radius: var(--radius-overlay);
-  box-shadow: var(--popover-shadow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow-popover), inset 0 1px 1px 0 rgba(255, 255, 255, 0.16);
   animation: confirmScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -51,8 +51,8 @@
   width: 38px;
   height: 38px;
   border-radius: var(--radius-panel);
-  background: var(--status-danger-bg);
-  color: var(--status-danger-text);
+  background: hsl(var(--destructive-soft-bg));
+  color: hsl(var(--destructive-soft-bg-foreground));
   flex-shrink: 0;
 }
 
@@ -74,7 +74,7 @@
   margin: 0;
   font-size: var(--fs-title);
   font-weight: 700;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   letter-spacing: -0.01em;
 }
 
@@ -87,28 +87,28 @@
   border-radius: var(--radius-control);
   border: 1px solid transparent;
   background: transparent;
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .confirm-dialog-close-btn:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
+  background: var(--surface-hover);
+  color: hsl(var(--foreground));
   border-color: transparent;
 }
 
 .confirm-dialog-message {
   margin: 0;
   font-size: var(--fs-body);
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
 .confirm-dialog-error {
   margin: 0;
-  color: var(--status-danger-text);
+  color: hsl(var(--destructive-soft-bg-foreground));
   font-size: var(--fs-label);
   line-height: 1.5;
   overflow-wrap: anywhere;
@@ -121,7 +121,7 @@
   align-items: flex-start;
   gap: 8px;
   margin: 0 0 14px;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
   font-size: var(--fs-body);
   line-height: 1.45;
   cursor: pointer;
@@ -129,7 +129,7 @@
 
 .confirm-dialog-acknowledge input {
   margin-top: 2px;
-  accent-color: var(--danger-text);
+  accent-color: hsl(var(--destructive-soft));
 }
 
 .confirm-dialog-actions {
@@ -141,9 +141,9 @@
 }
 
 .confirm-dialog-actions .btn-primary {
-  --btn-primary-bg: var(--btn-confirm-bg);
-  --btn-primary-hover: var(--btn-confirm-hover);
-  --btn-primary-text: var(--btn-confirm-text);
+  --btn-primary-bg: hsl(var(--primary));
+  --btn-primary-hover: hsl(var(--primary-hover));
+  --btn-primary-text: hsl(var(--primary-foreground));
 }
 
 /* 删除确认是唯一的破坏性主操作，必须比“取消”更醒目；
@@ -160,7 +160,7 @@
 }
 
 .confirm-dialog-actions .btn-primary:disabled:not(.btn-loading) {
-  background: var(--btn-secondary-bg);
-  color: var(--text-tertiary);
+  background: transparent;
+  color: hsl(var(--ink-tertiary));
   opacity: .65;
 }

@@ -9,7 +9,7 @@
   min-height: 120px;
   padding: 24px 20px;
   text-align: center;
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   background: transparent;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .tool-empty-title {
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
   font-size: var(--fs-body);
   line-height: 1.5;
   font-weight: 500;
@@ -32,7 +32,7 @@
   margin: 0;
   font-size: var(--fs-label);
   line-height: 1.6;
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   overflow-wrap: anywhere;
 }
 

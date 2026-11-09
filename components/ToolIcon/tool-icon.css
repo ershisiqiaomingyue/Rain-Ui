@@ -7,8 +7,8 @@
   height: 36px;
   border: 0;
   border-radius: var(--radius-panel);
-  color: var(--accent-ink);
-  background: var(--accent-subtle);
+  color: hsl(var(--accent-strong));
+  background: color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
 }
 
 .tool-icon > svg {
@@ -43,6 +43,6 @@
 
 /* 工具图标不按色相区分：颜色只表达状态，底与字都走中性 */
 .tool-icon.is-neutral {
-  color: var(--text-secondary);
-  background: var(--bg-muted);
+  color: hsl(var(--ink-secondary));
+  background: var(--surface-inset);
 }

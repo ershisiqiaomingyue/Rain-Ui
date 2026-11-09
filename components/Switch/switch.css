@@ -26,7 +26,7 @@
 }
 
 .switch-label {
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   white-space: nowrap;
 }
 
@@ -95,7 +95,7 @@
   cursor: pointer;
   user-select: none;
   font-size: var(--fs-body);
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
 }
 
 .checkbox,
@@ -121,7 +121,7 @@
 .desk-chk:checked,
 .checkbox:indeterminate,
 .desk-chk:indeterminate {
-  background: var(--control-checked-bg);
+  background: hsl(var(--accent-solid));
   border-color: transparent;
   box-shadow: none;
 }
@@ -131,7 +131,7 @@
   content: "";
   width: 4px;
   height: 8px;
-  border: solid var(--control-checked-mark);
+  border: solid #ffffff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg) translate(-0.5px, -1px);
 }
@@ -141,7 +141,7 @@
   content: "";
   width: 8px;
   height: 2px;
-  background: var(--control-checked-mark);
+  background: #ffffff;
 }
 
 .checkbox:focus-visible,
@@ -153,7 +153,7 @@
 .segmented-glass {
   display: inline-flex;
   align-items: center;
-  background: var(--segmented-bg);
+  background: var(--surface-inset);
   border: 0;
   border-radius: var(--radius-control);
   padding: 2px;
@@ -165,7 +165,7 @@
   height: calc(var(--control-height) - 6px);
   font-size: var(--fs-label);
   font-weight: 600;
-  color: var(--segmented-text);
+  color: hsl(var(--ink-secondary));
   background: transparent;
   border: 0;
   border-radius: calc(var(--radius-control) - 2px);
@@ -175,13 +175,13 @@
 }
 
 .segmented-glass .seg-btn:hover:not(:disabled) {
-  background: var(--segmented-hover-bg);
-  color: var(--text-primary);
+  background: var(--surface-hover);
+  color: hsl(var(--foreground));
 }
 
 .segmented-glass .seg-btn.active {
   background: var(--segmented-active-bg);
-  color: var(--segmented-active-text);
+  color: hsl(var(--ink-high));
   box-shadow: var(--segmented-active-shadow, 0 1px 3px rgba(0, 0, 0, 0.1));
 }
 
@@ -191,14 +191,14 @@
 
 /* 分段按钮在轨道里面，外环会被相邻段和轨道边缘吃掉，所以用内环。 */
 html[data-theme] .segmented-glass .seg-btn:focus-visible {
-  background: var(--segmented-hover-bg);
-  color: var(--text-primary);
+  background: var(--surface-hover);
+  color: hsl(var(--foreground));
   box-shadow: var(--focus-ring-inset);
 }
 
 html[data-theme] .segmented-glass .seg-btn.active:focus-visible {
   background: var(--segmented-active-bg);
-  color: var(--segmented-active-text);
+  color: hsl(var(--ink-high));
 }
 
 .segmented-glass .seg-btn:disabled { opacity: .5; cursor: not-allowed; }

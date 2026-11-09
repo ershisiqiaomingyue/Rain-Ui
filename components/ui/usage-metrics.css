@@ -49,7 +49,7 @@
 }
 
 .ui-usage-item b {
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   font-weight: 650;
   font-variant-numeric: tabular-nums;
 }
@@ -66,8 +66,8 @@
 }
 
 .ui-usage-action:hover:not(:disabled) {
-  background: var(--button-hover-bg);
-  color: var(--text-primary);
+  background: var(--surface-hover);
+  color: hsl(var(--foreground));
 }
 
 .ui-usage-action:disabled { cursor: default; }

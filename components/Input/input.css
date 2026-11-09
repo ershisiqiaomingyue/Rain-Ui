@@ -19,7 +19,7 @@
   height: var(--control-height);
   padding: 0 12px;
   background: var(--input-bg-sunken);
-  color: var(--input-text);
+  color: hsl(var(--foreground));
   border: var(--input-border);
   border-radius: var(--radius-control);
   font-family: var(--font-sans);
@@ -44,7 +44,7 @@
 .desk-input:hover:not(:disabled):not(:focus),
 .input:hover:not(:disabled):not(:focus) {
   background: var(--input-bg-hover);
-  color: var(--input-hover-text);
+  color: hsl(var(--foreground));
   box-shadow: var(--input-lift-hover), var(--input-glass);
 }
 
@@ -53,9 +53,9 @@
 .desk-input:focus,
 .input:focus {
   background: var(--input-bg-focus);
-  color: var(--input-hover-text);
+  color: hsl(var(--foreground));
   border-color: var(--input-focus-border);
-  box-shadow: var(--input-focus-ring), var(--input-glass);
+  box-shadow: var(--focus-ring), var(--input-glass);
 }
 
 .desk-input:disabled,
@@ -65,7 +65,7 @@
 }
 
 .desk-input[readonly],
-.input[readonly] { color: var(--text-secondary); }
+.input[readonly] { color: hsl(var(--ink-secondary)); }
 
 /* Surface variant (toolbar search fields): the field is a real plate — white
    fill + one hairline — because it sits on a toolbar that is already tinted.
@@ -73,24 +73,24 @@
    plate would vanish on a white panel. One edge, never border + inset shadow. */
 .input-surface .input {
   border-radius: var(--radius-control);
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   background: var(--input-surface-bg);
-  border-color: var(--divider-color);
+  border-color: var(--line-2);
   box-shadow: none;
 }
-.input-surface .input::placeholder { color: var(--text-tertiary); }
-.input-surface .input-prefix-icon { color: var(--text-secondary); }
+.input-surface .input::placeholder { color: hsl(var(--ink-tertiary)); }
+.input-surface .input-prefix-icon { color: hsl(var(--ink-secondary)); }
 .input-surface .input:hover:not(:disabled):not(:focus) {
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   background: var(--input-surface-hover-bg, var(--input-surface-bg));
-  border-color: var(--border-subtle);
+  border-color: var(--line-1);
   box-shadow: none;
 }
 .input-surface .input:focus {
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   background: var(--input-surface-focus-bg, var(--input-surface-bg));
-  border-color: var(--accent-primary);
-  box-shadow: var(--input-focus-ring);
+  border-color: hsl(var(--accent-strong));
+  box-shadow: var(--focus-ring);
 }
 
 /* 尺寸变体 */
@@ -179,8 +179,8 @@
 
 .input-clear-pill.btn:hover:not(:disabled),
 .input-clear-pill:hover {
-  color: var(--text-primary);
-  background: var(--chrome-hover);
+  color: hsl(var(--foreground));
+  background: var(--surface-hover);
 }
 
 .input-clear-pill.btn:focus-visible {

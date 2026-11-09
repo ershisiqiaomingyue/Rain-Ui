@@ -22,31 +22,31 @@
 
 .badge-primary,
 .pill-accent {
-  --badge-bg: var(--status-info-bg);
-  --badge-text: var(--status-info-text);
+  --badge-bg: hsl(var(--primary));
+  --badge-text: hsl(var(--primary-foreground));
 }
 
 .badge-success,
 .pill-success {
-  --badge-bg: var(--status-success-bg);
-  --badge-text: var(--status-success-text);
+  --badge-bg: hsl(var(--success-bg));
+  --badge-text: hsl(var(--success-bg-foreground));
 }
 
 .badge-warning,
 .pill-warning {
-  --badge-bg: var(--status-warning-bg);
-  --badge-text: var(--status-warning-text);
+  --badge-bg: hsl(var(--warning-bg));
+  --badge-text: hsl(var(--warning-bg-foreground));
 }
 
 .badge-danger,
 .pill-danger {
-  --badge-bg: var(--status-danger-bg);
-  --badge-text: var(--status-danger-text);
+  --badge-bg: hsl(var(--destructive-soft-bg));
+  --badge-text: hsl(var(--destructive-soft-bg-foreground));
 }
 
 .badge-neutral {
-  --badge-bg: var(--status-neutral-bg);
-  --badge-text: var(--status-neutral-text);
+  --badge-bg: var(--surface-inset);
+  --badge-text: hsl(var(--ink-secondary));
 }
 
 /* 呼吸脉冲圆点 */

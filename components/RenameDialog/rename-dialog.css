@@ -11,7 +11,7 @@
   border: var(--input-border);
   border-radius: var(--radius-panel);
   background: var(--input-bg-sunken);
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   font-family: var(--font-sans);
   font-size: var(--fs-body);
   line-height: 20px;
@@ -24,7 +24,7 @@
 }
 
 .rename-dialog-input:focus {
-  border-color: var(--accent-primary);
+  border-color: hsl(var(--accent-strong));
   background: var(--input-bg-focus);
 }
 
@@ -34,6 +34,6 @@
   margin: 8px 0 0;
   font-size: var(--fs-label);
   line-height: 1.5;
-  color: var(--status-danger-text);
+  color: hsl(var(--destructive-soft-bg-foreground));
   overflow-wrap: anywhere;
 }

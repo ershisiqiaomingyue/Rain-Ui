@@ -5,19 +5,19 @@
    ========================================================================== */
 
 .property-grid-card {
-  background: var(--bg-card);
-  border: var(--card-border);
+  background: hsl(var(--card));
+  border: 1px solid var(--line-1);
   border-radius: var(--card-radius);
   padding: 18px 22px;
-  box-shadow: var(--card-shadow), var(--card-rim);
+  box-shadow: var(--shadow-card), 0 0 0 0 transparent;
   transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 
 html[data-theme="dark"] .property-grid-card,
 [data-theme="dark"] .property-grid-card {
-  background: var(--bg-card);
-  border: var(--card-border);
-  box-shadow: var(--card-shadow), var(--card-rim);
+  background: hsl(var(--card));
+  border: 1px solid var(--line-1);
+  box-shadow: var(--shadow-card), 0 0 0 0 transparent;
 }
 
 .property-grid-card:hover {
@@ -67,7 +67,7 @@ html[data-theme] .card-tool .property-row {
   }
   .property-grid-columns > .property-grid-col:first-child {
     padding-right: 28px;
-    border-right: 1px solid var(--property-divider);
+    border-right: 1px solid var(--line-2);
   }
   .property-grid-columns > .property-grid-col:last-child {
     padding-left: 28px;
@@ -92,7 +92,7 @@ html[data-theme] .card-tool .property-row {
    只有真正排在末尾的那一行才该收掉。 */
 @container (max-width: 560px) {
   .property-grid-columns > .property-grid-col:first-child > .property-row:last-child {
-    border-bottom: 1px solid var(--property-divider);
+    border-bottom: 1px solid var(--line-2);
   }
 }
 /* 单个属性行 */
@@ -102,13 +102,13 @@ html[data-theme] .card-tool .property-row {
   justify-content: space-between;
   gap: 16px;
   padding: 11px 8px;
-  border-bottom: 1px solid var(--property-divider); /* 很虚的分割线 */
+  border-bottom: 1px solid var(--line-2); /* 很虚的分割线 */
   transition: background-color var(--transition-fast);
   border-radius: var(--radius-control);
 }
 
 .property-row:hover {
-  background: var(--property-hover-bg);
+  background: var(--surface-hover);
 }
 
 /* 每一列的最后一行可以去除下边线，也可以全保留虚线 */
@@ -116,7 +116,7 @@ html[data-theme] .card-tool .property-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
   font-size: var(--fs-body);
   user-select: none;
   flex-shrink: 0;
@@ -126,7 +126,7 @@ html[data-theme] .card-tool .property-row {
 .property-icon {
   width: 16px;
   height: 16px;
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,7 +135,7 @@ html[data-theme] .card-tool .property-row {
 
 .property-name {
   font-weight: 500;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -159,15 +159,15 @@ html[data-theme] .card-tool .property-row {
 
 /* 特殊高亮值 */
 .property-value.value-orange {
-  color: var(--warning-text);
+  color: hsl(var(--warning));
 }
 
 .property-value.value-green {
-  color: var(--success-text);
+  color: hsl(var(--success));
 }
 
 .property-value.value-accent {
-  color: var(--accent-ink);
+  color: hsl(var(--accent-strong));
 }
 
 .property-value.value-unknown {
@@ -176,4 +176,4 @@ html[data-theme] .card-tool .property-row {
   font-weight: 500;
 }
 
-.property-value.value-danger { color: var(--status-danger-text); }
+.property-value.value-danger { color: hsl(var(--destructive-soft-bg-foreground)); }

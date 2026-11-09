@@ -56,31 +56,31 @@
 }
 
 .ui-portal.is-solid.is-success {
-  --portal-bg: color-mix(in srgb, var(--success-text) 11%, var(--popover-bg));
-  --portal-text: var(--status-success-text);
-  --portal-border: color-mix(in srgb, var(--success-text) 24%, transparent);
-  --portal-shadow: 0 5px 18px color-mix(in srgb, var(--success-text) 13%, transparent);
+  --portal-bg: color-mix(in srgb, hsl(var(--success)) 11%, var(--surface-popover));
+  --portal-text: hsl(var(--success-bg-foreground));
+  --portal-border: color-mix(in srgb, hsl(var(--success)) 24%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--success)) 13%, transparent);
 }
 
 .ui-portal.is-solid.is-error {
-  --portal-bg: color-mix(in srgb, var(--danger-text) 11%, var(--popover-bg));
-  --portal-text: var(--status-danger-text);
-  --portal-border: color-mix(in srgb, var(--danger-text) 24%, transparent);
-  --portal-shadow: 0 5px 18px color-mix(in srgb, var(--danger-text) 13%, transparent);
+  --portal-bg: color-mix(in srgb, hsl(var(--destructive-soft)) 11%, var(--surface-popover));
+  --portal-text: hsl(var(--destructive-soft-bg-foreground));
+  --portal-border: color-mix(in srgb, hsl(var(--destructive-soft)) 24%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--destructive-soft)) 13%, transparent);
 }
 
 .ui-portal.is-solid.is-warning {
-  --portal-bg: color-mix(in srgb, var(--warning-text) 12%, var(--popover-bg));
-  --portal-text: var(--status-warning-text);
-  --portal-border: color-mix(in srgb, var(--warning-text) 26%, transparent);
-  --portal-shadow: 0 5px 18px color-mix(in srgb, var(--warning-text) 13%, transparent);
+  --portal-bg: color-mix(in srgb, hsl(var(--warning)) 12%, var(--surface-popover));
+  --portal-text: hsl(var(--warning-bg-foreground));
+  --portal-border: color-mix(in srgb, hsl(var(--warning)) 26%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--warning)) 13%, transparent);
 }
 
 .ui-portal.is-solid.is-info {
-  --portal-bg: color-mix(in srgb, var(--accent-primary) 10%, var(--popover-bg));
-  --portal-text: var(--accent-ink);
-  --portal-border: color-mix(in srgb, var(--accent-primary) 22%, transparent);
-  --portal-shadow: 0 5px 18px color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  --portal-bg: color-mix(in srgb, hsl(var(--accent-strong)) 10%, var(--surface-popover));
+  --portal-text: hsl(var(--accent-strong));
+  --portal-border: color-mix(in srgb, hsl(var(--accent-strong)) 22%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
 }
 
 /* Static previews sit in page flow instead of the fixed stack. */
@@ -96,10 +96,10 @@
   color: currentColor;
 }
 
-.ui-portal.is-neutral.is-success .ui-portal-icon { color: var(--status-success-text); }
-.ui-portal.is-neutral.is-error .ui-portal-icon { color: var(--status-danger-text); }
-.ui-portal.is-neutral.is-warning .ui-portal-icon { color: var(--status-warning-text); }
-.ui-portal.is-neutral.is-info .ui-portal-icon { color: var(--accent-ink); }
+.ui-portal.is-neutral.is-success .ui-portal-icon { color: hsl(var(--success-bg-foreground)); }
+.ui-portal.is-neutral.is-error .ui-portal-icon { color: hsl(var(--destructive-soft-bg-foreground)); }
+.ui-portal.is-neutral.is-warning .ui-portal-icon { color: hsl(var(--warning-bg-foreground)); }
+.ui-portal.is-neutral.is-info .ui-portal-icon { color: hsl(var(--accent-strong)); }
 
 .ui-portal-text {
   flex: 1;
@@ -133,8 +133,8 @@
 }
 
 .ui-portal .ui-portal-close.btn:hover:not(:disabled) {
-  color: var(--status-danger-text);
-  background: color-mix(in srgb, var(--danger-text) 12%, transparent);
+  color: hsl(var(--destructive-soft-bg-foreground));
+  background: color-mix(in srgb, hsl(var(--destructive-soft)) 12%, transparent);
   border-color: transparent;
   opacity: 1;
 }

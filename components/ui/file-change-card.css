@@ -6,8 +6,8 @@
    ========================================================================== */
 
 .ui-file-changes {
-  --change-added: var(--success-text);
-  --change-removed: var(--danger-text);
+  --change-added: hsl(var(--success));
+  --change-removed: hsl(var(--destructive-soft));
 
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
   width: 100%;
   max-width: 640px;
   margin: 8px auto 0;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   container-type: inline-size;
 }
 
@@ -25,7 +25,7 @@
   gap: 7px;
   min-height: 42px;
   padding: 9px 12px;
-  border-bottom: 1px solid var(--divider-color);
+  border-bottom: 1px solid var(--line-2);
 }
 
 .ui-file-changes-icon {
@@ -36,8 +36,8 @@
   width: 28px;
   height: 28px;
   border-radius: var(--radius-control);
-  background: var(--accent-subtle);
-  color: var(--accent-ink);
+  background: color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
+  color: hsl(var(--accent-strong));
 }
 
 .ui-file-changes-heading {
@@ -91,7 +91,7 @@
   border: 0;
   border-radius: var(--radius-control);
   background: transparent;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
   font: inherit;
   font-size: var(--fs-meta);
   text-align: left;
@@ -107,8 +107,8 @@
 }
 
 .ui-file-changes-file.is-deleted > span:first-child { text-decoration: line-through; }
-.ui-file-changes-file.btn.btn-bare:hover { background: var(--bg-hover); color: var(--text-primary); }
-.ui-file-changes-file.btn.btn-bare:active { background: var(--bg-selected); }
+.ui-file-changes-file.btn.btn-bare:hover { background: var(--surface-hover); color: hsl(var(--foreground)); }
+.ui-file-changes-file.btn.btn-bare:active { background: var(--selected-bg); }
 
 .ui-file-changes-file:focus-visible {
   box-shadow: var(--focus-ring-inset);
@@ -125,13 +125,13 @@
    底色按正文墨色的百分比混（7% → 悬停 11%），不用 --surface-action-bg：
    那档几乎等于卡片自身的底，片和卡片糊在一起看不出边界。 */
 .ui-file-changes-expand.btn.btn-subtle {
-  background: color-mix(in srgb, var(--text-primary) 7%, transparent);
-  color: var(--text-secondary);
+  background: color-mix(in srgb, hsl(var(--foreground)) 7%, transparent);
+  color: hsl(var(--ink-secondary));
 }
 
 .ui-file-changes-expand.btn.btn-subtle:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--text-primary) 11%, transparent);
-  color: var(--text-primary);
+  background: color-mix(in srgb, hsl(var(--foreground)) 11%, transparent);
+  color: hsl(var(--foreground));
 }
 
 /* A split pane can be narrow even on a wide desktop window. */

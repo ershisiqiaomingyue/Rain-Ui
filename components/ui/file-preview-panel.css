@@ -8,9 +8,9 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--line-1);
   border-radius: var(--radius-panel);
-  background: var(--bg-card);
+  background: hsl(var(--card));
   box-shadow: var(--shadow-sm);
   overflow: hidden;
   /* 头部的取舍按面板自身宽度算，不看视口：面板是右栏里可拖宽的一列，
@@ -34,7 +34,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--line-1);
 }
 
 .ui-preview-title {
@@ -48,7 +48,7 @@
 .ui-preview-title strong {
   font-size: var(--fs-body);
   font-weight: 600;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -56,7 +56,7 @@
 
 .ui-preview-title small {
   font-size: var(--fs-label);
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
 }
 
 .ui-preview-tools {
@@ -89,7 +89,7 @@
 .ui-preview-menu-icon {
   display: inline-flex;
   align-items: center;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
 }
 
 /* Tool buttons are library Buttons (variant="subtle" size="xs"). No size or
@@ -114,8 +114,8 @@
 
 /* Mode buttons are library Buttons too; only the active fill is local. */
 .ui-preview-mode.is-active {
-  background: var(--bg-surface);
-  color: var(--text-primary);
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
   box-shadow: var(--shadow-sm);
 }
 
@@ -128,9 +128,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-.ui-preview-counts b { color: var(--change-added, var(--success-text)); font-weight: 600; }
-.ui-preview-counts i { color: var(--status-danger-text); font-style: normal; font-weight: 600; }
-.ui-preview-counts small { color: var(--text-tertiary); font-size: var(--fs-label); }
+.ui-preview-counts b { color: var(--change-added, hsl(var(--success))); font-weight: 600; }
+.ui-preview-counts i { color: hsl(var(--destructive-soft-bg-foreground)); font-style: normal; font-weight: 600; }
+.ui-preview-counts small { color: hsl(var(--ink-tertiary)); font-size: var(--fs-label); }
 
 /* Search row */
 .ui-preview-search {
@@ -139,7 +139,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--line-1);
 }
 
 .ui-preview-search-input {
@@ -147,23 +147,23 @@
   min-width: 0;
   height: 26px;
   padding: 0 8px;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--line-1);
   border-radius: var(--radius-control);
   background: var(--input-bg-sunken);
-  color: var(--input-text);
+  color: hsl(var(--foreground));
   font: inherit;
   font-size: var(--fs-label);
 }
 
 .ui-preview-search-input:focus {
   outline: none;
-  border-color: var(--accent-border);
+  border-color: color-mix(in srgb, hsl(var(--accent-strong)) 35%, transparent);
 }
 
 .ui-preview-search > span {
   flex: 0 0 auto;
   font-size: var(--fs-label);
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   font-variant-numeric: tabular-nums;
 }
 
@@ -182,9 +182,9 @@
 .ui-preview-path {
   flex: 0 0 auto;
   padding: 6px 10px;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--line-1);
   font: var(--fs-meta)/1.4 var(--font-mono);
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

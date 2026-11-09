@@ -23,7 +23,7 @@
   height: var(--control-height);
   padding: 0 11px 0 13px;
   background: var(--input-bg-sunken);
-  color: var(--input-text);
+  color: hsl(var(--foreground));
   border: var(--input-border);
   border-radius: var(--radius-control);
   font-family: var(--font-sans);
@@ -60,7 +60,7 @@
 .select-trigger:hover:not(:disabled),
 .select-trigger-bar:hover:not(:disabled) {
   background: var(--input-bg-hover);
-  color: var(--input-hover-text);
+  color: hsl(var(--foreground));
   box-shadow: var(--input-lift-hover), var(--input-glass);
 }
 
@@ -74,17 +74,17 @@
 .modern-select.is-open .select-trigger,
 .select-pod.is-open .select-trigger-bar {
   background: var(--input-bg-sunken);
-  color: var(--input-hover-text);
+  color: hsl(var(--foreground));
   border-color: var(--input-focus-border);
-  box-shadow: var(--input-focus-ring), var(--input-glass);
+  box-shadow: var(--focus-ring), var(--input-glass);
 }
 
 /* Keyboard focus on a closed trigger uses the same halo. */
 .select-trigger:focus-visible {
   background: var(--input-bg-sunken);
-  color: var(--input-hover-text);
+  color: hsl(var(--foreground));
   border-color: var(--input-focus-border);
-  box-shadow: var(--input-focus-ring), var(--input-glass);
+  box-shadow: var(--focus-ring), var(--input-glass);
 }
 
 /* 空值时必须读起来像「还没选」，而不是像已经选中了一个选项。 */
@@ -118,7 +118,7 @@
 .modern-select.is-open .select-arrow,
 .select-pod.is-open .select-chevron-icon {
   transform: rotate(180deg);
-  color: var(--input-text);
+  color: hsl(var(--foreground));
 }
 
 /* 弹出菜单面板 (POPOVER) - 核心重点：高阶实心浮空板，彻底告别与卡片重合！ */
@@ -128,10 +128,10 @@
   top: calc(100% + 6px);
   left: 0;
   z-index: var(--z-menu);
-  background: var(--popover-bg);
-  border: var(--popover-border);
+  background: var(--surface-popover);
+  border: 1px solid var(--line-1);
   border-radius: var(--radius-overlay);
-  box-shadow: var(--popover-shadow);
+  box-shadow: var(--shadow-popover);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: 6px;
@@ -183,11 +183,11 @@
 .select-search-empty {
   padding: 12px;
   font-size: var(--fs-label);
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
 }
 
 .select-option:focus-visible {
-  background: var(--popover-item-hover);
+  background: var(--surface-hover);
 }
 
 /* 选项条目 */
@@ -202,7 +202,7 @@
   padding: 7px 12px;
   gap: 10px;
   background: transparent;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   border: 0;
   border-radius: var(--radius-control);
   font-size: var(--fs-body);
@@ -225,24 +225,24 @@
 .select-option-row { display: flex; align-items: center; gap: 4px; border-radius: var(--radius-panel); }
 /* 悬停高亮落在整行：右侧删除按钮与选项共享同一块底色，不再各占一半 */
 .select-option-row:hover,
-.select-option-row:focus-within { background: var(--popover-item-hover); }
+.select-option-row:focus-within { background: var(--surface-hover); }
 .select-option-row:hover > .select-option,
-.select-option-row:focus-within > .select-option { background: transparent; color: var(--text-primary); }
+.select-option-row:focus-within > .select-option { background: transparent; color: hsl(var(--foreground)); }
 .select-option-row:hover > .select-option.selected,
 .select-option-row:hover > .select-option.is-active,
 .select-option-row:focus-within > .select-option.selected,
-.select-option-row:focus-within > .select-option.is-active { background: var(--popover-item-active-bg) !important; }
-.select-option-row:hover > .select-option-remove { color: var(--text-secondary); }
-.select-group-label { padding: 9px 12px 3px; color: var(--text-secondary); font-size: var(--fs-meta); font-weight: 600; }
+.select-option-row:focus-within > .select-option.is-active { background: var(--selected-bg) !important; }
+.select-option-row:hover > .select-option-remove { color: hsl(var(--ink-secondary)); }
+.select-group-label { padding: 9px 12px 3px; color: hsl(var(--ink-secondary)); font-size: var(--fs-meta); font-weight: 600; }
 .select-option-row.is-grouped { padding-left: 10px; }
 .select-option-row > .select-option { flex: 1; min-width: 0; }
-.select-option-remove { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 26px; height: 26px; margin-right: 4px; padding: 0; border: 0; border-radius: var(--radius-control); color: var(--text-secondary); background: transparent; cursor: pointer; }
-.select-option-remove:hover, .select-option-remove:focus-visible { color: var(--danger-text); background: transparent; }
+.select-option-remove { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 26px; height: 26px; margin-right: 4px; padding: 0; border: 0; border-radius: var(--radius-control); color: hsl(var(--ink-secondary)); background: transparent; cursor: pointer; }
+.select-option-remove:hover, .select-option-remove:focus-visible { color: hsl(var(--destructive-soft)); background: transparent; }
 
 .select-option:hover,
 .select-item-pill:hover {
-  background: var(--popover-item-hover);
-  color: var(--text-primary);
+  background: var(--surface-hover);
+  color: hsl(var(--foreground));
 }
 /* row 内部的选项不再单独铺底色，避免和整行高亮叠成两块 */
 .select-option-row > .select-option:hover,
@@ -252,25 +252,25 @@
 .select-option-row > .select-option.selected:hover,
 .select-option-row > .select-option.is-active:hover,
 .select-option-row > .select-item-pill.is-active:hover {
-  background: var(--popover-item-active-bg) !important;
+  background: var(--selected-bg) !important;
 }
 
 /* 选中项：采用高亮强调色药丸底板，字色高反白，极其醒目！ */
 .select-option.selected,
 .select-option.is-active,
 .select-item-pill.is-active {
-  background: var(--popover-item-active-bg) !important;
-  color: var(--popover-item-active-text) !important;
+  background: var(--selected-bg) !important;
+  color: var(--selected-fg) !important;
   font-weight: 600;
   box-shadow: var(--shadow-sm);
 }
 
 html[data-theme] :is(.select-arrow, .select-chevron-icon) {
-  color: var(--control-text);
+  color: hsl(var(--ink-secondary));
 }
 
 html[data-theme] :is(.modern-select.is-open .select-arrow, .select-pod.is-open .select-chevron-icon) {
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
 }
 
 html[data-theme] .select-option.selected svg {
@@ -282,31 +282,31 @@ html[data-theme] .select-option.selected svg {
    ========================================================================== */
 .select-option-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
 .select-option-copy .select-option-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.select-option-description { overflow: hidden; color: var(--text-tertiary); font-size: var(--fs-meta); line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
+.select-option-description { overflow: hidden; color: hsl(var(--ink-tertiary)); font-size: var(--fs-meta); line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
 
 .select-option.has-description { align-items: flex-start; min-height: 44px; padding-top: 7px; padding-bottom: 7px; }
 /* 右侧紧凑徽标：让选项保持单行，不再为了上下文另起一行 */
 /* 右侧紧凑徽标：--chrome-hover 在浅色下接近纯白，会和弹层底色糊在一起，
    这里改用实底 + 内描边，保证任何主题下都能看清胶囊轮廓 */
-.select-option-trailing { flex: 0 0 auto; padding: 1px 7px; border-radius: var(--radius-control); background: var(--input-bg-sunken, var(--bg-card)); box-shadow: inset 0 0 0 1px var(--divider-color); color: var(--text-secondary); font-size: var(--fs-meta); font-weight: 500; line-height: 15px; white-space: nowrap; }
+.select-option-trailing { flex: 0 0 auto; padding: 1px 7px; border-radius: var(--radius-control); background: var(--input-bg-sunken, hsl(var(--card))); box-shadow: inset 0 0 0 1px var(--line-2); color: hsl(var(--ink-secondary)); font-size: var(--fs-meta); font-weight: 500; line-height: 15px; white-space: nowrap; }
 .select-option.selected .select-option-trailing,
 .select-option.is-active .select-option-trailing { background: color-mix(in srgb, currentColor 14%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 24%, transparent); color: inherit; }
 .select-option.is-disabled { opacity: 0.45; cursor: not-allowed; }
 
 .select-option-action,
-.select-option-expand { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 26px; width: 26px; height: 26px; padding: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--text-tertiary); cursor: pointer; transition: color var(--transition-fast), background-color var(--transition-fast); }
+.select-option-expand { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 26px; width: 26px; height: 26px; padding: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: hsl(var(--ink-tertiary)); cursor: pointer; transition: color var(--transition-fast), background-color var(--transition-fast); }
 .select-option-action:hover,
-.select-option-expand:hover { color: var(--text-primary); background: var(--chrome-hover); }
-.select-option-action.is-danger:hover { color: var(--status-danger-text); background: var(--status-danger-bg); }
+.select-option-expand:hover { color: hsl(var(--foreground)); background: var(--surface-hover); }
+.select-option-action.is-danger:hover { color: hsl(var(--destructive-soft-bg-foreground)); background: hsl(var(--destructive-soft-bg)); }
 .select-option-expand svg { transition: transform var(--transition-fast); }
 .select-option-expand.is-open svg { transform: rotate(180deg); }
 
-.select-option-row.is-submenu-open { background: var(--chrome-hover); border-radius: var(--radius-panel); }
+.select-option-row.is-submenu-open { background: var(--surface-hover); border-radius: var(--radius-panel); }
 
 /* Nested panel anchored under the row, so a menu can host a second level. */
-.select-submenu { margin: 4px 6px 8px 14px; padding: 8px; border: var(--popover-border); border-radius: var(--radius-panel); background: var(--popover-bg); box-shadow: var(--popover-shadow); animation: select-submenu-in var(--transition-fast) both; }
+.select-submenu { margin: 4px 6px 8px 14px; padding: 8px; border: 1px solid var(--line-1); border-radius: var(--radius-panel); background: var(--surface-popover); box-shadow: var(--shadow-popover); animation: select-submenu-in var(--transition-fast) both; }
 @keyframes select-submenu-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .select-submenu { animation: none; } }
 
-.select-menu-header { padding: 8px 10px 6px; color: var(--text-tertiary); font-size: var(--fs-meta); font-weight: 700; }
-.select-menu-footer { margin-top: 4px; padding: 8px 10px 4px; border-top: 1px solid var(--divider-color); }
+.select-menu-header { padding: 8px 10px 6px; color: hsl(var(--ink-tertiary)); font-size: var(--fs-meta); font-weight: 700; }
+.select-menu-footer { margin-top: 4px; padding: 8px 10px 4px; border-top: 1px solid var(--line-2); }

@@ -14,15 +14,15 @@
    上叠 --bg-card，再把 alpha 吃掉 —— 既保留卡片与画布之间的色差，又保证
    填充完全不透明。两套主题、自定义主题都走同一条规则。 */
 .ui-notice {
-  --notice-fill: color-mix(in srgb, var(--bg-card) 100%, var(--bg-canvas));
+  --notice-fill: color-mix(in srgb, hsl(var(--card)) 100%, hsl(var(--background)));
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   min-width: 0;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--line-1);
   border-radius: var(--radius-panel);
-  background-color: var(--bg-canvas);
+  background-color: hsl(var(--background));
   background-image: linear-gradient(var(--notice-fill), var(--notice-fill));
   box-shadow: var(--shadow-sm);
   overflow: hidden;
@@ -52,7 +52,7 @@
   padding: 4px 12px;
   border: 0;
   border-radius: 0;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   background: transparent;
   box-shadow: none;
   font: inherit;
@@ -66,7 +66,7 @@
    `.ui-notice-summary.btn.btn-bare` (0,3,0), so a plain `:hover` (0,2,0) would
    lose and the fill would never appear. */
 .ui-notice-summary.btn.btn-bare:hover:not(:disabled) {
-  background: var(--button-hover-bg);
+  background: var(--surface-hover);
 }
 
 .ui-notice-summary:focus-visible {
@@ -78,7 +78,7 @@
   flex: 0 0 15px;
   width: 15px;
   height: 15px;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
 }
 
 .ui-notice-icon svg { width: 15px; height: 15px; stroke-width: 1.7; }
@@ -100,7 +100,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--control-text);
+  color: hsl(var(--ink-secondary));
 }
 
 /* Diff counts: the only place colour enters the summary line. */
@@ -110,8 +110,8 @@
   margin-right: 6px;
 }
 
-.ui-notice-preview em:first-child { color: var(--status-success-text); }
-.ui-notice-preview em:last-child { color: var(--status-danger-text); }
+.ui-notice-preview em:first-child { color: hsl(var(--success-bg-foreground)); }
+.ui-notice-preview em:last-child { color: hsl(var(--destructive-soft-bg-foreground)); }
 
 /* `count` (任务数/文件数) sits at the far right; `meta` (进度 pill) must stay
    next to the summary text, so only count gets the auto margin. */
@@ -119,7 +119,7 @@
   flex: 0 0 auto;
   margin-left: auto;
   font-size: var(--fs-label);
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -127,7 +127,7 @@
 .ui-notice-chevron {
   flex: 0 0 auto;
   margin-left: 6px;
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   transition: transform 0.15s ease;
 }
 
@@ -161,9 +161,9 @@
   overscroll-behavior: contain;
   min-width: 0;
   padding: 10px 12px;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--line-1);
   font-size: var(--fs-label);
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
 }
 
 /* ── Compact rows (文件改动): half width, fixed before and after expand ──
@@ -183,18 +183,18 @@
 .ui-notice.is-compact .ui-notice-summary { padding: 5px 12px; }
 
 /* ── Tone tints the icon and the card edge, never the fill ──────────────── */
-.ui-notice.is-attention .ui-notice-icon { color: var(--accent-ink); }
-.ui-notice.is-attention { border-color: color-mix(in srgb, var(--accent-primary) 32%, var(--border-subtle)); }
+.ui-notice.is-attention .ui-notice-icon { color: hsl(var(--accent-strong)); }
+.ui-notice.is-attention { border-color: color-mix(in srgb, hsl(var(--accent-strong)) 32%, var(--line-1)); }
 
-.ui-notice.is-warning .ui-notice-icon { color: var(--status-warning-text); }
-.ui-notice.is-warning { border-color: color-mix(in srgb, var(--warning-text) 34%, var(--border-subtle)); }
+.ui-notice.is-warning .ui-notice-icon { color: hsl(var(--warning-bg-foreground)); }
+.ui-notice.is-warning { border-color: color-mix(in srgb, hsl(var(--warning)) 34%, var(--line-1)); }
 
-.ui-notice.is-danger .ui-notice-icon { color: var(--status-danger-text); }
-.ui-notice.is-danger { border-color: color-mix(in srgb, var(--danger-text) 34%, var(--border-subtle)); }
+.ui-notice.is-danger .ui-notice-icon { color: hsl(var(--destructive-soft-bg-foreground)); }
+.ui-notice.is-danger { border-color: color-mix(in srgb, hsl(var(--destructive-soft)) 34%, var(--line-1)); }
 
-.ui-notice.is-success .ui-notice-icon { color: var(--status-success-text); }
+.ui-notice.is-success .ui-notice-icon { color: hsl(var(--success-bg-foreground)); }
 /* 成功也要有描边：danger / warning / attention 都有，唯独 success 缺了一圈，五条通知并排时会显得没做完。 */
-.ui-notice.is-success { border-color: color-mix(in srgb, var(--success-text) 30%, var(--border-subtle)); }
+.ui-notice.is-success { border-color: color-mix(in srgb, hsl(var(--success)) 30%, var(--line-1)); }
 
 /* ── Inline rows (追加消息) ──────────────────────────────────────────────
    内联卡片不折叠，但外壳必须和其它通知一模一样：同一个圆角、同一圈描边、
@@ -205,11 +205,11 @@
   margin-inline: 0;
   padding: 0;
   gap: 0;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--line-1);
   /* 停靠态和卡片内联态同属面板层；14px 留给真正浮起来的菜单与弹窗。 */
   border-radius: var(--radius-panel);
-  /* 与 `.ui-notice` 同一套不透明填充（见文件顶部），不要再写回 var(--bg-card)。 */
-  background-color: var(--bg-canvas);
+  /* 与 `.ui-notice` 同一套不透明填充（见文件顶部），不要再写回 hsl(var(--card))。 */
+  background-color: hsl(var(--background));
   background-image: linear-gradient(var(--notice-fill), var(--notice-fill));
   box-shadow: var(--shadow-sm);
   overflow: hidden;
@@ -271,7 +271,7 @@
   font-size: var(--fs-label);
   font-weight: 600;
   text-align: center;
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   font-variant-numeric: tabular-nums;
 }
 
@@ -283,7 +283,7 @@
   height: 8px;
   margin: 0 2px;
   border-radius: 50%;
-  background: var(--accent-primary);
+  background: hsl(var(--accent-strong));
   position: relative;
 }
 .ui-notice-queue-dot::after {
@@ -291,7 +291,7 @@
   position: absolute;
   inset: -3px;
   border-radius: 50%;
-  border: 1.5px solid var(--accent-primary);
+  border: 1.5px solid hsl(var(--accent-strong));
   /* 性能：原来是 infinite。这个环会从 0.7 倍扩到 2.4 倍，每帧都在毛玻璃
      面板上扫过大片区域，实测占掉约 35% 单核。改成只播 3 次：出现时足够
      提示「有排队消息」，之后静止，稳态不再产帧。 */
@@ -310,19 +310,19 @@
   margin-right: 5px;
   font-size: var(--fs-body);
   font-weight: 600;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   white-space: nowrap;
 }
 
-.ui-notice-queue-drag.btn.btn-bare { flex: 0 0 18px; width: 18px; min-width: 18px; height: 22px; padding: 0; color: var(--text-tertiary); cursor: grab; touch-action: none; user-select: none; }
+.ui-notice-queue-drag.btn.btn-bare { flex: 0 0 18px; width: 18px; min-width: 18px; height: 22px; padding: 0; color: hsl(var(--ink-tertiary)); cursor: grab; touch-action: none; user-select: none; }
 .ui-notice-queue-drag.btn.btn-bare:active { cursor: grabbing; }
-.ui-notice-queue-drag.btn.btn-bare:hover:not(:disabled) { color: var(--text-secondary); background: var(--bg-hover); }
+.ui-notice-queue-drag.btn.btn-bare:hover:not(:disabled) { color: hsl(var(--ink-secondary)); background: var(--surface-hover); }
 .ui-notice-queue-row.is-dragging { opacity: .52; }
 .ui-notice-queue-preview { display: flex; align-items: center; gap: 4px; flex: 0 0 auto; }
-.ui-notice-queue-thumbnail { display: grid; place-items: center; width: 18px; height: 18px; padding: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-control); background: var(--bg-surface); color: var(--text-tertiary); overflow: hidden; cursor: pointer; }
+.ui-notice-queue-thumbnail { display: grid; place-items: center; width: 18px; height: 18px; padding: 0; border: 1px solid var(--line-1); border-radius: var(--radius-control); background: hsl(var(--card)); color: hsl(var(--ink-tertiary)); overflow: hidden; cursor: pointer; }
 .ui-notice-queue-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
-.ui-notice-queue-preview small { color: var(--text-tertiary); font-size: var(--fs-label); }
-.ui-notice-queue-file { display: inline-flex; align-items: center; gap: 4px; max-width: 72px; min-width: 0; height: 18px; padding: 0 5px; border: 1px solid var(--border-subtle); border-radius: var(--radius-control); color: var(--text-secondary); background: var(--bg-surface); font-size: var(--fs-label); }
+.ui-notice-queue-preview small { color: hsl(var(--ink-tertiary)); font-size: var(--fs-label); }
+.ui-notice-queue-file { display: inline-flex; align-items: center; gap: 4px; max-width: 72px; min-width: 0; height: 18px; padding: 0 5px; border: 1px solid var(--line-1); border-radius: var(--radius-control); color: hsl(var(--ink-secondary)); background: hsl(var(--card)); font-size: var(--fs-label); }
 .ui-notice-queue-file > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ui-notice-queue-file .local-path-icon { width: 14px; height: 14px; flex: 0 0 auto; }
 .ui-notice-queue-text {
@@ -331,12 +331,12 @@
   font-size: var(--fs-body);
   font-weight: 450;
   line-height: 1.45;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.ui-notice-queue-text.is-single-text { color: var(--text-secondary); }
+.ui-notice-queue-text.is-single-text { color: hsl(var(--ink-secondary)); }
 
 .ui-notice-queue-actions {
   display: flex;
@@ -347,9 +347,9 @@
 /* 三按钮 = 设计稿 `.s1-action-btn`：26×26、radius 7、15px 图标、中性灰底色，
    hover 才浮出 `--bg-hover`。三个按钮共用同一套中性灰，强调色只留给状态与进度，
    卡片上不出现第二处彩色焦点（m10690：上一版把「追加」画成强调色是错的）。 */
-.ui-notice-queue-actions .btn.btn-bare { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; min-width: 26px; padding: 0; gap: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--text-tertiary); font: 500 12px/1.4 var(--font-sans); }
+.ui-notice-queue-actions .btn.btn-bare { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; min-width: 26px; padding: 0; gap: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: hsl(var(--ink-tertiary)); font: 500 12px/1.4 var(--font-sans); }
 .ui-notice-queue-actions .btn svg { width: 15px; height: 15px; }
-.ui-notice-queue-actions .btn.btn-bare:hover:not(:disabled) { color: var(--text-primary); background: var(--bg-hover); }
+.ui-notice-queue-actions .btn.btn-bare:hover:not(:disabled) { color: hsl(var(--foreground)); background: var(--surface-hover); }
 .ui-notice-queue-actions .btn.btn-bare:disabled { opacity: 0.32; }
 
 /* ── File rows inside a notice ──────────────────────────────────────────── */
@@ -362,7 +362,7 @@
   font: var(--fs-label)/1.5 var(--font-mono);
 }
 
-.ui-notice-file-row:hover { background: var(--bg-hover); }
+.ui-notice-file-row:hover { background: var(--surface-hover); }
 
 .ui-notice-file-row > span {
   flex: 1;
@@ -370,7 +370,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
 }
 
 .ui-notice-file-row em {
@@ -378,7 +378,7 @@
   flex: 0 0 auto;
   font-style: normal;
   font-variant-numeric: tabular-nums;
-  color: var(--status-success-text);
+  color: hsl(var(--success-bg-foreground));
 }
 
 .ui-notice-file-row i {
@@ -386,7 +386,7 @@
   flex: 0 0 auto;
   font-style: normal;
   font-variant-numeric: tabular-nums;
-  color: var(--status-danger-text);
+  color: hsl(var(--destructive-soft-bg-foreground));
 }
 
 /* Progress pill used by 任务编排's meta slot. */
@@ -394,8 +394,8 @@
   flex: 0 0 auto;
   padding: 1px 7px;
   border-radius: var(--radius-full);
-  background: var(--accent-subtle);
-  color: var(--accent-ink);
+  background: color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
+  color: hsl(var(--accent-strong));
   font-size: var(--fs-label);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -418,7 +418,7 @@
 /* Shared 09 bodies: the showcase and production adapters use these same rows. */
 .ui-notice-body-stack, .ui-notice-background-task { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .ui-notice-body-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.ui-notice-code { margin: 0; padding: 10px; border-radius: var(--radius-control); background-color: var(--bg-surface); background-image: linear-gradient(var(--markdown-code-bg), var(--markdown-code-bg)); font: var(--fs-label)/1.6 var(--font-mono); overflow: auto; white-space: pre; }
+.ui-notice-code { margin: 0; padding: 10px; border-radius: var(--radius-control); background-color: hsl(var(--card)); background-image: linear-gradient(var(--markdown-code-bg), var(--markdown-code-bg)); font: var(--fs-label)/1.6 var(--font-mono); overflow: auto; white-space: pre; }
 .ui-notice-reply { display: flex; align-items: center; gap: 8px; }
 .ui-notice-reply > .input-shell { flex: 1; min-width: 0; }
 .ui-notice-reply > .btn { flex: 0 0 auto; }
@@ -430,20 +430,20 @@
   height: 32px;
   padding: 4px 12px;
   font-size: var(--fs-label);
-  border: 1px solid color-mix(in srgb, var(--accent-primary) 40%, transparent);
+  border: 1px solid color-mix(in srgb, hsl(var(--accent-strong)) 40%, transparent);
   border-radius: 10px;
-  background: var(--bg-surface);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-primary) 15%, transparent);
+  background: hsl(var(--card));
+  box-shadow: 0 0 0 2px color-mix(in srgb, hsl(var(--accent-strong)) 15%, transparent);
 }
 .ui-notice .ui-notice-reply .input:hover:not(:disabled):not(:focus) {
-  border-color: color-mix(in srgb, var(--accent-primary) 40%, transparent);
-  background: var(--bg-surface);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-primary) 15%, transparent);
+  border-color: color-mix(in srgb, hsl(var(--accent-strong)) 40%, transparent);
+  background: hsl(var(--card));
+  box-shadow: 0 0 0 2px color-mix(in srgb, hsl(var(--accent-strong)) 15%, transparent);
 }
 .ui-notice .ui-notice-reply .input:focus {
-  border-color: color-mix(in srgb, var(--accent-primary) 55%, transparent);
-  background: var(--bg-surface);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 22%, transparent);
+  border-color: color-mix(in srgb, hsl(var(--accent-strong)) 55%, transparent);
+  background: hsl(var(--card));
+  box-shadow: 0 0 0 3px color-mix(in srgb, hsl(var(--accent-strong)) 22%, transparent);
 }
 /* 同一张卡里的按钮也照同一套度量走：default = h-8 / rounded-[10px] / px-3 / 12px，
    xs = h-6 / px-2 / 11px（候选项就是 xs 那种标签尺寸）。 */
@@ -462,15 +462,15 @@
 /* 候选项是白板药丸：hover 只压一层极淡的底色，不加投影、也不把描边换成
    --border-hover，否则同一行里被指到的那一颗会"凸"出来，看着像已经按下去了。 */
 .ui-notice-answer-option.btn:hover:not(:disabled) {
-  background: var(--bg-hover);
-  border-color: var(--btn-secondary-border);
+  background: var(--surface-hover);
+  border-color: var(--line-1);
   box-shadow: none;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
 }
 .ui-notice-answer-option.btn[aria-pressed="true"]:hover,
 .ui-notice-answer-option.btn.is-active:hover {
-  background: var(--bg-selected);
-  color: var(--accent-ink);
+  background: var(--selected-bg);
+  color: hsl(var(--accent-strong));
 }
 /* AI 询问的回答区：建议答案排成一行（一行放不下才换行），末行是输入框 + 回答 / 跳过，
    两个动作都在输入框右侧。一行一条会把卡片撑成三四十像素一条的长列表，一行一条
@@ -481,7 +481,7 @@
 /* 候选胶囊是单向动作，尾部不该再挂一个发送箭头。组件已不再渲染它，这条兜底
    是给缓存里可能还留着旧 bundle 的运行环境准备的。 */
 .ui-notice-answer-send { display: none; }
-.ui-notice-detail { color: var(--text-tertiary); font-size: var(--fs-label); }
+.ui-notice-detail { color: hsl(var(--ink-tertiary)); font-size: var(--fs-label); }
 .ui-notice-background-task { gap: 8px; }
 .ui-notice-background-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: var(--fs-label); }
 /* 标题行本身是折叠开关：整行可点，但只用 bare 按钮占住「图标+文字」那段，
@@ -496,16 +496,16 @@
   gap: 6px;
   min-width: 0;
   padding: 0;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
   font-size: var(--fs-label);
   font-weight: 500;
   text-align: left;
 }
-.ui-notice-background-toggle.btn.btn-bare:hover:not(:disabled) { color: var(--text-primary); }
+.ui-notice-background-toggle.btn.btn-bare:hover:not(:disabled) { color: hsl(var(--foreground)); }
 .ui-notice-background-toggle > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ui-notice-background-chevron {
   flex: 0 0 auto;
-  color: var(--text-tertiary);
+  color: hsl(var(--ink-tertiary));
   transition: transform 140ms ease;
 }
 .ui-notice-background-task.is-expanded .ui-notice-background-chevron { transform: rotate(90deg); }
@@ -513,7 +513,7 @@
 /* `hidden` 必须显式压回 none：上面给了 display:flex，否则收起时内容照样在。 */
 .ui-notice-background-body[hidden] { display: none; }
 .ui-notice-background-log { max-height: 200px; font-size: var(--fs-label); }
-.ui-notice-background-task details { min-width: 0; color: var(--text-secondary); font-size: var(--fs-label); }
+.ui-notice-background-task details { min-width: 0; color: hsl(var(--ink-secondary)); font-size: var(--fs-label); }
 .ui-notice-background-task details summary { cursor: pointer; }
 .ui-notice-background-task details[open] > :not(summary) { margin-top: 8px; }
 @media (prefers-reduced-motion: reduce) {
@@ -525,9 +525,9 @@
    这里复用组件库的 Card，但压平为 inset 填充（不加第二层浮起阴影）。 */
 html[data-theme] .ui-notice-background-task .ui-notice-background-detail {
   padding: 8px 10px;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--line-1);
   border-radius: var(--radius-panel);
-  background: var(--surface-inset-bg);
+  background: var(--surface-inset);
   box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -548,10 +548,10 @@ html[data-theme] .ui-notice .ui-notice-code {
   );
 }
 html[data-theme] .ui-notice-background-task .ui-notice-background-detail {
-  background-color: var(--bg-canvas);
+  background-color: hsl(var(--background));
   background-image: linear-gradient(
-    color-mix(in srgb, var(--surface-inset-bg) 100%, var(--notice-fill)),
-    color-mix(in srgb, var(--surface-inset-bg) 100%, var(--notice-fill))
+    color-mix(in srgb, var(--surface-inset) 100%, var(--notice-fill)),
+    color-mix(in srgb, var(--surface-inset) 100%, var(--notice-fill))
   );
 }
 
@@ -563,19 +563,19 @@ html[data-theme] .ui-notice-background-task .ui-notice-background-detail {
    `background-color` 只是不透明垫底，可见的那一层仍是上面的去 alpha 填充。 */
 html[data-theme="light"] .ui-notice .ui-notice-code,
 html[data-theme="light"] .ui-notice .ui-notice-background-detail {
-  background-color: var(--bg-canvas);
+  background-color: hsl(var(--background));
   background-image: linear-gradient(
-    color-mix(in srgb, var(--text-primary) 8%, var(--bg-surface)),
-    color-mix(in srgb, var(--text-primary) 8%, var(--bg-surface))
+    color-mix(in srgb, hsl(var(--foreground)) 8%, hsl(var(--card))),
+    color-mix(in srgb, hsl(var(--foreground)) 8%, hsl(var(--card)))
   );
-  border: 1px solid color-mix(in srgb, var(--text-primary) 12%, transparent);
+  border: 1px solid color-mix(in srgb, hsl(var(--foreground)) 12%, transparent);
 }
 html[data-theme="light"] .ui-notice .ui-notice-background-detail .ui-notice-code {
-  background-color: var(--bg-canvas);
-  background-image: linear-gradient(var(--bg-surface), var(--bg-surface));
-  border-color: color-mix(in srgb, var(--text-primary) 8%, transparent);
+  background-color: hsl(var(--background));
+  background-image: linear-gradient(hsl(var(--card)), hsl(var(--card)));
+  border-color: color-mix(in srgb, hsl(var(--foreground)) 8%, transparent);
 }
-.ui-notice-error { margin: 0; color: var(--status-danger-text); overflow-wrap: anywhere; }
+.ui-notice-error { margin: 0; color: hsl(var(--destructive-soft-bg-foreground)); overflow-wrap: anywhere; }
 .ui-notice-file-list { display: flex; flex-direction: column; gap: 4px; }
 .ui-notice-file-row.btn.btn-bare { display: flex; width: 100%; min-width: 0; gap: 8px; padding: 4px 8px; border-radius: var(--radius-control); font: var(--fs-label)/1.5 var(--font-mono); text-align: left; }
 .ui-notice-file-row.is-deleted > span { text-decoration: line-through; }
@@ -583,12 +583,12 @@ html[data-theme="light"] .ui-notice .ui-notice-background-detail .ui-notice-code
    描边/底色（否则卡片里套一层卡，圆角还会互相打架）。单条形态没有行分隔线，
    行列表形态保留 1px 分隔 + 6px 细滚动条（steer-cards 规范）。 */
 .ui-notice-queue-list { display: flex; flex-direction: column; gap: 0; min-height: 0; overflow: auto; border: 0; border-radius: 0; background: transparent; scrollbar-width: thin; }
-.ui-notice-queue-list:not(.is-single) { border-top: 1px solid var(--border-subtle); max-height: 190px; box-sizing: border-box; padding-bottom: 2px; overscroll-behavior: contain; }
+.ui-notice-queue-list:not(.is-single) { border-top: 1px solid var(--line-1); max-height: 190px; box-sizing: border-box; padding-bottom: 2px; overscroll-behavior: contain; }
 .ui-notice-queue-list:not(.is-single)::-webkit-scrollbar { width: 6px; }
-.ui-notice-queue-list:not(.is-single)::-webkit-scrollbar-thumb { background: var(--border-medium, var(--border-subtle)); border-radius: var(--radius-control); }
-.ui-notice-queue-list:not(.is-single) .ui-notice-queue-row + .ui-notice-queue-row { border-top: 1px solid var(--border-subtle); }
+.ui-notice-queue-list:not(.is-single)::-webkit-scrollbar-thumb { background: var(--border-medium, var(--line-1)); border-radius: var(--radius-control); }
+.ui-notice-queue-list:not(.is-single) .ui-notice-queue-row + .ui-notice-queue-row { border-top: 1px solid var(--line-1); }
 
-.ui-notice-plan-settings { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 10px; }
+.ui-notice-plan-settings { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line-1); display: flex; flex-direction: column; gap: 10px; }
 .ui-notice-plan-fields { display: flex; gap: 12px; flex-wrap: wrap; }
 .ui-notice-plan-fields > label { display: flex; align-items: center; gap: 8px; font-size: var(--fs-label); }
 .ui-notice-plan-fields .input-shell { width: 72px; }
@@ -605,6 +605,6 @@ html[data-theme="light"] .ui-notice .ui-notice-background-detail .ui-notice-code
 /* 单条抬头：点/圆环 → 8px → 「一条追加消息等待中：」 → 4px → 正文 → 按钮。
    正文只吃按钮左侧剩下的宽度，超出就省略号（title 里挂完整内容）。
    呼吸环外扩到 -3px，所以圆点旁边必须留出真正的间距，否则环会压到字上。 */
-.ui-notice-queue-single-head { display: flex; align-items: center; gap: 0; min-width: 0; overflow: hidden; white-space: nowrap; font-size: var(--fs-body); font-weight: 400; color: var(--text-secondary); }
-.ui-notice-queue-single-head .ui-notice-queue-single-label { flex: 0 0 auto; margin-right: 4px; font-size: var(--fs-body); font-weight: 600; color: var(--text-primary); }
-.ui-notice-queue-single-head .ui-notice-queue-single-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); }
+.ui-notice-queue-single-head { display: flex; align-items: center; gap: 0; min-width: 0; overflow: hidden; white-space: nowrap; font-size: var(--fs-body); font-weight: 400; color: hsl(var(--ink-secondary)); }
+.ui-notice-queue-single-head .ui-notice-queue-single-label { flex: 0 0 auto; margin-right: 4px; font-size: var(--fs-body); font-weight: 600; color: hsl(var(--foreground)); }
+.ui-notice-queue-single-head .ui-notice-queue-single-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: hsl(var(--ink-secondary)); }

@@ -35,12 +35,12 @@
 .btn.btn-icon-only { aspect-ratio: 1; padding-inline: 0; }
 html[data-theme] .btn.btn-subtle.btn-icon-only {
   background: transparent;
-  color: var(--text-secondary);
+  color: hsl(var(--ink-secondary));
   box-shadow: none;
 }
 html[data-theme] .btn.btn-subtle.btn-icon-only:hover:not(:disabled) {
-  background: var(--button-hover-bg);
-  color: var(--button-hover-text);
+  background: var(--surface-hover);
+  color: hsl(var(--foreground));
   box-shadow: none;
 }
 .btn-icon-only .btn-icon { display: inline-flex; align-items: center; justify-content: center; }
@@ -112,21 +112,21 @@ html[data-theme] .btn:not(.btn-icon-only) > * {
 /* 按下 = 阴影收平 + 下沉 0.5px，那就是「按下去」的全部暗示；
    再叠一层黑色内阴影只会让暗色主题里的按钮变脏。 */
 .btn-primary:active:not(:disabled) {
-  background: var(--btn-primary-active);
+  background: hsl(var(--primary-active));
   box-shadow: var(--btn-primary-rim);
   transform: translateY(0.5px);
 }
 
 .btn-secondary {
-  background: var(--btn-secondary-bg);
-  color: var(--btn-secondary-text);
-  border-color: var(--btn-secondary-border);
+  background: transparent;
+  color: hsl(var(--foreground));
+  border-color: var(--line-1);
   box-shadow: var(--btn-secondary-shadow, var(--shadow-btn));
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: var(--btn-secondary-hover);
-  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  border-color: var(--line-strong);
   box-shadow: var(--shadow-btn-hover);
 }
 
@@ -135,8 +135,8 @@ html[data-theme] .btn:not(.btn-icon-only) > * {
 html[data-theme] .btn.btn-secondary[aria-pressed="true"]:not(:disabled),
 .btn-secondary.is-active,
 .btn-secondary.active {
-  background: var(--bg-selected) !important;
-  color: var(--accent-ink) !important;
+  background: var(--selected-bg) !important;
+  color: hsl(var(--accent-strong)) !important;
   border-color: transparent !important;
 }
 
@@ -148,60 +148,60 @@ html[data-theme] .btn.btn-secondary[aria-pressed="true"]:not(:disabled),
 /* 只在 hover 时才现出危险色的按钮（列表行里的「删除」）：
    静止时是普通文本按钮，指上去才变成淡玫瑰实心。 */
 .btn.btn-danger-hover:hover:not(:disabled) {
-  color: var(--btn-danger-text) !important;
-  background: var(--btn-danger-bg) !important;
+  color: hsl(var(--destructive-soft-bg-foreground)) !important;
+  background: hsl(var(--destructive-soft-bg)) !important;
 }
 
 .btn.btn-danger-hover:active:not(:disabled) {
-  color: var(--btn-danger-text) !important;
-  background: var(--btn-danger-active-bg) !important;
+  color: hsl(var(--destructive-soft-bg-foreground)) !important;
+  background: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, hsl(var(--ink-high))) !important;
 }
 
 .btn-subtle {
   background: transparent;
-  color: var(--btn-subtle-text);
+  color: hsl(var(--ink-secondary));
   border-color: transparent;
   box-shadow: none;
 }
 
 .btn-subtle:hover:not(:disabled) {
-  background: var(--btn-subtle-hover);
-  color: var(--text-primary);
+  background: var(--surface-hover);
+  color: hsl(var(--foreground));
   box-shadow: none;
 }
 
 .btn-subtle:active:not(:disabled) {
-  background: var(--btn-subtle-hover);
+  background: var(--surface-hover);
 }
 
 /* 危险按钮：淡玫瑰实心 + 同色相深字，用来表示「可以撤销的破坏性动作」。
    不再描边染色 —— 半透明的染色边压在卡片底色上会糊成一层，看着像没渲染完。
    不可逆的删除不用这个形态，用 --btn-destructive-*（实心深粉 + 白字）。 */
 .btn-danger {
-  background: var(--btn-danger-bg);
-  color: var(--btn-danger-text);
+  background: hsl(var(--destructive-soft-bg));
+  color: hsl(var(--destructive-soft-bg-foreground));
   border-color: transparent;
   box-shadow: none;
 }
 
 .btn-danger:hover:not(:disabled) {
-  background: var(--btn-danger-hover);
+  background: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 88%, hsl(var(--ink-high)));
 }
 
 .btn-danger:active:not(:disabled) {
-  background: var(--btn-danger-active-bg);
+  background: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, hsl(var(--ink-high)));
   transform: translateY(0.5px);
 }
 
 .btn-success {
-  background: var(--btn-success-bg);
-  color: var(--btn-success-text);
+  background: hsl(var(--success-bg));
+  color: hsl(var(--success-bg-foreground));
   border-color: transparent;
   box-shadow: none;
 }
 
 .btn-success:hover:not(:disabled) {
-  background: var(--btn-success-hover);
+  background: color-mix(in srgb, hsl(var(--success-bg)) 88%, hsl(var(--ink-high)));
 }
 
 /* 焦点环：一律「元素本来的阴影 + 外圈」，所以不能只留一条通用规则 ——
@@ -220,22 +220,22 @@ html[data-theme] .btn.btn-secondary[aria-pressed="true"]:not(:disabled),
 /* 最安静的一档：没有边框也没有底色，只有 hover 时才浮出一层底。
    工具栏里的图标动作走这个，不抢视线。 */
 html[data-theme] .btn.btn-surface {
-  background: var(--btn-secondary-bg);
-  color: var(--control-text);
+  background: transparent;
+  color: hsl(var(--ink-secondary));
   border-color: transparent;
   box-shadow: none;
 }
 
 html[data-theme] .btn.btn-surface:hover:not(:disabled) {
-  background: var(--btn-secondary-hover);
-  color: var(--text-primary);
+  background: var(--surface-hover);
+  color: hsl(var(--foreground));
   box-shadow: none;
 }
 
 html[data-theme] .btn.btn-surface:is(.active, .is-active, [aria-pressed="true"]):not(:disabled),
 html[data-theme] .btn.btn-surface:active:not(:disabled) {
-  background: var(--bg-selected);
-  color: var(--accent-ink);
+  background: var(--selected-bg);
+  color: hsl(var(--accent-strong));
   box-shadow: none;
 }
 

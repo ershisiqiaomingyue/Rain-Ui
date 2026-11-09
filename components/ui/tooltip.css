@@ -1,5 +1,5 @@
 /* Tooltip —— 跟随主题，不走主文本色反色。
-   旧写法 `background: var(--tooltip-bg)` 里 --tooltip-bg 就是 --text-primary：
+   旧写法 `background: hsl(var(--ink-high))` 里 --tooltip-bg 就是 --text-primary：
    深色主题下文本近白，气泡被画成一枚白方块；亮色主题下是纯黑块。两套都不像
    浮层。这里改成和菜单/弹层同一族的底色 + 描边 + 阴影，明暗各取自己的一套。 */
 
@@ -15,11 +15,11 @@
   width: max-content;
   max-width: min(320px, calc(100vw - 16px));
   padding: 6px 9px;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--line-1);
   border-radius: var(--radius-overlay);
-  background: var(--popover-bg);
-  color: var(--text-primary);
-  box-shadow: var(--popover-shadow);
+  background: var(--surface-popover);
+  color: hsl(var(--foreground));
+  box-shadow: var(--shadow-popover);
   font-family: var(--font-sans);
   font-size: var(--fs-label);
   line-height: 1.5;
