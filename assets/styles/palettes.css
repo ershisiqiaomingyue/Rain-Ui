@@ -1,0 +1,496 @@
+/* ==========================================================================
+   palettes.css — rain-ui 配色规范（唯一的颜色来源）
+   --------------------------------------------------------------------------
+   规则文档见 `docs/design.md`，两边数字必须一致；改了这里就同步改那里。
+
+   结构分三层，从下往上读：
+
+     A. 基础层   —— 表面底色、发丝线、墨色。中性，不带强调色。
+     B. 语义层   —— shadcn 的三元组写法（`239 36% 22%`，不带 hsl()），
+                    Tailwind 侧 `hsl(var(--primary))` 直接可用。
+     C. 桥接层   —— 把 tokens.css 的历史变量名指到上面的新值。
+                    组件不用改一行就能换上新配色，且只有一处真相。
+
+   为什么语义层写三元组而不是完整色值：shadcn 的约定是
+   `--primary: 222 47% 11%` + Tailwind `hsl(var(--primary))`。
+   写成 `hsl(222 47% 11%)` 会让 `hsl(var(--primary))` 变成
+   `hsl(hsl(222 47% 11%))`，整条链直接失效。需要完整色值时写 `hsl(var(--primary))`。
+
+   两条硬约束，改这个文件时必须守住：
+     1. 桥接层只许出现派生值（`var()` / `hsl(var(--x))`），不许出现字面色值。
+        主题相关的字面值只住在 `:root` 和 `html[data-theme="light"]` 里。
+        原因：桥接层为了压过 tokens.css 的 `html[data-theme]`，用的是同级
+        特异性选择器，它排在亮色块之后；一旦在里面写死一个深色字面值，
+        亮色主题也会被它盖住。
+     2. 换主题 = 换明暗，不换色相。没有第二个配色家族，没有 data-palette。
+   ========================================================================== */
+
+/* ============================================================================
+ * 暗色（默认）
+ * ========================================================================== */
+:root {
+  /* ── A1. 表面 ────────────────────────────────────────────────────────────
+     四层：外壳最亮 → 工作区陷下去 → 卡片浮起来 → 悬停再亮一档。
+     L1/L2/L3 三层底色**完全相同**，深度全部交给发丝线，
+     所以永远不会出现「三层三个不同的灰」。 */
+  --surface-shell: hsl(232 17% 13%);
+  --surface-0: hsl(232 20% 7%);
+  --surface-1: hsl(232 18% 10%);
+  --surface-2: var(--surface-1);
+  --surface-3: var(--surface-1);
+  --surface-hover: hsl(232 16% 14%);
+  --surface-active: hsl(232 16% 12%);
+  /* 凹槽：输入框、表格头、分段轨道。比卡片低一档，读起来是「挖进去」。 */
+  --surface-inset: hsl(232 19% 8%);
+  --surface-popover: hsl(233 16% 13%);
+  /* 卡片四级色调：表达的是「这块面板离用户多远」，和上面的层级是两回事，
+     所以保留逐级下沉。 */
+  --card-tone-muted: hsl(232 18% 9%);
+  --card-tone-subtle: hsl(232 19% 8%);
+  --card-tone-deep: hsl(232 20% 7%);
+
+  /* ── A2. 发丝线 ──────────────────────────────────────────────────────────
+     暗色用半透明白而不是实色灰：叠在任意底色上都会自动跟着底走，
+     嵌套三层不会算出三个不同的灰。 */
+  --line-1: rgba(255, 255, 255, 0.10);
+  --line-2: rgba(255, 255, 255, 0.065);
+  --line-3: rgba(255, 255, 255, 0.04);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  /* ── A3. 墨色（五级） ────────────────────────────────────────────────────
+     旧版四个近义名字（secondary/tertiary/muted/quaternary）跨两个色相、
+     明度只差 1–3 个点，是「灰得丑」的根因。现在只剩五级，一级一个用途。 */
+  --ink-high: hsl(228 26% 97%);        /* 标题、关键数字 */
+  --ink-primary: hsl(228 20% 90%);     /* 正文 */
+  --ink-secondary: hsl(230 14% 68%);   /* 辅助说明（承载信息的最低档） */
+  --ink-tertiary: hsl(231 12% 52%);    /* 时间/计数这类元信息 */
+  --ink-muted: hsl(232 10% 40%);       /* 禁用、占位 */
+
+  /* ── B. 语义层（shadcn 三元组） ──────────────────────────────────────── */
+
+  /* 表面语义 */
+  --background: 232 20% 7%;
+  --foreground: 228 20% 90%;
+  --card: 232 18% 10%;
+  --card-foreground: 228 20% 90%;
+  --popover: 233 16% 13%;
+  --popover-foreground: 228 20% 90%;
+  --muted: 232 19% 8%;
+  --muted-foreground: 230 14% 68%;
+  --accent: 232 16% 14%;               /* 悬停底，中性，不是强调色 */
+  --accent-foreground: 228 26% 97%;
+  --secondary: 232 19% 8%;             /* 次要动作：中性，不染靛 */
+  --secondary-foreground: 228 20% 90%;
+  --border: 232 14% 19%;
+  --input: 232 14% 19%;
+  --ring: 239 58% 74%;
+
+  /* 强调：淡靛。填充是淡底，字是同色相深字 —— 刻意偏离 shadcn 的
+     「饱和底 + 白字」，因为淡底在这套以中性表面为主的界面里不抢戏。 */
+  --primary: 239 36% 22%;
+  --primary-foreground: 239 92% 86%;
+  --primary-hover: 239 38% 26%;
+  --primary-active: 239 40% 29%;
+
+  /* 图形强调：图标、进度条、分段激活。填充色太淡，画不成图。 */
+  --accent-strong: 239 68% 72%;
+  --accent-strong-soft: 239 80% 84%;
+  /* 实心强调：只在「上面要压白字」的地方用（勾选盘、开关、图表色块）。
+     比 accent-strong 深一档，就是为了让白字压得住。 */
+  --accent-solid: 239 60% 52%;
+
+  /* 状态：五个，各管一件事，不许混用 */
+  --success: 158 40% 68%;
+  --success-bg: 158 32% 15%;
+  --success-bg-foreground: 158 52% 76%;
+  --success-hover: 158 40% 74%;
+  --warning: 38 60% 66%;
+  --warning-bg: 36 40% 16%;
+  --warning-bg-foreground: 38 62% 76%;
+  --warning-hover: 38 60% 72%;
+  --destructive-soft: 350 52% 70%;     /* 撤销、消极、可恢复 */
+  --destructive-soft-bg: 350 34% 17%;
+  --destructive-soft-bg-foreground: 350 60% 78%;
+  --destructive-soft-hover: 350 52% 76%;
+  --destructive: 350 62% 52%;          /* 不可逆删除 */
+  --destructive-foreground: 0 0% 100%;
+  --destructive-hover: 350 62% 46%;
+  --error: 0 68% 52%;                  /* 报错、失败。唯一实心纯红。 */
+  --error-foreground: 0 0% 100%;
+  --error-hover: 0 68% 46%;
+
+  /* ── C. 扩展（shadcn 没有，完整色值） ────────────────────────────────── */
+  /* 选中：只换底色。暗色用 16% 透明靛而不是实色深紫 ——
+     实色底要跨 8 个明度点，整块跳出来像另一个弹窗。 */
+  --selected-bg: hsl(239 58% 74% / 0.16);
+  --selected-fg: hsl(239 92% 88%);
+
+  /* 焦点：只在外框外面加一圈，底色和边框都不动。用 box-shadow 的 spread
+     而不是 outline —— outline-offset 在圆角上对不齐，圆角处会露直角。 */
+  --focus-ring: 0 0 0 3px hsl(var(--ring) / 0.22);
+  --focus-glow: var(--focus-ring);
+
+  /* 阴影：暗色一律不投。暗底上阴影看不见，只会让边缘发脏。 */
+  --shadow-card: none;
+  --shadow-popover: none;
+  --shadow-btn: 0 0 0 0 transparent;
+  --shadow-btn-hover: 0 0 0 0 transparent;
+  /* 内嵌高光：暗色不描白边，按钮靠底色分层就够。 */
+  --shadow-inset-highlight: 0 0 0 0 transparent;
+
+  /* 分段控件激活片：坐在 surface-inset 轨道上的亮片 */
+  --segmented-active-bg: hsl(232 15% 19%);
+  --segmented-active-hover-bg: hsl(232 15% 22%);
+
+  /* 环境光：旧版四个 blob 分别是天蓝/靛/青/紫，四个色相。按「一个色相
+     家族」的规矩全部收进靛青，只靠透明度分强弱。 */
+  --ambient-glow: radial-gradient(circle, hsl(239 70% 60% / 0.08) 0%, transparent 60%);
+  --blob-1: radial-gradient(circle, hsl(239 70% 60% / 0.10) 0%, transparent 70%);
+  --blob-2: radial-gradient(circle, hsl(243 68% 56% / 0.08) 0%, transparent 70%);
+  --blob-3: radial-gradient(circle, hsl(232 60% 50% / 0.06) 0%, transparent 70%);
+  --blob-4: radial-gradient(circle, hsl(250 60% 62% / 0.07) 0%, transparent 70%);
+
+  /* 推理滑杆：原来是紫色 #9a59e0，跟靛青不同色相，收进来。
+     这里只放主题相关的字面值，派生值在下面的桥接层。 */
+  --inference-fill-deep: hsl(243 50% 40%);
+  --inference-spark: hsl(239 80% 92%);
+  --inference-spark-warm: hsl(38 80% 90%);
+}
+
+/* ============================================================================
+ * 亮色
+ * ============================================================================ */
+html[data-theme="light"] {
+  /* ── A1. 表面 ────────────────────────────────────────────────────────── */
+  --surface-shell: hsl(230 34% 99%);
+  --surface-0: hsl(230 30% 96%);
+  --surface-1: #ffffff;
+  --surface-2: var(--surface-1);
+  --surface-3: var(--surface-1);
+  --surface-hover: hsl(230 30% 98%);
+  --surface-active: hsl(230 30% 97%);
+  --surface-inset: hsl(230 32% 97.5%);
+  --surface-popover: #ffffff;
+  --card-tone-muted: hsl(230 30% 98%);
+  --card-tone-subtle: hsl(230 32% 97.5%);
+  --card-tone-deep: hsl(230 30% 96%);
+
+  /* ── A2. 发丝线 ──────────────────────────────────────────────────────────
+     亮色反过来用实色：白底上叠白会直接消失。 */
+  --line-1: hsl(230 22% 90%);
+  --line-2: hsl(230 22% 93%);
+  --line-3: hsl(230 24% 95%);
+  --line-strong: hsl(230 22% 84%);
+
+  /* ── A3. 墨色 ──────────────────────────────────────────────────────────── */
+  --ink-high: hsl(232 32% 12%);
+  --ink-primary: hsl(232 26% 20%);
+  --ink-secondary: hsl(232 16% 38%);
+  --ink-tertiary: hsl(232 12% 50%);
+  --ink-muted: hsl(232 10% 62%);
+
+  /* ── B. 语义层 ───────────────────────────────────────────────────────── */
+  --background: 230 30% 96%;
+  --foreground: 232 26% 20%;
+  --card: 0 0% 100%;
+  --card-foreground: 232 26% 20%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 232 26% 20%;
+  --muted: 230 32% 97.5%;
+  --muted-foreground: 232 16% 38%;
+  --accent: 230 30% 98%;
+  --accent-foreground: 232 32% 12%;
+  --secondary: 230 30% 98%;
+  --secondary-foreground: 232 26% 20%;
+  --border: 230 22% 90%;
+  --input: 230 22% 88%;
+  --ring: 239 84% 88%;
+
+  --primary: 239 84% 94%;
+  --primary-foreground: 243 68% 52%;
+  --primary-hover: 239 84% 90%;
+  --primary-active: 239 82% 86%;
+
+  --accent-strong: 243 68% 52%;
+  --accent-strong-soft: 243 60% 40%;
+  --accent-solid: 243 68% 52%;
+
+  /* 状态：亮色下填充要比暗色更沉一档，否则在浅底上读不出颜色。 */
+  --success: 158 46% 40%;
+  --success-bg: 158 46% 93%;
+  --success-bg-foreground: 158 58% 24%;
+  --success-hover: 158 46% 35%;
+  --warning: 38 62% 44%;
+  --warning-bg: 38 70% 93%;
+  --warning-bg-foreground: 32 68% 26%;
+  --warning-hover: 38 62% 38%;
+  --destructive-soft: 350 55% 58%;
+  --destructive-soft-bg: 350 62% 96%;
+  --destructive-soft-bg-foreground: 350 58% 36%;
+  --destructive-soft-hover: 350 55% 52%;
+  --destructive: 350 62% 48%;
+  --destructive-foreground: 0 0% 100%;
+  --destructive-hover: 350 62% 42%;
+  --error: 0 66% 48%;
+  --error-foreground: 0 0% 100%;
+  --error-hover: 0 66% 42%;
+
+  /* ── C. 扩展 ───────────────────────────────────────────────────────────
+     亮色的选中底是**实色** L94：白底上抹一层 16% 的靛会变成雾，边界说不清。 */
+  --selected-bg: hsl(239 84% 94%);
+  --selected-fg: hsl(243 60% 40%);
+
+  --focus-ring: 0 0 0 3px hsl(var(--ring) / 0.9);
+  --focus-glow: var(--focus-ring);
+
+  /* 亮色要阴影：白底白卡片，没有阴影就分不出层。 */
+  --shadow-card: 0 1px 2px rgba(30, 41, 59, 0.04);
+  --shadow-popover: 0 8px 24px -6px rgba(30, 41, 59, 0.12);
+  --shadow-btn: 0 1px 2px rgba(30, 41, 59, 0.06);
+  --shadow-btn-hover: 0 2px 5px rgba(30, 41, 59, 0.10);
+  --shadow-inset-highlight: 0 1px 0 0 rgba(255, 255, 255, 0.55);
+
+  --segmented-active-bg: #ffffff;
+  --segmented-active-hover-bg: hsl(230 30% 99%);
+
+  --ambient-glow: radial-gradient(circle, hsl(239 84% 78% / 0.16) 0%, transparent 60%);
+  --blob-1: radial-gradient(circle, hsl(239 84% 88% / 0.55) 0%, transparent 70%);
+  --blob-2: radial-gradient(circle, hsl(243 84% 90% / 0.45) 0%, transparent 70%);
+  --blob-3: radial-gradient(circle, hsl(230 70% 90% / 0.40) 0%, transparent 70%);
+  --blob-4: radial-gradient(circle, hsl(250 80% 92% / 0.45) 0%, transparent 70%);
+
+  --inference-fill-deep: hsl(243 55% 34%);
+  --inference-spark: hsl(239 84% 96%);
+  --inference-spark-warm: hsl(38 84% 94%);
+}
+
+/* ============================================================================
+ * 桥接层 —— 历史变量名 → 新配色
+ * ----------------------------------------------------------------------------
+ * tokens.css 里被组件直接引用的名字在这里重新指向新 token。
+ * 好处是换配色只改这一处，组件文件一行不用动；等组件逐个重构完，
+ * 这一段可以逐块删掉，最终只剩上面的语义层。
+ *
+ * 用 `:root, html[data-theme]` 是因为这些名字在 tokens.css 里是用
+ * `html[data-theme]`（0,1,1）声明的，比 `:root`（0,1,0）高一档，
+ * 必须同级才压得住。这里只放派生值，字面值一律在主题块里 —— 见文件头第 1 条。
+ * ========================================================================== */
+:root,
+html[data-theme] {
+  /* ── 强调色家族 ───────────────────────────────────────────────────────── */
+  /* 图形用途（图标/进度/勾选/焦点）走饱和靛，填充用途走淡靛。 */
+  --accent-primary: hsl(var(--accent-strong));
+  --accent-primary-hsl: var(--accent-strong);
+  --accent-ink: hsl(var(--accent-strong));
+  --accent-ink-hsl: var(--accent-strong);
+  --accent-ink-soft: hsl(var(--accent-strong-soft));
+  --accent-color: var(--accent-primary);
+  /* 主按钮的填充与文字 */
+  --accent-deep: hsl(var(--primary));
+  --accent-hover: hsl(var(--primary-hover));
+  --accent-text: hsl(var(--primary-foreground));
+  --accent-text-hsl: var(--primary-foreground);
+  --accent-subtle: color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
+  --accent-border: color-mix(in srgb, hsl(var(--accent-strong)) 35%, transparent);
+  --accent-gradient: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-hover)));
+  /* 有颜色的外发光被禁掉了：这一版是纯色平面，不是灯。改成中性接触影。 */
+  --accent-glow: var(--shadow-card);
+  --series-1: hsl(var(--accent-solid));
+
+  /* ── 墨色家族 ─────────────────────────────────────────────────────────── */
+  --text-primary: hsl(var(--foreground));
+  --text-secondary: hsl(var(--ink-secondary));
+  --text-tertiary: hsl(var(--ink-tertiary));
+  --text-muted: hsl(var(--ink-muted));
+  /* quaternary 旧值和 tertiary 是近似重复，这里直接合并，
+     不再留一个「看起来一样但名字不同」的变量。 */
+  --text-quaternary: hsl(var(--ink-tertiary));
+  --selection-text: hsl(var(--foreground));
+  --input-text: hsl(var(--foreground));
+  --input-hover-text: hsl(var(--foreground));
+  --button-hover-text: hsl(var(--foreground));
+  --control-text: hsl(var(--ink-secondary));
+  --tooltip-bg: hsl(var(--ink-high));
+  --tooltip-text: hsl(var(--background));
+
+  /* ── 发丝线家族 ─────────────────────────────────────────────────────────
+     `--divider-color` 落到 line-2 而不是 line-1：它管的是卡片**内部**的
+     分隔（表头/表尾），必须比卡片自己的外框细一档，
+     否则同一张卡上会出现两道一样重的线。 */
+  --divider-color: var(--line-2);
+  --divider-subtle: 1px solid var(--line-2);
+  --border-subtle: var(--line-1);
+  --border-medium: var(--line-2);
+  --border-strong: var(--line-strong);
+  --border-hover: var(--line-strong);
+  --divider-dashed: 1px dashed var(--line-2);
+  --markdown-divider: var(--line-2);
+  --property-divider: var(--line-2);
+
+  /* ── 表面家族 ─────────────────────────────────────────────────────────── */
+  --bg-canvas: hsl(var(--background));
+  --page-pane-bg: hsl(var(--background));
+  --page-header-bg: hsl(var(--background));
+  --bg-app: hsl(var(--surface-shell));
+  --topbar-bg: hsl(var(--surface-shell));
+  --context-navigation-bg: hsl(var(--surface-shell));
+  --sidebar-bg: hsl(var(--surface-shell));
+  --bg-ambient: var(--surface-0);
+  --bg-base: var(--surface-0);
+  --bg-surface: hsl(var(--card));
+  --card-bg: hsl(var(--card));
+  --bg-card: hsl(var(--card));
+  --bg-panel: hsl(var(--card));
+  --workspace-panel-bg: hsl(var(--card));
+  --bg-card-hover: var(--surface-hover);
+  --bg-muted: var(--surface-inset);
+  --card-border: 1px solid var(--line-1);
+  --card-shadow: var(--shadow-card);
+  --card-rim: 0 0 0 0 transparent;
+  --card-hover-shadow: none;
+  --card-footer-bg: transparent;
+  --card-interactive-hover: var(--surface-hover);
+  --surface-inset-bg: var(--surface-inset);
+  --surface-action-bg: var(--surface-inset);
+  --surface-action-hover-bg: var(--surface-hover);
+  --surface-action-active-bg: var(--surface-active);
+  --popover-bg: var(--surface-popover);
+  --popover-border: 1px solid var(--line-1);
+  --popover-shadow: var(--shadow-popover);
+  --popover-item-hover: var(--surface-hover);
+  --popover-item-active-bg: var(--selected-bg);
+  --popover-item-active-text: var(--selected-fg);
+  --portal-bg: var(--surface-popover);
+  --portal-border: 1px solid var(--line-1);
+  --portal-shadow: var(--shadow-popover);
+  --portal-text: hsl(var(--foreground));
+
+  /* ── 选中与悬停 ───────────────────────────────────────────────────────── */
+  --bg-selected: var(--selected-bg);
+  --hover-tint: var(--surface-hover);
+  --hover-tint-strong: var(--surface-active);
+  --button-hover-bg: var(--surface-hover);
+  --bg-hover: var(--surface-hover);
+  --rail-hover-bg: var(--surface-hover);
+  --rail-active-bg: var(--selected-bg);
+  --chrome-hover: var(--surface-hover);
+  --chrome-ink: hsl(var(--ink-high));
+  --chrome-muted: hsl(var(--ink-secondary));
+  --chrome-selected: var(--selected-bg);
+
+  /* ── 焦点 ─────────────────────────────────────────────────────────────── */
+  --input-focus-ring: var(--focus-ring);
+
+  /* ── 按钮家族 ─────────────────────────────────────────────────────────── */
+  /* 主按钮：淡靛填 + 同色相深字。没有内嵌高光，没有外发光。 */
+  --btn-primary-bg: hsl(var(--primary));
+  --btn-primary-hover: hsl(var(--primary-hover));
+  --btn-primary-active: hsl(var(--primary-active));
+  --btn-primary-text: hsl(var(--primary-foreground));
+  --btn-primary-rim: 0 0 0 0 transparent;
+  --btn-primary-shadow: none;
+  --btn-confirm-bg: hsl(var(--primary));
+  --btn-confirm-hover: hsl(var(--primary-hover));
+  --btn-confirm-active: hsl(var(--primary-active));
+  --btn-confirm-text: hsl(var(--primary-foreground));
+  /* 次按钮（默认形态）：透明底 + 中性发丝线。 */
+  --btn-secondary-bg: transparent;
+  --btn-secondary-hover: var(--surface-hover);
+  --btn-secondary-border: var(--line-1);
+  --btn-secondary-shadow: none;
+  --btn-secondary-text: hsl(var(--foreground));
+  /* 弱按钮：无框、无底，只在悬停时给一层中性底。 */
+  --btn-subtle-bg: transparent;
+  --btn-subtle-hover: var(--surface-hover);
+  --btn-subtle-border: transparent;
+  --btn-subtle-text: hsl(var(--ink-secondary));
+  /* 危险按钮：可撤销的用淡玫瑰，不可逆的才用实心深粉。 */
+  --btn-danger-bg: hsl(var(--destructive-soft-bg));
+  --btn-danger-hover: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 88%, hsl(var(--ink-high)));
+  --btn-danger-active-bg: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, hsl(var(--ink-high)));
+  --btn-danger-text: hsl(var(--destructive-soft-bg-foreground));
+  --btn-success-bg: hsl(var(--success-bg));
+  --btn-success-hover: color-mix(in srgb, hsl(var(--success-bg)) 88%, hsl(var(--ink-high)));
+  --btn-success-text: hsl(var(--success-bg-foreground));
+  /* 危险动作的实心形态：只有不可逆删除才配得上白字。 */
+  --btn-destructive-bg: hsl(var(--destructive));
+  --btn-destructive-hover: hsl(var(--destructive-hover));
+  --btn-destructive-text: hsl(var(--destructive-foreground));
+
+  /* 玻璃按钮：这一版不要材质了，退化成平面填充。
+     blur/sheen/rim/lift 全部清掉，只留底色与文字。
+     保留这批名字是因为 button.css 还在引用，等它重构后整段删除。 */
+  --btn-glass-blur: none;
+  --btn-glass-rim: 0 0 0 0 transparent;
+  --btn-glass-sheen: none;
+  --btn-glass-lift: none;
+  --btn-glass-lift-hover: none;
+  --btn-glass-accent-bg: hsl(var(--primary));
+  --btn-glass-accent-hover: hsl(var(--primary-hover));
+  --btn-glass-accent-active: hsl(var(--primary-active));
+  --btn-glass-accent-text: hsl(var(--primary-foreground));
+  --btn-glass-neutral-bg: transparent;
+  --btn-glass-neutral-hover: var(--surface-hover);
+  --btn-glass-neutral-active: var(--surface-active);
+  --btn-glass-danger-bg: hsl(var(--destructive-soft-bg));
+  --btn-glass-danger-hover: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 88%, hsl(var(--ink-high)));
+  --btn-glass-danger-active: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, hsl(var(--ink-high)));
+
+  /* ── 控件家族 ─────────────────────────────────────────────────────────── */
+  /* 勾选盘/开关只分「开/关」两态，用实心靛填充 + 白勾。 */
+  --control-checked-bg: hsl(var(--accent-solid));
+  --control-checked-mark: #ffffff;
+  --switch-active-bg: hsl(var(--accent-solid));
+  --switch-thumb-bg: #ffffff;
+  --segmented-bg: var(--surface-inset);
+  --segmented-text: hsl(var(--ink-secondary));
+  --segmented-hover-bg: var(--surface-hover);
+  --segmented-active-text: hsl(var(--ink-high));
+  --segmented-active-shadow: none;
+
+  /* ── 状态家族 ─────────────────────────────────────────────────────────── */
+  /* 三支来源色，status-* 与 btn-* 都由它们派生。 */
+  --success-text: hsl(var(--success));
+  --warning-text: hsl(var(--warning));
+  --danger-text: hsl(var(--destructive-soft));
+  --status-success-bg: hsl(var(--success-bg));
+  --status-success-text: hsl(var(--success-bg-foreground));
+  --status-warning-bg: hsl(var(--warning-bg));
+  --status-warning-text: hsl(var(--warning-bg-foreground));
+  --status-danger-bg: hsl(var(--destructive-soft-bg));
+  --status-danger-text: hsl(var(--destructive-soft-bg-foreground));
+  --status-info-bg: hsl(var(--primary));
+  --status-info-text: hsl(var(--primary-foreground));
+  --status-neutral-bg: var(--surface-inset);
+  --status-neutral-text: hsl(var(--ink-secondary));
+  --status-success: hsl(var(--success));
+  --status-warning: hsl(var(--warning));
+  --status-danger: hsl(var(--destructive-soft));
+  --badge-bg: var(--surface-inset);
+  --badge-text: hsl(var(--ink-secondary));
+
+  /* ── 表格 / 进度 / 骨架 ───────────────────────────────────────────────── */
+  --table-bg: hsl(var(--card));
+  --table-text: hsl(var(--foreground));
+  --table-header-bg: var(--surface-inset);
+  --table-header-text: hsl(var(--ink-secondary));
+  --table-stripe-bg: var(--surface-inset);
+  --table-hover-bg: var(--surface-hover);
+  --table-divider: var(--line-3);
+  --progress-track-bg: var(--surface-inset);
+  --property-hover-bg: var(--surface-hover);
+  --session-tab-bg: var(--surface-inset);
+  --session-tab-text: hsl(var(--ink-secondary));
+  --session-tab-hover-bg: var(--surface-hover);
+  --session-tab-active-bg: hsl(var(--surface-shell));
+  --session-tab-active-hover-bg: var(--surface-hover);
+  --session-tab-active-text: hsl(var(--ink-high));
+
+  /* ── 推理滑杆 ─────────────────────────────────────────────────────────── */
+  --inference-fill: hsl(var(--accent-strong));
+  --inference-fill-highlight: hsl(var(--accent-strong-soft));
+  --inference-fill-warm: hsl(var(--warning));
+  --inference-track: var(--surface-inset);
+  --inference-accent: hsl(var(--primary-foreground));
+  --inference-thumb: hsl(var(--ink-high));
+}
