@@ -104,7 +104,8 @@ rain-ui/
 | 文件 | 说明 |
 | --- | --- |
 | `dist/rain-ui.js` / `.cjs` | ESM / CJS 两份代码，`react`、`react-dom` 等留在外部 |
-| `dist/rain-ui.css` | 合并后的全部样式（117 KB / gzip 20 KB） |
+| `dist/rain-ui.css` | 合并后的全部样式（144 KB / gzip 20 KB） |
+| `dist/tailwind-preset.cjs` | Tailwind 词表（token → 类名），供消费方的 `tailwind.config.cjs` 引 |
 | `dist/index.d.ts` | 类型入口（109 个 .d.ts，指向 `dist/components` 与 `dist/types`） |
 | `dist/components/**` | 46 个独立入口，可按需深层引入 |
 | `dist-demo/**` | 演示站的静态产物（`npm run build:demo`），不进 npm 包 |
@@ -133,6 +134,36 @@ rain-ui/
 | 层级 | `--z-raised` 10 · `--z-sticky` 40 · `--z-menu` 60 · `--z-overlay` 70 · `--z-popover` 80 · `--z-toast` 90 | 浮层不许再写裸 z-index，否则同层级的两个浮层谁盖谁全靠运气 |
 
 一屏只放**一个** primary 按钮；强调色只用于当前项、链接、焦点环，不用来铺底。
+
+## Tailwind 词表
+
+`tailwind-preset.cjs` 是 token → 类名的唯一映射，只做转接头，一个裸色值都没有。
+库自己的 `tailwind.config.cjs` 引它，消费方引**同一份**（完整理由见 design.md §11.2）：
+
+```js
+const { dirname, join } = require("node:path");
+const rainUiRoot = dirname(require.resolve("rain-ui/package.json"));
+module.exports = { presets: [require(join(rainUiRoot, "dist/tailwind-preset.cjs"))] };
+```
+
+本地 `file:` 依赖下不要写 `require("rain-ui/tailwind-preset")`：`node_modules/rain-ui`
+里的 `package.json` 是安装那一刻的快照，`exports` 新加的子路径不会同步过去。
+
+| 表 | 能写成什么 |
+| --- | --- |
+| 字号 | `text-headline` / `text-title` / `text-body` / `text-label` / `text-meta` / `text-micro`（顺手带上行高与字重） |
+| 墨色 | `text-ink-high` / `-primary` / `-secondary` / `-tertiary` / `-muted` |
+| 线 | `border-line-1` / `-2` / `-3` / `-strong` |
+| 底色 | `bg-surface-shell` / `-0` / `-1` / `-2` / `-3` / `-inset` / `-popover` / `-hover` / `-active` |
+| 选中 | `bg-selected` + `text-selected-foreground` |
+| 强调 | `bg-primary` + `text-primary-foreground` / `bg-accent-strong` / `bg-accent-solid` |
+| 状态 | `bg-success` / `bg-success-bg` / `text-success-foreground`（warning / destructive-soft / error 同名，另带 `-hover`） |
+| 圆角 | `rounded-control` / `rounded-panel` / `rounded-overlay` / `rounded-nested` / `rounded-nested-deep` |
+| 阴影 | `shadow-card` / `shadow-popover` / `shadow-control` / `shadow-control-hover` / `shadow-inset-highlight` |
+| 焦点环 | `ring ring-ring/[0.22]` —— **不要**写 `shadow-focus`，它会把元素本来的阴影顶掉 |
+
+两个反直觉的点：`bg-accent` 是 shadcn 的「悬停底」，强调色是 `accent-strong` / `accent-solid`；
+暗亮两套值都在 `palettes.css` 里，组件里永远不要判断主题。
 
 ## 开发
 

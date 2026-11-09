@@ -76,3 +76,9 @@ mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, css);
 rmSync(resolve(root, ".css-build"), { recursive: true, force: true });
 console.log(`dist/rain-ui.css  ${(css.length / 1024).toFixed(1)} kB`);
+
+/* Tailwind 词表跟着进 dist：消费方（Android-Toolkit）通过 `rain-ui/tailwind-preset`
+   引它，而 package.json 的 files 只有 dist，node_modules/rain-ui 里看不到仓库根目录。
+   漏复制的话宿主那边报的是「找不到模块」，跟「值不对」完全是两回事，很难往这儿想。 */
+cpSync(resolve(root, "tailwind-preset.cjs"), resolve(root, "dist/tailwind-preset.cjs"));
+console.log("dist/tailwind-preset.cjs");

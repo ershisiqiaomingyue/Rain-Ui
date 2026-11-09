@@ -1,75 +1,25 @@
-/** @type {import("tailwindcss").Config} */
+/**
+ * 库自己的 Tailwind 配置（只服务 demo / 文档站的构建）。
+ *
+ * 颜色、字号、圆角、阴影的词表全在 ./tailwind-preset.cjs —— 那一份同样会被
+ * 宿主（Android-Toolkit）通过 `rain-ui/tailwind-preset` 引走。这里只放
+ * 「谁能用这些类名」（content）、暗色怎么判定（darkMode）和插件。
+ *
+ * 也别在这里加颜色：加在主题词表里，否则宿主的构建看不到。
+ */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
+  presets: [require("./tailwind-preset.cjs")],
+  /* 暗色走 class：demo 与消费方都是给 <html> 挂 data-theme，
+     变量选择器（palettes.css）也认 html[data-theme]，两边口径一致。 */
   darkMode: ["class"],
-  content: [
-    "./demo/**/*.{ts,tsx,html}",
-    "./src/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}"
-  ],
+  content: ["./demo/**/*.{ts,tsx,html}", "./src/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
-    extend: {
-      colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-      },
+      screens: { "2xl": "1400px" },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

@@ -489,8 +489,9 @@ C 段里还有一大批 `--btn-*` / `--status-*` / `--bg-*` / `--card-*` / `--te
 
 1. ✅ **`palettes.css`** —— 新建，实现 §9 全部 token，`index.css` 里 `@import` 进来
    （必须排在 `tokens.css` **之后**，否则压不住它的旧值）。
-2. **`typography.css`** —— 五级改六级，`--text-*`（字号）改名 `--fs-*`，同步改所有引用点。
-3. **`tailwind.config.cjs`** —— `fontSize` 映射六级、`colors` 补状态色与 `-hover/-active`、`borderRadius` 补层级。
+2. ✅ **`typography.css`** —— 五级改六级，`--text-*`（字号）改名 `--fs-*`，同步改所有引用点。
+3. ✅ **Tailwind 词表** —— 新建 `tailwind-preset.cjs`，把 §9 的 token 映射成类名；
+   库的 `tailwind.config.cjs` 与消费方引同一个文件，见 §11.2。
 4. **`Card` / `Button` / `Badge`** —— 三个最常用的，先落这一批，暗亮两套各过一遍。
 5. **其余 §7.1 组件** —— 按使用频率排。
 6. **宿主 `rain.css` / `tokens.css`** —— 桥接到新 token，退役 `--accent-primary: #6366f1`
@@ -501,6 +502,45 @@ C 段里还有一大批 `--btn-*` / `--status-*` / `--bg-*` / `--card-*` / `--te
    这一步做完，`palettes.css` 里就只剩一份真相。
 
 每步都要在暗亮两套主题下各截图确认一次，再进下一步。
+
+### 11.2 Tailwind 词表（`tailwind-preset.cjs`）
+
+§9 的 token 要在 JSX 里直接可用，就得有一份「token → 类名」的映射。这份映射**只有一个
+文件**：`tailwind-preset.cjs`。它只做转接头，一行字面色值都没有——真正定义颜色的是
+`palettes.css`。库自己的 `tailwind.config.cjs` 用 `presets` 引它，消费方引同一个文件，
+项目里不再抄第二份（抄了就会漂：同一个 `text-body` 在库里 13px、在项目里 14px，查不出来）。
+
+| 表 | 键 | 例子 |
+| --- | --- | --- |
+| `colors`（裸三元组） | shadcn 那套 + `accent-strong` / `-strong-soft` / `-solid` + 四组状态色 + `-hover` / `-active` | `bg-primary`、`text-success-foreground` |
+| `colors`（完整色值） | `ink.*`、`line.*`、`surface.*`、`selected.*` | `text-ink-secondary`、`border-line-2`、`bg-surface-1` |
+| `fontSize` | 6 档，`lineHeight` / `fontWeight` 一起给 | `text-body` 一次拿到 13px / 1.5 / 400 |
+| `borderRadius` | `control` `panel` `overlay` `nested` `nested-deep` | `rounded-panel` = 11px |
+| `boxShadow` | `card` `popover` `control` `control-hover` `inset-highlight` | `shadow-card` |
+
+三个容易踩的点：
+
+- **`bg-accent` 不是强调色。** 它是 shadcn 的「悬停底」（`--accent`）。强调色是
+  `accent-strong`（图标、进度、选中文字）和 `accent-solid`（压白字的实心填充），见 §3。
+- **焦点环不要写 `shadow-focus`。** Tailwind 的 `shadow-*` 是整体覆盖 `--tw-shadow`，
+  `shadow-card shadow-focus` 会把卡片阴影顶掉，而设计规则是「原阴影 **+** 焦点环」。
+  用 ring 体系：`ring ring-ring/[0.22]`。ring 默认就是 3px，`[0.22]` 与
+  `--focus-ring` 的 alpha 完全一致，且 ring 是叠在 shadow 之上的（已实测产物）。
+- **`fontSize` 的键名和 `colors` 的键名刻意不重叠。** `text-*` 在两处同名时只会命中
+  其中一边，另一边静默失效——所以 `label` / `body` / `meta` 只做字号，不做颜色。
+
+消费方**按包根解析**取这个文件：
+
+```js
+const { dirname, join } = require("node:path");
+const rainUiRoot = dirname(require.resolve("rain-ui/package.json"));
+module.exports = { presets: [require(join(rainUiRoot, "dist/tailwind-preset.cjs"))] };
+```
+
+不要写 `require("rain-ui/tailwind-preset")`：本地 `file:` 依赖下，`node_modules/rain-ui`
+是按 `files` 字段拷出来的副本，`package.json` 是安装那一刻的快照，`exports` 里新加的
+子路径不会同步过去，会直接报 `ERR_PACKAGE_PATH_NOT_EXPORTED`。按包根解析则两种安装
+方式都成立。`exports` 里那句 `"./tailwind-preset"` 留着，给从 tag 正式安装的消费方用。
 
 ### 11.1 对比度自检脚本
 

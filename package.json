@@ -20,6 +20,7 @@
       "require": "./dist/rain-ui.cjs"
     },
     "./styles.css": "./dist/rain-ui.css",
+    "./tailwind-preset": "./dist/tailwind-preset.cjs",
     "./components/BootScreen/BootScreen": {
       "types": "./dist/types/components/BootScreen/BootScreen.d.ts",
       "import": "./dist/components/BootScreen/BootScreen.js",
