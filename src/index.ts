@@ -73,6 +73,13 @@ export {
 // 让 Tailwind 版把它顶掉会直接丢样式。组合件那份先留在库里当草稿。
 export * from "./components/icons/AppIcon"
 export * from "./components/composed/segmented-control"
+// 可展开条目：整行可点开合，收起态一行、展开态按用途换设计。
+// 壳 + 四套展开形态（配置表单 / 只读信息 / 下载更新 / 单选切换）。
+export * from "./components/composed/expandable-item"
+export * from "./components/composed/tool-item"
+export * from "./components/composed/tool-info-item"
+export * from "./components/composed/tool-update-item"
+export * from "./components/composed/tool-choice-item"
 export * from "./components/ui/separator"
 export * from "./components/ui/slider"
 export * from "./components/ui/reasoning-effort"

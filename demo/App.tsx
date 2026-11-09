@@ -105,6 +105,7 @@ import {
 } from "@/components/composed"
 import { cn } from "@/lib/utils"
 import { SpecIcons } from "./spec-icons"
+import { ToolItemsSpec } from "./tool-items"
 interface NavItem {
   id: string
   title: string
@@ -170,6 +171,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: "usage-metrics-strip", title: "Usage Metrics", label: "会话用量", group: "composed" },
   { id: "segmented-control", title: "Segmented", label: "分段切换", group: "composed" },
   { id: "status-badge", title: "Status Badge", label: "状态徽章", group: "composed" },
+  { id: "tool-items", title: "Tool Items", label: "工具条目（展开收缩）", group: "composed" },
 ]
 const PageContext = React.createContext<string | null>(null)
 
@@ -749,6 +751,10 @@ export function App() {
               <StatusBadge variant="neutral">空闲</StatusBadge>
               <StatusBadge variant="primary" hideDot>v2.4.0</StatusBadge>
             </div>
+          </Section>
+
+          <Section id="tool-items" title="Tool Items" label="工具条目（展开收缩）" count={0}>
+            <ToolItemsSpec />
           </Section>
 
           {/* Avatar */}
