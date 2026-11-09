@@ -30,6 +30,7 @@
 @import "../../components/ConfirmDialog/confirm-dialog.css";
 @import "../../components/RenameDialog/rename-dialog.css";
 @import "../../components/ToolEmptyState/tool-empty-state.css";
+@import "../../components/ToolLoadingState/tool-loading-state.css";
 @import "../../components/ToolIcon/tool-icon.css";
 @import "../../components/BorderGlow/border-glow.css";
 @import "../../components/BootScreen/boot-screen.css";

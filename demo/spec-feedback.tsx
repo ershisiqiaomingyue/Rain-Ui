@@ -29,6 +29,7 @@ import {
   StepSpinner,
   ToolBackButton,
   ToolEmptyState,
+  ToolLoadingState,
   Tooltip,
   Portal,
   PortalProvider,
@@ -428,7 +429,44 @@ export function SpecEmptyStates() {
       </Group>
       <Group title="请勿这样用" hint="空状态不是错误提示：不要说「失败」「异常」，那是 NoticePanel / Portal 的职责。">
         <Note>
-          错误 → NoticePanel tone=&quot;danger&quot; 或 Portal；空 → ToolEmptyState；加载中 → Spinner + 真实尺寸骨架。
+          错误 → NoticePanel tone=&quot;danger&quot; 或 Portal；空 → ToolEmptyState；
+          加载中 → ToolLoadingState（整块）或 Spinner + 真实尺寸骨架（形状已知）。
+        </Note>
+      </Group>
+    </Stack>
+  );
+}
+
+/* ── ToolLoadingState / 等待态 ──────────────────────────────────────────── */
+
+export function SpecLoadingStates() {
+  return (
+    <Stack gap={20}>
+      <Group title="整块等待" hint="一颗居中 Spinner + 一句在等什么，占住它马上要被填满的那块区域；不要写成左上角的一行文本。">
+        <Card>
+          <CardBody>
+            <ToolLoadingState title="正在读取插件…" description="第一次启动还要校验本地包完整性。" />
+          </CardBody>
+        </Card>
+      </Group>
+      <Group title="fill：占满区域并垂直居中" hint="整页 / 整面板的首次渲染用；父级要有确定高度（flex:1 面板、min-h-full 内容列）。">
+        <Card>
+          <CardBody style={{ height: 220, display: "flex" }}>
+            <ToolLoadingState fill title="正在读取当前设置…" description="从本机读取模型与工具配置。" />
+          </CardBody>
+        </Card>
+      </Group>
+      <Group title="compact：贴在工具栏下" hint="区域上方已有工具栏或标题时用它；10px 上下留白、左对齐，不抢高度。">
+        <Card>
+          <CardBody>
+            <ToolLoadingState compact title="正在检查插件更新…" />
+          </CardBody>
+        </Card>
+      </Group>
+      <Group title="什么时候不用它" hint="骨架屏负责形状已知的首屏；按钮、列表行、状态栏里的等待仍然只用 Spinner。">
+        <Note>
+          对着真实卡片画骨架（HomePanel 那种）比一句话更准，别用等待态糊过去；反过来，
+          形状未知、只剩一句话可说时也别硬凑骨架。两者都居中在本区域内，别贴着左上角。
         </Note>
       </Group>
     </Stack>

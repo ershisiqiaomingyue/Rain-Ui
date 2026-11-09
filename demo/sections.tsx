@@ -19,6 +19,7 @@ import {
   SpecContextMenu,
   SpecProgressRing,
   SpecEmptyStates,
+  SpecLoadingStates,
   SpecIconButtons,
 } from "./spec-feedback";
 import { SpecNoticeTypes, SpecNoticeContents, SpecNoticeRules, SpecChatQueue } from "./spec-notice";
@@ -91,6 +92,7 @@ export const SECTIONS: DemoSection[] = [
   { id: "context-menu", title: "ContextMenu 右键菜单", note: "方向键移动、Enter 选中、Esc 归还焦点。", group: "feedback", render: () => <SpecContextMenu /> },
   { id: "progress-ring", title: "ProgressRing 环形进度", note: "70% 转警告、90% 转危险；null 是未知不是 0。", group: "feedback", render: () => <SpecProgressRing /> },
   { id: "empty", title: "ToolEmptyState 空状态", note: "一句话说清为什么空 + 下一步；不画插画。", group: "feedback", render: () => <SpecEmptyStates /> },
+  { id: "loading", title: "ToolLoadingState 等待态", note: "整块等待居中在本区域，不贴在左上角；形状已知时改用骨架。", group: "feedback", render: () => <SpecLoadingStates /> },
   { id: "icon-buttons", title: "图标按钮", note: "同一行尺寸一致，只有一项可以是强调色。", group: "feedback", render: () => <SpecIconButtons /> },
 
   /* ── 对话（09 通知面板） ───────────────────────────────────────────── */

@@ -1,0 +1,66 @@
+/* Loading region: one centred spinner plus the sentence that says what is being
+   waited for. It uses the same box as .tool-empty-state so a region can swap
+   between "waiting" and "empty" without the layout jumping. */
+.tool-loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 120px;
+  padding: 24px 20px;
+  text-align: center;
+  color: var(--text-tertiary);
+  background: transparent;
+}
+
+/* Stretch over the region it fills. Flex parent: grow into the leftover space.
+   Plain block parent with a definite height (a scroll body): min-height: 100%
+   does the same job. Only use it when the region holds nothing else. */
+.tool-loading-state.fill {
+  flex: 1 1 auto;
+  min-height: 100%;
+}
+
+.tool-loading-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  max-width: 46ch;
+}
+
+.tool-loading-title {
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.tool-loading-state p {
+  margin: 0;
+  font-size: var(--text-label);
+  line-height: 1.6;
+  color: var(--text-tertiary);
+  overflow-wrap: anywhere;
+}
+
+/* Compact: a row that hugs the toolbar or list head above it. */
+.tool-loading-state.compact {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 0;
+  padding: 10px 0;
+  text-align: left;
+}
+
+.tool-loading-state.compact .tool-loading-copy {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
+  max-width: none;
+}
+
+.tool-loading-state.compact .tool-loading-title { font-size: var(--text-body); }
+.tool-loading-state.compact p { font-size: var(--text-label); }
