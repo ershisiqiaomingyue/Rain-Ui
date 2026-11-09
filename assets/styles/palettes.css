@@ -582,3 +582,58 @@ html[data-theme] {
   --status-pending-border: 1.5px solid var(--line-strong);
   --composer-divider: var(--line-2);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   第二套配色：玫瑰（`html[data-palette="rose"]`）
+
+   加一套配色**不是再写一份完整调色板**，而是只覆盖「带色相的那几个 token」：
+   中性骨架（`--background` / `--surface-*` / `--line-*` / `--ink-*` / `--border`）
+   所有配色共用，这也是这套设计里「表面永远中性」那条规则的直接收益 —— 加第三套
+   （淡紫、薄荷……）只需要再抄这一段。
+
+   写的时候守三条：
+   1. 只换色相，明度/饱和度的**关系**跟原套保持一致，这样对比度和层级都是验过的；
+   2. 暗色块用 `html[data-palette="…"]`（压 `:root`），亮色块必须写
+      `html[data-theme="light"][data-palette="…"]` —— 两个属性 = 比亮色块高一级，否则压不住；
+   3. 白字只允许落在 `--accent-solid` / `--error` / `--destructive` 上，所以
+      `--accent-solid` 的明度要卡在能过 4.5:1 的那一档（玫瑰 = 48% / 44%）。
+   ═══════════════════════════════════════════════════════════════════════════ */
+html[data-palette="rose"] {
+  --ring: 340 58% 76%;
+  --primary: 340 34% 22%;
+  --primary-foreground: 340 92% 88%;
+  --primary-hover: 340 36% 26%;
+  --primary-active: 340 38% 29%;
+  --accent-strong: 340 64% 76%;
+  --accent-strong-soft: 340 80% 86%;
+  --accent-solid: 340 52% 48%;
+  --selected-bg: hsl(340 58% 76% / 0.16);
+  --selected-fg: hsl(340 92% 90%);
+  --ambient-glow: radial-gradient(circle, hsl(340 70% 62% / 0.08) 0%, transparent 60%);
+  --blob-1: radial-gradient(circle, hsl(340 70% 62% / 0.10) 0%, transparent 70%);
+  --blob-2: radial-gradient(circle, hsl(344 68% 58% / 0.08) 0%, transparent 70%);
+  --blob-3: radial-gradient(circle, hsl(335 60% 52% / 0.06) 0%, transparent 70%);
+  --blob-4: radial-gradient(circle, hsl(348 66% 64% / 0.07) 0%, transparent 70%);
+  --inference-fill-deep: hsl(340 48% 40%);
+  --inference-spark: hsl(340 80% 93%);
+}
+
+html[data-theme="light"][data-palette="rose"] {
+  --ring: 340 84% 89%;
+  --primary: 340 88% 95%;
+  --primary-foreground: 340 62% 44%;
+  --primary-hover: 340 88% 92%;
+  --primary-active: 340 86% 88%;
+  --accent-strong: 340 62% 44%;
+  --accent-strong-soft: 340 80% 92%;
+  --accent-solid: 340 62% 44%;
+  --selected-bg: hsl(340 88% 95%);
+  --selected-fg: hsl(340 58% 36%);
+  --ambient-glow: radial-gradient(circle, hsl(340 84% 82% / 0.16) 0%, transparent 60%);
+  --blob-1: radial-gradient(circle, hsl(340 84% 90% / 0.55) 0%, transparent 70%);
+  --blob-2: radial-gradient(circle, hsl(344 84% 91% / 0.45) 0%, transparent 70%);
+  --blob-3: radial-gradient(circle, hsl(335 76% 91% / 0.40) 0%, transparent 70%);
+  --blob-4: radial-gradient(circle, hsl(348 84% 93% / 0.45) 0%, transparent 70%);
+  --inference-fill-deep: hsl(340 52% 34%);
+  --inference-spark: hsl(340 84% 96%);
+}

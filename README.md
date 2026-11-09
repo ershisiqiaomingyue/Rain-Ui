@@ -165,6 +165,10 @@ module.exports = { presets: [require(join(rainUiRoot, "dist/tailwind-preset.cjs"
 两个反直觉的点：`bg-accent` 是 shadcn 的「悬停底」，强调色是 `accent-strong` / `accent-solid`；
 暗亮两套值都在 `palettes.css` 里，组件里永远不要判断主题。
 
+要换整套配色时**不要另写一份调色板**：中性骨架共用，只覆盖十来个带色相的 token 即可，
+现成的第二套是 `html[data-palette="rose"]`（`palettes.css` 末尾），加法见 `docs/design.md`
+§1.4。
+
 ## 开发
 
 ```bash

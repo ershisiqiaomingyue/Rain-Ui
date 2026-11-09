@@ -50,6 +50,28 @@
 
 不做：整块主色面板、主色渐变底、彩色侧边条、彩色左边框。
 
+### 1.4 第二套配色：只换色相
+
+「配色可以做几套」不等于几份完整调色板。**中性骨架是共用的**，一套配色只需要换掉
+`--ring` / `--primary*` / `--accent-strong*` / `--accent-solid` / `--selected-*`
+这十来个**带色相**的 token（外加 `--ambient-glow` / `--blob-*` / `--inference-*`
+那几处装饰），其余一律不动 —— 这正是 §1.3「表面永远中性」的直接收益。
+
+现成第二套是玫瑰：`assets/styles/palettes.css` 末尾的
+`html[data-palette="rose"]` 与 `html[data-theme="light"][data-palette="rose"]`。
+
+写第三套时要守三条：
+
+1. **只换色相，明度/饱和度的关系照抄**，这样层级和对比度都是已经验过的那一档；
+2. 亮色块必须写**两个属性**（`html[data-theme="light"][data-palette="…"]`）——
+   和亮色块选择器同级时靠源码顺序分胜负，属性多一个才稳；
+3. 白字只允许落在 `--accent-solid` / `--error` / `--destructive` 上，
+   所以 `--accent-solid` 的明度要卡在能过 4.5:1 的那一档（暗 48% / 亮 44%）。
+
+自检：`?theme=…&palette=…` 出四张图（暗/亮 × 默认/新套），关键对至少量一遍
+（白字 on `--accent-solid`、`--primary-foreground` on `--primary`、
+`--selected-fg` on `--selected-bg`、`--accent-strong` on 卡面）。
+
 ---
 
 ## 2. 表面与层级
