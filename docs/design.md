@@ -497,6 +497,11 @@ C 段里还有一大批 `--btn-*` / `--status-*` / `--bg-*` / `--card-*` / `--te
 - 开第二套灰阶、第二套配色、第二个主题家族。
 - **在桥接层里写死色值。** 桥接层只能用 `var()` / `hsl(var(--x))`。它排在亮色块之后，
   夹一个深色字面值进去，亮色主题会被它一起盖掉。
+- **把整值 token 再包一层 `hsl()`。** `--ink-*` / `--line-*` / `--surface-*` / `--selected-*`
+  本身就是 `hsl(...)` 全值，再写成 `hsl(var(--ink-secondary))` 就是 `hsl(hsl(...))`。那是
+  **无效值**：不报错，但所有用到它的声明在计算期整条失效、悄悄退回继承色 —— 最难查的一种坏。
+  只有三胞胎（§9.1）才包 `hsl()`；要透明度用
+  `color-mix(in srgb, var(--ink-muted) 45%, transparent)`，别写 `hsl(var(--ink-muted) / .45)`。
 
 ---
 
@@ -569,4 +574,12 @@ module.exports = { presets: [require(join(rainUiRoot, "dist/tailwind-preset.cjs"
 配色不是靠眼睛定的。`rainui-contrast.py`（临时脚本，逻辑在 §4 末尾的验收线）
 解析 `palettes.css`，把所有「前景压背景」的组合算一遍 WCAG 比值，不达标就退出码 1。
 当前 54 组在暗亮两套下全过。**改配色后必须重跑**，尤其是动了 `--ink-*` 或状态色。
+
+还有一道「计算值」闸：把 `palettes.css` 里每个名字的 computed value 打出来，检查
+① 两套主题下都非空、② 没有 `hsl(hsl(`、③ 没有残留没解析的 `var(`。做法是在页面里
+`getComputedStyle(document.documentElement).getPropertyValue(name)` 逐条读，再用
+`msedge --headless=new --dump-dom` 把结果取回来。这套东西抓到过对比度脚本抓不到的坏：
+桥接层 27 处「整值 token 又被包了一层 `hsl()`」，表面上不报错，实际让
+`--text-secondary` / `--sidebar-bg` / `--tooltip-bg` / `--badge-text` / `--scrollbar-thumb`
+全部悄悄退回继承色 —— 对比度脚本只算声明里的字面值，算不出计算期失效。
 

@@ -344,18 +344,18 @@ html[data-theme] {
 
   /* ── 墨色家族 ─────────────────────────────────────────────────────────── */
   --text-primary: hsl(var(--foreground));
-  --text-secondary: hsl(var(--ink-secondary));
-  --text-tertiary: hsl(var(--ink-tertiary));
-  --text-muted: hsl(var(--ink-muted));
+  --text-secondary: var(--ink-secondary);
+  --text-tertiary: var(--ink-tertiary);
+  --text-muted: var(--ink-muted);
   /* quaternary 旧值和 tertiary 是近似重复，这里直接合并，
      不再留一个「看起来一样但名字不同」的变量。 */
-  --text-quaternary: hsl(var(--ink-tertiary));
+  --text-quaternary: var(--ink-tertiary);
   --selection-text: hsl(var(--foreground));
   --input-text: hsl(var(--foreground));
   --input-hover-text: hsl(var(--foreground));
   --button-hover-text: hsl(var(--foreground));
-  --control-text: hsl(var(--ink-secondary));
-  --tooltip-bg: hsl(var(--ink-high));
+  --control-text: var(--ink-secondary);
+  --tooltip-bg: var(--ink-high);
   --tooltip-text: hsl(var(--background));
 
   /* ── 发丝线家族 ─────────────────────────────────────────────────────────
@@ -376,10 +376,10 @@ html[data-theme] {
   --bg-canvas: hsl(var(--background));
   --page-pane-bg: hsl(var(--background));
   --page-header-bg: hsl(var(--background));
-  --bg-app: hsl(var(--surface-shell));
-  --topbar-bg: hsl(var(--surface-shell));
-  --context-navigation-bg: hsl(var(--surface-shell));
-  --sidebar-bg: hsl(var(--surface-shell));
+  --bg-app: var(--surface-shell);
+  --topbar-bg: var(--surface-shell);
+  --context-navigation-bg: var(--surface-shell);
+  --sidebar-bg: var(--surface-shell);
   --bg-ambient: var(--surface-0);
   --bg-base: var(--surface-0);
   --bg-surface: hsl(var(--card));
@@ -421,8 +421,8 @@ html[data-theme] {
   --rail-hover-bg: var(--surface-hover);
   --rail-active-bg: var(--selected-bg);
   --chrome-hover: var(--surface-hover);
-  --chrome-ink: hsl(var(--ink-high));
-  --chrome-muted: hsl(var(--ink-secondary));
+  --chrome-ink: var(--ink-high);
+  --chrome-muted: var(--ink-secondary);
   --chrome-selected: var(--selected-bg);
 
   /* ── 焦点 ─────────────────────────────────────────────────────────────── */
@@ -450,21 +450,21 @@ html[data-theme] {
   --btn-subtle-bg: transparent;
   --btn-subtle-hover: var(--surface-hover);
   --btn-subtle-border: transparent;
-  --btn-subtle-text: hsl(var(--ink-secondary));
+  --btn-subtle-text: var(--ink-secondary);
   /* 危险按钮：可撤销的用淡玫瑰，不可逆的才用实心深粉。 */
   --btn-danger-bg: hsl(var(--destructive-soft-bg));
-  --btn-danger-hover: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 88%, hsl(var(--ink-high)));
-  --btn-danger-active-bg: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, hsl(var(--ink-high)));
+  --btn-danger-hover: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 88%, var(--ink-high));
+  --btn-danger-active-bg: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, var(--ink-high));
   --btn-danger-text: hsl(var(--destructive-soft-bg-foreground));
   --btn-success-bg: hsl(var(--success-bg));
-  --btn-success-hover: color-mix(in srgb, hsl(var(--success-bg)) 88%, hsl(var(--ink-high)));
+  --btn-success-hover: color-mix(in srgb, hsl(var(--success-bg)) 88%, var(--ink-high));
   --btn-success-text: hsl(var(--success-bg-foreground));
   /* 危险动作的实心形态：只有不可逆删除才配得上白字。 */
   --btn-destructive-bg: hsl(var(--destructive));
   --btn-destructive-hover: hsl(var(--destructive-hover));
   --btn-destructive-text: hsl(var(--destructive-foreground));
   /* 按下态：往 ink-high 挪一点（暗色变亮、亮色变深），跟其它按钮同一个约定。 */
-  --btn-destructive-active-bg: color-mix(in srgb, hsl(var(--destructive)) 84%, hsl(var(--ink-high)));
+  --btn-destructive-active-bg: color-mix(in srgb, hsl(var(--destructive)) 84%, var(--ink-high));
 
   /* 玻璃按钮：这一版不要材质了，退化成平面填充。
      blur/sheen/rim/lift 全部清掉，只留底色与文字。
@@ -482,8 +482,8 @@ html[data-theme] {
   --btn-glass-neutral-hover: var(--surface-hover);
   --btn-glass-neutral-active: var(--surface-active);
   --btn-glass-danger-bg: hsl(var(--destructive-soft-bg));
-  --btn-glass-danger-hover: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 88%, hsl(var(--ink-high)));
-  --btn-glass-danger-active: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, hsl(var(--ink-high)));
+  --btn-glass-danger-hover: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 88%, var(--ink-high));
+  --btn-glass-danger-active: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, var(--ink-high));
 
   /* ── 控件家族 ─────────────────────────────────────────────────────────── */
   /* 勾选盘/开关只分「开/关」两态，用实心靛填充 + 白勾。 */
@@ -491,9 +491,9 @@ html[data-theme] {
   --switch-active-bg: hsl(var(--accent-solid));
   --switch-thumb-bg: var(--knob-bg);
   --segmented-bg: var(--surface-inset);
-  --segmented-text: hsl(var(--ink-secondary));
+  --segmented-text: var(--ink-secondary);
   --segmented-hover-bg: var(--surface-hover);
-  --segmented-active-text: hsl(var(--ink-high));
+  --segmented-active-text: var(--ink-high);
   --segmented-active-shadow: none;
 
   /* ── 状态家族 ─────────────────────────────────────────────────────────── */
@@ -510,29 +510,29 @@ html[data-theme] {
   --status-info-bg: hsl(var(--primary));
   --status-info-text: hsl(var(--primary-foreground));
   --status-neutral-bg: var(--surface-inset);
-  --status-neutral-text: hsl(var(--ink-secondary));
+  --status-neutral-text: var(--ink-secondary);
   --status-success: hsl(var(--success));
   --status-warning: hsl(var(--warning));
   --status-danger: hsl(var(--destructive-soft));
   --badge-bg: var(--surface-inset);
-  --badge-text: hsl(var(--ink-secondary));
+  --badge-text: var(--ink-secondary);
 
   /* ── 表格 / 进度 / 骨架 ───────────────────────────────────────────────── */
   --table-bg: hsl(var(--card));
   --table-text: hsl(var(--foreground));
   --table-header-bg: var(--surface-inset);
-  --table-header-text: hsl(var(--ink-secondary));
+  --table-header-text: var(--ink-secondary);
   --table-stripe-bg: var(--surface-inset);
   --table-hover-bg: var(--surface-hover);
   --table-divider: var(--line-3);
   --progress-track-bg: var(--surface-inset);
   --property-hover-bg: var(--surface-hover);
   --session-tab-bg: var(--surface-inset);
-  --session-tab-text: hsl(var(--ink-secondary));
+  --session-tab-text: var(--ink-secondary);
   --session-tab-hover-bg: var(--surface-hover);
-  --session-tab-active-bg: hsl(var(--surface-shell));
+  --session-tab-active-bg: var(--surface-shell);
   --session-tab-active-hover-bg: var(--surface-hover);
-  --session-tab-active-text: hsl(var(--ink-high));
+  --session-tab-active-text: var(--ink-high);
 
   /* ── 推理滑杆 ─────────────────────────────────────────────────────────── */
   --inference-fill: hsl(var(--accent-strong));
@@ -540,7 +540,7 @@ html[data-theme] {
   --inference-fill-warm: hsl(var(--warning));
   --inference-track: var(--surface-inset);
   --inference-accent: hsl(var(--primary-foreground));
-  --inference-thumb: hsl(var(--ink-high));
+  --inference-thumb: var(--ink-high);
 
   /* ── 输入类控件 ───────────────────────────────────────────────────────── */
   /* input / select / rename-dialog 直接读的一组旧名。凹槽语义：默认比周围深一档
@@ -551,7 +551,7 @@ html[data-theme] {
   --input-bg-focus: var(--surface-1);
   --input-border: 1px solid var(--line-1);
   --input-focus-border: 1px solid var(--line-1);
-  --input-muted: hsl(var(--ink-tertiary));
+  --input-muted: var(--ink-tertiary);
   /* 旧的“输入框投影”打包值。现在一律平面，但仍然写成一个零尺寸透明阴影：
      select.css 里是 `box-shadow: var(--focus-ring), var(--input-glass)`，
      填 none 会让整条声明作废，连焦点环一起丢掉。 */
@@ -562,7 +562,7 @@ html[data-theme] {
   /* 增删行用 status 家族的淡底 + 深字，跟徽标同一套（design.md §4）。 */
   --code-background: var(--surface-inset);
   --code-foreground: hsl(var(--foreground));
-  --code-line-number: hsl(var(--ink-tertiary));
+  --code-line-number: var(--ink-tertiary);
   --code-diff-added-bg: hsl(var(--success-bg));
   --code-diff-added-text: hsl(var(--success-bg-foreground));
   --code-diff-removed-bg: hsl(var(--destructive-soft-bg));
@@ -571,7 +571,7 @@ html[data-theme] {
 
   /* ── 零散：滚动条、遮罩、未选中控件 ───────────────────────────────────── */
   /* 滚动条滑块 = 弱化的墨色；比旧值更安静，也不再是纯粹的白色蒙层。 */
-  --scrollbar-thumb: hsl(var(--ink-muted) / 0.45);
+  --scrollbar-thumb: color-mix(in srgb, var(--ink-muted) 45%, transparent);
   --overlay-bg: var(--scrim);
   /* 关掉的开关轨道 / 未勾选的框。这里不能用 --surface-inset：
      轨道自己没有描边，而 inset 和背景只差 1% 明度，暗色下等于看不见
