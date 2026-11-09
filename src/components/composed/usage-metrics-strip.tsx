@@ -162,9 +162,10 @@ export function UsageMetricsStrip({
       >
         <AppIcon name="balance" size={12} className="size-3 text-muted-foreground" />
         <span className="text-muted-foreground">{balance.label}</span>
-        {/* 数值槽位定宽：查询中 / 查询失败 / 正常余额之间来回切时整行不跟着横跳，
-            超长余额（例如带 6 位小数加币种）截断，完整值仍在 title 里。 */}
-        <b className="w-[10ch] min-w-0 truncate text-left font-medium tabular-nums text-foreground">
+        {/* 数值槽位只设上限：短值（「未上报」「不支持」）贴着 8px 内边距，hover 底色的
+            左右留白才和别的条目对称；超长余额（例如带 6 位小数加币种）在 10ch 处截断，
+            完整值仍在 title 里。 */}
+        <b className="max-w-[10ch] min-w-0 truncate text-left font-medium tabular-nums text-foreground">
           {balance.value ?? "—"}
         </b>
         {/* 传了 refreshing 就常驻一个转圈位，避免刷新中多出一个图标把整行推走。 */}
