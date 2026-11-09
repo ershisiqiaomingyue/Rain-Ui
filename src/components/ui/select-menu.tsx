@@ -172,8 +172,13 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
              * 隐藏探针按弹层 item 的真实结构测量：图标、说明文字、右侧徽标、
              * 勾选槽和行内操作都会参与。弹层相对触发器多出的 20px 内边距
              * 用 -mx-2.5 抵消，末尾 pr-2 是统一预留的 8px。
+             *
+             * 列宽写死成 `minmax(0,1fr)`：不约束时整格仍按探针撑开（宽度照旧跟内容走），
+             * 一旦外层把触发器收窄（设备选择器那种定宽下拉），列才跟着收窄，里面的
+             * 文字才能真的省略。缺了它，列宽由探针的 max-content 决定，选中项会溢出到
+             * 箭头底下被硬切掉，连省略号都不出现。
              */}
-            <span className="grid min-w-0 max-w-full">
+            <span className="grid min-w-0 max-w-full grid-cols-[minmax(0,1fr)]">
               {options.map((option, index) => (
                 <span
                   key={`measure-option-${option.value}-${index}`}
@@ -230,7 +235,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               ))}
               <span className="col-start-1 row-start-1 flex min-w-0 items-center gap-2">
                 {currentOption?.leading}
-                <span className={cn("truncate", !currentOption && !currentVal && "text-muted-foreground/60")}>
+                <span className={cn("min-w-0 truncate", !currentOption && !currentVal && "text-muted-foreground/60")}>
                   {displayText}
                 </span>
               </span>
