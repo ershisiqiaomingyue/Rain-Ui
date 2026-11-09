@@ -521,11 +521,23 @@ C 段里还有一大批 `--btn-*` / `--status-*` / `--bg-*` / `--card-*` / `--te
    全部改走 §9 token；全库 CSS 现在 0 处写死颜色（只剩 `border-glow` 的 mask 渐变和两处
    `rgb(from var(--popover-bg) …)`，那是有意的）。`--card-tone-*` **保留**：它不是死 token，
    而是 `Card` 组件的 `tone` 属性（`surface` / `muted` / `subtle` / `deep`）。
-6. **宿主 `rain.css` / `tokens.css`** —— 桥接到新 token，退役 `--accent-primary: #6366f1`
-   及其派生的 `--accent-glow` / `--accent-subtle` / `--bg-selected` / `--hover-tint` /
-   `--btn-glass-accent-*` / `--control-checked-bg`。
-7. **删桥接层** —— 组件都改用 §9.1 的 A/B/C 名字后，把 `palettes.css` 里那一大段
-   `--bg-*` / `--text-*` / `--btn-*` / `--status-*` 映射删掉，同时删 `tokens.css` 里的旧声明。
+6. ✅ **宿主 `rain.css` / `tokens.css`** —— 宿主不再抄一份：`rain.css` 只剩 `@tailwind` 三条指令、
+   `border-border` 基线、tooltip 与强调按钮三处补丁、`inline-spin`；`tokens.css` 每条都是派生
+   （`var(--库 token)` / `color-mix`）或本产品独有的族（字体、输入族、输入坞、终端调色板、
+   代码高亮）。`tailwind.config.cjs` 只挂 `presets: [库的 dist/tailwind-preset.cjs]`，
+   颜色/字号/圆角/阴影不再有第二份定义。`--accent-primary: #6366f1` 及其派生全部退役。
+   两个坑记一下：宿主 `tokens.css` 同时是 `tests/terminalTheme.test.mts` 的**测试夹具**
+   （用正则抓文本），删声明前要 `grep tests/`；那条「面和画布不能同色」已改成读终端页自己
+   那份 token。另外 `prepare-rain-ui.mjs` 注入的 `node_modules/rain-ui/package.json` 是安装时
+   的快照，`exports` 里新加的 `./tailwind-preset` 它看不见，所以 preset 要按「包根 + dist/…」解析。
+7. **删桥接层（下一步，未做）** —— 宿主 CSS 里仍有大量 `--bg-*` / `--text-*` / `--btn-*` /
+   `--status-*` 的读取点，`palettes.css` 那段映射还是它们的唯一来源，因此**不能整段删**。
+   正确顺序：先把宿主 CSS 的读取点逐个换成 §9.1 的 A/B/C 名字（或 Tailwind 类），再删映射，
+   最后清 `tokens.css` 里被掏空的旧声明。
+   已知两处尾巴：`Android-Toolkit/src/views/Chat/styles/conversation-base.css` 还有 199 处写死的
+   石板灰/宝蓝（旧主题残留，部分已被 `conversation-workspace.css` 覆盖，要按规则换成
+   `--ink-*` / `--accent-strong`，且必须对着 Chat 视图逐个核）；终端页的
+   `terminal-tokens.css` 是生成物、对上游的 parity 契约，故意不跟本产品换色。
    这一步做完，`palettes.css` 里就只剩一份真相。
 
 每步都要在暗亮两套主题下各截图确认一次，再进下一步。

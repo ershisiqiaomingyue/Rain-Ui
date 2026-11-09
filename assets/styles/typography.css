@@ -46,17 +46,6 @@
   --fw-micro: 500;
 }
 
-/* 兼容别名：宿主（Android-Toolkit）还有 6 处引用旧名，先指过去，
-   等落地顺序第 6 步改完宿主再连同这一段一起删。
-   注意：别名只能出现在这里，别处不许再引用旧名——这正是要拆掉的坑。 */
-:root {
-  --text-display: var(--fs-headline);
-  --text-title: var(--fs-title);
-  --text-body: var(--fs-body);
-  --text-label: var(--fs-label);
-  --text-meta: var(--fs-meta);
-}
-
 body {
   font-family: var(--font-sans);
   font-size: var(--fs-body);
