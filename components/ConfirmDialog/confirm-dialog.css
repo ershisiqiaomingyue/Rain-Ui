@@ -20,10 +20,8 @@
   to { opacity: 1; }
 }
 
+/* 单列：图标和标题共用第一行，说明文字跟在下面占满整行宽度。 */
 .confirm-dialog-modal {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
   width: min(440px, 94vw);
   padding: 22px;
   background: var(--surface-popover);
@@ -48,29 +46,35 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-panel);
+  width: var(--confirm-dialog-icon-size);
+  height: var(--confirm-dialog-icon-size);
+  border-radius: var(--radius-control);
   background: hsl(var(--destructive-soft-bg));
   color: hsl(var(--destructive-soft-bg-foreground));
   flex-shrink: 0;
 }
 
+/* 图标与标题同行，说明文字缩进到标题那一列 —— 两个数只在这里定义一次，
+   下面 message / error 的缩进直接算出来，改尺寸不会错位。 */
 .confirm-dialog-body {
+  --confirm-dialog-icon-size: 32px;
+  --confirm-dialog-icon-gap: 12px;
+
   display: flex;
   flex-direction: column;
   gap: 10px;
-  flex: 1;
   min-width: 0;
 }
 
 .confirm-dialog-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--confirm-dialog-icon-gap);
 }
 
 .confirm-dialog-title {
+  flex: 1;
+  min-width: 0;
   margin: 0;
   font-size: var(--fs-title);
   font-weight: 700;
@@ -98,8 +102,9 @@
   border-color: transparent;
 }
 
+/* 正文和报错都从标题那一列开始，不从图标下面开始。 */
 .confirm-dialog-message {
-  margin: 0;
+  margin: 0 0 0 calc(var(--confirm-dialog-icon-size) + var(--confirm-dialog-icon-gap));
   font-size: var(--fs-body);
   color: hsl(var(--ink-secondary));
   line-height: 1.5;
@@ -107,7 +112,7 @@
 }
 
 .confirm-dialog-error {
-  margin: 0;
+  margin: 0 0 0 calc(var(--confirm-dialog-icon-size) + var(--confirm-dialog-icon-gap));
   color: hsl(var(--destructive-soft-bg-foreground));
   font-size: var(--fs-label);
   line-height: 1.5;
@@ -146,19 +151,30 @@
   --btn-primary-text: hsl(var(--primary-foreground));
 }
 
-/* 删除确认是唯一的破坏性主操作：实心深红，必须比“取消”醒目。
+/* 删除确认是唯一的破坏性主操作：实心深红 + 白字，必须比「取消」醒目。
    .btn-danger 是淡蔷薇底 + 描边，适合工具栏，放这里会看起来像禁用态。
    色值一律走 --btn-destructive-* 这组 token，不在这里写死（design.md §10）。 */
 .confirm-dialog-actions .confirm-dialog-confirm-danger {
   --btn-primary-bg: var(--btn-destructive-bg);
   --btn-primary-hover: var(--btn-destructive-hover);
-  --btn-primary-active: var(--btn-destructive-active-bg);
   --btn-primary-text: var(--btn-destructive-text);
-  --btn-primary-rim: 0 0 0 0 transparent;
+  /* 主按钮自带内高光 + 外投影（button.css 里的 --shadow-inset-highlight 和
+     --shadow-btn，都不是可覆盖的变量），实色片叠上去就是一层玻璃；
+     这里连同描边光圈一起归零，要的就是一块纯色。 */
+  box-shadow: none;
 }
 
-/* 按下态由 --btn-primary-active 接管，不再单独覆盖 background —— 单独覆盖会漏掉
-   box-shadow / transform 那两行，按下时阴影留在 hover 的重影上。 */
+/* hover / active 各自再压一遍：button.css 的 :hover / :active 会把阴影加回来，
+   而 active 底色本来取的是 --primary-active（靛蓝），红色按钮按下去会变蓝。 */
+.confirm-dialog-actions .confirm-dialog-confirm-danger:hover:not(:disabled) {
+  background: var(--btn-destructive-hover);
+  box-shadow: none;
+}
+
+.confirm-dialog-actions .confirm-dialog-confirm-danger:active:not(:disabled) {
+  background: var(--btn-destructive-active-bg);
+  box-shadow: none;
+}
 
 .confirm-dialog-actions .btn-primary:disabled:not(.btn-loading) {
   background: transparent;

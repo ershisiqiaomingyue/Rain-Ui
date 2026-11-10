@@ -99,12 +99,14 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
         onKeyDown={(event) => event.stopPropagation()}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="confirm-dialog-icon-wrapper" aria-hidden="true">
-          <AppIcon name="alert-triangle" size={20} className="confirm-dialog-icon" />
-        </div>
-
         <div className="confirm-dialog-body">
+          {/* 图标跟着标题走：它是这行的装饰，不是独立的左栏。放在标题左边，
+              行高由标题决定，图标用 align-items: center 竖直居中；
+              说明文字另起一段、占满整行，不再缩进到标题后面。 */}
           <div className="confirm-dialog-header">
+            <div className="confirm-dialog-icon-wrapper" aria-hidden="true">
+              <AppIcon name="alert-triangle" size={18} className="confirm-dialog-icon" />
+            </div>
             <h3 className="confirm-dialog-title" id={titleId}>{title}</h3>
             <button
               type="button"

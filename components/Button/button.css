@@ -176,20 +176,21 @@ html[data-theme] .btn.btn-secondary[aria-pressed="true"]:not(:disabled),
 
 /* 危险按钮：淡玫瑰实心 + 同色相深字，用来表示「可以撤销的破坏性动作」。
    不再描边染色 —— 半透明的染色边压在卡片底色上会糊成一层，看着像没渲染完。
-   不可逆的删除不用这个形态，用 --btn-destructive-*（实心深粉 + 白字）。 */
+   不可逆的删除不用这个形态，用 --btn-destructive-*（实心深粉 + 白字）。
+   三个状态都走 --btn-danger-* token（palettes.css），这样「淡一档」只在 token 里调。 */
 .btn-danger {
-  background: hsl(var(--destructive-soft-bg));
-  color: hsl(var(--destructive-soft-bg-foreground));
+  background: var(--btn-danger-bg);
+  color: var(--btn-danger-text);
   border-color: transparent;
   box-shadow: none;
 }
 
 .btn-danger:hover:not(:disabled) {
-  background: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 88%, hsl(var(--ink-high)));
+  background: var(--btn-danger-hover);
 }
 
 .btn-danger:active:not(:disabled) {
-  background: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, hsl(var(--ink-high)));
+  background: var(--btn-danger-active-bg);
   transform: translateY(0.5px);
 }
 

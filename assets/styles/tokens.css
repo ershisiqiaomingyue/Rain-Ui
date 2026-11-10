@@ -76,7 +76,6 @@
   --segmented-active-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   --btn-primary-rim: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
 
-  --btn-danger-active-bg: color-mix(in srgb, var(--danger-text) 18%, var(--bg-canvas));
   --btn-success-bg: var(--status-success-bg);
   --btn-success-hover: color-mix(in srgb, var(--success-text) 12%, var(--bg-canvas));
   --btn-success-text: var(--status-success-text);
@@ -218,7 +217,7 @@
   color-scheme: dark;
   /* Hover 只认强调靛青一个来源：hover 淡一档，active/选中（22%/12%）保持原样。
      两主题浓度不同是因为同一透明度在深底与浅底上的感知强度不同，语义仍是同一档。 */
-  --hover-tint: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  --hover-tint: color-mix(in srgb, var(--ink-high) 8%, transparent);
   --hover-tint-strong: color-mix(in srgb, var(--accent-primary) 17%, transparent);
   --bg-ambient: #090b10;
   --bg-app: #151a23;
@@ -367,18 +366,6 @@
   --btn-subtle-border: transparent;
   --btn-subtle-text: var(--text-secondary);
 
-  /* 危险按钮核心：纯正鲜红实体 (#EF4444) + 纯白文字 */
-  --btn-danger-default-bg: var(--status-danger-bg);
-  --btn-danger-default-text: var(--status-danger-text);
-  --btn-danger-default-border: transparent;
-  --btn-danger-default-glow: 0 4px 14px rgba(239, 68, 68, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  --btn-danger-hover-bg: color-mix(in srgb, var(--danger-text) 12%, var(--bg-canvas));
-  --btn-danger-hover-text: #ffffff;
-  --btn-danger-hover-border: transparent;
-  --btn-danger-hover-glow: 0 6px 24px rgba(239, 68, 68, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.45);
-  --btn-danger-bg: var(--status-danger-bg);
-  --btn-danger-hover: color-mix(in srgb, var(--danger-text) 12%, var(--bg-canvas));
-  --btn-danger-text: var(--status-danger-text);
 
   /* 品牌主色：雾霾冷靛青 (Slate Indigo)，全库唯一的强调色。
      沿用 Tivano 主题系统的一条规则：主题只提供主色与状态色，绝不涂不透明的表面；
@@ -464,7 +451,7 @@
 html[data-theme="light"] {
   color-scheme: light;
   /* 亮色底浅，浓度低一档；strong 仍低于选中态 --bg-selected 的 12%。 */
-  --hover-tint: color-mix(in srgb, var(--accent-primary) 7%, transparent);
+  --hover-tint: color-mix(in srgb, var(--ink-high) 8%, transparent);
   --hover-tint-strong: color-mix(in srgb, var(--accent-primary) 11%, transparent);
   --chrome-ink: #151e32;
   --chrome-muted: #64748b;
@@ -636,18 +623,6 @@ html[data-theme="light"] {
   --segmented-active-hover-bg: #ffffff;
   --status-neutral-bg: var(--surface-inset-bg);
 
-  /* 危险按钮核心：纯正鲜红实体 (#EF4444) + 纯白文字 */
-  --btn-danger-default-bg: var(--status-danger-bg);
-  --btn-danger-default-text: var(--status-danger-text);
-  --btn-danger-default-border: transparent;
-  --btn-danger-default-glow: 0 4px 14px rgba(239, 68, 68, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  --btn-danger-hover-bg: color-mix(in srgb, var(--danger-text) 12%, var(--bg-canvas));
-  --btn-danger-hover-text: #ffffff;
-  --btn-danger-hover-border: transparent;
-  --btn-danger-hover-glow: 0 6px 20px rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  --btn-danger-bg: var(--status-danger-bg);
-  --btn-danger-hover: color-mix(in srgb, var(--danger-text) 12%, var(--bg-canvas));
-  --btn-danger-text: var(--status-danger-text);
 
   /* 品牌核心主色：雾霾冷靛青 (Slate Indigo)（说明见深色那一段）。 */
   --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
@@ -689,7 +664,9 @@ html[data-theme="light"] {
   --border-medium: rgba(148, 163, 184, 0.75);
   --border-strong: rgba(100, 116, 139, 0.7);
   --border-hover: rgba(148, 163, 184, 0.85);
-  --divider-color: rgba(226, 234, 248, 0.8);
+  /* 分割线跟着调色板的第二档线走：写死一层近白（rgba(226,234,248,.8)）在白卡上
+     等于没画，代码查看的标签条、目录树、工具栏下沿全都靠它显形。 */
+  --divider-color: var(--line-2);
   --divider-subtle: 1px solid var(--divider-color);
   --table-border-subtle: 1px solid var(--divider-color);
   --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 18px -2px rgba(15, 23, 42, 0.06);

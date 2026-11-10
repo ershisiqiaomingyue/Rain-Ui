@@ -21,17 +21,19 @@ const buttonVariants = cva(
         primary:
           "bg-primary text-primary-foreground [box-shadow:var(--btn-primary-shadow)] hover:bg-primary/90 active:bg-primary/95",
         outline:
-          "border-border bg-background hover:bg-muted hover:text-foreground active:bg-muted/80 dark:border-input dark:bg-transparent dark:hover:bg-muted/30",
+          "border-border bg-card hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)] dark:border-input dark:bg-transparent",
         surface:
-          "border-border bg-background hover:bg-muted hover:text-foreground active:bg-muted/80 dark:border-input dark:bg-transparent dark:hover:bg-muted/30",
+          "border-border bg-card hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)] dark:border-input dark:bg-transparent",
         secondary:
           "bg-[var(--btn-glass-accent-bg)] text-[var(--btn-glass-accent-text)] hover:bg-[var(--btn-glass-accent-hover)] active:bg-[var(--btn-glass-accent-active)]",
+        /* 必须显式声明透明：只写 hover 态的话，未悬停时 background-color 落在
+           浏览器默认的 buttonface（亮色下是中性灰），整站的 ghost 按钮都会带一块灰底。 */
         ghost:
-          "hover:bg-muted hover:text-foreground active:bg-muted/70 dark:hover:bg-muted/40",
+          "bg-transparent hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)]",
         subtle:
-          "hover:bg-muted hover:text-foreground active:bg-muted/70 dark:hover:bg-muted/40",
+          "bg-transparent hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)]",
         bare:
-          "border-transparent bg-transparent text-muted-foreground shadow-none hover:bg-muted hover:text-foreground active:bg-muted/70 dark:hover:bg-muted/40",
+          "border-transparent bg-transparent text-muted-foreground shadow-none hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)]",
         destructive:
           "bg-[var(--btn-danger-bg)] text-[var(--btn-danger-text)] hover:bg-[var(--btn-danger-hover)] active:bg-[var(--btn-danger-hover)]",
         danger:

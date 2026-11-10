@@ -39,7 +39,8 @@
   --surface-2: var(--surface-1);
   --surface-3: var(--surface-1);
   --surface-hover: hsl(232 16% 14%);
-  --surface-active: hsl(232 16% 12%);
+  --surface-active: hsl(232 16% 17%);
+  --accent-wash: color-mix(in srgb, hsl(var(--accent-strong)) 16%, transparent);
   /* 凹槽：输入框、表格头、分段轨道。比卡片低一档，读起来是「挖进去」。 */
   --surface-inset: hsl(232 19% 8%);
   --surface-popover: hsl(233 16% 13%);
@@ -185,26 +186,35 @@
  * 亮色
  * ============================================================================ */
 html[data-theme="light"] {
-  /* ── A1. 表面 ────────────────────────────────────────────────────────── */
+  /* ── A1. 表面 ──────────────────────────────────────────────────────────
+     亮色卡面是一层淡靛青渐变（明度 97% → 88%），同一块区域上半偏白、
+     下半偏青。悬停/按下若写成固定色值，只能在其中一头看得出来 —— 落到
+     深色那头就和底色重合，看着像“悬停底色丢了”。所以这两档改成半透明
+     的靛：落在任何底色上都是“再染一层淡靛”，明度自动跟着底走，白卡和
+     渐变底上都读得出，而且方向统一是“更浓一点的靛”。
+     凹槽/输入底必须不透明（下面就是内容），单独给一个实色淡靛。 */
   --surface-shell: hsl(230 34% 99%);
-  --surface-0: hsl(230 30% 96%);
+  --surface-0: hsl(228 45% 96%);
   --surface-1: #ffffff;
   --surface-2: var(--surface-1);
   --surface-3: var(--surface-1);
-  --surface-hover: hsl(230 30% 98%);
-  --surface-active: hsl(230 30% 97%);
-  --surface-inset: hsl(230 32% 97.5%);
+  --surface-hover: color-mix(in srgb, var(--ink-high) 8%, transparent);
+  --surface-active: color-mix(in srgb, var(--ink-high) 13%, transparent);
+  --accent-wash: color-mix(in srgb, hsl(var(--accent-strong)) 10%, transparent);
+  --surface-inset: hsl(228 60% 95.5%);
   --surface-popover: #ffffff;
-  --card-tone-muted: hsl(230 30% 98%);
-  --card-tone-subtle: hsl(230 32% 97.5%);
-  --card-tone-deep: hsl(230 30% 96%);
+  --card-tone-muted: hsl(228 60% 97.5%);
+  --card-tone-subtle: hsl(228 56% 96.5%);
+  --card-tone-deep: hsl(228 52% 94%);
 
   /* ── A2. 发丝线 ──────────────────────────────────────────────────────────
      亮色反过来用实色：白底上叠白会直接消失。 */
-  --line-1: hsl(230 22% 90%);
-  --line-2: hsl(230 22% 93%);
-  --line-3: hsl(230 24% 95%);
-  --line-strong: hsl(230 22% 84%);
+  /* 三档线整体收紧一档：浅底上 93%/95% 跟白卡只差十来阶，白底上的分割线等于没画。
+     收紧后仍是逐层变淡（87 → 90 → 93），并统一到页面那支靛。 */
+  --line-1: hsl(228 24% 87%);
+  --line-2: hsl(228 24% 90%);
+  --line-3: hsl(228 22% 93%);
+  --line-strong: hsl(228 24% 82%);
 
   /* ── A3. 墨色 ──────────────────────────────────────────────────────────── */
   --ink-high: hsl(232 32% 12%);
@@ -214,20 +224,26 @@ html[data-theme="light"] {
   --ink-muted: hsl(232 10% 62%);
 
   /* ── B. 语义层 ───────────────────────────────────────────────────────── */
-  --background: 230 30% 96%;
+  /* 页面底和各种中性控件底都从这一支来。宿主的工作区卡面是一层淡靛青渐变，
+     这里若留中性灰，页内每块灰底都跟那层底“色相不同、明度只差一点”，看着
+     像没上色。统一拨到同一支靛（228°），明度仍留在 96%。 */
+  --background: 228 50% 96%;
   --foreground: 232 26% 20%;
   --card: 0 0% 100%;
   --card-foreground: 232 26% 20%;
   --popover: 0 0% 100%;
   --popover-foreground: 232 26% 20%;
-  --muted: 230 32% 97.5%;
+  --muted: 228 46% 96.5%;
   --muted-foreground: 232 16% 38%;
-  --accent: 230 30% 98%;
+  /* --accent 是所有 hover:bg-accent 的落点。原来是 98% 近白，压在白卡和淡靛渐变上
+     都看不出来，按钮悬停就像底色丢了。收到 95.5% 的淡靛：白卡上泛一层青，
+     渐变底上再深一档，两头都读得出。 */
+  --accent: 228 62% 95.5%;
   --accent-foreground: 232 32% 12%;
-  --secondary: 230 30% 98%;
+  --secondary: 228 50% 96.5%;
   --secondary-foreground: 232 26% 20%;
-  --border: 230 22% 90%;
-  --input: 230 22% 88%;
+  --border: 228 26% 89%;
+  --input: 228 26% 88%;
   --ring: 239 84% 88%;
 
   --primary: 239 84% 94%;
@@ -260,8 +276,10 @@ html[data-theme="light"] {
   --error-hover: 0 66% 42%;
 
   /* ── C. 扩展 ───────────────────────────────────────────────────────────
-     亮色的选中底是**实色** L94：白底上抹一层 16% 的靛会变成雾，边界说不清。 */
-  --selected-bg: hsl(239 84% 94%);
+     亮色的选中底是**实色** L92：白底上抹一层 16% 的靛会变成雾，边界说不清。
+     停在 L94 时它和外壳那层淡靛青（95%）几乎同亮度，选中块会糊进底色里，
+     所以再往下按两档，让"选中"在青底上也站得住。 */
+  --selected-bg: hsl(239 68% 92%);
   --selected-fg: hsl(243 60% 40%);
 
   --focus-ring: 0 0 0 3px hsl(var(--ring) / 0.9);
@@ -280,7 +298,7 @@ html[data-theme="light"] {
   --shadow-inset-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.55);
 
   --segmented-active-bg: #ffffff;
-  --segmented-active-hover-bg: hsl(230 30% 99%);
+  --segmented-active-hover-bg: hsl(228 60% 97.5%);
 
   --ambient-glow: radial-gradient(circle, hsl(239 84% 78% / 0.16) 0%, transparent 60%);
   --blob-1: radial-gradient(circle, hsl(239 84% 88% / 0.55) 0%, transparent 70%);
@@ -457,13 +475,20 @@ html[data-theme] {
   --btn-subtle-hover: var(--surface-hover);
   --btn-subtle-border: transparent;
   --btn-subtle-text: var(--ink-secondary);
-  /* 危险按钮：可撤销的用淡玫瑰，不可逆的才用实心深粉。 */
-  --btn-danger-bg: hsl(var(--destructive-soft-bg));
-  --btn-danger-hover: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 88%, var(--ink-high));
-  --btn-danger-active-bg: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, var(--ink-high));
-  --btn-danger-text: hsl(var(--destructive-soft-bg-foreground));
+  /* 危险按钮：可撤销的用淡玫瑰，不可逆的才用实心深粉。
+     底是把 --destructive-soft（淡档玫瑰）薄薄压在 --destructive-soft-bg 上，
+     78 / 62 / 50 三档 —— 悬停、按下只是同一支色越压越实，不掺 ink-high，
+     掺墨只会把粉调成灰。
+     字直接吃 --error（设计里唯一的纯红）：淡粉底上要一眼看出「这是红的」，
+     用 -bg-foreground 那档 36% 的酒红会发闷，跟底色糊成一块。
+     （暗色下 --error 压在自己的暗粉底上读不出来，末尾的 html[data-theme="dark"]
+     把它往白里提一档。） */
+  --btn-danger-bg: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 78%, hsl(var(--destructive-soft)));
+  --btn-danger-hover: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 62%, hsl(var(--destructive-soft)));
+  --btn-danger-active-bg: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 50%, hsl(var(--destructive-soft)));
+  --btn-danger-text: hsl(var(--error));
   --btn-success-bg: hsl(var(--success-bg));
-  --btn-success-hover: color-mix(in srgb, hsl(var(--success-bg)) 88%, var(--ink-high));
+  --btn-success-hover: color-mix(in srgb, hsl(var(--success-bg)) 68%, hsl(var(--success-text)));
   --btn-success-text: hsl(var(--success-bg-foreground));
   /* 危险动作的实心形态：只有不可逆删除才配得上白字。 */
   --btn-destructive-bg: hsl(var(--destructive));
@@ -496,7 +521,9 @@ html[data-theme] {
   --control-checked-bg: hsl(var(--accent-solid));
   --switch-active-bg: hsl(var(--accent-solid));
   --switch-thumb-bg: var(--knob-bg);
-  --segmented-bg: var(--surface-inset);
+  /* 槽比输入框再深一档：白胶囊压在 95.5% 的淡靛上只差十来阶，选中项看着像没选中
+     （工具栏「本地 / SSH」就是这样）。压到 93.5%，白胶囊才立得住，槽也不必上阴影。 */
+  --segmented-bg: hsl(228 58% 93.5%);
   --segmented-text: var(--ink-secondary);
   --segmented-hover-bg: var(--surface-hover);
   --segmented-active-text: var(--ink-high);
@@ -536,8 +563,8 @@ html[data-theme] {
   --session-tab-bg: var(--surface-inset);
   --session-tab-text: var(--ink-secondary);
   --session-tab-hover-bg: var(--surface-hover);
-  --session-tab-active-bg: var(--surface-shell);
-  --session-tab-active-hover-bg: var(--surface-hover);
+  --session-tab-active-bg: var(--bg-selected);
+  --session-tab-active-hover-bg: color-mix(in srgb, var(--bg-selected) 88%, hsl(var(--accent-strong)));
   --session-tab-active-text: var(--ink-high);
 
   /* ── 推理滑杆 ─────────────────────────────────────────────────────────── */
@@ -642,4 +669,14 @@ html[data-theme="light"][data-palette="rose"] {
   --blob-4: radial-gradient(circle, hsl(348 84% 93% / 0.45) 0%, transparent 70%);
   --inference-fill-deep: hsl(340 52% 34%);
   --inference-spark: hsl(340 84% 96%);
+}
+
+/* 控件家族那段是亮色基准，写在 html[data-theme] 里会一起压到暗色：
+   槽成亮白、胶囊是深灰，选中关系整个反了。暗色把槽掰回 input-bg-sunken 这类深面。 */
+html[data-theme="dark"] {
+  --segmented-bg: var(--input-bg-sunken);
+  --divider-color: var(--line-1);
+  /* 危险按钮的字：--error 在暗色是 52% 的红，压在 29% 的暗粉底上读不出来，
+     往白里提一档成亮红，既还是红的、又跳得出来。 */
+  --btn-danger-text: color-mix(in srgb, hsl(var(--error)) 45%, hsl(var(--error-foreground)));
 }
