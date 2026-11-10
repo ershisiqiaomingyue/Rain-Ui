@@ -521,13 +521,17 @@ html[data-theme] {
   --control-checked-bg: hsl(var(--accent-solid));
   --switch-active-bg: hsl(var(--accent-solid));
   --switch-thumb-bg: var(--knob-bg);
-  /* 槽比输入框再深一档：白胶囊压在 95.5% 的淡靛上只差十来阶，选中项看着像没选中
-     （工具栏「本地 / SSH」就是这样）。压到 93.5%，白胶囊才立得住，槽也不必上阴影。 */
-  --segmented-bg: hsl(228 58% 93.5%);
+  /* 槽要比输入框明显深一档：白胶囊压在 95.5% 的淡靛上只差十来阶，选中项看着像没选中。
+     93.5% 仍偏淡（技能库、主页统计范围都反馈「看不出哪个是激活的」），压到 91.5%
+     并把靛味收掉一半，纯白胶囊才立得住，槽也不必上阴影。 */
+  --segmented-bg: hsl(228 38% 91.5%);
   --segmented-text: var(--ink-secondary);
   --segmented-hover-bg: var(--surface-hover);
   --segmented-active-text: var(--ink-high);
-  --segmented-active-shadow: none;
+  /* 白胶囊压在 91.5% 的槽上已经能立住，但亮色界面本身也是白的，光靠 9% 的
+     明度差在缩放下还是糊。加一层极轻的投影给边界兜底；暗色在下面的 dark 块
+     里改回 none（深槽上的浅块本来就分得清，不需要影）。 */
+  --segmented-active-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
 
   /* ── 状态家族 ─────────────────────────────────────────────────────────── */
   /* 三支来源色，status-* 与 btn-* 都由它们派生。 */
@@ -675,6 +679,7 @@ html[data-theme="light"][data-palette="rose"] {
    槽成亮白、胶囊是深灰，选中关系整个反了。暗色把槽掰回 input-bg-sunken 这类深面。 */
 html[data-theme="dark"] {
   --segmented-bg: var(--input-bg-sunken);
+  --segmented-active-shadow: none;
   --divider-color: var(--line-1);
   /* 危险按钮的字：--error 在暗色是 52% 的红，压在 29% 的暗粉底上读不出来，
      往白里提一档成亮红，既还是红的、又跳得出来。 */

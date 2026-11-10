@@ -153,7 +153,11 @@
 .segmented-glass {
   display: inline-flex;
   align-items: center;
-  background: var(--surface-inset);
+  /* 槽走 `--segmented-bg` 而不是 `--surface-inset`：后者亮色是 95.5% 的淡靛，
+     白胶囊压上去只差几阶，选中项看着像没选中。`--segmented-bg` 就是为这件事
+     调到 93.5% 的那一档（见 palettes.css 控件家族），分段控件和 code-viewer
+     的分段条从此用同一个槽色。 */
+  background: var(--segmented-bg);
   border: 0;
   border-radius: var(--radius-control);
   padding: 2px;
