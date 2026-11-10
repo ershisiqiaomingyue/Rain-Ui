@@ -376,10 +376,15 @@ html[data-theme] {
   --bg-canvas: hsl(var(--background));
   --page-pane-bg: hsl(var(--background));
   --page-header-bg: hsl(var(--background));
-  --bg-app: var(--surface-shell);
-  --topbar-bg: var(--surface-shell);
-  --context-navigation-bg: var(--surface-shell);
-  --sidebar-bg: var(--surface-shell);
+  /* 外壳 = 一层底色 + 一张大卡。底色 --surface-0 铺满窗口，顶栏直接坐在它
+     上面（不画自己的下边线）；大卡用 --surface-1，内部按「导航区 | 工作区 |
+     内容区」三段同底色，段与段之间只有一条 1px 分割线（由宿主画）。
+     改这几行等于改整个外壳的层级，宿主不要再给这些区域单独上色，
+     否则又会出现第三种灰。 */
+  --bg-app: var(--surface-0);
+  --topbar-bg: var(--surface-0);
+  --context-navigation-bg: var(--surface-1);
+  --sidebar-bg: var(--surface-1);
   --bg-ambient: var(--surface-0);
   --bg-base: var(--surface-0);
   --bg-surface: hsl(var(--card));
