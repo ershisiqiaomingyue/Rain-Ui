@@ -63,10 +63,14 @@ html[data-theme] .task-step-row.is-clickable {
   stroke: currentColor;
 }
 
-/* done: filled ring with a check. */
+/* done: filled ring with a check.
+   盘和勾必须来自「已勾选」那一对专用 token：以前填 hsl(--accent-strong)、
+   勾用 hsl(--primary-foreground)，亮色下这两个值恰好都是 243 68% 52%，勾画在
+   盘上等于同色同底，整颗打勾看不见了。--control-checked-bg / --control-checked-mark
+   是库里给勾选态定的「底 + 记号」配对，主题换色也跟着走。 */
 .task-step-icon.done {
-  background: hsl(var(--accent-strong));
-  color: hsl(var(--primary-foreground));
+  background: var(--control-checked-bg);
+  color: var(--control-checked-mark);
   box-shadow: var(--shadow-card);
 }
 
