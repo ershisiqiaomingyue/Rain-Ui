@@ -18,7 +18,8 @@
 
   /* 默认根变量（浅色模式） - 对应 card-showcase.html 的 Light Glass Base 规范 */
   :root {
-    --background: 0 0% 100%;
+    /* 页面底走淡白灰，白卡才立得起来；纯白留给卡片（--card）。 */
+    --background: 228 8% 97%;
     --foreground: 222.2 47.4% 11.2%;
 
     --card: 0 0% 100%;
