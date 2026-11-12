@@ -106,6 +106,7 @@ import {
 import { cn } from "@/lib/utils"
 import { SpecIcons } from "./spec-icons"
 import { ToolItemsSpec } from "./tool-items"
+import { DownloadProgressSpec } from "./download-progress"
 interface NavItem {
   id: string
   title: string
@@ -172,6 +173,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: "segmented-control", title: "Segmented", label: "分段切换", group: "composed" },
   { id: "status-badge", title: "Status Badge", label: "状态徽章", group: "composed" },
   { id: "tool-items", title: "Tool Items", label: "工具条目（展开收缩）", group: "composed" },
+  { id: "download-progress", title: "Download Progress", label: "下载/安装进度", group: "composed" },
 ]
 const PageContext = React.createContext<string | null>(null)
 
@@ -755,6 +757,10 @@ export function App() {
 
           <Section id="tool-items" title="Tool Items" label="工具条目（展开收缩）" count={0}>
             <ToolItemsSpec />
+          </Section>
+
+          <Section id="download-progress" title="Download Progress" label="下载/安装进度（徽标 % + 取消）" count={0}>
+            <DownloadProgressSpec />
           </Section>
 
           {/* Avatar */}

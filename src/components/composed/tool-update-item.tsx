@@ -122,7 +122,10 @@ export function ToolUpdateItem({
 
   const defaultActions = () => {
     // 传输中只有一颗：转圈 + 取消（淡红）。取消后回到「安装 / 下载」。
+    // 宿主里真停不下来的那几条（npm / npx 只有 300 秒超时，没有取消命令）
+    // 不给按钮：摆一颗点了没反应的「取消下载」比不摆更糟。
     if (busy) {
+      if (!onCancel && !onStop) return null
       return (
         <Button
           size="sm"
