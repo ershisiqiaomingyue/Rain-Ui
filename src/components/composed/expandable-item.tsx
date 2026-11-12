@@ -235,6 +235,20 @@ export function ExpandableItem({
     onExpandedChange?.(!open)
   }
 
+  /**
+   * 整行可点：能开合的其实只有标题那颗按钮，行内边距（上下各 10px、左右各 14px）点下去没反应 ——
+   * 可鼠标在这一圈是手型、hover 也会把整张卡点亮，看着就是能点的，于是老有人要点第二下。
+   * 点击因此收在壳上：真正的控件（按钮 / 开关 / 输入框 / 右端操作）只归它们自己，
+   * 剩下的空白一律算点这一行。
+   */
+  const handleRowClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (!clickable) return
+    const target = event.target as HTMLElement
+    if (target.closest("[data-slot=expandable-item-actions]")) return
+    if (target.closest("button, a, input, select, textarea, [role=switch]")) return
+    handleToggle()
+  }
+
   return (
     <div
       data-slot="expandable-item"
@@ -256,6 +270,7 @@ export function ExpandableItem({
           "px-3.5 py-2.5 transition-colors",
           clickable && "cursor-pointer hover:bg-muted/70"
         )}
+        onClick={clickable ? handleRowClick : undefined}
       >
         <div className="flex items-center gap-2">
           <button
@@ -303,10 +318,10 @@ export function ExpandableItem({
           ) : null}
         </div>
         {subtitle ? (
-          // 说明行跟标题左对齐（箭头 14 + 间距 10）；点它也算点这一行。
+          // 说明行跟标题左对齐（箭头 14 + 间距 10）；点它算点这一行 —— 交给外层那次点击处理，
+          // 这一层不再自己接一遍，否则一次点击会开合两次（等于没反应）。
           <p
             data-slot="expandable-item-subtitle"
-            onClick={clickable ? handleToggle : undefined}
             className={cn(
               "mt-1 mb-0 truncate text-[12px] leading-snug text-muted-foreground",
               icon ? "pl-[42px]" : "pl-[24px]"
