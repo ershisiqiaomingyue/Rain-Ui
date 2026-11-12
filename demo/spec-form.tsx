@@ -50,7 +50,7 @@ import { Cell, Group, Note, Row, Stack } from "./kit";
 export function SpecButton() {
   return (
     <Stack gap={20}>
-      <Group title="7 个变体" hint="primary 一屏只放一个；bare 是纯文字动作；surface 用于工具条。">
+      <Group title="8 个变体" hint="primary 一屏只放一个；bare 是纯文字动作；surface 用于工具条；warning 只给「有件事等着你做」，比如有新版可装。">
         <Row>
           <Button variant="primary">开始采集</Button>
           <Button variant="secondary">刷新设备</Button>
@@ -58,6 +58,9 @@ export function SpecButton() {
           <Button variant="subtle">更多</Button>
           <Button variant="success" icon={<Check size={14} />}>
             已保存
+          </Button>
+          <Button variant="warning" icon={<RefreshCw size={14} />}>
+            有新版
           </Button>
           <Button variant="danger" icon={<Trash2 size={14} />}>
             删除

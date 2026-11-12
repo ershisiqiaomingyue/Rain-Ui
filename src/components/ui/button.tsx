@@ -40,6 +40,8 @@ const buttonVariants = cva(
           "bg-[var(--btn-danger-bg)] text-[var(--btn-danger-text)] hover:bg-[var(--btn-danger-hover)] active:bg-[var(--btn-danger-hover)]",
         success:
           "bg-[var(--btn-success-bg)] text-[var(--btn-success-text)] hover:bg-[var(--btn-success-hover)] active:bg-[var(--btn-success-hover)]",
+        warning:
+          "bg-[var(--btn-warning-bg)] text-[var(--btn-warning-text)] hover:bg-[var(--btn-warning-hover)] active:bg-[var(--btn-warning-hover)]",
         link:
           "text-primary underline-offset-4 hover:underline active:translate-y-0 active:scale-100",
       },

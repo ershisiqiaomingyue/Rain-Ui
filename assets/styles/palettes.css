@@ -501,6 +501,12 @@ html[data-theme] {
   --btn-success-bg: hsl(var(--success-bg));
   --btn-success-hover: color-mix(in srgb, hsl(var(--success-bg)) 68%, hsl(var(--success-text)));
   --btn-success-text: hsl(var(--success-bg-foreground));
+  /* 警告按钮：success / danger 之外缺的这一支 —— 「有件事等你做，但不是出错」
+     （典型是「有新版可装」）。底和字直接吃 --warning-bg 那对：暗色是暗琥珀底 + 浅琥珀字，
+     亮色反过来。悬停只往 --warning 那支挪，不掺 ink —— 掺墨会把琥珀压成土黄。 */
+  --btn-warning-bg: hsl(var(--warning-bg));
+  --btn-warning-hover: color-mix(in srgb, hsl(var(--warning-bg)) 68%, hsl(var(--warning-text)));
+  --btn-warning-text: hsl(var(--warning-bg-foreground));
   /* 危险动作的实心形态：只有不可逆删除才配得上白字。 */
   --btn-destructive-bg: hsl(var(--destructive));
   --btn-destructive-hover: hsl(var(--destructive-hover));
