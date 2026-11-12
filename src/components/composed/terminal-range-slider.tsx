@@ -53,8 +53,10 @@ export function TerminalRangeSlider({
         <div className="relative flex items-center w-36 sm:w-44 h-6">
           {/* 原生桌面平滑轨道底色 */}
           <div className="absolute inset-x-0 h-1.5 rounded-full bg-muted overflow-hidden">
+            {/* 已滑过那截和 Slider 同一档：`--primary` 是淡色按钮底，铺在 `--muted`
+                轨道上整条看不见（design.md §7）。 */}
             <div
-              className="h-full bg-primary transition-all duration-75"
+              className="h-full bg-[var(--bar-fill)] transition-all duration-75"
               style={{ width: `${percentage}%` }}
             />
           </div>

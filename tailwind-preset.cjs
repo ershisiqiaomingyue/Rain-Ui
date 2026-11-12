@@ -78,13 +78,17 @@ module.exports = {
           foreground: hsl("card-foreground"),
         },
 
-        /* ── 强调色三档（design.md §3） ─────────────────────────────────────
-           accent-strong     图标、进度、选中文字、图表第一支
+        /* ── 强调色四档（design.md §3） ─────────────────────────────────────
+           accent-strong     图标、选中文字、图表第一支
            accent-strong-soft 上面那档的浅色版，用于同色系的第二层
-           accent-solid      压白字的实心填充（勾选盘、开关）；accent-strong 是 L72，
+           accent-bar        实心**条**：滑块已滑过那截、进度条填充、开关轨道。
+                             亮色比 accent-strong 亮一档（L52 → L67），因为整条 6px
+                             铺满同一块色，L52 看着像深蓝；暗色与 accent-strong 同值。
+           accent-solid      压白字的实心填充（勾选盘）；accent-strong 是 L72，
                              在暗色下压白字只有 2.2:1，不能拿来放白字。 */
         "accent-strong": hsl("accent-strong"),
         "accent-strong-soft": hsl("accent-strong-soft"),
+        "accent-bar": hsl("accent-bar"),
         "accent-solid": hsl("accent-solid"),
 
         /* ── 状态色三件套（design.md §4） ───────────────────────────────────

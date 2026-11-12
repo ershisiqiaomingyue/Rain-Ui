@@ -53,7 +53,7 @@
 ### 1.4 第二套配色：只换色相
 
 「配色可以做几套」不等于几份完整调色板。**中性骨架是共用的**，一套配色只需要换掉
-`--ring` / `--primary*` / `--accent-strong*` / `--accent-solid` / `--selected-*`
+`--ring` / `--primary*` / `--accent-strong*` / `--accent-bar` / `--accent-solid` / `--selected-*`
 这十来个**带色相**的 token（外加 `--ambient-glow` / `--blob-*` / `--inference-*`
 那几处装饰），其余一律不动 —— 这正是 §1.3「表面永远中性」的直接收益。
 
@@ -185,15 +185,17 @@ border: 1px solid var(--line-1);
 > 亮色主按钮上的字**不能是白色**（1.4:1，等于没有），**也不能是黑色**（读起来像禁用）。
 > 必须是同色相深靛 `hsl(243 68% 52%)`。
 
-同一个靛分三个「深度」，按用途选，不许互借：
+同一个靛分四个「深度」，按用途选，不许互借：
 
 | token | 暗色 | 亮色 | 只用在 |
 | --- | --- | --- | --- |
 | `--primary` | `239 36% 22%` | `239 84% 94%` | 按钮填充、`status-info` 底 |
-| `--accent-strong` | `239 68% 72%` | `243 68% 52%` | 图标、进度条、选中项文字、`series-1` |
-| `--accent-solid` | `239 60% 52%` | `243 68% 52%` | **上面要压白字**的地方：勾选盘、开关 |
+| `--accent-strong` | `239 68% 72%` | `243 68% 52%` | 图标、选中项文字、`series-1` |
+| `--accent-bar` | `239 68% 72%` | `239 84% 67%` | 实心**条**：滑块已滑过那截、进度条填充、开关轨道。暗色与 `--accent-strong` 同值；亮色抬到品牌靛 `#6467F2`，因为 L52 的实心靛整条 6px 铺满会被读成「深蓝」 |
+| `--accent-solid` | `239 60% 52%` | `243 68% 52%` | **上面要压白字**的地方：勾选盘 |
 
 `--accent-solid` 存在的唯一理由是白字：`--accent-strong` 在暗色是 L72，压白字只有 2.2:1。
+`--accent-bar` 上只坐图形（白旋钮、条本身的形状），按 3:1 算，两套主题都够（亮 4.4:1 / 暗 3.1:1）。
 
 ---
 
@@ -356,12 +358,12 @@ border: 1px solid var(--line-1);
 | `Item` / list-item | hover / selected 走 §5 |
 | `Dialog` / `Modal` | 边框 `--line-1`，亮色加浮层阴影 |
 | `Tooltip` | 中性反转，不用强调色 |
-| `Progress` | 轨道 `--surface-inset`（凹槽，不用 `--line-*`，线色是给 1px 发丝线的），填充 `--accent-strong` |
+| `Progress` | 轨道 `--surface-inset`（凹槽，不用 `--line-*`，线色是给 1px 发丝线的），填充 `--accent-bar` |
 | `DropdownMenu` / `ContextMenu` | 选中项走 §5.1 |
 | `Sidebar` 导航项 | 选中走 §5.1，无左侧竖条 |
 | `Toast`（sonner） | 按状态色映射 |
 | `Separator` / `Divider` | 统一 `--line-3` |
-| `Checkbox` / `RadioGroup` / `Slider` | 勾选态用 `--primary`，轨道用 `--line-3` |
+| `Checkbox` / `RadioGroup` / `Slider` | 勾选态：勾选盘 `--control-checked-bg`、滑块已滑过那截 `--accent-bar`；轨道 `--line-3` |
 | `Skeleton` | `--surface-hover` |
 
 ### 7.2 不换（保持现状，这批先不动）
@@ -374,7 +376,7 @@ border: 1px solid var(--line-1);
 | `Label` | 只是文字，走 `--ink-*` 就够了，不需要单独的配色层 |
 | `Select` | 触发器与面板都是中性，现有值可用 |
 | `Combobox` | 同上 |
-| `Toggle` / `Switch` | 开关只有开/关两态，现有 `--control-checked-bg` 换个值即可，结构不动 |
+| `Toggle` / `Switch` | 开关只有开/关两态，结构不动；本批只换开态轨道的值：`--switch-active-bg` = `--accent-bar`，跟滑块/进度条同一档（白旋钮压上去 3:1 够，不必用 `--accent-solid` 那档最深的实心靛） |
 | `Tabs`（rain-ui `tabs`） | 没提；保持现状 |
 | `Menubar` | 保持现状 |
 | `Spinner` | 单色转圈，跟 `--ink-tertiary` 走 |
@@ -467,8 +469,10 @@ shadcn 的语义 token 全部写成**裸三元组**（`239 36% 22%`，不带 `hs
 /* 强调 */
 --primary --primary-foreground         /* 淡靛填 + 同色相深字 */
 --primary-hover --primary-active
---accent-strong                        /* 图形强调：图标/进度/选中底上的字 */
+--accent-strong                        /* 图形强调：图标/选中底上的字 */
 --accent-strong-soft
+--accent-bar                           /* 实心条：滑块填充、进度条、开关轨道 */
+--bar-fill                             /* = hsl(--accent-bar)，组件里用 bg-[var(--bar-fill)] */
 --accent-solid                         /* 实心强调：上面要压白字的地方 */
 
 /* 状态：三支淡底各三件套 + 两支实心 */
@@ -537,8 +541,9 @@ C 段里还有一大批 `--btn-*` / `--status-*` / `--bg-*` / `--card-*` / `--te
 - **拿「淡色表面」token 当填充。** `--primary` / `--card` / `--muted` 在亮色主题下都是
   90%+ 明度的淡色 —— 那是按钮和卡片的**底**，铺在同样淡的轨道上会整条看不见。
   实拍踩过两次：推理滑块的填充（`hsl(var(--primary))` 铺在 L97% 轨道上）和一整排
-  关闭态的开关/勾选框。**填充、进度、指示点要用强的那一档**：`--accent-strong`
-  （图标、进度、选中文字）或 `--accent-solid`（压白字的实心）；控件关态的轨道本身没有
+  关闭态的开关/勾选框。**填充、进度、指示点要用强的那一档**：`--accent-bar`
+  （滑块、进度条、开关轨道）、`--accent-strong`（图标、选中文字）或
+  `--accent-solid`（压白字的实心）；控件关态的轨道本身没有
   描边，用 `--line-strong`（暗色 = 16% 白 ≈ 迁移前的 `rgba(255,255,255,0.14)`）。
 - 相邻两层用同样重的线。
 - 淡色底上放纯黑字（像禁用）或纯白字（对比度 1.4:1）。
@@ -601,7 +606,7 @@ C 段里还有一大批 `--btn-*` / `--status-*` / `--bg-*` / `--card-*` / `--te
 
 | 表 | 键 | 例子 |
 | --- | --- | --- |
-| `colors`（裸三元组） | shadcn 那套 + `accent-strong` / `-strong-soft` / `-solid` + 四组状态色 + `-hover` / `-active` | `bg-primary`、`text-success-foreground` |
+| `colors`（裸三元组） | shadcn 那套 + `accent-strong` / `-strong-soft` / `-bar` / `-solid` + 四组状态色 + `-hover` / `-active` | `bg-primary`、`text-success-foreground` |
 | `colors`（完整色值） | `ink.*`、`line.*`、`surface.*`、`selected.*` | `text-ink-secondary`、`border-line-2`、`bg-surface-1` |
 | `fontSize` | 6 档，`lineHeight` / `fontWeight` 一起给 | `text-body` 一次拿到 13px / 1.5 / 400 |
 | `borderRadius` | `control` `panel` `overlay` `nested` `nested-deep` | `rounded-panel` = 11px |
@@ -610,7 +615,11 @@ C 段里还有一大批 `--btn-*` / `--status-*` / `--bg-*` / `--card-*` / `--te
 三个容易踩的点：
 
 - **`bg-accent` 不是强调色。** 它是 shadcn 的「悬停底」（`--accent`）。强调色是
-  `accent-strong`（图标、进度、选中文字）和 `accent-solid`（压白字的实心填充），见 §3。
+  `accent-strong`（图标、选中文字）、`accent-bar`（滑块/进度条/开关的实心条）和
+  `accent-solid`（压白字的实心填充），见 §3。
+- **实心条的填充不写 preset 类名。** 滑块和进度条用 `bg-[var(--bar-fill)]`：并非所有
+  宿主都挂了 rain-ui 的 preset（Terminal 的 `tailwind.config.cjs` 只内联 shadcn 那几个
+  基础色），`bg-accent-bar` 在那种项目里生成不出来，条会变透明。
 - **焦点环不要写 `shadow-focus`。** Tailwind 的 `shadow-*` 是整体覆盖 `--tw-shadow`，
   `shadow-card shadow-focus` 会把卡片阴影顶掉，而设计规则是「原阴影 **+** 焦点环」。
   用 ring 体系：`ring ring-ring/[0.22]`。ring 默认就是 3px，`[0.22]` 与
