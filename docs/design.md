@@ -382,6 +382,10 @@ border: 1px solid var(--line-1);
 
 > 这批「不换」是**暂缓**，不是永远不改。等 §7.1 那批落地、亮暗两套都验过之后，
 > 再单独一轮处理。理由很简单：一次改太多，出问题分不清是哪一层引起的。
+>
+> 输入族（`Input` / `InputGroup` / `Textarea` / `Select` 触发器）的底色已先落地：
+> 静息走 `--field-bg`（亮色淡白灰 `hsl(228 20% 97%)`、暗色同卡片面 `--surface-1`，不再有比卡片更深的灰凹槽），
+> hover / 按下分别走 `--field-bg-hover` / `--field-bg-active`，聚焦只换边框和环、不再换底色。
 
 ### 7.3 判定新组件归哪边（沿用宿主 AGENTS.md §1.2）
 
@@ -443,6 +447,7 @@ shadcn 的语义 token 全部写成**裸三元组**（`239 36% 22%`，不带 `hs
 --surface-1       /* 卡片 / 输入框抬起一层。L1/L2/L3 同值，深度靠线不靠底色 */
 --surface-2 --surface-3
 --surface-hover --surface-active
+--field-bg --field-bg-hover --field-bg-active  /* 输入族底色：静息 = 淡白灰基面（暗色同卡片面），hover/按下再深一档 */
 --surface-inset   /* 凹槽：输入框、表头、分段轨道 */
 --surface-popover
 --card-tone-muted --card-tone-subtle --card-tone-deep  /* 卡片四级色调，另一套语义 */

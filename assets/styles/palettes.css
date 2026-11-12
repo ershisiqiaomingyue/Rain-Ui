@@ -40,6 +40,11 @@
   --surface-3: var(--surface-1);
   --surface-hover: hsl(232 16% 14%);
   --surface-active: hsl(232 16% 17%);
+  /* 输入族（Input / Textarea / InputGroup / Select 触发器）用跟基面同一档的底：
+     暗色比卡片面高一级（卡片 10%，输入 14%），hover / 按下再往上抬，不做比卡片更深的灰凹槽。 */
+  --field-bg: hsl(232 17% 15%);
+  --field-bg-hover: hsl(232 17% 18%);
+  --field-bg-active: hsl(232 17% 21%);
   --accent-wash: color-mix(in srgb, hsl(var(--accent-strong)) 16%, transparent);
   /* 凹槽：输入框、表格头、分段轨道。比卡片低一档，读起来是「挖进去」。 */
   --surface-inset: hsl(232 19% 8%);
@@ -200,6 +205,11 @@ html[data-theme="light"] {
   --surface-3: var(--surface-1);
   --surface-hover: color-mix(in srgb, var(--ink-high) 8%, transparent);
   --surface-active: color-mix(in srgb, var(--ink-high) 13%, transparent);
+  /* 输入族底取最基础那档淡白灰（近白、几乎不带色），hover / 按下再深一级；
+     焦点只换边框和环，不换底。 */
+  --field-bg: hsl(228 20% 97%);
+  --field-bg-hover: hsl(228 18% 93%);
+  --field-bg-active: hsl(228 16% 90%);
   --accent-wash: color-mix(in srgb, hsl(var(--accent-strong)) 10%, transparent);
   --surface-inset: hsl(228 60% 95.5%);
   --surface-popover: #ffffff;
@@ -583,7 +593,7 @@ html[data-theme] {
   /* input / select / rename-dialog 直接读的一组旧名。凹槽语义：默认比周围深一档
      （well），悬停稍亮，聚焦回到正常表面 —— 就是 design.md §2.2 的 inset。
      输入框不加投影、不加染色边框：聚焦只出一道环（§5.4 不许“染色边框 + 外圈”）。 */
-  --input-bg-sunken: var(--surface-inset);
+  --input-bg-sunken: var(--field-bg);
   --input-bg-hover: var(--surface-hover);
   --input-bg-focus: var(--surface-1);
   --input-border: 1px solid var(--line-1);
