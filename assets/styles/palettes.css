@@ -498,14 +498,19 @@ html[data-theme] {
   --btn-danger-hover: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 62%, hsl(var(--destructive-soft)));
   --btn-danger-active-bg: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 50%, hsl(var(--destructive-soft)));
   --btn-danger-text: hsl(var(--error));
+  /* success / warning 的悬停底色：把 fill 往本色（--success / --warning）挪 20%，两个主题
+     共用一条公式 —— 亮色 fill 淡、挪过去变深，暗色 fill 暗、挪过去变亮，都朝「更有本色」去。
+     引的是原始三元组 hsl(var(--success))，不是 -text 那对：-text 自己已经带 hsl()，再套一层
+     就是 hsl(hsl(...))，整条 color-mix 失效、悬停时底色会直接变透明（这条 bug 让 success 的
+     悬停一直没生效）。20% 是量出来的上限：暗色再往上挪，浅色字压到 4.5:1 以下。 */
   --btn-success-bg: hsl(var(--success-bg));
-  --btn-success-hover: color-mix(in srgb, hsl(var(--success-bg)) 68%, hsl(var(--success-text)));
+  --btn-success-hover: color-mix(in srgb, hsl(var(--success-bg)) 80%, hsl(var(--success)));
   --btn-success-text: hsl(var(--success-bg-foreground));
   /* 警告按钮：success / danger 之外缺的这一支 —— 「有件事等你做，但不是出错」
      （典型是「有新版可装」）。底和字直接吃 --warning-bg 那对：暗色是暗琥珀底 + 浅琥珀字，
-     亮色反过来。悬停只往 --warning 那支挪，不掺 ink —— 掺墨会把琥珀压成土黄。 */
+     亮色反过来。 */
   --btn-warning-bg: hsl(var(--warning-bg));
-  --btn-warning-hover: color-mix(in srgb, hsl(var(--warning-bg)) 68%, hsl(var(--warning-text)));
+  --btn-warning-hover: color-mix(in srgb, hsl(var(--warning-bg)) 80%, hsl(var(--warning)));
   --btn-warning-text: hsl(var(--warning-bg-foreground));
   /* 危险动作的实心形态：只有不可逆删除才配得上白字。 */
   --btn-destructive-bg: hsl(var(--destructive));
