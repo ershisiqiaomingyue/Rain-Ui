@@ -19,18 +19,17 @@ const cardVariants = cva("relative text-card-foreground", {
     variant: {
       /** shadcn 原样：白/暗底 + 发丝线 + 原版阴影，别改它，现有消费方都在用。 */
       default: "rounded-xl border bg-card shadow",
-      /** 淡天蓝渐变卡面：三个色标 + 一条比 --border 更偏蓝的描边。 */
-      sky: "rounded-xl border border-[hsl(var(--sky-line))] bg-[linear-gradient(168deg,hsl(var(--sky-veil))_0%,hsl(var(--sky-mist))_52%,hsl(var(--sky-shade))_100%)] shadow-card",
-      /** 强调卡：主色洗一层，比 main 按钮轻得多，用来装当前正在做的那件事。 */
-      primary: "rounded-xl border border-[hsl(var(--primary)/0.16)] bg-[hsl(var(--primary)/0.06)] shadow-card",
-      /** 次级卡：实心次级底，放在渐变卡或页面底上都立得住。 */
-      secondary: "rounded-xl border border-border bg-secondary text-secondary-foreground shadow-card",
-      /** 退后一档：半透明灰底，装辅助信息，和背景只差一点点。 */
-      muted: "rounded-xl border border-[hsl(var(--border)/0.7)] bg-[hsl(var(--muted)/0.6)] shadow-card",
+      /** 重点卡：淡天蓝渐变卡面。三档都是 --primary 叠透明度，换 primary 整套跟着换。 */
+      primary:
+        "rounded-xl border border-[hsl(var(--primary)/0.22)] bg-[linear-gradient(168deg,hsl(var(--primary)/0.03)_0%,hsl(var(--primary)/0.08)_52%,hsl(var(--primary)/0.17)_100%)] shadow-card",
+      /** 不放渐变的淡蓝底，一组卡里的次级那张用它。 */
+      soft: "rounded-xl border border-[hsl(var(--primary)/0.14)] bg-[hsl(var(--primary)/0.06)] shadow-card",
+      /** 淡白灰：在白底上只分出一块，不出灰调。 */
+      muted: "rounded-xl border border-[hsl(var(--primary)/0.1)] bg-[hsl(var(--muted)/0.8)] shadow-card",
       /** 只有线：不填色，纯靠描边分层，最适合再往里堆内容。 */
-      outline: "rounded-xl border border-border",
+      outline: "rounded-xl border border-[hsl(var(--primary)/0.18)]",
       /** 内部用：卡里再放卡时的自动样子，别手写。 */
-      inset: "border border-[hsl(var(--border))] bg-[hsl(var(--card)/0.65)]",
+      inset: "border border-[hsl(var(--primary)/0.14)] bg-[hsl(var(--card)/0.65)]",
     },
   },
   defaultVariants: {
