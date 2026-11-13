@@ -10,7 +10,7 @@
  * 语义层存的是 `H S% L%` 裸三元组，组件里写 hsl(var(--x))；领域调色板存整串色值，
  * 直接 var()。两者不能混，混了就出 hsl(hsl(...))。
  *
- * 「淡天蓝」不单列一组 token：它就是这个体系里的 --primary（211 88%）。卡片的渐变
+ * 「天蓝」不单列一组 token：它就是这个体系里的 --primary（205 88%）。卡片的渐变
  * 卡面、淡蓝底、描边全是 --primary 叠不同透明度算出来的，所以换 --primary（比如
  * data-palette="rose"）整套卡面跟着换色，不会出现「卡还是蓝的、按钮已经粉了」。
  */
@@ -23,8 +23,8 @@
   --card-foreground: 210 40% 98%;
   --popover: 222.2 84% 4.9%;
   --popover-foreground: 210 40% 98%;
-  --primary: 211 88% 64%;
-  --primary-foreground: 213 60% 9%;
+  --primary: 211 90% 62%;
+  --primary-foreground: 206 60% 10%;
   --secondary: 217.2 32.6% 17.5%;
   --secondary-foreground: 210 40% 98%;
   --muted: 217.2 32.6% 17.5%;
@@ -35,7 +35,7 @@
   --destructive-foreground: 210 40% 98%;
   --border: 217.2 32.6% 17.5%;
   --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
+  --ring: 211 90% 62%;
 
   /* ── 领域调色板：终端 ANSI / 代码高亮 / 装饰光。它们不是设计语义，
          shadcn 里没有对应物，所以留字面色值；跨主题能推导的尽量用 var()。 ── */
@@ -114,26 +114,32 @@
 }
 
 html[data-theme="light"] {
-  /* ── shadcn 语义（亮色） ───────────────────────────────────────────────── */
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
+  /* ── shadcn 语义（亮色）= A「晴空蓝」 ────────────────────────────────────
+   * 底色不是纯白而是带一点天蓝的纸白（212 44% 98.2%），卡面才是纯白 —— 这样卡才
+   * 浮在“有颜色的空气”上，不至于整屏一片惨白（也就是之前说的“骨感”）。
+   * 墨色不用近黑，用深海军蓝（222 44% 18%），正文对比度 14.3:1。
+   * 描边分两档：border 管分隔线（212 26% 90%），input 管控件轮廓（212 22% 85%）。
+   * --primary 是加深过的天蓝（205 88% 34%）：淡蓝按钮的字用它，实心填充时白字 6.3:1。
+   */
+  --background: 212 44% 98.2%;
+  --foreground: 222 44% 18%;
   --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
+  --card-foreground: 222 44% 18%;
   --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 211 88% 46%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 84% 4.9%;
+  --popover-foreground: 222 44% 18%;
+  --primary: 211 90% 43%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 212 46% 96.2%;
+  --secondary-foreground: 222 44% 18%;
+  --muted: 212 46% 96.2%;
+  --muted-foreground: 220 13% 44%;
+  --accent: 212 44% 94.5%;
+  --accent-foreground: 222 44% 18%;
+  --destructive: 358 66% 47%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 212 26% 90%;
+  --input: 212 22% 85%;
+  --ring: 211 90% 43%;
 
   /* ── 领域调色板（纸白底一档，ANSI 都压到 5:1 以上） ───────────────────── */
   --terminal-canvas-bg: #f1f5f9;

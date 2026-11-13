@@ -23,19 +23,19 @@ export function ButtonGroupDemo() {
   return (
     <ButtonGroup>
       <ButtonGroup className="hidden sm:flex">
-        <Button variant="outline" size="icon" aria-label="Go Back">
+        <Button variant="default" size="icon" aria-label="Go Back">
           <AppIcon name="arrow-left" />
         </Button>
       </ButtonGroup>
       <ButtonGroup>
-        <Button variant="outline">Archive</Button>
-        <Button variant="outline">Report</Button>
+        <Button variant="default">Archive</Button>
+        <Button variant="default">Report</Button>
       </ButtonGroup>
       <ButtonGroup>
-        <Button variant="outline">Snooze</Button>
+        <Button variant="default">Snooze</Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" aria-label="More Options">
+            <Button variant="default" size="icon" aria-label="More Options">
               <AppIcon name="more" />
             </Button>
           </DropdownMenuTrigger>

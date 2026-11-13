@@ -85,7 +85,7 @@ export function PermissionRequestBar({
           <AppIcon name="shield-x" className="size-3.5" />
           拒绝
         </Button>
-        <Button variant="outline" disabled={busy} onClick={onAlwaysAllow} className="gap-1.5">
+        <Button variant="default" disabled={busy} onClick={onAlwaysAllow} className="gap-1.5">
           <AppIcon name="shield-check" className="size-3.5" />
           本会话始终允许
         </Button>

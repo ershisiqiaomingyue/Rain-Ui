@@ -393,7 +393,7 @@ export function App() {
           </div>
                     <div className="flex items-center gap-3">
             <Button
-              variant="outline"
+              variant="default"
               size="sm"
               onClick={() => setOpenCommand(true)}
               className="gap-1.5 text-xs text-muted-foreground hidden sm:inline-flex"
@@ -405,7 +405,7 @@ export function App() {
               </kbd>
             </Button>
             <Button
-              variant="outline"
+              variant="default"
               size="sm"
               onClick={() => setDark((prev) => !prev)}
               className="gap-1.5 text-xs"
@@ -512,7 +512,7 @@ export function App() {
               </div>
               <div className="flex items-center gap-1.5 shrink-0">
                 <Button
-                  variant="outline"
+                  variant="default"
                   size="sm"
                   disabled={!prevItem}
                   onClick={() => prevItem && goToPage(prevItem.id)}
@@ -522,7 +522,7 @@ export function App() {
                   <span className="hidden sm:inline">上一页</span>
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="default"
                   size="sm"
                   disabled={!nextItem}
                   onClick={() => nextItem && goToPage(nextItem.id)}
@@ -851,10 +851,10 @@ export function App() {
             <div className="flex flex-wrap items-center gap-2">
               <Badge>默认</Badge>
               <Badge variant="secondary">次要</Badge>
-              <Badge variant="outline">描边</Badge>
+              <Badge variant="default">描边</Badge>
               <Badge variant="muted">中性</Badge>
               <Badge variant="destructive">危险</Badge>
-              <Badge variant="outline">
+              <Badge variant="default">
                 <Check className="size-3" /> 带图标
               </Badge>
             </div>
@@ -902,8 +902,8 @@ export function App() {
               <div className="rounded-xl border border-border/80 bg-card p-4">
                 <p className="text-xs font-medium text-muted-foreground mb-3">官方文档首屏示例 (图1 1:1 对齐 · 描边与图标按钮)：</p>
                 <div className="flex items-center gap-3">
-                  <Button variant="outline">Button</Button>
-                  <Button variant="outline" size="icon" aria-label="Submit">
+                  <Button variant="default">Button</Button>
+                  <Button variant="default" size="icon" aria-label="Submit">
                     <ArrowUp className="size-4" />
                   </Button>
                 </div>
@@ -914,13 +914,24 @@ export function App() {
                 <p className="text-xs font-medium text-muted-foreground mb-2">样式变体 (Variants)：</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <Button variant="default">Default</Button>
-                  <Button variant="primary">Primary（渐变蓝）</Button>
+                  <Button variant="primary">Primary（天蓝）</Button>
                   <Button variant="secondary">Secondary</Button>
-                  <Button variant="outline">Outline</Button>
                   <Button variant="ghost">Ghost</Button>
                   <Button variant="destructive">Destructive</Button>
                   <Button variant="link">Link</Button>
                   <Button disabled>Disabled</Button>
+                </div>
+              </div>
+
+              {/* A 参考行：和 palette-lab-2 的 A 套逐颗对位（主实心 / 次淡蓝 / 描边 / 文字 / 危险描边） */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-2">A 参考行：</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button variant="primary">部署到设备</Button>
+                  <Button variant="secondary">新建分支</Button>
+                  <Button variant="default">重置</Button>
+                  <Button variant="ghost">取消</Button>
+                  <Button variant="danger">卸载</Button>
                 </div>
               </div>
 
@@ -939,19 +950,19 @@ export function App() {
               <div>
                 <p className="text-xs font-medium text-muted-foreground mb-2">图标与状态 (圆形圆角、带前后图标、加载 Spinner)：</p>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Button variant="outline" size="icon">
+                  <Button variant="default" size="icon">
                     <CircleFadingArrowUp className="size-4" />
                   </Button>
-                  <Button variant="outline" size="icon" className="rounded-full">
+                  <Button variant="default" size="icon" className="rounded-full">
                     <ArrowUp className="size-4" />
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button variant="default" size="sm">
                     <GitBranch className="mr-1.5 size-3.5" /> New Branch
                   </Button>
                   <Button variant="default" size="sm">
                     Deploy <ArrowUpRight className="ml-1.5 size-3.5" />
                   </Button>
-                  <Button variant="outline" size="sm" disabled>
+                  <Button variant="default" size="sm" disabled>
                     <Spinner className="mr-1.5 size-3.5" /> Please wait...
                   </Button>
                 </div>
@@ -1006,14 +1017,14 @@ export function App() {
                 </p>
               </CardContent>
               <CardFooter className="flex justify-between">
-                <Button variant="outline">Cancel</Button>
+                <Button variant="default">Cancel</Button>
                 <Button>Deploy</Button>
               </CardFooter>
             </Card>
 
             <div className="mt-6 space-y-2">
               <p className="text-xs text-muted-foreground">
-                卡面变体（里面是空的，只验底色 / 描边 / 圆角）。淡天蓝就是 --primary，灰色一个都没用：
+                卡面变体（里面是空的，只验底色 / 描边 / 圆角）。天蓝就是 --primary（205 88%），灰色一个都没用：
               </p>
               <div className="grid grid-cols-3 gap-3">
                 {(["primary", "soft", "muted", "outline"] as const).map((v) => (
@@ -1248,7 +1259,7 @@ export function App() {
                 <EmptyContent>
                   <div className="flex flex-wrap items-center justify-center gap-2">
                     <Button>Create Project</Button>
-                    <Button variant="outline">Import Project</Button>
+                    <Button variant="default">Import Project</Button>
                   </div>
                   <Button variant="link" size="sm" className="text-muted-foreground hover:text-foreground text-xs gap-1 mt-1">
                     Learn More <ArrowUpRight className="size-3.5" />
@@ -1414,7 +1425,7 @@ export function App() {
                   <span className="text-sm tabular-nums font-medium text-foreground">$100.00</span>
                 </ItemContent>
               </Item>
-              <Item variant="outline">
+              <Item variant="default">
                 <ItemMedia>
                   <Smartphone className="size-4 text-primary" />
                 </ItemMedia>
@@ -1700,7 +1711,7 @@ export function App() {
                   <div className="flex items-center gap-2 mb-3">
                     {sidebarCollapsed && (
                       <Button
-                        variant="outline"
+                        variant="default"
                         size="sm"
                         className="h-7 px-2 text-xs gap-1.5 rounded-md"
                         onClick={() => setSidebarCollapsed(false)}
@@ -1750,9 +1761,9 @@ export function App() {
               </p>
               <div className="flex flex-wrap gap-2">
                 <Button onClick={() => portal.success("设置已保存。")}>成功</Button>
-                <Button variant="outline" onClick={() => portal.error("连接失败，请检查地址和密钥。")}>失败</Button>
-                <Button variant="outline" onClick={() => portal.warning("当前配置尚未测试。")}>警告</Button>
-                <Button variant="outline" onClick={() => portal.info("已切换到简体中文。")}>信息</Button>
+                <Button variant="default" onClick={() => portal.error("连接失败，请检查地址和密钥。")}>失败</Button>
+                <Button variant="default" onClick={() => portal.warning("当前配置尚未测试。")}>警告</Button>
+                <Button variant="default" onClick={() => portal.info("已切换到简体中文。")}>信息</Button>
               </div>
               <div className="grid max-w-xl gap-2">
                 <Portal tone="success" appearance="solid" message="终端设置已恢复默认值。" />

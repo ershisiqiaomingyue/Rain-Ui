@@ -224,7 +224,7 @@ export function ModelProviderPicker({
         <Popover open={modelOpen} onOpenChange={setModelOpen}>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
+              variant="default"
               disabled={disabled}
               aria-label={`选择模型，当前 ${currentModel?.name ?? "未配置模型"}`}
               className="h-8 min-w-0 items-center gap-1.5 px-2.5 font-normal leading-none"
@@ -343,7 +343,7 @@ export function ModelProviderPicker({
           <Popover open={reasoningOpen} onOpenChange={setReasoningOpen}>
             <PopoverTrigger asChild>
               <Button
-                variant="outline"
+                variant="default"
                 disabled={disabled}
                 aria-label={`选择思考强度，当前 ${effortLabel}`}
                 aria-expanded={reasoningOpen}
@@ -391,7 +391,7 @@ export function ModelProviderPicker({
 
         {reasoningFixed && (
           <Button
-            variant="outline"
+            variant="default"
             disabled
             title={reasoningFixedHint}
             aria-label={`思考强度固定：${reasoningFixedHint}`}

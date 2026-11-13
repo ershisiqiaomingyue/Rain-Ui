@@ -145,7 +145,7 @@ export function ToolUpdateItem({
               取消
             </Button>
           ) : null}
-          <Button size="sm" variant="outline" icon={<AppIcon name="play" />} onClick={onResume}>
+          <Button size="sm" variant="default" icon={<AppIcon name="play" />} onClick={onResume}>
             继续
           </Button>
         </>
@@ -153,7 +153,7 @@ export function ToolUpdateItem({
     }
     if (state === "error") {
       return (
-        <Button size="sm" variant="outline" icon={<AppIcon name="refresh" />} onClick={onStart}>
+        <Button size="sm" variant="default" icon={<AppIcon name="refresh" />} onClick={onStart}>
           重试
         </Button>
       )
@@ -162,7 +162,7 @@ export function ToolUpdateItem({
     // 已是最新：状态徽标（绿色）已经说清楚了，不再摆一颗点了没反应的按钮。
     if (upToDate) return null
     return (
-      <Button size="sm" variant="outline" icon={<AppIcon name="download" />} onClick={onStart}>
+      <Button size="sm" variant="default" icon={<AppIcon name="download" />} onClick={onStart}>
         {actionLabel ?? (currentVersion ? "更新" : "下载")}
       </Button>
     )

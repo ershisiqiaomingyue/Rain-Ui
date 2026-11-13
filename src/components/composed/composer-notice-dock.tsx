@@ -116,7 +116,7 @@ function NoticeDetailList({ details }: { details: NoticeDetail[] }) {
       {details.map((detail) => (
         <Item
           key={detail.id}
-          variant="outline"
+          variant="default"
           size="sm"
           className="min-h-9 w-full gap-2 rounded-[8px] bg-background/65 px-2 py-1.5 shadow-none hover:bg-muted/55"
         >
@@ -172,7 +172,7 @@ function FilesNotice({
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="outline"
+          variant="default"
           aria-label={`文件改动：${files.length} 个文件，新增 ${added} 行，删除 ${removed} 行`}
           className="group/file-change h-8 w-[280px] max-w-full justify-start gap-2 px-2.5 text-xs font-normal shadow-none max-[720px]:w-full"
         >

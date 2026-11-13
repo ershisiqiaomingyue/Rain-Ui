@@ -50,7 +50,7 @@ const PaginationLink = ({
 }: PaginationLinkProps) => (
   <Button
     asChild
-    variant={isActive ? "outline" : "ghost"}
+    variant={isActive ? "default" : "ghost"}
     size={size}
     data-slot="pagination-link"
     data-active={isActive}
