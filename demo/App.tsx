@@ -1009,6 +1009,35 @@ export function App() {
                 <Button>Deploy</Button>
               </CardFooter>
             </Card>
+
+            <div className="mt-6 space-y-2">
+              <p className="text-xs text-muted-foreground">
+                五个新变体（里面是空的，只验底色 / 描边 / 圆角）：
+              </p>
+              <div className="grid grid-cols-3 gap-3">
+                {(["sky", "primary", "secondary", "muted", "outline"] as const).map((v) => (
+                  <Card key={v} variant={v} className="min-h-[104px]">
+                    <span className="p-4 block font-mono text-[11px] text-muted-foreground">{v}</span>
+                  </Card>
+                ))}
+                <Card className="min-h-[104px]">
+                  <span className="p-4 block font-mono text-[11px] text-muted-foreground">default</span>
+                </Card>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-2">
+              <p className="text-xs text-muted-foreground">
+                层级：卡里堆卡不用写类名 —— 往里一层圆角收一档、底色换成半透明 card、去掉阴影，第三层收到 6px。
+              </p>
+              <Card variant="sky" className="max-w-md p-4">
+                <Card className="min-h-[88px] p-4">
+                  <Card className="min-h-[52px] p-4">
+                    <span className="font-mono text-[11px] text-muted-foreground">第三层</span>
+                  </Card>
+                </Card>
+              </Card>
+            </div>
           </Section>
           {/* 6. Checkbox */}
           <Section id="checkbox" title="Checkbox" label="复选框" count={15}>

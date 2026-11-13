@@ -9,6 +9,9 @@
  *
  * 语义层存的是 `H S% L%` 裸三元组，组件里写 hsl(var(--x))；领域调色板存整串色值，
  * 直接 var()。两者不能混，混了就出 hsl(hsl(...))。
+ *
+ * 除了 `--sky-veil/-mist/-shade/-line` 这四档卡面晕染（shadcn 语义里没有「天蓝」，
+ * 而 Card 的 sky 变体要用），语义层和领域调色板都不许再加名字。
  */
 
 :root {
@@ -106,6 +109,14 @@
   --stellar-sky-edge: hsl(228 50% 4%);
   --stellar-star: hsl(226 100% 96%);
   --scrim: color-mix(in srgb, hsl(0 0% 0%) 36%, transparent);
+
+  /* ── 卡面晕染：淡天蓝渐变三档 + 一条更偏蓝的描边。
+        shadcn 的语义层里没有「天蓝」这个意思，所以放这里当装饰色；只有 Card 的
+        sky 变体引它。不要把这三个名字当语义用，状态色仍然只有 --destructive。 ── */
+  --sky-veil: 216 48% 15%;
+  --sky-mist: 217 46% 11.5%;
+  --sky-shade: 219 46% 8%;
+  --sky-line: 215 36% 23%;
 }
 
 html[data-theme="light"] {
@@ -180,6 +191,13 @@ html[data-theme="light"] {
   --stellar-sky-edge: hsl(228 50% 4%);
   --stellar-star: hsl(226 100% 96%);
   --scrim: color-mix(in srgb, hsl(0 0% 0%) 30%, transparent);
+
+  /* ── 卡面晕染（亮色）：白底上很浅的一层天蓝，渐变顶端几乎白、底端才看得出蓝。
+        色相锁在 212–218 之间，超过 220 就往紫走，不像「天蓝」了。 ── */
+  --sky-veil: 212 100% 97.8%;
+  --sky-mist: 215 96% 95.8%;
+  --sky-shade: 218 76% 92.6%;
+  --sky-line: 214 52% 86%;
 }
 
 /* 配色变体：只换主色，语义层其余名字一律不动。 */
