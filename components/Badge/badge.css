@@ -28,25 +28,25 @@
 
 .badge-success,
 .pill-success {
-  --badge-bg: hsl(var(--success-bg));
-  --badge-text: hsl(var(--success-bg-foreground));
+  --badge-bg: hsl(var(--primary));
+  --badge-text: hsl(var(--primary));
 }
 
 .badge-warning,
 .pill-warning {
-  --badge-bg: hsl(var(--warning-bg));
-  --badge-text: hsl(var(--warning-bg-foreground));
+  --badge-bg: hsl(var(--muted-foreground));
+  --badge-text: hsl(var(--muted-foreground));
 }
 
 .badge-danger,
 .pill-danger {
-  --badge-bg: hsl(var(--destructive-soft-bg));
-  --badge-text: hsl(var(--destructive-soft-bg-foreground));
+  --badge-bg: hsl(var(--destructive));
+  --badge-text: hsl(var(--destructive));
 }
 
 .badge-neutral {
-  --badge-bg: var(--surface-inset);
-  --badge-text: hsl(var(--ink-secondary));
+  --badge-bg: hsl(var(--muted));
+  --badge-text: hsl(var(--muted-foreground));
 }
 
 /* 呼吸脉冲圆点 */

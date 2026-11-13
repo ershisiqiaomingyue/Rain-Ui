@@ -11,7 +11,7 @@
   background: hsl(var(--card));
   /* 外框必须是实际可见的 1px：--card-border 的值是 transparent，表格因此
      没有左右和下边线，看起来像一张"断了框"的表。 */
-  border: 1px solid var(--line-2);
+  border: 1px solid hsl(var(--border));
   border-radius: var(--radius-panel);
 }
 
@@ -31,10 +31,10 @@
   padding: 10px 16px;
   font-size: var(--fs-label);
   font-weight: 600;
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
   letter-spacing: 0;
-  background: var(--surface-inset);
-  border-bottom: 1px solid var(--line-2);
+  background: hsl(var(--muted));
+  border-bottom: 1px solid hsl(var(--border));
   height: 38px;
   white-space: nowrap;
 }
@@ -45,7 +45,7 @@
 .desk-table td {
   padding: 11px 16px;
   color: hsl(var(--foreground));
-  border-bottom: 1px solid var(--line-2);
+  border-bottom: 1px solid hsl(var(--border));
   vertical-align: middle;
   transition: background 0.15s ease;
 }
@@ -53,7 +53,7 @@
 /* 行悬浮 */
 .table tbody tr:hover td,
 .desk-table tbody tr:hover td {
-  background: var(--surface-hover);
+  background: hsl(var(--accent));
 }
 
 /* 最后一行去除下边线 */
@@ -73,7 +73,7 @@ html[data-theme] .markdown-body tbody tr:last-child td {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-size: var(--fs-label);
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
 }
 
 /* 数字列：右对齐 + 等宽数字。th 和 td 用同一个类，表头才跟着走。 */
@@ -91,5 +91,5 @@ html[data-theme] .markdown-body tbody tr:last-child td {
   cursor: pointer;
   width: 15px;
   height: 15px;
-  accent-color: hsl(var(--accent-strong));
+  accent-color: hsl(var(--primary));
 }

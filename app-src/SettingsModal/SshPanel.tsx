@@ -105,7 +105,7 @@ export const SshPanel: React.FC = () => {
         <div className="setting-card-group">
           <SshConnectionFields values={values} onChange={patchValues} disabled={busy} />
 
-          <div className="setting-row-item" style={{ background: "var(--bg-surface)", justifyContent: "flex-end", gap: 10 }}>
+          <div className="setting-row-item" style={{ background: "hsl(var(--card))", justifyContent: "flex-end", gap: 10 }}>
             <Button size="sm" variant="secondary" disabled={busy} onClick={() => void testDraft()}>测试连接并浏览目录</Button>
             {sshEditingId && <Button size="sm" variant="secondary" disabled={busy} onClick={closeEditor}>取消</Button>}
             <Button size="sm" variant="primary" disabled={busy} onClick={() => void save()}>保存 SSH 连接</Button>
@@ -125,10 +125,10 @@ export const SshPanel: React.FC = () => {
           {savedSshList.map((item) => (
             <div key={item.id} className="setting-item-pill">
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <Server size={16} color="var(--accent-primary)" />
+                <Server size={16} color="hsl(var(--primary))" />
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 600 }}>{item.name}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-tertiary)", fontFamily: "var(--font-mono)" }}>
+                  <div style={{ fontSize: 11, color: "hsl(var(--muted-foreground))", fontFamily: "var(--font-mono)" }}>
                     {item.username}@{item.host}:{item.port} · {item.defaultRoot || "~"}
                   </div>
                 </div>

@@ -28,7 +28,7 @@
    对话页里的步骤清单是一张纯展示清单，鼠标划过一行就亮起一块底色，看着像
    「这里可以点」，用户点下去却什么也没有发生（用户反馈：hover 为什么变色）。 */
 html[data-theme] .task-step-row.is-clickable:hover {
-  background: var(--surface-hover);
+  background: hsl(var(--accent));
 }
 
 html[data-theme] .task-step-row.is-clickable {
@@ -69,8 +69,8 @@ html[data-theme] .task-step-row.is-clickable {
    盘上等于同色同底，整颗打勾看不见了。--control-checked-bg / --control-checked-mark
    是库里给勾选态定的「底 + 记号」配对，主题换色也跟着走。 */
 .task-step-icon.done {
-  background: var(--control-checked-bg);
-  color: var(--control-checked-mark);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   box-shadow: var(--shadow-card);
 }
 
@@ -82,8 +82,8 @@ html[data-theme] .task-step-row.is-clickable {
 
 /* running: spinning dash arc on a subtle accent fill. */
 .task-step-icon.running {
-  background: color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
-  color: hsl(var(--accent-strong));
+  background: color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
+  color: hsl(var(--primary));
 }
 
 .task-step-icon.running svg {
@@ -103,15 +103,15 @@ html[data-theme] .task-step-row.is-clickable {
 /* pending: a single hollow ring, no inner circle. */
 .task-step-icon.pending {
   background: transparent;
-  border: var(--status-pending-border);
+  border: hsl(var(--border));
 }
 
 /* pending 的空心环比常态是中性灰；只有可点的行才在悬停时染成强调色。
    展示用的清单（对话页任务编排）不做这个变化 —— 用户原本看到的就是
    「鼠标移上去，待处理的灰圆圈突然变成一圈紫色」。（用户反馈原话：「我 hover 为什么有蓝色？」） */
 html[data-theme] .task-step-row.is-clickable:hover .task-step-icon.pending {
-  border-color: hsl(var(--accent-strong));
-  background: color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
+  border-color: hsl(var(--primary));
+  background: color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
 }
 
 /* Pending rows dim their text until work reaches them. */
@@ -133,13 +133,13 @@ html[data-theme] .task-step-row.is-clickable:hover .task-step-icon.pending {
   flex: 0 0 auto;
   padding: 2px 7px;
   border-radius: var(--radius-control);
-  background: var(--surface-hover);
-  color: hsl(var(--ink-secondary));
+  background: hsl(var(--accent));
+  color: hsl(var(--muted-foreground));
   font-size: var(--fs-label);
   font-weight: 500;
   line-height: 1.4;
 }
 
-.task-step-icon.error { color: hsl(var(--destructive-soft-bg-foreground)); background: hsl(var(--destructive-soft-bg)); }
-.task-step-icon.cancelled { color: hsl(var(--ink-tertiary)); background: var(--surface-hover); }
+.task-step-icon.error { color: hsl(var(--destructive)); background: hsl(var(--destructive)); }
+.task-step-icon.cancelled { color: hsl(var(--muted-foreground)); background: hsl(var(--accent)); }
 .task-step-icon.error svg, .task-step-icon.cancelled svg { width: 13px; height: 13px; stroke-width: 2; }

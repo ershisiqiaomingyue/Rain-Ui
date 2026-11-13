@@ -4,126 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  /* ==========================================================================
-     桌面应用沉浸级调色盘 (Apple macOS Native Desktop Design System)
-
-     强调色只有一个：库里的 --accent-primary（雾霾冷靛青 #6366F1）。这一层不再
-     自己写色值——--primary / --ring 直接引用库的 --accent-primary-hsl /
-     --accent-text-hsl 三元组（tailwind.config.cjs 里颜色都写成 hsl(var(--x))），
-     所以换主题色只改 assets/styles/tokens.css 一处。
-     原来那 6 套 [data-accent] 预设（emerald / indigo / amber / mint / violet /
-     graphite）已删除：多套配色拆开单看都丑，只留默认这一个。
-     ========================================================================== */
-
-  /* 默认根变量（浅色模式） - 对应 card-showcase.html 的 Light Glass Base 规范 */
-  :root {
-    /* 页面底走淡白灰，白卡才立得起来；纯白留给卡片（--card）。 */
-    --background: 228 8% 97%;
-    --foreground: 222.2 47.4% 11.2%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
-
-    /* 主色不在这一层定义：引用库里的三元组，换主题色只动 tokens.css 一处。 */
-    --primary: var(--accent-primary-hsl);
-    --primary-foreground: var(--accent-text-hsl);
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 214 32% 92%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 214 32% 92%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    /* 桌面级危险色：macOS 柔和红，不刺眼 */
-    --destructive: 2 64% 58%;          /* #D9534F 砖红，克制不刺眼 */
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: var(--accent-primary-hsl);
-
-    --radius: 0.625rem;
-    --radius-sm: 0.375rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 0.625rem;
-    --radius-xl: 0.875rem;
-
-    /* 桌面级按钮质感令牌 · 源自 Android-Tool (用户精挑细选的按钮配色)
-       primary = 主题主色 + 细窄光晕 + 1px 内高光棱边；
-       secondary = 主色玻璃薄涂层，而不是灰底。
-       --accent-glow / --accent-subtle 由库里 tokens.css 提供，这里不再重复定义
-       （同一份 CSS 里两份同名令牌只会打架）。 */
-    --btn-primary-rim: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
-    --btn-primary-shadow: 0 2px 10px hsl(var(--primary) / 0.30), inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
-    --btn-glass-accent-bg: hsl(var(--primary) / 0.12);
-    --btn-glass-accent-hover: hsl(var(--primary) / 0.18);
-    --btn-glass-accent-active: hsl(var(--primary) / 0.24);
-    /* 玻璃按钮上的字是 13px 正文色，用过了 AA 的那一档（不是主色本身） */
-    --btn-glass-accent-text: hsl(var(--accent-ink-hsl));
-    --btn-glass-rim: inset 0 1px 0 rgba(255, 255, 255, 0.35);
-
-    /* 危险按钮：极淡玫瑰底 + 砖红文字（对应设计稿 Danger 危险） */
-    --btn-danger-bg: hsl(2 64% 58% / 0.10);
-    --btn-danger-hover: hsl(2 64% 58% / 0.18);
-    --btn-danger-text: hsl(2 64% 52%);
-    --btn-danger-rim: inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  }
-
-  .dark {
-    --btn-primary-rim: inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
-    --btn-primary-shadow: 0 2px 12px hsl(var(--primary) / 0.35), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
-    --btn-glass-accent-bg: hsl(var(--primary) / 0.22);
-    --btn-glass-accent-hover: hsl(var(--primary) / 0.30);
-    --btn-glass-accent-active: hsl(var(--primary) / 0.38);
-    --btn-glass-accent-text: hsl(var(--accent-ink-hsl));
-    --btn-glass-rim: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-
-    --btn-danger-bg: hsl(2 70% 65% / 0.16);
-    --btn-danger-hover: hsl(2 70% 65% / 0.24);
-    --btn-danger-text: hsl(2 78% 74%);
-    --btn-danger-rim: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-
-  /* 默认暗黑模式：彻底告别刺眼死黑与刺眼死红，采用 macOS / card-showcase.html 的深度黑晶底座 (#0b0d12 / #161921) */
-  .dark {
-    --background: 224 25% 6%;           /* #0b0d12 润泽黑晶底座 */
-    --foreground: 210 20% 98%;
-
-    --card: 223 20% 11%;                /* #141720 暗夜卡片高质感 */
-    --card-foreground: 210 20% 98%;
-
-    --popover: 223 20% 11%;
-    --popover-foreground: 210 20% 98%;
-
-    /* 暗色默认主色：同 --accent-primary-hsl（靛青 #6366F1 提亮版） */
-    --primary: var(--accent-primary-hsl);
-    --primary-foreground: var(--accent-text-hsl);
-
-    --secondary: 220 14% 17%;
-    --secondary-foreground: 210 20% 96%;
-
-    --muted: 220 13% 23%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-
-    --accent: 220 13% 23%;
-    --accent-foreground: 210 20% 96%;
-
-    /* 优化后的暗黑柔和警示红：低饱和度、高辨识、不刺目 (#e06c75 质感) */
-    --destructive: 2 70% 65%;          /* 暗色柔和砖红 #E4756F */
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 13% 18%;
-    --input: 220 13% 18%;
-    --ring: var(--accent-primary-hsl);
-  }
-}
+/* 语义色一个都不在这里定义。唯一来源是 assets/styles/palettes.css（shadcn 那 19 个
+   名字，亮暗两套 + 领域调色板），main.tsx 里在本文件之后导入它。
+   之前这里有一份完整拷贝（--background / --primary / --btn-* / --accent-primary-hsl
+   全抄了一遍），跟库里的值长期不一致，改一处忘一处——已经删掉了，别再抄回来。 */
 
 @layer base {
   * {
@@ -131,16 +15,18 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI Variable Text", system-ui, sans-serif;
+    /* 字体不在这里写：--font-sans 由库的 tokens.css 定义，body 规则也在 base.css 里。 */
     -webkit-font-smoothing: antialiased;
   }
 }
 
+/* sidebar.tsx 自带一套 --sidebar-* 变量（shadcn 的 Sidebar 组件约定），
+   库的 palettes.css 不管它们，所以在 demo 里补一份真值。 */
 :root {
   --sidebar: hsl(210 40% 98%);
   --sidebar-foreground: hsl(222.2 47.4% 11.2%);
-  --sidebar-primary: hsl(var(--accent-primary-hsl));
-  --sidebar-primary-foreground: hsl(var(--accent-text-hsl));
+  --sidebar-primary: hsl(var(--primary));
+  --sidebar-primary-foreground: hsl(var(--primary-foreground));
   --sidebar-accent: hsl(214 32% 92%);
   --sidebar-accent-foreground: hsl(222.2 47.4% 11.2%);
   --sidebar-border: hsl(214.3 31.8% 91.4%);
@@ -150,8 +36,8 @@
 .dark {
   --sidebar: hsl(224 25% 8%);
   --sidebar-foreground: hsl(210 20% 96%);
-  --sidebar-primary: hsl(var(--accent-primary-hsl));
-  --sidebar-primary-foreground: hsl(var(--accent-text-hsl));
+  --sidebar-primary: hsl(var(--primary));
+  --sidebar-primary-foreground: hsl(var(--primary-foreground));
   --sidebar-accent: hsl(220 13% 23%);
   --sidebar-accent-foreground: hsl(210 20% 96%);
   --sidebar-border: hsl(220 13% 18%);

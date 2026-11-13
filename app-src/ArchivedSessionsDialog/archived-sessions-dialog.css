@@ -6,7 +6,7 @@
   margin: 0 0 10px;
   font-size: 12px;
   line-height: 1.5;
-  color: var(--status-danger-text);
+  color: hsl(var(--destructive));
   overflow-wrap: anywhere;
 }
 
@@ -17,21 +17,21 @@
   gap: 6px;
   padding: 26px 12px 30px;
   text-align: center;
-  color: var(--text-tertiary);
+  color: hsl(var(--muted-foreground));
 }
 
-.archive-dialog-empty svg { color: var(--text-quaternary); }
+.archive-dialog-empty svg { color: hsl(var(--muted-foreground)); }
 
 .archive-dialog-empty span {
   font-size: 13px;
-  color: var(--text-secondary);
+  color: hsl(var(--muted-foreground));
 }
 
 .archive-dialog-empty small {
   max-width: 34ch;
   font-size: 11.5px;
   line-height: 1.6;
-  color: var(--text-tertiary);
+  color: hsl(var(--muted-foreground));
 }
 
 .archive-dialog-list {
@@ -53,7 +53,7 @@
 }
 
 .archive-dialog-item:hover,
-.archive-dialog-item:focus-within { background: var(--popover-item-hover, var(--bg-hover)); }
+.archive-dialog-item:focus-within { background: hsl(var(--accent)); }
 
 .archive-dialog-label {
   display: flex;
@@ -69,7 +69,7 @@
   white-space: nowrap;
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
 }
 
 .archive-dialog-meta {
@@ -77,7 +77,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 11.5px;
-  color: var(--text-tertiary);
+  color: hsl(var(--muted-foreground));
 }
 
 .archive-dialog-actions {

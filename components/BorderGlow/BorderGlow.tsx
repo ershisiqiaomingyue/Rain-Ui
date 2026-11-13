@@ -17,9 +17,9 @@ export const BorderGlow: React.FC<BorderGlowProps> = ({
   animated = false,
   followPointer = true,
   // 默认取主题强调色，跟着亮暗主题走；写死 #6699ff 会在浅色主题里发灰、深色主题里发脏。
-  colors = ["var(--accent-primary)", "var(--accent-hover)", "color-mix(in srgb, var(--accent-primary) 55%, transparent)"],
+  colors = ["hsl(var(--primary))", "hsl(var(--primary))", "color-mix(in srgb, hsl(var(--primary)) 55%, transparent)"],
   // 卡片底色必须来自 token。写死 #ffffff 时深色主题里是白底 + 近白文字（对比度 1.05:1，字直接看不见）。
-  backgroundColor = "var(--bg-surface)",
+  backgroundColor = "hsl(var(--card))",
   borderRadius = 14,
   borderWidth = 2,
 }) => {

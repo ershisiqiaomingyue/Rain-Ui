@@ -1871,7 +1871,7 @@ h1 {
 }
 
 .status-running {
-  color: var(--warning);
+  color: hsl(var(--muted-foreground));
 }
 
 .status-running::before {

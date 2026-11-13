@@ -8,7 +8,7 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  border: 1px solid var(--line-1);
+  border: 1px solid hsl(var(--border));
   border-radius: var(--radius-panel);
   background: hsl(var(--card));
   box-shadow: var(--shadow-sm);
@@ -34,7 +34,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  border-bottom: 1px solid var(--line-1);
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .ui-preview-title {
@@ -56,7 +56,7 @@
 
 .ui-preview-title small {
   font-size: var(--fs-label);
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
 }
 
 .ui-preview-tools {
@@ -89,7 +89,7 @@
 .ui-preview-menu-icon {
   display: inline-flex;
   align-items: center;
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
 }
 
 /* Tool buttons are library Buttons (variant="subtle" size="xs"). No size or
@@ -109,7 +109,7 @@
   gap: 2px;
   padding: 2px;
   border-radius: var(--radius-control);
-  background: var(--input-bg-sunken);
+  background: hsl(var(--muted));
 }
 
 /* Mode buttons are library Buttons too; only the active fill is local. */
@@ -128,9 +128,9 @@
   font-variant-numeric: tabular-nums;
 }
 
-.ui-preview-counts b { color: var(--change-added, hsl(var(--success))); font-weight: 600; }
-.ui-preview-counts i { color: hsl(var(--destructive-soft-bg-foreground)); font-style: normal; font-weight: 600; }
-.ui-preview-counts small { color: hsl(var(--ink-tertiary)); font-size: var(--fs-label); }
+.ui-preview-counts b { color: var(--change-added, hsl(var(--primary))); font-weight: 600; }
+.ui-preview-counts i { color: hsl(var(--destructive)); font-style: normal; font-weight: 600; }
+.ui-preview-counts small { color: hsl(var(--muted-foreground)); font-size: var(--fs-label); }
 
 /* Search row */
 .ui-preview-search {
@@ -139,7 +139,7 @@
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
-  border-bottom: 1px solid var(--line-1);
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .ui-preview-search-input {
@@ -147,9 +147,9 @@
   min-width: 0;
   height: 26px;
   padding: 0 8px;
-  border: 1px solid var(--line-1);
+  border: 1px solid hsl(var(--border));
   border-radius: var(--radius-control);
-  background: var(--input-bg-sunken);
+  background: hsl(var(--muted));
   color: hsl(var(--foreground));
   font: inherit;
   font-size: var(--fs-label);
@@ -157,13 +157,13 @@
 
 .ui-preview-search-input:focus {
   outline: none;
-  border-color: color-mix(in srgb, hsl(var(--accent-strong)) 35%, transparent);
+  border-color: color-mix(in srgb, hsl(var(--primary)) 35%, transparent);
 }
 
 .ui-preview-search > span {
   flex: 0 0 auto;
   font-size: var(--fs-label);
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   font-variant-numeric: tabular-nums;
 }
 
@@ -174,7 +174,7 @@
   overflow: auto;
   scrollbar-width: thin;
   /* Chromium 下不指色就是默认浅色滚动条，暗色主题里非常刺眼。 */
-  scrollbar-color: var(--scrollbar-thumb) transparent;
+  scrollbar-color: hsl(var(--border)) transparent;
 }
 .ui-preview-content:has(> .ui-file-diff) { display: flex; overflow: hidden; scrollbar-gutter: auto; }
 
@@ -182,9 +182,9 @@
 .ui-preview-path {
   flex: 0 0 auto;
   padding: 6px 10px;
-  border-top: 1px solid var(--line-1);
+  border-top: 1px solid hsl(var(--border));
   font: var(--fs-meta)/1.4 var(--font-mono);
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

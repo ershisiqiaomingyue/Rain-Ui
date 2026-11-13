@@ -23,8 +23,8 @@ body {
 
 body {
   margin: 0;
-  background: var(--bg-canvas);
-  color: var(--text-primary);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
   font-family: var(--font-sans);
   font-size: var(--fs-body);
   line-height: 1.5;
@@ -70,22 +70,21 @@ svg {
   outline-color: transparent;
 }
 
-/* 选区与光标：浏览器默认那支蓝是我们强调色之外的第四种蓝，换主题色时不会跟着走。
+/* 选区与光标：浏览器默认那支蓝是强调色之外的第四种蓝，换主题色时不会跟着走。
    选区底色取主色的浅染（叠在任意表面上都还看得见），故意不写文字色——
-   写了就会把浅底上的深字一起刷白。光标是 1px 细线，用过了 AA 的那一档
-   （--accent-ink），浅底上才不会看不见。 */
+   写了就会把浅底上的深字一起刷白。 */
 ::selection {
-  background: color-mix(in srgb, var(--accent-primary) 30%, transparent);
+  background: hsl(var(--primary) / 0.3);
 }
 
 :where(input, textarea, [contenteditable="true"]) {
-  caret-color: var(--accent-ink);
+  caret-color: hsl(var(--primary));
 }
 
 /* 滚动条：Windows 默认 17px 宽、带箭头按钮，会把所有面板的右边缘顶歪 */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--border-medium, #3a4150) transparent;
+  scrollbar-color: hsl(var(--border)) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -98,12 +97,12 @@ svg {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: var(--border-medium, #3a4150);
+  background: hsl(var(--border));
   border-radius: var(--radius-full);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: var(--border-strong, #4b5364);
+  background: hsl(var(--muted-foreground) / 0.6);
 }
 
 *::-webkit-scrollbar-corner {

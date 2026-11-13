@@ -31,7 +31,7 @@ export const AboutPanel: React.FC = () => {
                 <span className="setting-desc">开发者工具箱</span>
               </div>
             </div>
-            <span style={{ fontSize: 13, fontWeight: 700, color: "var(--accent-primary)" }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: "hsl(var(--primary))" }}>
               v{version}
             </span>
           </div>

@@ -16,9 +16,9 @@ html[data-theme="dark"] .provider-icon[data-brand="deepseek"] .provider-icon-mon
 }
 
 .provider-icon[data-brand="openai"] .provider-icon-monochrome {
-  background-color: var(--text-primary);
+  background-color: hsl(var(--foreground));
 }
 
 .provider-icon[data-brand^="workbuddy-"] .provider-icon-monochrome {
-  background-color: var(--text-primary);
+  background-color: hsl(var(--foreground));
 }

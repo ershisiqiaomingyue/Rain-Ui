@@ -10,7 +10,7 @@
   min-height: 120px;
   padding: 24px 20px;
   text-align: center;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   background: transparent;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .tool-loading-title {
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
   font-size: var(--fs-body);
   line-height: 1.5;
   font-weight: 500;
@@ -41,7 +41,7 @@
   margin: 0;
   font-size: var(--fs-label);
   line-height: 1.6;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   overflow-wrap: anywhere;
 }
 

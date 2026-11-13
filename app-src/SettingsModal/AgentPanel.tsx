@@ -714,17 +714,17 @@ export const AgentPanel: React.FC = () => {
           {/* 高级配置 */}
           <div
             className="setting-row-item"
-            style={{ background: "var(--bg-surface)", cursor: "pointer" }}
+            style={{ background: "hsl(var(--card))", cursor: "pointer" }}
             onClick={() => setAdvancedOpen(!advancedOpen)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 600, color: "var(--text-secondary)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 600, color: "hsl(var(--muted-foreground))" }}>
               <span>可选高级配置 (缓存、上下文与费用查询)</span>
               <ChevronDown size={14} style={{ transform: advancedOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
             </div>
           </div>
 
           {advancedOpen && (
-            <div style={{ background: "var(--bg-surface)", borderTop: "1px solid var(--divider-color)" }}>
+            <div style={{ background: "hsl(var(--card))", borderTop: "1px solid hsl(var(--border))" }}>
               <div className="setting-row-item">
                 <div className="setting-label-block">
                   <span className="setting-title">余额 / 额度查询 URL</span>
@@ -832,7 +832,7 @@ export const AgentPanel: React.FC = () => {
             </div>
           )}
 
-          <div className="setting-row-item" style={{ background: "var(--bg-surface)", justifyContent: "flex-end", gap: 10 }}>
+          <div className="setting-row-item" style={{ background: "hsl(var(--card))", justifyContent: "flex-end", gap: 10 }}>
             <Button size="sm" variant="secondary" style={{ gap: 6 }} disabled={!providerModels.length} onClick={() => void clearProviderModels()}>
               <Eraser size={13} />
               <span>清空目录</span>
@@ -878,7 +878,7 @@ export const AgentPanel: React.FC = () => {
       <div>
         <div className="setting-group-title">
           <span>已保存的 provider</span>
-          <small style={{ marginLeft: 8, fontWeight: 500, color: "var(--text-tertiary)" }}>
+          <small style={{ marginLeft: 8, fontWeight: 500, color: "hsl(var(--muted-foreground))" }}>
             {savedProviders.length} 个接入
           </small>
         </div>
@@ -1036,7 +1036,7 @@ export const AgentPanel: React.FC = () => {
             </div>
           )}
 
-          <div className="setting-row-item" style={{ background: "var(--bg-surface)", justifyContent: "flex-end" }}>
+          <div className="setting-row-item" style={{ background: "hsl(var(--card))", justifyContent: "flex-end" }}>
             <Button size="sm" variant="primary" style={{ gap: 6 }} onClick={() => void connectMcp()}>
               <Plug size={13} />
               <span>连接并发现工具</span>
@@ -1044,13 +1044,13 @@ export const AgentPanel: React.FC = () => {
           </div>
 
           {mcpServers.length > 0 ? (
-            <div style={{ padding: "10px 16px", display: "flex", flexDirection: "column", gap: 6, borderTop: "1px solid var(--divider-color)" }}>
+            <div style={{ padding: "10px 16px", display: "flex", flexDirection: "column", gap: 6, borderTop: "1px solid hsl(var(--border))" }}>
               {mcpServers.map((srv) => (
                 <div key={srv.id} className="mcp-row-item">
                   <span className="mcp-status-dot" />
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)" }}>{srv.id}</div>
-                    <div style={{ fontSize: 11, color: "var(--text-tertiary)" }}>{srv.status}{srv.status === "已连接" ? ` · ${srv.toolsCount} 个工具已就绪` : ""}</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "hsl(var(--foreground))" }}>{srv.id}</div>
+                    <div style={{ fontSize: 11, color: "hsl(var(--muted-foreground))" }}>{srv.status}{srv.status === "已连接" ? ` · ${srv.toolsCount} 个工具已就绪` : ""}</div>
                   </div>
                   <button
                     type="button"

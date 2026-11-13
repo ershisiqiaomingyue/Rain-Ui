@@ -25,7 +25,7 @@
   display: flex;
   width: 6px;
   cursor: col-resize;
-  border-right: 1px solid var(--line-2);
+  border-right: 1px solid hsl(var(--border));
 }
 
 .pane-height-resizer {
@@ -33,21 +33,21 @@
   width: 100%;
   height: 6px;
   cursor: row-resize;
-  border-bottom: 1px solid var(--line-2);
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 /* 悬停 / 拖拽反馈：只加背景，不改宽度，避免布局跳动。 */
 .code-viewer-pane-resizer:hover,
 .pane-height-resizer:hover {
-  background: color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
+  background: color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
 }
 
 .code-viewer-pane-resizer.is-dragging,
 .pane-height-resizer.is-dragging {
-  background: color-mix(in srgb, hsl(var(--accent-strong)) 22%, transparent);
+  background: color-mix(in srgb, hsl(var(--primary)) 22%, transparent);
 }
 
 .code-viewer-pane-resizer:focus-visible,
 .pane-height-resizer:focus-visible {
-  box-shadow: var(--focus-ring-inset);
+  box-shadow: inset 0 0 0 2px hsl(var(--ring) / 0.6);
 }

@@ -148,7 +148,7 @@ export const WslPanel: React.FC = () => {
             </div>
           </div>
 
-          <div className="setting-row-item" style={{ background: "var(--bg-surface)", justifyContent: "flex-end", gap: 10 }}>
+          <div className="setting-row-item" style={{ background: "hsl(var(--card))", justifyContent: "flex-end", gap: 10 }}>
             <Button size="sm" variant="secondary" disabled={busy || !editingId} onClick={() => void testWslProfile(editingId).then(() => notify("WSL 联通测试通过。", "success")).catch((reason) => notify(formatInvokeError(reason), "error"))}>测试 WSL 联通</Button>
             {editingId && <Button size="sm" variant="secondary" disabled={busy} onClick={closeEditor}>取消</Button>}
             <Button size="sm" variant="primary" disabled={busy} onClick={() => void save()}>保存配置</Button>
@@ -168,10 +168,10 @@ export const WslPanel: React.FC = () => {
           {savedWslList.map((item) => (
             <div key={item.id} className="setting-item-pill">
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <Terminal size={16} color="var(--accent-primary)" />
+                <Terminal size={16} color="hsl(var(--primary))" />
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 600 }}>{item.name}</div>
-                  <div style={{ fontSize: 11, color: "var(--text-tertiary)", fontFamily: "var(--font-mono)" }}>
+                  <div style={{ fontSize: 11, color: "hsl(var(--muted-foreground))", fontFamily: "var(--font-mono)" }}>
                     {item.distribution} · 路径: {item.defaultRoot || "~"} · Shell: {item.shell}
                   </div>
                 </div>

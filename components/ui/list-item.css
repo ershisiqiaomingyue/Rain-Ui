@@ -8,7 +8,7 @@
 .ui-list-item {
   position: relative;
   padding: 2px 0;
-  border-bottom: 1px solid var(--line-1);
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .ui-list-item.no-divider { border-bottom: none; }
@@ -34,13 +34,13 @@
 }
 
 .ui-list-item.is-interactive > .ui-list-item-row:hover {
-  background: var(--surface-hover);
+  background: hsl(var(--accent));
 }
 
-.ui-list-item.is-selected > .ui-list-item-row { background: var(--selected-bg); }
+.ui-list-item.is-selected > .ui-list-item-row { background: hsl(var(--secondary)); }
 
 .ui-list-item-hit:focus-visible {
-  box-shadow: var(--focus-ring-inset);
+  box-shadow: inset 0 0 0 2px hsl(var(--ring) / 0.6);
 }
 
 .ui-list-item.is-dense > .ui-list-item-row { padding-block: 6px; }
@@ -68,7 +68,7 @@
   justify-content: center;
   width: 16px;
   height: 18px;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   transition: transform var(--transition-fast);
 }
 
@@ -80,7 +80,7 @@
   align-items: center;
   justify-content: center;
   margin-top: 1px;
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
 }
 
 .ui-list-item-body {
@@ -116,7 +116,7 @@
 .ui-list-item-desc {
   font-size: var(--fs-label);
   line-height: 1.6;
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
   overflow-wrap: anywhere;
 }
 
@@ -126,7 +126,7 @@
   flex-wrap: wrap;
   gap: 6px;
   font-size: var(--fs-meta);
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
   overflow-wrap: anywhere;
 }
 

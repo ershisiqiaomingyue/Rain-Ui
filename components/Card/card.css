@@ -1,14 +1,14 @@
 /* ==========================================================================
    Card Component Styles - 卡片组件规范
    - 包含标准卡片与 9 大工具卡片
-   - 结构之间带很虚的分割线 (border-bottom: 1px solid var(--line-2))
+   - 结构之间带很虚的分割线 (border-bottom: 1px solid hsl(var(--border)))
    ========================================================================== */
 
 .card,
 .glass-card-surface {
   position: relative;
   background: hsl(var(--card));
-  border: 1px solid var(--line-1);
+  border: 1px solid hsl(var(--border));
   border-radius: var(--card-radius);
   box-shadow: var(--shadow-card), 0 0 0 0 transparent;
   transition: background-color var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
@@ -31,7 +31,7 @@
 }
 
 .card.card-interactive:hover {
-  border-color: var(--line-strong);
+  border-color: hsl(var(--border));
 }
 
 /* 悬停叠加一档中性底，而不是换掉整块背景色 ——
@@ -41,7 +41,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: var(--surface-hover);
+  background: hsl(var(--accent));
   opacity: 0;
   transition: opacity var(--transition-fast);
   pointer-events: none;
@@ -59,20 +59,20 @@
    只画到 L3：第 4 层开始靠间距，不再画框。 */
 html[data-theme] :is(.card, .glass-card-surface) :is(.card, .glass-card-surface):not([class*="card-tone-"]) {
   box-shadow: none !important;
-  border-color: var(--line-2) !important;
+  border-color: hsl(var(--border)) !important;
   border-radius: calc(var(--card-radius) - 3px);
 }
 
 html[data-theme] :is(.card, .glass-card-surface) :is(.card, .glass-card-surface) :is(.card, .glass-card-surface):not([class*="card-tone-"]) {
-  border-color: var(--line-3) !important;
+  border-color: hsl(var(--border)) !important;
   border-radius: calc(var(--card-radius) - 5px);
 }
 
 /* 归档页的哈希框是「凹槽」而不是嵌套层级，保留内凹底色。 */
 html[data-theme] .archive-telemetry-panel :is(.property-grid-card, .archive-hash-box) {
-  background: var(--surface-inset) !important;
+  background: hsl(var(--muted)) !important;
   box-shadow: none !important;
-  border-color: var(--line-2) !important;
+  border-color: hsl(var(--border)) !important;
   border-radius: calc(var(--card-radius) - 3px);
 }
 
@@ -80,7 +80,7 @@ html[data-theme] .archive-telemetry-panel :is(.property-grid-card, .archive-hash
    两道线不会一样重（variant B）。原来是 transparent，表格在卡里就没有轮廓了。 */
 html[data-theme] .card :is(.table-container, .desk-table-container),
 html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
-  border-color: var(--line-2);
+  border-color: hsl(var(--border));
   border-radius: calc(var(--card-radius) - 3px);
 }
 
@@ -90,7 +90,7 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--line-2);
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .card-title {
@@ -102,7 +102,7 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
 
 .card-subtitle {
   font-size: var(--fs-label);
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   margin-top: 2px;
 }
 
@@ -113,7 +113,7 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
 
 .card-footer {
   padding: 12px 20px;
-  border-top: 1px solid var(--line-2);
+  border-top: 1px solid hsl(var(--border));
   background: transparent;
   display: flex;
   align-items: center;
@@ -124,7 +124,7 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
   position: relative;
   overflow: hidden;
   background: hsl(var(--card));
-  border: 1px solid var(--line-1);
+  border: 1px solid hsl(var(--border));
   border-radius: var(--card-radius);
   padding: 18px 20px;
   display: flex;
@@ -137,8 +137,8 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
 
 /* 静态工具卡不响应悬停：一屏十几张卡同时轻微变边，视线会被来回拉走。 */
 .card-tool.card-interactive:hover {
-  background: var(--surface-hover);
-  border-color: var(--line-strong);
+  background: hsl(var(--accent));
+  border-color: hsl(var(--border));
   box-shadow: var(--shadow-card), 0 0 0 0 transparent;
 }
 
@@ -159,12 +159,12 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
   width: 36px;
   height: 36px;
   border-radius: var(--radius-panel);
-  background: var(--surface-inset);
+  background: hsl(var(--muted));
   border: 1px solid transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: hsl(var(--accent-strong));
+  color: hsl(var(--primary));
   flex-shrink: 0;
 }
 
@@ -182,13 +182,13 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
 
 .card-tool-desc {
   font-size: var(--fs-label);
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   margin-top: 1px;
 }
 
 .card-tool-body {
   font-size: var(--fs-body);
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
   line-height: 1.5;
   flex: 1;
 }
@@ -198,7 +198,7 @@ html[data-theme] .card-tool :is(.table-container, .desk-table-container) {
   align-items: center;
   justify-content: space-between;
   padding-top: 12px;
-  border-top: 1px solid var(--line-2);
+  border-top: 1px solid hsl(var(--border));
   margin-top: 4px;
 }
 
@@ -213,40 +213,40 @@ html[data-theme] .card.card-tone-surface {
 }
 
 html[data-theme] .card.card-tone-muted {
-  background: var(--card-tone-muted) !important;
+  background: hsl(var(--secondary)) !important;
 }
 
 html[data-theme] .card.card-tone-subtle {
-  background: var(--card-tone-subtle) !important;
+  background: hsl(var(--secondary)) !important;
 }
 
 html[data-theme] .card.card-tone-deep {
-  background: var(--card-tone-deep) !important;
+  background: hsl(var(--muted)) !important;
 }
 
 /* Titled hairlines stay neutral; no colored glow behind gray surfaces. */
 html[data-theme] .card[class*="card-tone-"]::after { display: none; }
 
 /* Hairline separators between card sections (neutral default). */
-html[data-theme] .card.card-divided > .card-header { border-bottom: 1px solid var(--line-2); }
-html[data-theme] .card.card-divided > .card-body + .card-footer { border-top: 1px solid var(--line-2); }
+html[data-theme] .card.card-divided > .card-header { border-bottom: 1px solid hsl(var(--border)); }
+html[data-theme] .card.card-divided > .card-body + .card-footer { border-top: 1px solid hsl(var(--border)); }
 
 /* Property rows: icon + label left, value right, hairline between rows. */
 .card-property-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; padding: 10px 20px; }
-.card-property-row + .card-property-row { border-top: 1px solid var(--line-2); }
-.card-property-label { display: inline-flex; align-items: center; gap: 9px; min-width: 0; color: hsl(var(--ink-secondary)); font-size: var(--fs-body); }
-.card-property-label svg { flex: 0 0 auto; color: hsl(var(--ink-tertiary)); }
+.card-property-row + .card-property-row { border-top: 1px solid hsl(var(--border)); }
+.card-property-label { display: inline-flex; align-items: center; gap: 9px; min-width: 0; color: hsl(var(--muted-foreground)); font-size: var(--fs-body); }
+.card-property-label svg { flex: 0 0 auto; color: hsl(var(--muted-foreground)); }
 .card-property-value { flex: 0 0 auto; color: hsl(var(--foreground)); font-size: var(--fs-body); font-weight: 600; }
 
 /* Toned cards inherit the standard card shell and only swap the surface fill,
    so a toned card looks like a default card in a different shade. */
 html[data-theme] .card[class*="card-tone-"] {
-  border: 1px solid var(--line-2) !important;
+  border: 1px solid hsl(var(--border)) !important;
   box-shadow: none !important;
 }
 
 html[data-theme] .card[class*="card-tone-"].card-interactive:hover {
-  border-color: var(--line-strong) !important;
+  border-color: hsl(var(--border)) !important;
   box-shadow: none !important;
 }
 

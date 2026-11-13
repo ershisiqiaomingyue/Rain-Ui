@@ -20,9 +20,8 @@
 
    按钮/输入框的 24/28/32/38 是命中区域高度，不是字号，不受这条约束。
 
-   为什么叫 --fs- 而不是 --text-：tokens.css 里的 --text-primary / --text-secondary
-   是**颜色**。同一个前缀下字号和颜色两套语义是踩过的坑，改版时把字号挪到
-   --fs-，颜色挪到 --ink-（见 palettes.css），两个命名空间从此不重叠。 */
+   命名空间：--fs- / --lh- / --fw- 只放字号，颜色一律用 shadcn 语义
+   （--foreground / --muted-foreground），两套前缀不重叠。 */
 :root {
   --fs-headline: 20px;
   --fs-title: 16px;
@@ -61,7 +60,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: var(--fw-headline);
   line-height: var(--lh-headline);
   letter-spacing: 0;
-  color: var(--ink-high);
+  color: hsl(var(--foreground));
 }
 
 /* 等宽数值与代码规范 (开启数字等宽对齐，防止跳动) */
@@ -74,11 +73,3 @@ code, kbd, samp, pre, .text-mono {
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
-
-/* 常用文本颜色辅助类 */
-.text-primary { color: var(--text-primary); }
-.text-secondary { color: var(--text-secondary); }
-.text-muted { color: var(--text-muted); }
-.text-accent { color: var(--accent-ink); }
-.text-success { color: var(--status-success-text); }
-.text-danger { color: var(--status-danger-text); }

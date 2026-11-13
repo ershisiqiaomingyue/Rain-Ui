@@ -24,9 +24,9 @@
   padding: 9px 12px;
   border: 0;
   border-radius: 12px;
-  background: var(--popover-bg);
-  color: var(--text-primary);
-  box-shadow: var(--popover-shadow);
+  background: hsl(var(--popover));
+  color: hsl(var(--foreground));
+  box-shadow: var(--shadow-popover);
   opacity: .88;
   transform: scale(.97);
   transition: opacity .14s ease, transform .14s ease;
@@ -35,8 +35,8 @@
 .topbar-tab-drag-preview.is-ready .topbar-tab-drag-card { opacity: 1; transform: scale(1); }
 .topbar-tab-drag-title { display: flex; align-items: center; gap: 8px; font-size: 12px; }
 .topbar-tab-drag-title > .topbar-tab-title { flex: 1; }
-.topbar-tab-drag-title > svg, .topbar-tab-drag-title .topbar-tab-icon { color: var(--text-secondary); }
-.topbar-tab-drag-hint { color: var(--text-secondary); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar-tab-drag-title > svg, .topbar-tab-drag-title .topbar-tab-icon { color: hsl(var(--muted-foreground)); }
+.topbar-tab-drag-hint { color: hsl(var(--muted-foreground)); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .topbar-tab-opening { animation: tab-window-opening .8s linear infinite; }
 @keyframes tab-drag-lift { from { opacity: 0; transform: scale(.93); } }
 @keyframes tab-window-opening { to { transform: rotate(360deg); } }
@@ -57,8 +57,8 @@
   min-height: 36px;
   padding: 0 8px 0 var(--navigation-rail-width);
   gap: 10px;
-  background: var(--topbar-bg);
-  border-bottom: 1px solid var(--context-navigation-divider);
+  background: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
   position: relative;
   top: 0;
   z-index: 50;
@@ -111,17 +111,17 @@
   height: 38px;
   padding: 0 9px 0 12px;
   border-radius: 14px;
-  background: color-mix(in srgb, var(--chrome-hover) 28%, transparent);
+  background: color-mix(in srgb, hsl(var(--accent)) 28%, transparent);
   border: 1px solid transparent;
-  color: var(--chrome-muted);
+  color: hsl(var(--muted-foreground));
 }
 .topbar-tab-select { height: 38px; gap: 9px; }
 .topbar-tab.is-active {
-  background: var(--chrome-selected);
-  color: var(--chrome-ink);
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
   border-color: transparent;
 }
-.topbar-tab:hover:not(.is-active) { background: var(--chrome-hover); border-color: transparent; }
+.topbar-tab:hover:not(.is-active) { background: hsl(var(--accent)); border-color: transparent; }
 .topbar-tab-icon { width: 19px; height: 19px; }
 .topbar-tab-icon svg { width: 17px; height: 17px; }
 .topbar-tab-close { width: 20px; height: 20px; }
@@ -168,14 +168,14 @@
      Here the slot is mixed from the bar with a slate ink so it stays in the
      same cool family as every other field, and stays one clear step away from
      the bar in both themes. */
-  --input-bg-sunken: color-mix(in srgb, var(--topbar-bg) 88%, var(--text-tertiary));
-  --input-bg-hover: color-mix(in srgb, var(--topbar-bg) 82%, var(--text-tertiary));
-  --input-bg-focus: color-mix(in srgb, var(--topbar-bg) 93%, var(--text-tertiary));
-  --input-placeholder: var(--chrome-muted);
-  --input-muted: var(--chrome-muted);
+  --input-bg-sunken: color-mix(in srgb, hsl(var(--background)) 88%, hsl(var(--muted-foreground)));
+  --input-bg-hover: color-mix(in srgb, hsl(var(--background)) 82%, hsl(var(--muted-foreground)));
+  --input-bg-focus: color-mix(in srgb, hsl(var(--background)) 93%, hsl(var(--muted-foreground)));
+  --input-placeholder: hsl(var(--muted-foreground));
+  --input-muted: hsl(var(--muted-foreground));
   /* Slightly tighter halo than a full-width form field: this control is 28px
      tall inside the title bar, so a 3px ring would read as a slab. */
-  --input-focus-ring: 0 0 0 2px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+  --input-focus-ring: 0 0 0 2px color-mix(in srgb, hsl(var(--primary)) 20%, transparent);
 }
 
 .topbar-search-compact {
@@ -187,7 +187,7 @@
   padding: 0;
   border: 0;
   border-radius: 6px;
-  color: var(--text-secondary);
+  color: hsl(var(--muted-foreground));
   background: transparent;
   cursor: pointer;
 }
@@ -235,7 +235,7 @@
   border-radius: 999px;
   background: transparent;
   border: none;
-  color: var(--chrome-muted);
+  color: hsl(var(--muted-foreground));
   font-size: 12px;
   font-weight: 450;
   cursor: pointer;
@@ -244,13 +244,13 @@
 }
 
 .topbar-tab:hover:not(.is-active) {
-  background: var(--chrome-hover);
-  color: var(--chrome-ink);
+  background: hsl(var(--accent));
+  color: hsl(var(--foreground));
 }
 
 .topbar-tab.is-active {
-  background: var(--chrome-selected);
-  color: var(--chrome-ink);
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
   box-shadow: 0 1px 2px #00000012;
 }
 
@@ -293,13 +293,13 @@
 .topbar-tabs-more:focus-visible,
 .topbar-tabs-menu-select:focus-visible,
 .topbar-search-compact:focus-visible {
-  outline: 2px solid var(--text-secondary);
+  outline: 2px solid hsl(var(--muted-foreground));
   outline-offset: -2px;
 }
 
 .topbar-tab.is-active {
-  background: var(--chrome-selected);
-  color: var(--chrome-ink);
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
   font-weight: 400;
   box-shadow: none;
 }
@@ -308,14 +308,14 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  color: var(--chrome-muted);
+  color: hsl(var(--muted-foreground));
   width: 17px;
   height: 17px;
   justify-content: center;
 }
 
 .topbar-tab-icon svg { width: 15px; height: 15px; stroke-width: 1.8; }
-.topbar-tab.is-active .topbar-tab-icon { color: var(--chrome-ink); }
+.topbar-tab.is-active .topbar-tab-icon { color: hsl(var(--foreground)); }
 
 .topbar-tab-title {
   min-width: 0;
@@ -335,7 +335,7 @@
   background: transparent;
   cursor: pointer;
   border-radius: 50%;
-  color: var(--text-tertiary);
+  color: hsl(var(--muted-foreground));
   margin-left: 2px;
   flex-shrink: 0;
 }
@@ -365,12 +365,12 @@
   padding: 0;
   border: 0;
   border-radius: 50%;
-  color: var(--chrome-muted);
+  color: hsl(var(--muted-foreground));
   background: transparent;
   cursor: pointer;
   transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
-.topbar-tab-add:hover { color: var(--chrome-ink); background: var(--button-hover-bg); transform: scale(1.04); }
+.topbar-tab-add:hover { color: hsl(var(--foreground)); background: hsl(var(--accent)); transform: scale(1.04); }
 
 .topbar-tabs-more {
   display: flex;
@@ -382,15 +382,15 @@
   border: 0;
   border-radius: 50%;
   background: transparent;
-  color: var(--text-secondary);
+  color: hsl(var(--muted-foreground));
   cursor: pointer;
 }
 
 .topbar-tabs-more:hover,
 .topbar-tabs-more[aria-expanded="true"],
 .topbar-search-compact:hover {
-  background: var(--button-hover-bg);
-  color: var(--text-primary);
+  background: hsl(var(--accent));
+  color: hsl(var(--foreground));
 }
 
 .topbar-tabs-menu {
@@ -399,11 +399,11 @@
   max-height: min(420px, calc(100vh - 64px));
   overflow-y: auto;
   padding: 5px;
-  border: var(--popover-border);
+  border: hsl(var(--border));
   border-radius: 8px;
-  background: var(--context-navigation-bg);
+  background: hsl(var(--background));
   box-shadow: 0 8px 28px #00000020;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   -webkit-app-region: no-drag;
 }
 
@@ -416,9 +416,9 @@
 
 .topbar-tabs-menu-row:hover,
 .topbar-tabs-menu-row:focus-within {
-  background: var(--chrome-hover);
+  background: hsl(var(--accent));
 }
-.topbar-tabs-menu-row.is-active { background: var(--chrome-selected); }
+.topbar-tabs-menu-row.is-active { background: hsl(var(--secondary)); }
 
 .topbar-tabs-menu-select {
   display: flex;
@@ -451,17 +451,17 @@
 }
 
 .topbar-tab-close:hover {
-  background: var(--button-hover-bg);
-  color: var(--text-primary);
+  background: hsl(var(--accent));
+  color: hsl(var(--foreground));
 }
 
 .topbar-tab.is-active .topbar-tab-close {
-  color: var(--chrome-muted);
+  color: hsl(var(--muted-foreground));
 }
 
 .topbar-tab.is-active .topbar-tab-close:hover {
-  background: var(--button-hover-bg);
-  color: var(--chrome-ink);
+  background: hsl(var(--accent));
+  color: hsl(var(--foreground));
 }
 
 .topbar-title {
@@ -470,7 +470,7 @@
   gap: 8px;
   font-size: 15px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   letter-spacing: 0;
 }
 
@@ -479,16 +479,16 @@
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: var(--text-tertiary);
+  color: hsl(var(--muted-foreground));
 }
 
 .topbar-breadcrumb-sep {
-  color: var(--text-quaternary);
+  color: hsl(var(--muted-foreground));
   font-size: 11px;
 }
 
 .topbar-breadcrumb-active {
-  color: var(--text-secondary);
+  color: hsl(var(--muted-foreground));
   font-weight: 500;
 }
 
@@ -513,11 +513,11 @@
   gap: 8px;
   padding: 5px 12px 5px 10px;
   border-radius: var(--radius-full);
-  background: var(--bg-card);
+  background: hsl(var(--card));
   border: 1px solid transparent;
   font-size: 12px;
   font-weight: 500;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   cursor: pointer;
   transition: all var(--transition-fast);
   box-shadow: var(--shadow-sm);
@@ -525,7 +525,7 @@
 
 .topbar-device-pill:hover {
   border-color: transparent;
-  background: var(--bg-input);
+  background: hsl(var(--muted));
 }
 
 .topbar-device-name {
@@ -536,7 +536,7 @@
 
 .topbar-device-status {
   font-size: 11px;
-  color: var(--text-tertiary);
+  color: hsl(var(--muted-foreground));
 }
 
 /* 主题模式切换按钮 */
@@ -547,7 +547,7 @@
   border: 0;
   outline: none;
   background: transparent;
-  color: var(--text-secondary);
+  color: hsl(var(--muted-foreground));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -557,17 +557,17 @@
 }
 
 .topbar-theme-toggle:hover {
-  color: var(--button-hover-text);
+  color: hsl(var(--accent-foreground));
   border: 0;
   outline: none;
-  background: var(--button-hover-bg);
+  background: hsl(var(--accent));
   box-shadow: none;
 }
 
 /* Clicking a window control leaves it focused. Keep focus accessible without
    making the control look permanently selected after the click. */
 .topbar-theme-toggle:focus:not(:hover) {
-  color: var(--text-secondary);
+  color: hsl(var(--muted-foreground));
   border: 0;
   outline: none;
   background: transparent;
@@ -575,9 +575,9 @@
 }
 
 .topbar-theme-toggle:focus-visible:not(:hover) {
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   border: 0;
-  outline: 2px solid var(--accent-primary);
+  outline: 2px solid hsl(var(--primary));
   outline-offset: -2px;
   background: transparent;
   box-shadow: none;
@@ -599,17 +599,17 @@
   height: 28px;
   padding: 0 6px 0 9px;
   border-radius: 10px;
-  background: color-mix(in srgb, var(--chrome-hover) 28%, transparent);
+  background: color-mix(in srgb, hsl(var(--accent)) 28%, transparent);
   border: 1px solid transparent;
-  color: var(--chrome-muted);
+  color: hsl(var(--muted-foreground));
 }
 .topbar-tab-select { height: 28px; gap: 7px; }
 .topbar-tab.is-active {
-  background: var(--chrome-selected);
-  color: var(--chrome-ink);
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
   border-color: transparent;
 }
-.topbar-tab:hover:not(.is-active) { background: var(--chrome-hover); border-color: transparent; }
+.topbar-tab:hover:not(.is-active) { background: hsl(var(--accent)); border-color: transparent; }
 .topbar-tab-icon { width: 16px; height: 16px; }
 .topbar-tab-icon svg { width: 14px; height: 14px; }
 .topbar-tab-close { width: 16px; height: 16px; }
@@ -627,48 +627,48 @@
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: var(--chrome-muted);
+  color: hsl(var(--muted-foreground));
   cursor: pointer;
   -webkit-app-region: no-drag;
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
-.topbar-navigation-toggle:hover { background: var(--rail-hover-bg); color: var(--chrome-ink); }
+.topbar-navigation-toggle:hover { background: hsl(var(--accent)); color: hsl(var(--foreground)); }
 
 /* Opal Frost Light Theme Overrides */
 html[data-theme] .topbar-tab {
-  background: var(--bg-surface);
+  background: hsl(var(--card));
   border: 1px solid transparent;
-  color: var(--text-secondary);
+  color: hsl(var(--muted-foreground));
   transition: all 0.16s ease;
 }
 html[data-theme] .topbar-tab:hover:not(.is-active) {
-  background: var(--bg-hover);
+  background: hsl(var(--accent));
   border-color: transparent;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
   box-shadow: var(--shadow-sm);
 }
 html[data-theme] .topbar-tab.is-active {
-  background: var(--bg-selected);
-  color: var(--text-primary);
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
   border-color: transparent;
   box-shadow: var(--shadow-sm);
 }
 html[data-theme] .topbar-tab.is-active .topbar-tab-icon {
-  color: var(--accent-primary);
+  color: hsl(var(--primary));
 }
 html[data-theme] .topbar-theme-toggle:hover,
 html[data-theme] .topbar-window-controls > button:hover {
-  background: var(--btn-secondary-hover);
-  color: var(--text-primary);
+  background: hsl(var(--accent));
+  color: hsl(var(--foreground));
   box-shadow: var(--shadow-sm);
 }
 /* Hover remains the only persistent surface, even when the pointer is over a
    button that still owns keyboard focus after a click. */
 html[data-theme] .topbar-window-controls > button.topbar-theme-toggle:hover {
-  background: var(--btn-secondary-hover) !important;
+  background: hsl(var(--accent)) !important;
 }
 html[data-theme] .topbar-device-pill {
-  background: var(--bg-surface);
+  background: hsl(var(--card));
   border: 1px solid transparent;
   box-shadow: var(--shadow-sm);
 }
@@ -680,11 +680,11 @@ html[data-theme] .topbar-device-pill {
    placeholder sits on a darker strip than content fields do. */
 html[data-theme] .topbar-search .input::placeholder,
 html[data-theme] .topbar-search .input-prefix-icon {
-  color: var(--chrome-muted);
+  color: hsl(var(--muted-foreground));
 }
 
 /* Window controls share one semantic class instead of borrowing the theme-toggle name. */
 .topbar-window-button-close:hover:not(:disabled) {
-  color: var(--danger-text) !important;
-  border-color: var(--danger-text) !important;
+  color: hsl(var(--destructive)) !important;
+  border-color: hsl(var(--destructive)) !important;
 }

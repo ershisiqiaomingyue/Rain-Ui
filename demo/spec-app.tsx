@@ -91,9 +91,9 @@ export function SpecBorderGlow() {
             <span className="kit-card-title">BorderGlow</span>
             <p className="kit-note">把指针移到这张卡片上——光沿着边框跑，但卡片底色不变。</p>
           </BorderGlow>
-          <BorderGlow className="kit-glow-card" colors={["var(--accent-primary)", "var(--inference-fill)"]}>
+          <BorderGlow className="kit-glow-card" colors={["hsl(var(--primary))", "var(--inference-fill)"]}>
             <span className="kit-card-title">自定义两色</span>
-            <p className="kit-note">默认取 --accent-primary；第二个色可选，别超过两个。</p>
+            <p className="kit-note">默认取 --primary；第二个色可选，别超过两个。</p>
           </BorderGlow>
         </Row>
       </Group>

@@ -7,12 +7,12 @@
   min-height: 240px;
   padding: 32px;
   box-sizing: border-box;
-  color: var(--text-primary);
-  background: var(--bg-canvas);
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
 }
 
 #root > .app-recovery { min-height: 100vh; }
 
 .app-recovery-content { max-width: 480px; text-align: center; }
 .app-recovery-content h1 { margin: 0 0 12px; font-size: 18px; font-weight: 600; }
-.app-recovery-content p { margin: 0 0 20px; color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+.app-recovery-content p { margin: 0 0 20px; color: hsl(var(--muted-foreground)); font-size: 13px; line-height: 1.6; }

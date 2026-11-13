@@ -8,7 +8,7 @@
 
 .ui-portal-stack {
   position: fixed;
-  z-index: var(--z-portal-layer, 15000);
+  z-index: var(--z-portal);
   bottom: 20px;
   display: flex;
   flex-direction: column;
@@ -49,38 +49,38 @@
 }
 
 .ui-portal.is-neutral {
-  --portal-bg: var(--portal-neutral-bg);
-  --portal-text: var(--portal-neutral-text);
-  --portal-border: var(--portal-neutral-border);
-  --portal-shadow: var(--portal-neutral-shadow);
+  --portal-bg: hsl(var(--card));
+  --portal-text: hsl(var(--foreground));
+  --portal-border: hsl(var(--border));
+  --portal-shadow: var(--shadow-md);
 }
 
 .ui-portal.is-solid.is-success {
-  --portal-bg: color-mix(in srgb, hsl(var(--success)) 11%, var(--surface-popover));
-  --portal-text: hsl(var(--success-bg-foreground));
-  --portal-border: color-mix(in srgb, hsl(var(--success)) 24%, transparent);
-  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--success)) 13%, transparent);
+  --portal-bg: color-mix(in srgb, hsl(var(--primary)) 11%, hsl(var(--popover)));
+  --portal-text: hsl(var(--primary));
+  --portal-border: color-mix(in srgb, hsl(var(--primary)) 24%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--primary)) 13%, transparent);
 }
 
 .ui-portal.is-solid.is-error {
-  --portal-bg: color-mix(in srgb, hsl(var(--destructive-soft)) 11%, var(--surface-popover));
-  --portal-text: hsl(var(--destructive-soft-bg-foreground));
-  --portal-border: color-mix(in srgb, hsl(var(--destructive-soft)) 24%, transparent);
-  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--destructive-soft)) 13%, transparent);
+  --portal-bg: color-mix(in srgb, hsl(var(--destructive)) 11%, hsl(var(--popover)));
+  --portal-text: hsl(var(--destructive));
+  --portal-border: color-mix(in srgb, hsl(var(--destructive)) 24%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--destructive)) 13%, transparent);
 }
 
 .ui-portal.is-solid.is-warning {
-  --portal-bg: color-mix(in srgb, hsl(var(--warning)) 12%, var(--surface-popover));
-  --portal-text: hsl(var(--warning-bg-foreground));
-  --portal-border: color-mix(in srgb, hsl(var(--warning)) 26%, transparent);
-  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--warning)) 13%, transparent);
+  --portal-bg: color-mix(in srgb, hsl(var(--muted-foreground)) 12%, hsl(var(--popover)));
+  --portal-text: hsl(var(--muted-foreground));
+  --portal-border: color-mix(in srgb, hsl(var(--muted-foreground)) 26%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--muted-foreground)) 13%, transparent);
 }
 
 .ui-portal.is-solid.is-info {
-  --portal-bg: color-mix(in srgb, hsl(var(--accent-strong)) 10%, var(--surface-popover));
-  --portal-text: hsl(var(--accent-strong));
-  --portal-border: color-mix(in srgb, hsl(var(--accent-strong)) 22%, transparent);
-  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
+  --portal-bg: color-mix(in srgb, hsl(var(--primary)) 10%, hsl(var(--popover)));
+  --portal-text: hsl(var(--primary));
+  --portal-border: color-mix(in srgb, hsl(var(--primary)) 22%, transparent);
+  --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
 }
 
 /* Static previews sit in page flow instead of the fixed stack. */
@@ -96,10 +96,10 @@
   color: currentColor;
 }
 
-.ui-portal.is-neutral.is-success .ui-portal-icon { color: hsl(var(--success-bg-foreground)); }
-.ui-portal.is-neutral.is-error .ui-portal-icon { color: hsl(var(--destructive-soft-bg-foreground)); }
-.ui-portal.is-neutral.is-warning .ui-portal-icon { color: hsl(var(--warning-bg-foreground)); }
-.ui-portal.is-neutral.is-info .ui-portal-icon { color: hsl(var(--accent-strong)); }
+.ui-portal.is-neutral.is-success .ui-portal-icon { color: hsl(var(--primary)); }
+.ui-portal.is-neutral.is-error .ui-portal-icon { color: hsl(var(--destructive)); }
+.ui-portal.is-neutral.is-warning .ui-portal-icon { color: hsl(var(--muted-foreground)); }
+.ui-portal.is-neutral.is-info .ui-portal-icon { color: hsl(var(--primary)); }
 
 .ui-portal-text {
   flex: 1;
@@ -133,8 +133,8 @@
 }
 
 .ui-portal .ui-portal-close.btn:hover:not(:disabled) {
-  color: hsl(var(--destructive-soft-bg-foreground));
-  background: color-mix(in srgb, hsl(var(--destructive-soft)) 12%, transparent);
+  color: hsl(var(--destructive));
+  background: color-mix(in srgb, hsl(var(--destructive)) 12%, transparent);
   border-color: transparent;
   opacity: 1;
 }

@@ -14,14 +14,14 @@
   border: 0;
   border-radius: var(--radius-control);
   color: hsl(var(--foreground));
-  background: var(--surface-inset);
+  background: hsl(var(--muted));
   box-shadow: 0 1px 2px color-mix(in srgb, hsl(var(--foreground)) 7%, transparent);
   box-sizing: border-box;
   transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .ui-attachment:hover {
-  background: var(--surface-hover);
+  background: hsl(var(--accent));
   box-shadow: 0 2px 7px color-mix(in srgb, hsl(var(--foreground)) 10%, transparent);
 }
 
@@ -40,7 +40,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: hsl(var(--accent-strong));
+  color: hsl(var(--primary));
   cursor: pointer;
 }
 
@@ -48,7 +48,7 @@
   width: 30px;
   height: 30px;
   border-radius: var(--radius-panel);
-  background: color-mix(in srgb, hsl(var(--accent-strong)) 10%, transparent);
+  background: color-mix(in srgb, hsl(var(--primary)) 10%, transparent);
 }
 
 .ui-attachment-face:focus-visible {
@@ -61,7 +61,7 @@
   height: 36px;
   border-radius: var(--radius-control);
   overflow: hidden;
-  background: var(--surface-inset);
+  background: hsl(var(--muted));
   cursor: zoom-in;
 }
 
@@ -84,7 +84,7 @@
   padding: 0;
   overflow: hidden;
   border-radius: var(--radius-control);
-  background: var(--surface-inset);
+  background: hsl(var(--muted));
   border: 0;
   cursor: zoom-in;
 }
@@ -100,17 +100,17 @@
   position: absolute;
   inset: 0;
   margin: auto;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
 }
 
 /* Kind tints: only the glyph colour changes, the chip stays neutral. */
-.ui-attachment.is-image .ui-attachment-glyph { color: hsl(var(--accent-strong)); }
-.ui-attachment.is-directory .ui-attachment-glyph { color: hsl(var(--warning)); }
-.ui-attachment.is-code .ui-attachment-glyph { color: hsl(var(--success)); }
-.ui-attachment.is-archive .ui-attachment-glyph { color: color-mix(in srgb, hsl(var(--accent-strong)) 55%, hsl(var(--warning))); }
-.ui-attachment.is-json .ui-attachment-glyph { color: color-mix(in srgb, hsl(var(--warning)) 70%, hsl(var(--foreground))); }
-.ui-attachment.is-document .ui-attachment-glyph { color: hsl(var(--destructive-soft-bg-foreground)); }
-.ui-attachment.is-text .ui-attachment-glyph { color: hsl(var(--ink-secondary)); }
+.ui-attachment.is-image .ui-attachment-glyph { color: hsl(var(--primary)); }
+.ui-attachment.is-directory .ui-attachment-glyph { color: hsl(var(--muted-foreground)); }
+.ui-attachment.is-code .ui-attachment-glyph { color: hsl(var(--primary)); }
+.ui-attachment.is-archive .ui-attachment-glyph { color: color-mix(in srgb, hsl(var(--primary)) 55%, hsl(var(--muted-foreground))); }
+.ui-attachment.is-json .ui-attachment-glyph { color: color-mix(in srgb, hsl(var(--muted-foreground)) 70%, hsl(var(--foreground))); }
+.ui-attachment.is-document .ui-attachment-glyph { color: hsl(var(--destructive)); }
+.ui-attachment.is-text .ui-attachment-glyph { color: hsl(var(--muted-foreground)); }
 
 .ui-attachment-meta {
   display: flex;
@@ -134,7 +134,7 @@
 .ui-attachment-meta small {
   font-size: var(--fs-meta);
   line-height: 1.2;
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -160,7 +160,7 @@
   font-weight: 500;
   line-height: 1.2;
   text-align: left;
-  color: var(--text-error, hsl(var(--destructive-soft-bg-foreground)));
+  color: hsl(var(--destructive));
   cursor: pointer;
 }
 
@@ -182,14 +182,14 @@
   border: 0;
   border-radius: var(--radius-control);
   background: transparent;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   cursor: pointer;
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .ui-attachment-remove:hover:not(:disabled) {
-  color: hsl(var(--destructive-soft-bg-foreground));
-  background: color-mix(in srgb, hsl(var(--destructive-soft)) 12%, transparent);
+  color: hsl(var(--destructive));
+  background: color-mix(in srgb, hsl(var(--destructive)) 12%, transparent);
 }
 
 /* ── tile shape ──────────────────────────────────────────────────────────── */
@@ -199,7 +199,7 @@
   height: 100%;
   border-radius: var(--radius-panel);
   overflow: hidden;
-  background: var(--surface-inset);
+  background: hsl(var(--muted));
   cursor: zoom-in;
 }
 .ui-attachment.is-tile .ui-attachment-face img {
@@ -214,8 +214,8 @@
   right: -5px;
   border-radius: var(--radius-full);
   background: hsl(var(--card));
-  border: 1px solid var(--line-1);
-  color: hsl(var(--ink-tertiary));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
   opacity: 0;
   transition: opacity var(--transition-fast), color var(--transition-fast),
     background-color var(--transition-fast), border-color var(--transition-fast);
@@ -224,9 +224,9 @@
 .ui-attachment.is-tile:focus-within .ui-attachment-remove { opacity: 1; }
 
 .ui-attachment.is-tile .ui-attachment-remove:hover:not(:disabled) {
-  color: hsl(var(--destructive-soft-bg-foreground));
-  background: color-mix(in srgb, hsl(var(--destructive-soft)) 12%, hsl(var(--card)));
-  border-color: color-mix(in srgb, hsl(var(--destructive-soft)) 30%, var(--line-1));
+  color: hsl(var(--destructive));
+  background: color-mix(in srgb, hsl(var(--destructive)) 12%, hsl(var(--card)));
+  border-color: color-mix(in srgb, hsl(var(--destructive)) 30%, hsl(var(--border)));
 }
 
 @media (hover: none) {

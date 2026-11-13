@@ -18,9 +18,9 @@
   width: 100%;
   height: var(--control-height);
   padding: 0 12px;
-  background: var(--input-bg-sunken);
+  background: hsl(var(--muted));
   color: hsl(var(--foreground));
-  border: var(--input-border);
+  border: hsl(var(--border));
   border-radius: var(--radius-control);
   font-family: var(--font-sans);
   font-size: var(--fs-body);
@@ -28,7 +28,7 @@
   /* Sunken slot: the field is a step DARKER than the surface it sits on plus
      one inset top shadow, so it reads as a hole rather than a floating slab.
      No outer hairline — on a card the fill edge is already the boundary. */
-  box-shadow: var(--input-glass);
+  box-shadow: hsl(var(--muted));
   transition: background-color var(--transition-fast), color var(--transition-fast),
     border-color var(--transition-fast), box-shadow var(--transition-fast);
   box-sizing: border-box;
@@ -45,7 +45,7 @@
 .input:hover:not(:disabled):not(:focus) {
   background: var(--input-bg-hover);
   color: hsl(var(--foreground));
-  box-shadow: var(--input-lift-hover), var(--input-glass);
+  box-shadow: hsl(var(--accent)), hsl(var(--muted));
 }
 
 /* Focus keeps the sunken fill and adds one accent ring. The ring is the only
@@ -54,8 +54,8 @@
 .input:focus {
   background: var(--input-bg-focus);
   color: hsl(var(--foreground));
-  border-color: var(--input-focus-border);
-  box-shadow: var(--focus-ring), var(--input-glass);
+  border-color: hsl(var(--ring));
+  box-shadow: var(--focus-ring), hsl(var(--muted));
 }
 
 .desk-input:disabled,
@@ -65,7 +65,7 @@
 }
 
 .desk-input[readonly],
-.input[readonly] { color: hsl(var(--ink-secondary)); }
+.input[readonly] { color: hsl(var(--muted-foreground)); }
 
 /* Surface variant (toolbar search fields): the field is a real plate — white
    fill + one hairline — because it sits on a toolbar that is already tinted.
@@ -74,21 +74,21 @@
 .input-surface .input {
   border-radius: var(--radius-control);
   color: hsl(var(--foreground));
-  background: var(--input-surface-bg);
-  border-color: var(--line-2);
+  background: hsl(var(--muted));
+  border-color: hsl(var(--border));
   box-shadow: none;
 }
-.input-surface .input::placeholder { color: hsl(var(--ink-tertiary)); }
-.input-surface .input-prefix-icon { color: hsl(var(--ink-secondary)); }
+.input-surface .input::placeholder { color: hsl(var(--muted-foreground)); }
+.input-surface .input-prefix-icon { color: hsl(var(--muted-foreground)); }
 .input-surface .input:hover:not(:disabled):not(:focus) {
   color: hsl(var(--foreground));
-  background: var(--input-surface-hover-bg, var(--input-surface-bg));
-  border-color: var(--line-1);
+  background: hsl(var(--accent));
+  border-color: hsl(var(--border));
   box-shadow: none;
 }
 .input-surface .input:focus {
   color: hsl(var(--foreground));
-  background: var(--input-surface-focus-bg, var(--input-surface-bg));
+  background: hsl(var(--background));
   /* 不再染边框：有一道环就够了，染色边框 + 外环会变成两层（design.md §5.4）。 */
   box-shadow: var(--focus-ring);
 }
@@ -180,7 +180,7 @@
 .input-clear-pill.btn:hover:not(:disabled),
 .input-clear-pill:hover {
   color: hsl(var(--foreground));
-  background: var(--surface-hover);
+  background: hsl(var(--accent));
 }
 
 .input-clear-pill.btn:focus-visible {

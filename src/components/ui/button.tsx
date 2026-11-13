@@ -38,10 +38,6 @@ const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         danger:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        success:
-          "bg-success-bg text-success-foreground hover:bg-success-hover",
-        warning:
-          "bg-warning-bg text-warning-foreground hover:bg-warning-hover",
         link:
           "text-primary underline-offset-4 hover:underline active:translate-y-0 active:scale-100",
       },

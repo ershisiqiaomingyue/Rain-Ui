@@ -11,7 +11,7 @@
   height: 0;
   border: 0;
   border-radius: 0 !important;
-  border-bottom: 1px solid var(--line-2);
+  border-bottom: 1px solid hsl(var(--border));
   margin: 16px 0;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .divider-h.dashed {
-  border-bottom: 1px dashed var(--line-2);
+  border-bottom: 1px dashed hsl(var(--border));
 }
 
 /* 垂直微弱分割线 (左右结构之间) */
@@ -30,7 +30,7 @@
   align-self: stretch;
   border: 0;
   border-radius: 0 !important;
-  border-right: 1px solid var(--line-2);
+  border-right: 1px solid hsl(var(--border));
   margin: 0 16px;
 }
 
@@ -39,29 +39,29 @@
 }
 
 .divider-v.dashed {
-  border-right: 1px dashed var(--line-2);
+  border-right: 1px dashed hsl(var(--border));
 }
 
 /* 结构容器辅助：左右分栏之间自带极虚边线 */
 .split-left-pane {
   border-radius: 0 !important;
-  border-right: 1px solid var(--line-2);
+  border-right: 1px solid hsl(var(--border));
 }
 
 .split-right-pane {
   border-radius: 0 !important;
-  border-left: 1px solid var(--line-2);
+  border-left: 1px solid hsl(var(--border));
 }
 
 /* 结构容器辅助：上下分区自带极虚边线 */
 .split-top-bar {
   border-radius: 0 !important;
-  border-bottom: 1px solid var(--line-2);
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .split-bottom-bar {
   border-radius: 0 !important;
-  border-top: 1px solid var(--line-2);
+  border-top: 1px solid hsl(var(--border));
 }
 
 /* Separators stay square in every consumer, including draggable pane handles. */

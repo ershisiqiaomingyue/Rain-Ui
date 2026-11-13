@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: var(--overlay-bg);
+  background: hsl(var(--foreground) / 0.35);
   backdrop-filter: blur(4px);
   animation: confirmFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -24,8 +24,8 @@
 .confirm-dialog-modal {
   width: min(440px, 94vw);
   padding: 22px;
-  background: var(--surface-popover);
-  border: 1px solid var(--line-1);
+  background: hsl(var(--popover));
+  border: 1px solid hsl(var(--border));
   border-radius: var(--radius-overlay);
   box-shadow: var(--shadow-popover), var(--shadow-inset-highlight);
   animation: confirmScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -49,8 +49,8 @@
   width: var(--confirm-dialog-icon-size);
   height: var(--confirm-dialog-icon-size);
   border-radius: var(--radius-control);
-  background: hsl(var(--destructive-soft-bg));
-  color: hsl(var(--destructive-soft-bg-foreground));
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive));
   flex-shrink: 0;
 }
 
@@ -91,13 +91,13 @@
   border-radius: var(--radius-control);
   border: 1px solid transparent;
   background: transparent;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .confirm-dialog-close-btn:hover {
-  background: var(--surface-hover);
+  background: hsl(var(--accent));
   color: hsl(var(--foreground));
   border-color: transparent;
 }
@@ -106,14 +106,14 @@
 .confirm-dialog-message {
   margin: 0 0 0 calc(var(--confirm-dialog-icon-size) + var(--confirm-dialog-icon-gap));
   font-size: var(--fs-body);
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
 .confirm-dialog-error {
   margin: 0 0 0 calc(var(--confirm-dialog-icon-size) + var(--confirm-dialog-icon-gap));
-  color: hsl(var(--destructive-soft-bg-foreground));
+  color: hsl(var(--destructive));
   font-size: var(--fs-label);
   line-height: 1.5;
   overflow-wrap: anywhere;
@@ -126,7 +126,7 @@
   align-items: flex-start;
   gap: 8px;
   margin: 0 0 14px;
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
   font-size: var(--fs-body);
   line-height: 1.45;
   cursor: pointer;
@@ -134,7 +134,7 @@
 
 .confirm-dialog-acknowledge input {
   margin-top: 2px;
-  accent-color: hsl(var(--destructive-soft));
+  accent-color: hsl(var(--destructive));
 }
 
 .confirm-dialog-actions {
@@ -147,7 +147,7 @@
 
 .confirm-dialog-actions .btn-primary {
   --btn-primary-bg: hsl(var(--primary));
-  --btn-primary-hover: hsl(var(--primary-hover));
+  --btn-primary-hover: hsl(var(--primary));
   --btn-primary-text: hsl(var(--primary-foreground));
 }
 
@@ -155,9 +155,9 @@
    .btn-danger 是淡蔷薇底 + 描边，适合工具栏，放这里会看起来像禁用态。
    色值一律走 --btn-destructive-* 这组 token，不在这里写死（design.md §10）。 */
 .confirm-dialog-actions .confirm-dialog-confirm-danger {
-  --btn-primary-bg: var(--btn-destructive-bg);
-  --btn-primary-hover: var(--btn-destructive-hover);
-  --btn-primary-text: var(--btn-destructive-text);
+  --btn-primary-bg: hsl(var(--destructive));
+  --btn-primary-hover: hsl(var(--destructive));
+  --btn-primary-text: hsl(var(--destructive));
   /* 主按钮自带内高光 + 外投影（button.css 里的 --shadow-inset-highlight 和
      --shadow-btn，都不是可覆盖的变量），实色片叠上去就是一层玻璃；
      这里连同描边光圈一起归零，要的就是一块纯色。 */
@@ -167,17 +167,17 @@
 /* hover / active 各自再压一遍：button.css 的 :hover / :active 会把阴影加回来，
    而 active 底色本来取的是 --primary-active（靛蓝），红色按钮按下去会变蓝。 */
 .confirm-dialog-actions .confirm-dialog-confirm-danger:hover:not(:disabled) {
-  background: var(--btn-destructive-hover);
+  background: hsl(var(--destructive));
   box-shadow: none;
 }
 
 .confirm-dialog-actions .confirm-dialog-confirm-danger:active:not(:disabled) {
-  background: var(--btn-destructive-active-bg);
+  background: hsl(var(--destructive));
   box-shadow: none;
 }
 
 .confirm-dialog-actions .btn-primary:disabled:not(.btn-loading) {
   background: transparent;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   opacity: .65;
 }

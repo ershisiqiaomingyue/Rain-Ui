@@ -2,18 +2,16 @@
 .rain-reasoning-track {
   --rain-inference-progress: 0;
   --rain-inference-track: color-mix(in srgb, hsl(var(--muted)) 88%, hsl(var(--background)));
-  /* 填充/高光/闪光绑到桥接层现成的 --inference-fill*，它们指向 --accent-strong 一族。
-     不能用 --primary：--primary 在亮色主题下是淡色按钮底（L94%），
-     当填充铺在 L97% 的轨道上等于什么都看不见（实拍确认过）。
-     高光/闪光都是“比填充更亮”，用 --knob-bg（白）混，不再写死 white；
-     旋钮底色与投影同样走 token，投影在亮色主题下才有值。 */
+  /* 填充/高光/闪光全部走 palettes.css 里的领域调色板 --inference-*，
+     它们由 shadcn 语义推导（--primary / --muted-foreground / --foreground），
+     这里不再自己配色，也不要引 shadcn 语义以外的东西。 */
   --rain-inference-fill: var(--inference-fill);
   --rain-inference-fill-deep: var(--inference-fill-deep);
   --rain-inference-fill-highlight: var(--inference-fill-highlight);
   --rain-inference-spark: var(--inference-fill-highlight);
   --rain-inference-spark-warm: var(--inference-fill-warm);
-  --rain-inference-knob-bg: var(--knob-bg);
-  --rain-inference-thumb-shadow: var(--knob-shadow);
+  --rain-inference-knob-bg: var(--inference-knob-bg);
+  --rain-inference-thumb-shadow: var(--inference-thumb-shadow);
   position: relative;
   height: 32px;
   margin: 0 2px;

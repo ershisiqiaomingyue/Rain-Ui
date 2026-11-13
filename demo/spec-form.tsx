@@ -7,7 +7,6 @@ import { useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
-  Check,
   ChevronDown,
   Copy,
   Download,
@@ -56,12 +55,6 @@ export function SpecButton() {
           <Button variant="secondary">刷新设备</Button>
           <Button variant="surface">打开终端</Button>
           <Button variant="subtle">更多</Button>
-          <Button variant="success" icon={<Check size={14} />}>
-            已保存
-          </Button>
-          <Button variant="warning" icon={<RefreshCw size={14} />}>
-            有新版
-          </Button>
           <Button variant="danger" icon={<Trash2 size={14} />}>
             删除
           </Button>

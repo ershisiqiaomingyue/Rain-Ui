@@ -44,13 +44,13 @@ export const ProviderIcon: React.FC<ProviderIconProps> = ({ brand, size = 18 }) 
   const source = OFFICIAL_ICONS[brand as ProviderBrand];
   const monochrome = brand === "openai" || brand === "deepseek" || brand.startsWith("workbuddy-");
   const [failedSource, setFailedSource] = useState("");
-  return <span className="provider-icon" data-brand={brand} aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: size, height: size, flex: `0 0 ${size}px`, lineHeight: 0, borderRadius: 4, overflow: "hidden", background: source ? "transparent" : "var(--bg-hover)", color: "var(--text-secondary)" }}>
+  return <span className="provider-icon" data-brand={brand} aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: size, height: size, flex: `0 0 ${size}px`, lineHeight: 0, borderRadius: 4, overflow: "hidden", background: source ? "transparent" : "hsl(var(--accent))", color: "hsl(var(--muted-foreground))" }}>
     {monochrome
       ? <span className="provider-icon-monochrome" style={{ maskImage: `url("${source}")`, WebkitMaskImage: `url("${source}")` }} />
       : source && failedSource !== source
       ? <img src={source} alt="" width={size} height={size} draggable={false} style={{ display: "block", width: "100%", height: "100%", objectFit: "contain" }} onError={() => setFailedSource(source)} />
       : brand && brand !== 'custom'
-      ? <span style={{ fontSize: size * .7, fontWeight: 700, color: 'var(--accent-primary)' }}>{brand.slice(0, 1).toUpperCase()}</span>
+      ? <span style={{ fontSize: size * .7, fontWeight: 700, color: 'hsl(var(--primary))' }}>{brand.slice(0, 1).toUpperCase()}</span>
       : <Settings2 size={size - 3} />}
   </span>;
 };

@@ -20,8 +20,10 @@ export interface StatusBadgeProps {
 
 const variantToBadge: Record<StatusBadgeVariant, { badge: BadgeProps["variant"]; dot: string }> = {
   primary: { badge: "secondary", dot: "bg-primary" },
-  success: { badge: "success", dot: "bg-emerald-500" },
-  warning: { badge: "warning", dot: "bg-amber-500" },
+  /* 状态胶囊本身一律是中性底（shadcn 没有 success / warning 语义），
+     颜色信号只留在那个 6px 圆点上——这样一条状态栏里不会出现五种底色。 */
+  success: { badge: "muted", dot: "bg-emerald-500" },
+  warning: { badge: "muted", dot: "bg-amber-500" },
   danger: { badge: "destructive", dot: "bg-destructive" },
   neutral: { badge: "muted", dot: "bg-muted-foreground/60" },
 }

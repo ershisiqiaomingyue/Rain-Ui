@@ -47,7 +47,7 @@
   min-width: 0;
   min-height: 32px;
   padding: 4px 10px;
-  border: 1px solid var(--line-1);
+  border: 1px solid hsl(var(--border));
   border-radius: var(--radius-panel);
   /* 与 NoticePanel 同一套不透明填充：垫底 `--bg-canvas` + 盖面 `--notice-fill`。
      `background` 简写会把这两层一起重置，所以下面只用 `background-color`
@@ -64,7 +64,7 @@
 }
 
 .ui-file-notice-summary.btn.btn-bare:hover:not(:disabled) {
-  background-color: var(--button-hover-bg, var(--surface-hover));
+  background-color: hsl(var(--accent));
 }
 
 .ui-file-notice-summary.btn.btn-bare:focus-visible {
@@ -76,7 +76,7 @@
   flex: 0 0 15px;
   width: 15px;
   height: 15px;
-  color: hsl(var(--ink-secondary));
+  color: hsl(var(--muted-foreground));
 }
 
 .ui-file-notice-icon svg { width: 15px; height: 15px; stroke-width: 1.7; }
@@ -94,13 +94,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-.ui-file-notice-diff em { font-style: normal; color: var(--change-added, hsl(var(--success))); }
-.ui-file-notice-diff i { font-style: normal; color: hsl(var(--destructive-soft-bg-foreground)); }
+.ui-file-notice-diff em { font-style: normal; color: var(--change-added, hsl(var(--primary))); }
+.ui-file-notice-diff i { font-style: normal; color: hsl(var(--destructive)); }
 
 .ui-file-notice-count {
   flex: 0 0 auto;
   margin-left: auto;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   font-size: var(--fs-label);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -109,7 +109,7 @@
 .ui-file-notice-chevron {
   flex: 0 0 auto;
   margin-left: 6px;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   transition: transform 0.15s ease;
 }
 
@@ -125,7 +125,7 @@
   width: 100%;
   min-width: 0;
   max-height: min(380px, 50vh);
-  border: 1px solid var(--line-1);
+  border: 1px solid hsl(var(--border));
   border-radius: var(--radius-panel);
   background-color: hsl(var(--background));
   background-image: linear-gradient(var(--notice-fill), var(--notice-fill));
@@ -149,7 +149,7 @@ html[data-theme] .ui-file-notice.is-expanded > .ui-file-notice-row > .ui-file-no
    所以这里给一个不透明的 hover 色，别让 hover 一下又透出对话文字。 */
 html[data-theme] .ui-file-notice.is-expanded > .ui-file-notice-row > .ui-file-notice-summary.btn.btn-bare:hover:not(:disabled) {
   border-radius: 0;
-  background-color: var(--button-hover-bg, var(--surface-hover));
+  background-color: hsl(var(--accent));
   background-image: none;
   border-color: transparent;
 }
@@ -163,7 +163,7 @@ html[data-theme] .ui-file-notice.is-expanded > .ui-file-notice-row > .ui-file-no
   box-sizing: border-box;
   padding: 10px 10px 8px;
   border: 0;
-  border-bottom: 1px solid var(--line-1);
+  border-bottom: 1px solid hsl(var(--border));
   border-radius: 0;
   background-color: transparent;
   color: hsl(var(--foreground));

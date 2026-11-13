@@ -12,7 +12,7 @@
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: var(--bg-app);
+  background: hsl(var(--background));
   transition: background var(--transition-base);
 }
 
@@ -28,7 +28,7 @@
 /* Showcase uses a clean base; ambient light stays inside the glass cards. */
 html[data-theme="light"] .ambient-wallpaper,
 html[data-theme="light"] .ambient-wrapper {
-  background: var(--bg-ambient);
+  background: var(--ambient-glow);
 }
 
 html[data-theme="light"] .ambient-blob {

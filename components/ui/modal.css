@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: var(--overlay-bg);
+  background: hsl(var(--foreground) / 0.35);
   backdrop-filter: blur(4px);
   animation: uiModalFadeIn 0.16s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -26,8 +26,8 @@
   width: min(560px, 94vw);
   max-height: min(78vh, 720px);
   overflow: hidden;
-  background: var(--surface-popover);
-  border: 1px solid var(--line-1);
+  background: hsl(var(--popover));
+  border: 1px solid hsl(var(--border));
   border-radius: var(--radius-overlay);
   box-shadow: var(--shadow-popover), var(--shadow-inset-highlight);
   animation: uiModalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -56,13 +56,13 @@
   height: 34px;
   flex: none;
   border-radius: var(--radius-panel);
-  background: var(--surface-inset);
-  color: hsl(var(--ink-secondary));
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
 }
 
 .ui-modal-icon.is-danger {
-  background: hsl(var(--destructive-soft-bg));
-  color: hsl(var(--destructive-soft-bg-foreground));
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive));
 }
 
 .ui-modal-headings {
@@ -85,7 +85,7 @@
   margin: 0;
   font-size: var(--fs-body);
   line-height: 1.5;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   overflow-wrap: anywhere;
 }
 
@@ -100,13 +100,13 @@
   border: 1px solid transparent;
   border-radius: var(--radius-control);
   background: transparent;
-  color: hsl(var(--ink-tertiary));
+  color: hsl(var(--muted-foreground));
   cursor: pointer;
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .ui-modal-close:hover:not(:disabled) {
-  background: var(--surface-hover);
+  background: hsl(var(--accent));
   color: hsl(var(--foreground));
 }
 

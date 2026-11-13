@@ -16,10 +16,10 @@
 .ui-file-diff-row { display: flex; min-height: 22px; }
 .ui-file-diff-row.is-added { background: var(--code-diff-added-bg); }
 .ui-file-diff-row.is-removed { background: var(--code-diff-removed-bg); }
-.ui-file-diff-row.is-meta { color: hsl(var(--ink-tertiary)); background: var(--surface-hover); }
+.ui-file-diff-row.is-meta { color: hsl(var(--muted-foreground)); background: hsl(var(--accent)); }
 .ui-file-diff-number { flex: 0 0 42px; width: 42px; padding-inline: 6px; color: var(--code-line-number); text-align: right; user-select: none; }
 .ui-file-diff-marker { flex: 0 0 20px; width: 20px; text-align: center; user-select: none; }
 .ui-file-diff-row.is-added .ui-file-diff-marker { color: var(--code-diff-added-text); }
 .ui-file-diff-row.is-removed .ui-file-diff-marker { color: var(--code-diff-removed-text); }
 .ui-file-diff-row code { flex: 1; padding-right: 16px; font: inherit; }
-.ui-file-diff-notice { margin: 0; padding: 12px; color: hsl(var(--ink-secondary)); white-space: normal; }
+.ui-file-diff-notice { margin: 0; padding: 12px; color: hsl(var(--muted-foreground)); white-space: normal; }

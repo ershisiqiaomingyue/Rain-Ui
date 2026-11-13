@@ -20,7 +20,7 @@ html.boot-mode #root {
   height: 180px;
   border-radius: var(--radius-full);
   /* 单一色相：原来蓝 + 青是两族色，青不在配色里。同一个靛的两档明度就够做出光晕。 */
-  background: radial-gradient(circle, hsl(var(--accent-solid) / 0.32) 0%, hsl(var(--accent-strong) / 0.18) 45%, transparent 70%);
+  background: radial-gradient(circle, hsl(var(--primary) / 0.32) 0%, hsl(var(--primary) / 0.18) 45%, transparent 70%);
   filter: blur(28px);
   opacity: 0.95;
   animation: boot-pulse 2.2s ease-in-out infinite;
@@ -37,7 +37,7 @@ html.boot-mode #root {
 .boot-logo {
   width: 84px;
   height: 84px;
-  filter: drop-shadow(0 16px 36px hsl(var(--accent-solid) / 0.35));
+  filter: drop-shadow(0 16px 36px hsl(var(--primary) / 0.35));
   animation: boot-spin 1.15s linear infinite;
 }
 

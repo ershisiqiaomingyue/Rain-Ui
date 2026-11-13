@@ -64,6 +64,6 @@
 
 /* 参数/映射全空时的占位提示，避免编辑器看起来是坏的 */
 .lsp-editor-empty {
-  color: var(--text-tertiary);
+  color: hsl(var(--muted-foreground));
   font-size: 12px;
 }

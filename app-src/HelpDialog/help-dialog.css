@@ -17,7 +17,7 @@
   margin: 20px 0 8px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
 }
 
 .help-dialog .markdown-body h2:first-child {
@@ -32,11 +32,11 @@
 
 .help-dialog .markdown-body strong {
   font-weight: 600;
-  color: var(--text-primary);
+  color: hsl(var(--foreground));
 }
 
 .help-dialog .markdown-body a {
-  color: var(--accent-primary);
+  color: hsl(var(--primary));
   text-decoration: none;
 }
 
@@ -73,23 +73,23 @@
 .help-dialog .markdown-body td {
   padding: 6px 10px;
   border: 0;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid hsl(var(--border));
   text-align: left;
   vertical-align: top;
 }
 
 .help-dialog .markdown-body th {
   font-weight: 600;
-  color: var(--text-secondary);
+  color: hsl(var(--muted-foreground));
   /* 对话页的 th 底色是浅色主题写死的浅灰，暗色主题下会变成一条亮带、字也读不出来。 */
-  background: var(--bg-hover);
+  background: hsl(var(--accent));
   white-space: nowrap;
 }
 
 .help-dialog .markdown-body code {
   padding: 1px 4px;
   border-radius: 4px;
-  background: var(--bg-hover);
+  background: hsl(var(--accent));
   font-family: var(--font-mono);
   font-size: 12px;
 }

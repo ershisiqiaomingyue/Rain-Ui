@@ -8,9 +8,9 @@
   padding: 0 12px;
   box-sizing: border-box;
   /* --input-border 是完整的 border 简写（含 1px solid），别往 border-color 里塞。 */
-  border: var(--input-border);
+  border: hsl(var(--border));
   border-radius: var(--radius-panel);
-  background: var(--input-bg-sunken);
+  background: hsl(var(--muted));
   color: hsl(var(--foreground));
   font-family: var(--font-sans);
   font-size: var(--fs-body);
@@ -34,6 +34,6 @@
   margin: 8px 0 0;
   font-size: var(--fs-label);
   line-height: 1.5;
-  color: hsl(var(--destructive-soft-bg-foreground));
+  color: hsl(var(--destructive));
   overflow-wrap: anywhere;
 }

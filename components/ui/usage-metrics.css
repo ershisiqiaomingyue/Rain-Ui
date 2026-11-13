@@ -13,8 +13,8 @@
   min-width: 0;
   margin-top: 7px;
   padding-top: 7px;
-  border-top: 1px solid var(--composer-divider);
-  color: var(--composer-muted);
+  border-top: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
   font-size: var(--fs-label);
   line-height: 1.2;
   white-space: nowrap;
@@ -45,7 +45,7 @@
   width: 1px;
   height: 9px;
   margin-top: -4.5px;
-  background: var(--composer-divider);
+  background: hsl(var(--border));
 }
 
 .ui-usage-item b {
@@ -55,7 +55,7 @@
 }
 
 .ui-usage-label {
-  color: var(--composer-muted);
+  color: hsl(var(--muted-foreground));
   font-weight: 400;
 }
 
@@ -66,7 +66,7 @@
 }
 
 .ui-usage-action:hover:not(:disabled) {
-  background: var(--surface-hover);
+  background: hsl(var(--accent));
   color: hsl(var(--foreground));
 }
 

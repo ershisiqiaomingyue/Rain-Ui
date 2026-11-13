@@ -853,8 +853,6 @@ export function App() {
               <Badge variant="secondary">次要</Badge>
               <Badge variant="outline">描边</Badge>
               <Badge variant="muted">中性</Badge>
-              <Badge variant="success">成功</Badge>
-              <Badge variant="warning">警告</Badge>
               <Badge variant="destructive">危险</Badge>
               <Badge variant="outline">
                 <Check className="size-3" /> 带图标

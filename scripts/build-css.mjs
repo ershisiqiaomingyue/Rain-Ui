@@ -65,8 +65,14 @@ const REQUIRED = [
   ".ambient-blob",
   ".code-viewer-pane-resizer",
   ".pane-height-resizer",
-  "--bg-canvas",
   "--font-mono",
+  "--background",
+  "--primary-foreground",
+  "--muted-foreground",
+  "--destructive-foreground",
+  "--ring",
+  "--radius",
+  "--terminal-red",
 ];
 const missing = REQUIRED.filter((sel) => !css.includes(sel));
 if (missing.length) {

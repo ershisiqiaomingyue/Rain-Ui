@@ -57,7 +57,7 @@ export function PermissionRequestBar({
           {environmentLabel ? ` · ${environmentLabel}` : ""}
         </span>
         {expiresIn != null && (
-          <Badge variant="warning" className="ml-auto h-5 shrink-0 gap-1 px-1.5 font-mono text-[10.5px]">
+          <Badge variant="muted" className="ml-auto h-5 shrink-0 gap-1 px-1.5 font-mono text-[10.5px]">
             <AppIcon name="timer" className="size-2.5" />
             {expiresIn}s
           </Badge>

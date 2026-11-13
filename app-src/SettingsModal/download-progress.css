@@ -3,11 +3,11 @@
   gap: 12px;
   padding: 18px 22px;
   box-sizing: border-box;
-  border: 1px solid var(--border-subtle);
+  border: 1px solid hsl(var(--border));
   border-radius: 12px;
-  background: var(--surface-inset-bg);
+  background: hsl(var(--muted));
   min-width: 0;
-  color: var(--text-secondary);
+  color: hsl(var(--muted-foreground));
   font-size: 12px;
 }
 .plugin-download-heading, .plugin-download-details {
@@ -18,23 +18,23 @@
   gap: 12px;
   min-width: 0;
 }
-.plugin-download-label { overflow-wrap: anywhere; text-align: center; font-weight: 500; color: var(--text-primary); }
+.plugin-download-label { overflow-wrap: anywhere; text-align: center; font-weight: 500; color: hsl(var(--foreground)); }
 .plugin-download-speed, .plugin-download-details {
   font-variant-numeric: tabular-nums;
 }
-.plugin-download-speed { flex-shrink: 0; color: var(--accent-primary); }
-.plugin-download-details { color: var(--text-secondary); }
+.plugin-download-speed { flex-shrink: 0; color: hsl(var(--primary)); }
+.plugin-download-details { color: hsl(var(--muted-foreground)); }
 .plugin-download-track {
   height: 5px;
   overflow: hidden;
   border-radius: 4px;
-  background: var(--progress-track-bg);
+  background: hsl(var(--muted));
 }
 .plugin-download-track > span {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: var(--accent-primary);
+  background: hsl(var(--primary));
   transition: width 200ms ease;
 }
 .plugin-download-track > .is-indeterminate {
