@@ -101,14 +101,9 @@
   /* 图形强调：图标、进度条、分段激活。填充色太淡，画不成图。 */
   --accent-strong: 239 68% 72%;
   --accent-strong-soft: 239 80% 84%;
-  /* 实心强调：只在「上面要压白字」的地方用（勾选盘、图表色块）。
+  /* 实心强调：只在「上面要压白字」的地方用（勾选盘、开关、图表色块）。
      比 accent-strong 深一档，就是为了让白字压得住。 */
   --accent-solid: 239 60% 52%;
-  /* 实心**条**：滑块已滑过那截、进度条填充、开关轨道。和 accent-strong 同色相，
-     但它是整条 6px 铺满的色块，比 accent-strong 更容易显重，所以单独留一档
-     （亮色下比 accent-strong 亮一档的靛；暗色下与 accent-strong 同值）。
-     别再拿 --primary 来填：那是淡色按钮底，铺在同样淡的轨道上整条看不见。 */
-  --accent-bar: 239 68% 72%;
 
   /* 状态：五个，各管一件事，不许混用 */
   --success: 158 40% 68%;
@@ -270,9 +265,6 @@ html[data-theme="light"] {
   --accent-strong: 243 68% 52%;
   --accent-strong-soft: 243 60% 40%;
   --accent-solid: 243 68% 52%;
-  /* 见暗色块同一段的说明。亮色下 accent-strong 是 L52 的实心靛，整条铺满
-     像深蓝；实心条抬到品牌靛 L67，白旋钮压上去仍有 4.4:1。 */
-  --accent-bar: 239 84% 67%;
 
   /* 状态：亮色下填充要比暗色更沉一档，否则在浅底上读不出颜色。 */
   --success: 158 46% 40%;
@@ -374,9 +366,6 @@ html[data-theme] {
   --accent-text-hsl: var(--primary-foreground);
   --accent-subtle: color-mix(in srgb, hsl(var(--accent-strong)) 12%, transparent);
   --accent-border: color-mix(in srgb, hsl(var(--accent-strong)) 35%, transparent);
-  /* 实心条的填充色：滑块已滑过那截、进度条。和开关轨道同值，但语义分开写，
-     组件里用 `bg-[var(--bar-fill)]`（走任意值，宿主没挂 preset 也能生效）。 */
-  --bar-fill: hsl(var(--accent-bar));
   --accent-gradient: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-hover)));
   /* 有颜色的外发光被禁掉了：这一版是纯色平面，不是灯。改成中性接触影。 */
   --accent-glow: var(--shadow-card);
@@ -550,13 +539,9 @@ html[data-theme] {
   --btn-glass-danger-active: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, var(--ink-high));
 
   /* ── 控件家族 ─────────────────────────────────────────────────────────── */
-  /* 勾选盘只分「开/关」两态，用实心靛填充 + 白勾（白字必须落在 --accent-solid 上）。 */
+  /* 勾选盘/开关只分「开/关」两态，用实心靛填充 + 白勾。 */
   --control-checked-bg: hsl(var(--accent-solid));
-  /* 开关轨道没有「压白字」的硬要求——上面坐的是一颗白旋钮，图形对比度按 3:1 算。
-     --accent-bar 两套主题都过（亮色 #6467F2 压白 4.4:1 / 暗色 #8789E8 3.1:1），
-     所以开关轨道跟滑块那截、进度条共用同一档；以前绑 --accent-solid，
-     暗色下是 L52 的深靛，比滑块重一个档，一排控件里就它最沉。 */
-  --switch-active-bg: hsl(var(--accent-bar));
+  --switch-active-bg: hsl(var(--accent-solid));
   --switch-thumb-bg: var(--knob-bg);
   /* 槽要比输入框明显深一档：白胶囊压在 95.5% 的淡靛上只差十来阶，选中项看着像没选中。
      93.5% 仍偏淡（技能库、主页统计范围都反馈「看不出哪个是激活的」），压到 91.5%
@@ -681,7 +666,6 @@ html[data-palette="rose"] {
   --accent-strong: 340 64% 76%;
   --accent-strong-soft: 340 80% 86%;
   --accent-solid: 340 52% 48%;
-  --accent-bar: 340 64% 76%;
   --selected-bg: hsl(340 58% 76% / 0.16);
   --selected-fg: hsl(340 92% 90%);
   --ambient-glow: radial-gradient(circle, hsl(340 70% 62% / 0.08) 0%, transparent 60%);
@@ -702,7 +686,6 @@ html[data-theme="light"][data-palette="rose"] {
   --accent-strong: 340 62% 44%;
   --accent-strong-soft: 340 80% 92%;
   --accent-solid: 340 62% 44%;
-  --accent-bar: 340 78% 60%;
   --selected-bg: hsl(340 88% 95%);
   --selected-fg: hsl(340 58% 36%);
   --ambient-glow: radial-gradient(circle, hsl(340 84% 82% / 0.16) 0%, transparent 60%);

@@ -10,10 +10,7 @@ export type ContextSegment = {
   label: string
   tokens?: number | null
   percent?: number | null
-  /** 直接给 CSS 颜色值（`hsl(var(--token) / 0.5)` 这种），不要给 Tailwind 类：
-   *  库组件用的工具类要靠消费方的 Tailwind 扫到本库产物才会生成，宿主换一次
-   *  配置这些颜色就整块消失；`var(--token)` 走到哪都在，还自动跟主题。 */
-  color?: string
+  colorClass?: string
 }
 
 export interface ContextUsageRingProps {
@@ -80,15 +77,11 @@ export function ContextUsageRing({
   const isDanger = computedPercent != null && computedPercent >= 90
   const isWarning = computedPercent != null && computedPercent >= 70 && computedPercent < 90
 
-  // 强调色用 --accent-* 那一族，不用 --primary：后者是「淡色按钮底」
-  // （亮 239 84% 94% / 暗 239 36% 22%），拿来画环和分段条，亮色下淡得跟底
-  // 一样、暗色下比底还深，两边都看不出是数据。--accent-bar 就是 palettes.css
-  // 里给「进度条填充」留的那一档。
   const statusColor = isDanger
-    ? "hsl(var(--destructive))"
+    ? "text-destructive"
     : isWarning
-      ? "hsl(var(--warning))"
-      : "hsl(var(--accent-strong))"
+      ? "text-amber-500"
+      : "text-primary"
 
   const displayPercent = anomaly
     ? "异常"
@@ -96,23 +89,20 @@ export function ContextUsageRing({
       ? "—"
       : `${computedPercent}%`
 
-  // 三段是「同一个量的三份」，所以只在强调色上分强弱、不另开色相：
-  // 固定的系统提示词走中性灰（跟 status-badge 的 neutral 点同一档），
-  // 工具定义半档，对话消息（大头）满档。
   const segments: ContextSegment[] = [
     {
       id: "system",
       label: "系统提示词",
       tokens: systemTokens,
       percent: capacity && systemTokens != null ? (systemTokens / capacity) * 100 : null,
-      color: "hsl(var(--muted-foreground) / 0.45)",
+      colorClass: "bg-muted-foreground/45",
     },
     {
       id: "tools",
       label: "工具定义",
       tokens: toolTokens,
       percent: capacity && toolTokens != null ? (toolTokens / capacity) * 100 : null,
-      color: "hsl(var(--accent-bar) / 0.6)",
+      colorClass: "bg-primary/55",
     },
     {
       id: "messages",
@@ -122,7 +112,7 @@ export function ContextUsageRing({
         capacity && resolvedMessageTokens != null
           ? (resolvedMessageTokens / capacity) * 100
           : null,
-      color: "hsl(var(--accent-bar))",
+      colorClass: "bg-primary",
     },
   ]
 
@@ -150,7 +140,7 @@ export function ContextUsageRing({
           <span className="relative flex size-6 shrink-0 items-center justify-center">
             <svg className="-rotate-90" viewBox="0 0 20 20" width="22" height="22">
               <circle
-                style={{ color: "hsl(var(--muted-foreground) / 0.2)" }}
+                className="text-muted-foreground/20"
                 stroke="currentColor"
                 strokeWidth="2.2"
                 fill="none"
@@ -159,8 +149,11 @@ export function ContextUsageRing({
                 r="7.5"
               />
               <circle
-                className={cn("transition-all duration-300", busy && "animate-pulse")}
-                style={{ color: statusColor }}
+                className={cn(
+                  "transition-all duration-300",
+                  statusColor,
+                  busy && "animate-pulse"
+                )}
                 stroke="currentColor"
                 strokeWidth="2.2"
                 strokeLinecap="round"
@@ -197,11 +190,8 @@ export function ContextUsageRing({
           {segments.map((seg) => (
             <div
               key={seg.id}
-              className="h-full transition-all duration-300"
-              style={{
-                width: `${Math.min(100, Math.max(0, seg.percent ?? 0))}%`,
-                backgroundColor: seg.color,
-              }}
+              className={cn("h-full transition-all duration-300", seg.colorClass)}
+              style={{ width: `${Math.min(100, Math.max(0, seg.percent ?? 0))}%` }}
             />
           ))}
         </div>
@@ -210,7 +200,7 @@ export function ContextUsageRing({
           {segments.map((seg) => (
             <li key={seg.id} className="flex items-center justify-between text-muted-foreground">
               <span className="flex items-center gap-2">
-                <span className="size-2 rounded-[2px]" style={{ backgroundColor: seg.color }} />
+                <span className={cn("size-2 rounded-[2px]", seg.colorClass)} />
                 {seg.label}
               </span>
               <span className="font-mono text-[11px] tabular-nums text-foreground">

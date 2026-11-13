@@ -1781,7 +1781,7 @@ export function App() {
             </div>
           </Section>
           {/* 30. Switch */}
-          <Section id="switch" title="Switch" label="开关 (20px 高胶囊，16px 白旋钮)" count={39}>
+          <Section id="switch" title="Switch" label="开关 (20px Apple 绿胶囊)" count={39}>
             <div className="flex items-center space-x-3">
               <Switch id="airplane-mode" defaultChecked />
               <Label htmlFor="airplane-mode" className="text-xs cursor-pointer">

@@ -34,16 +34,7 @@ const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
         )}
       >
         <div className="absolute inset-x-0 h-1.5 overflow-hidden rounded-full bg-muted/90 ring-1 ring-inset ring-border/55">
-          {/* 已滑过那截走 `--bar-fill`（= `--accent-bar`，实心条专用档）：`--primary`
-              是淡色按钮底，铺在同样淡的轨道上整条看不见（design.md §7）。禁用态跟着
-              根节点的 opacity-50 一起退，不另换颜色。
-              走任意值而不是 preset 类名：Terminal 的 tailwind.config.cjs 只内联了
-              shadcn 那几个基础色，没挂 rain-ui 的 preset，`bg-accent-bar` 在那里
-              生成不出来，条会变透明。 */}
-          <div
-            className="h-full rounded-full bg-[var(--bar-fill)] transition-[width] duration-75"
-            style={{ width: `${percent}%` }}
-          />
+          <div className="h-full rounded-full bg-primary transition-[width] duration-75" style={{ width: `${percent}%` }} />
         </div>
         <span
           className="pointer-events-none absolute size-4 -translate-x-1/2 rounded-full border border-black/5 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.22)] dark:border-white/15 dark:bg-zinc-100"
