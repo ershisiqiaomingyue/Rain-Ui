@@ -914,6 +914,7 @@ export function App() {
                 <p className="text-xs font-medium text-muted-foreground mb-2">样式变体 (Variants)：</p>
                 <div className="flex flex-wrap items-center gap-2">
                   <Button variant="default">Default</Button>
+                  <Button variant="primary">Primary（渐变蓝）</Button>
                   <Button variant="secondary">Secondary</Button>
                   <Button variant="outline">Outline</Button>
                   <Button variant="ghost">Ghost</Button>

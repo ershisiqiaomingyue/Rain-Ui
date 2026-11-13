@@ -18,8 +18,14 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:bg-primary/95",
+        /*
+         * 主按钮的「渐变蓝」：和 Card 的 primary 同一个 168deg 配方，只是按钮面小，
+         * 三档 alpha 拉得比卡面重一点（7 / 13 / 20%）。底是淡的，所以字用 primary
+         * 本身而不是 primary-foreground —— 白字压在淡蓝上根本看不见。
+         * hover 继续加深同一条渐变（而不是换成纯色底），免得上手一悬停渐变就没了。
+         */
         primary:
-          "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:bg-primary/95",
+          "border-[hsl(var(--primary)/0.3)] bg-[linear-gradient(168deg,hsl(var(--primary)/0.07)_0%,hsl(var(--primary)/0.13)_52%,hsl(var(--primary)/0.2)_100%)] text-primary shadow-sm hover:border-[hsl(var(--primary)/0.45)] hover:bg-[linear-gradient(168deg,hsl(var(--primary)/0.1)_0%,hsl(var(--primary)/0.16)_52%,hsl(var(--primary)/0.24)_100%)] active:bg-[linear-gradient(168deg,hsl(var(--primary)/0.13)_0%,hsl(var(--primary)/0.19)_52%,hsl(var(--primary)/0.27)_100%)]",
         outline:
           "border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         surface:
