@@ -3,18 +3,26 @@
    --------------------------------------------------------------------------
    规则文档见 `docs/design.md`，两边数字必须一致；改了这里就同步改那里。
 
-   结构分三层，从下往上读：
+   配色就是 **shadcn 的默认 token**：名字、语义、数值都照它。分三层读：
 
-     A. 基础层   —— 表面底色、发丝线、墨色。中性，不带强调色。
-     B. 语义层   —— shadcn 的三元组写法（`239 36% 22%`，不带 hsl()），
+     B. 语义层   —— shadcn 的三元组写法（`222.2 84% 4.9%`，不带 hsl()），
+                    暗色取 shadcn 的 `.dark`，亮色取它的 `:root`。
                     Tailwind 侧 `hsl(var(--primary))` 直接可用。
-     C. 桥接层   —— 把 tokens.css 的历史变量名指到上面的新值。
-                    组件不用改一行就能换上新配色，且只有一处真相。
+                    这是唯一的真相：换配色只改这一段。
+     A. 基础层   —— 表面、发丝线、墨色、控件。**全部由 B 派生**，两个主题
+                    共用一份公式（桥接层开头那段），所以不存在「三层三个灰」。
+     C. 桥接层   —— 把 tokens.css 的历史变量名指到上面的值。
+                    组件不用改一行就能用上新配色。
 
    为什么语义层写三元组而不是完整色值：shadcn 的约定是
-   `--primary: 222 47% 11%` + Tailwind `hsl(var(--primary))`。
-   写成 `hsl(222 47% 11%)` 会让 `hsl(var(--primary))` 变成
-   `hsl(hsl(222 47% 11%))`，整条链直接失效。需要完整色值时写 `hsl(var(--primary))`。
+   `--primary: 222.2 84% 4.9%` + Tailwind `hsl(var(--primary))`。
+   写成 `hsl(222.2 84% 4.9%)` 会让 `hsl(var(--primary))` 变成
+   `hsl(hsl(222.2 84% 4.9%))`，整条链直接失效。需要完整色值时写 `hsl(var(--primary))`。
+
+   `--primary` 就是 shadcn 的原义 —— **饱和底 + 反差字**（亮色近黑配白字，
+   暗色近白配深字）。组件里 `bg-primary` / `text-primary` / `bg-primary/10`
+   三种写法都因此成立。不要再把它改成「淡色按钮底 + 同色相深字」：那样
+   `bg-primary` 铺在近白的底上会整条看不见，是这个文件里犯过的错。
 
    两条硬约束，改这个文件时必须守住：
      1. 桥接层只许出现派生值（`var()` / `hsl(var(--x))`），不许出现字面色值。
@@ -22,90 +30,47 @@
         原因：桥接层为了压过 tokens.css 的 `html[data-theme]`，用的是同级
         特异性选择器，它排在亮色块之后；一旦在里面写死一个深色字面值，
         亮色主题也会被它盖住。
-     2. 换主题 = 换明暗，不换色相。没有第二个配色家族，没有 data-palette。
+     2. 换主题 = 换明暗。换色相只准动 `--primary` 一族和 `--ring`
+        （见文件末尾的玫瑰），中性骨架一套共用。
    ========================================================================== */
 
 /* ============================================================================
  * 暗色（默认）
- * ========================================================================== */
+ * ============================================================================ */
 :root {
-  /* ── A1. 表面 ────────────────────────────────────────────────────────────
-     四层：外壳最亮 → 工作区陷下去 → 卡片浮起来 → 悬停再亮一档。
-     L1/L2/L3 三层底色**完全相同**，深度全部交给发丝线，
-     所以永远不会出现「三层三个不同的灰」。 */
-  --surface-shell: hsl(232 17% 13%);
-  --surface-0: hsl(232 20% 7%);
-  --surface-1: hsl(232 18% 10%);
-  --surface-2: var(--surface-1);
-  --surface-3: var(--surface-1);
-  --surface-hover: hsl(232 16% 14%);
-  --surface-active: hsl(232 16% 17%);
-  /* 输入族（Input / Textarea / InputGroup / Select 触发器）用跟基面同一档的底：
-     暗色比卡片面高一级（卡片 10%，输入 14%），hover / 按下再往上抬，不做比卡片更深的灰凹槽。 */
-  --field-bg: hsl(232 17% 15%);
-  --field-bg-hover: hsl(232 17% 18%);
-  --field-bg-active: hsl(232 17% 21%);
-  --accent-wash: color-mix(in srgb, hsl(var(--accent-strong)) 16%, transparent);
-  /* 凹槽：输入框、表格头、分段轨道。比卡片低一档，读起来是「挖进去」。 */
-  --surface-inset: hsl(232 19% 8%);
-  --surface-popover: hsl(233 16% 13%);
-  /* 卡片四级色调：表达的是「这块面板离用户多远」，和上面的层级是两回事，
-     所以保留逐级下沉。 */
-  --card-tone-muted: hsl(232 18% 9%);
-  --card-tone-subtle: hsl(232 19% 8%);
-  --card-tone-deep: hsl(232 20% 7%);
+  /* ── B. 语义层 —— shadcn 默认值，暗色取 shadcn 的 `.dark` ──────────────────
+     整套配色只有这一处真相：表面、线、墨、强调、选中、焦点、控件全部从下面
+     这几行派生，公式统一住在文件末尾的桥接层，两个主题共用一份。
+     换配色 = 只改这里；要第二套色相也只覆盖 `--primary*` 和 `--ring`。
 
-  /* ── A2. 发丝线 ──────────────────────────────────────────────────────────
-     暗色用半透明白而不是实色灰：叠在任意底色上都会自动跟着底走，
-     嵌套三层不会算出三个不同的灰。 */
-  --line-1: rgba(255, 255, 255, 0.10);
-  --line-2: rgba(255, 255, 255, 0.065);
-  --line-3: rgba(255, 255, 255, 0.04);
-  --line-strong: rgba(255, 255, 255, 0.16);
+     `--primary` 是 shadcn 的原义：**饱和底 + 反差字**。暗色下本色相反过来，
+     成了近白底 + 深字。所以组件里 `bg-primary` + `text-primary-foreground`
+     和 `text-primary` 两种写法都成立 —— 上一版把它改成「淡色按钮底 + 同色相
+     深字」，结果 `bg-primary` 画在近白底上整条看不见。这一版不再偏离。 */
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --primary-hover: 210 30% 90%;
+  --primary-active: 210 26% 84%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;          /* shadcn 里 --accent 就是悬停底，不是强调色 */
+  --accent-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
 
-  /* ── A3. 墨色（五级） ────────────────────────────────────────────────────
-     旧版四个近义名字（secondary/tertiary/muted/quaternary）跨两个色相、
-     明度只差 1–3 个点，是「灰得丑」的根因。现在只剩五级，一级一个用途。 */
-  --ink-high: hsl(228 26% 97%);        /* 标题、关键数字 */
-  --ink-primary: hsl(228 20% 90%);     /* 正文 */
-  --ink-secondary: hsl(230 14% 68%);   /* 辅助说明（承载信息的最低档） */
-  --ink-tertiary: hsl(231 12% 52%);    /* 时间/计数这类元信息 */
-  --ink-muted: hsl(232 10% 40%);       /* 禁用、占位 */
-
-  /* ── B. 语义层（shadcn 三元组） ──────────────────────────────────────── */
-
-  /* 表面语义 */
-  --background: 232 20% 7%;
-  --foreground: 228 20% 90%;
-  --card: 232 18% 10%;
-  --card-foreground: 228 20% 90%;
-  --popover: 233 16% 13%;
-  --popover-foreground: 228 20% 90%;
-  --muted: 232 19% 8%;
-  --muted-foreground: 230 14% 68%;
-  --accent: 232 16% 14%;               /* 悬停底，中性，不是强调色 */
-  --accent-foreground: 228 26% 97%;
-  --secondary: 232 19% 8%;             /* 次要动作：中性，不染靛 */
-  --secondary-foreground: 228 20% 90%;
-  --border: 232 14% 19%;
-  --input: 232 14% 19%;
-  --ring: 239 58% 74%;
-
-  /* 强调：淡靛。填充是淡底，字是同色相深字 —— 刻意偏离 shadcn 的
-     「饱和底 + 白字」，因为淡底在这套以中性表面为主的界面里不抢戏。 */
-  --primary: 239 36% 22%;
-  --primary-foreground: 239 92% 86%;
-  --primary-hover: 239 38% 26%;
-  --primary-active: 239 40% 29%;
-
-  /* 图形强调：图标、进度条、分段激活。填充色太淡，画不成图。 */
-  --accent-strong: 239 68% 72%;
-  --accent-strong-soft: 239 80% 84%;
-  /* 实心强调：只在「上面要压白字」的地方用（勾选盘、开关、图表色块）。
-     比 accent-strong 深一档，就是为了让白字压得住。 */
-  --accent-solid: 239 60% 52%;
-
-  /* 状态：五个，各管一件事，不许混用 */
+  /* ── 状态：shadcn 没有默认值的部分 ──────────────────────────────────────
+     shadcn 只定义了 `--destructive` 一支，暗色给的是 30.6% 的深红 —— 当按钮
+     填充够用，但当文字色（删除图标、报错文案）压在深底上读不出来。库的状态
+     家族要同时承担填充和文字，所以这五支保留本库原值，不跟 shadcn 的数。 */
   --success: 158 40% 68%;
   --success-bg: 158 32% 15%;
   --success-bg-foreground: 158 52% 76%;
@@ -125,20 +90,8 @@
   --error-foreground: 0 0% 100%;
   --error-hover: 0 68% 46%;
 
-  /* ── C. 扩展（shadcn 没有，完整色值） ────────────────────────────────── */
-  /* 选中：只换底色。暗色用 16% 透明靛而不是实色深紫 ——
-     实色底要跨 8 个明度点，整块跳出来像另一个弹窗。 */
-  --selected-bg: hsl(239 58% 74% / 0.16);
-  --selected-fg: hsl(239 92% 88%);
-
-  /* 焦点：只在外框外面加一圈，底色和边框都不动。用 box-shadow 的 spread
-     而不是 outline —— outline-offset 在圆角上对不齐，圆角处会露直角。 */
-  --focus-ring: 0 0 0 3px hsl(var(--ring) / 0.22);
-  /* 内环：画在元素自己的边框盒里面，给会被父级 overflow 裁掉的位置用
-     （全宽行、标签页、分段按钮、拖拽条）—— 那些地方外环左右两边会被切掉。 */
-  --focus-ring-inset: inset 0 0 0 2px hsl(var(--accent-strong) / 0.5);
-  --focus-glow: var(--focus-ring);
-
+  /* ── 只属于暗色的那几处：阴影、遮罩 ────────────────────────────────────
+     颜色全部走上面的语义层，这里只放「暗色不投阴影」这类主题差异。 */
   /* 阴影：暗色一律不投。暗底上阴影看不见，只会让边缘发脏。 */
   --shadow-card: none;
   --shadow-popover: none;
@@ -146,32 +99,14 @@
   --shadow-btn-hover: 0 0 0 0 transparent;
   /* 内嵌高光：暗色不描白边，按钮靠底色分层就够。 */
   --shadow-inset-highlight: 0 0 0 0 transparent;
-
-  /* 分段控件激活片：坐在 surface-inset 轨道上的亮片 */
-  --segmented-active-bg: hsl(232 15% 19%);
-  --segmented-active-hover-bg: hsl(232 15% 22%);
-
-  /* 环境光：旧版四个 blob 分别是天蓝/靛/青/紫，四个色相。按「一个色相
-     家族」的规矩全部收进靛青，只靠透明度分强弱。 */
-  --ambient-glow: radial-gradient(circle, hsl(239 70% 60% / 0.08) 0%, transparent 60%);
-  --blob-1: radial-gradient(circle, hsl(239 70% 60% / 0.10) 0%, transparent 70%);
-  --blob-2: radial-gradient(circle, hsl(243 68% 56% / 0.08) 0%, transparent 70%);
-  --blob-3: radial-gradient(circle, hsl(232 60% 50% / 0.06) 0%, transparent 70%);
-  --blob-4: radial-gradient(circle, hsl(250 60% 62% / 0.07) 0%, transparent 70%);
-
-  /* 推理滑杆：原来是紫色 #9a59e0，跟靛青不同色相，收进来。
-     这里只放主题相关的字面值，派生值在下面的桥接层。 */
-  --inference-fill-deep: hsl(243 50% 40%);
-  --inference-spark: hsl(239 80% 92%);
-  --inference-spark-warm: hsl(38 80% 90%);
-
-  /* 开关 / 勾选。白色滑块两个主题都用白 —— 那是物理感，不是配色，
-     所以字面值放主题块，桥接层只写派生关系。
-     这两个阴影只有亮色给得起：暗色底上投影看不见，给了也是白给。 */
-  --control-checked-mark: hsl(0 0% 100%);
-  --knob-bg: hsl(0 0% 100%);
+  /* 开关轨道与滑块的投影只有亮色给得起：暗底上投影看不见，给了也是白给。 */
   --knob-shadow: none;
   --switch-track-shadow: none;
+  --segmented-active-shadow: none;
+  /* 遮罩两个主题都得压黑：亮色下用浅色遮罩等于没遮。 */
+  --scrim: color-mix(in srgb, hsl(0 0% 0%) 36%, transparent);
+  /* 凹槽底部那一层内阴影：一点点就够暗示「凹」，多了就回到拟物。 */
+  --input-inner-shadow: inset 0 1px 1px hsl(0 0% 0% / 0.28);
 
   /* 星图的夜空。两个主题给同一套值 —— 亮色下也刻意保持深色，
      浅色星图看着像气泡图（见 constellation.css 文件头）。 */
@@ -179,94 +114,39 @@
   --stellar-sky-mid: hsl(226 48% 11%);
   --stellar-sky-edge: hsl(228 50% 4%);
   --stellar-star: hsl(226 100% 96%);
-
-  /* 遮罩。两个主题都得压黑：亮色主题下用浅色遮罩等于没遮。
-     比旧的纯黑 36% 稍微偏靛一点，跟整片底色同色相。 */
-  --scrim: color-mix(in srgb, hsl(230 30% 3%) 36%, transparent);
-  /* 凹槽底部那一层内阴影：一点点就够暗示“凹”，多了就回到拟物。 */
-  --input-inner-shadow: inset 0 1px 1px hsl(0 0% 0% / 0.28);
 }
 
 /* ============================================================================
  * 亮色
  * ============================================================================ */
 html[data-theme="light"] {
-  /* ── A1. 表面 ──────────────────────────────────────────────────────────
-     页面底（--background）和它下面那层凹陷工作区（--surface-0）都是近白的
-     淡白灰，不带色相：底只负责退后一步，让白卡立起来。
-     亮色卡面则是一层淡靛青渐变（明度 97% → 88%），同一块区域上半偏白、
-     下半偏青。悬停/按下若写成固定色值，只能在其中一头看得出来 —— 落到
-     深色那头就和底色重合，看着像“悬停底色丢了”。所以这两档改成半透明
-     的靛：落在任何底色上都是“再染一层淡靛”，明度自动跟着底走，白卡和
-     渐变底上都读得出，而且方向统一是“更浓一点的靛”。
-     凹槽/输入底必须不透明（下面就是内容），单独给一个实色淡靛。 */
-  --surface-shell: hsl(230 34% 99%);
-  --surface-0: hsl(228 8% 96.5%);
-  --surface-1: #ffffff;
-  --surface-2: var(--surface-1);
-  --surface-3: var(--surface-1);
-  --surface-hover: color-mix(in srgb, var(--ink-high) 8%, transparent);
-  --surface-active: color-mix(in srgb, var(--ink-high) 13%, transparent);
-  /* 输入族底取最基础那档淡白灰（近白、几乎不带色），hover / 按下再深一级；
-     焦点只换边框和环，不换底。 */
-  --field-bg: hsl(228 20% 97%);
-  --field-bg-hover: hsl(228 18% 93%);
-  --field-bg-active: hsl(228 16% 90%);
-  --accent-wash: color-mix(in srgb, hsl(var(--accent-strong)) 10%, transparent);
-  --surface-inset: hsl(228 60% 95.5%);
-  --surface-popover: #ffffff;
-  --card-tone-muted: hsl(228 60% 97.5%);
-  --card-tone-subtle: hsl(228 56% 96.5%);
-  --card-tone-deep: hsl(228 52% 94%);
-
-  /* ── A2. 发丝线 ──────────────────────────────────────────────────────────
-     亮色反过来用实色：白底上叠白会直接消失。 */
-  /* 三档线整体收紧一档：浅底上 93%/95% 跟白卡只差十来阶，白底上的分割线等于没画。
-     收紧后仍是逐层变淡（87 → 90 → 93），并统一到页面那支靛。 */
-  --line-1: hsl(228 24% 87%);
-  --line-2: hsl(228 24% 90%);
-  --line-3: hsl(228 22% 93%);
-  --line-strong: hsl(228 24% 82%);
-
-  /* ── A3. 墨色 ──────────────────────────────────────────────────────────── */
-  --ink-high: hsl(232 32% 12%);
-  --ink-primary: hsl(232 26% 20%);
-  --ink-secondary: hsl(232 16% 38%);
-  --ink-tertiary: hsl(232 12% 50%);
-  --ink-muted: hsl(232 10% 62%);
-
-  /* ── B. 语义层 ───────────────────────────────────────────────────────── */
-  /* 页面底是近白的淡白灰，几乎不带色相：底色只负责“退后一步”，让白卡
-     （--card 100%）靠这一档灰立起来。靛留在强调色和悬停上，页面本身不染色。 */
-  --background: 228 8% 97%;
-  --foreground: 232 26% 20%;
+  /* ── B. 语义层 —— shadcn 默认值，亮色取 shadcn 的 `:root` ────────────────
+     和暗色块同一组名字、同一套语义，只换值。表面只有两层：`--background`
+     白、`--card` 也白，靠 `--border` 那条线分层；`--primary` 是近黑的饱和底
+     配白字（暗色反过来），因此 `bg-primary` 与 `text-primary` 在亮色下都读得出。 */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
   --card: 0 0% 100%;
-  --card-foreground: 232 26% 20%;
+  --card-foreground: 222.2 84% 4.9%;
   --popover: 0 0% 100%;
-  --popover-foreground: 232 26% 20%;
-  --muted: 228 46% 96.5%;
-  --muted-foreground: 232 16% 38%;
-  /* --accent 是所有 hover:bg-accent 的落点。原来是 98% 近白，压在白卡和淡靛渐变上
-     都看不出来，按钮悬停就像底色丢了。收到 95.5% 的淡靛：白卡上泛一层青，
-     渐变底上再深一档，两头都读得出。 */
-  --accent: 228 62% 95.5%;
-  --accent-foreground: 232 32% 12%;
-  --secondary: 228 50% 96.5%;
-  --secondary-foreground: 232 26% 20%;
-  --border: 228 26% 89%;
-  --input: 228 26% 88%;
-  --ring: 239 84% 88%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --primary-hover: 222.2 47.4% 17%;
+  --primary-active: 222.2 47.4% 22%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  /* hover:bg-accent 的落点。shadcn 的取值就是 96.1% —— 白卡上压一层淡灰，
+     不需要再往下收。 */
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
 
-  --primary: 239 84% 94%;
-  --primary-foreground: 243 68% 52%;
-  --primary-hover: 239 84% 90%;
-  --primary-active: 239 82% 86%;
-
-  --accent-strong: 243 68% 52%;
-  --accent-strong-soft: 243 60% 40%;
-  --accent-solid: 243 68% 52%;
-
-  /* 状态：亮色下填充要比暗色更沉一档，否则在浅底上读不出颜色。 */
+  /* ── 状态：亮色下填充要比暗色更沉一档，否则在浅底上读不出颜色 ────────── */
   --success: 158 46% 40%;
   --success-bg: 158 46% 93%;
   --success-bg-foreground: 158 58% 24%;
@@ -286,20 +166,9 @@ html[data-theme="light"] {
   --error-foreground: 0 0% 100%;
   --error-hover: 0 66% 42%;
 
-  /* ── C. 扩展 ───────────────────────────────────────────────────────────
-     亮色的选中底是**实色** L92：白底上抹一层 16% 的靛会变成雾，边界说不清。
-     停在 L94 时它和外壳那层淡靛青（95%）几乎同亮度，选中块会糊进底色里，
-     所以再往下按两档，让"选中"在青底上也站得住。 */
-  --selected-bg: hsl(239 68% 92%);
-  --selected-fg: hsl(243 60% 40%);
-
-  --focus-ring: 0 0 0 3px hsl(var(--ring) / 0.9);
-  /* 内环压在控件自己的底色上（不是压在页面白底上），所以要用深一档的强调色，
-     否则 88% 亮度的淡靛叠在淡色按钮上等于没有。 */
-  --focus-ring-inset: inset 0 0 0 2px hsl(var(--accent-strong) / 0.6);
-  --focus-glow: var(--focus-ring);
-
-  /* 亮色要阴影：白底白卡片，没有阴影就分不出层。 */
+  /* ── 只属于亮色的那几处：阴影、遮罩 ──────────────────────────────────── */
+  /* 亮色要阴影：白底白卡片，没有阴影就分不出层。颜色一律中性 slate，
+     不掺强调色。 */
   --shadow-card: 0 1px 2px rgba(30, 41, 59, 0.04);
   --shadow-popover: 0 8px 24px -6px rgba(30, 41, 59, 0.12);
   --shadow-btn: 0 1px 2px rgba(30, 41, 59, 0.06);
@@ -308,24 +177,12 @@ html[data-theme="light"] {
      白底上等于什么都没有，那道抬起感就凭空消失了。暗色清空见上面。 */
   --shadow-inset-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.55);
 
-  --segmented-active-bg: #ffffff;
-  --segmented-active-hover-bg: hsl(228 60% 97.5%);
-
-  --ambient-glow: radial-gradient(circle, hsl(239 84% 78% / 0.16) 0%, transparent 60%);
-  --blob-1: radial-gradient(circle, hsl(239 84% 88% / 0.55) 0%, transparent 70%);
-  --blob-2: radial-gradient(circle, hsl(243 84% 90% / 0.45) 0%, transparent 70%);
-  --blob-3: radial-gradient(circle, hsl(230 70% 90% / 0.40) 0%, transparent 70%);
-  --blob-4: radial-gradient(circle, hsl(250 80% 92% / 0.45) 0%, transparent 70%);
-
-  --inference-fill-deep: hsl(243 55% 34%);
-  --inference-spark: hsl(239 84% 96%);
-  --inference-spark-warm: hsl(38 84% 94%);
-
-  /* 见暗色块同一段的说明。 */
-  --control-checked-mark: hsl(0 0% 100%);
-  --knob-bg: hsl(0 0% 100%);
-  --knob-shadow: 0 1px 2px hsl(232 26% 20% / 0.18);
-  --switch-track-shadow: inset 0 0 0 1px hsl(232 26% 20% / 0.04), 0 1px 2px hsl(232 26% 20% / 0.1);
+  /* 滑块/开关的投影：白底上需要，暗色块里清空。 */
+  --knob-shadow: 0 1px 2px hsl(var(--foreground) / 0.18);
+  --switch-track-shadow: inset 0 0 0 1px hsl(var(--foreground) / 0.04), 0 1px 2px hsl(var(--foreground) / 0.1);
+  /* 白胶囊压在槽上已经能立住，但白界面本身也是白的，光靠明度差在缩放下还是糊。
+     加一层极轻的投影给边界兜底；暗色块里清空。 */
+  --segmented-active-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
 
   /* 见暗色块同一段的说明：星图夜空在亮色下也是深色。 */
   --stellar-sky-core: hsl(230 44% 19%);
@@ -334,8 +191,8 @@ html[data-theme="light"] {
   --stellar-star: hsl(226 100% 96%);
 
   /* 见暗色块同一段的说明。亮色下遮罩浅一点就够，白底本来就亮。 */
-  --scrim: color-mix(in srgb, hsl(230 30% 3%) 30%, transparent);
-  --input-inner-shadow: inset 0 1px 1px hsl(232 26% 20% / 0.05);
+  --scrim: color-mix(in srgb, hsl(0 0% 0%) 30%, transparent);
+  --input-inner-shadow: inset 0 1px 1px hsl(var(--foreground) / 0.05);
 }
 
 /* ============================================================================
@@ -351,8 +208,86 @@ html[data-theme="light"] {
  * ========================================================================== */
 :root,
 html[data-theme] {
+  /* ══ A. 基础层（全部派生，两个主题共用一份公式） ══════════════════════════
+     上一版这层是逐主题的字面色值：四层表面、三个近似灰、外加一档"淡靛卡面"。
+     shadcn 的层级只有两层 —— `--background` 铺满，`--card` 同色或纯白，
+     深度靠 1px 的 `--border`。卡片本来也已经只留细描边、不留阴影，跟这个模型
+     一致，所以四层表面在这里塌成两层，不再有"三层三个不同的灰"的可能。 */
+  --surface-0: hsl(var(--background));
+  --surface-1: hsl(var(--card));
+  --surface-2: hsl(var(--card));
+  --surface-3: hsl(var(--card));
+  --surface-shell: hsl(var(--popover));
+  --surface-popover: hsl(var(--popover));
+  --surface-hover: hsl(var(--accent));
+  --surface-active: color-mix(in srgb, hsl(var(--accent)) 88%, hsl(var(--foreground)));
+  --surface-inset: hsl(var(--muted));
+  --card-tone-muted: hsl(var(--card));
+  --card-tone-subtle: hsl(var(--card));
+  --card-tone-deep: hsl(var(--card));
+  /* 输入族：底跟页面同一档，悬停压 --accent，聚焦只换边框和环，不换底。 */
+  --field-bg: hsl(var(--background));
+  --field-bg-hover: hsl(var(--accent));
+  --field-bg-active: color-mix(in srgb, hsl(var(--accent)) 88%, hsl(var(--foreground)));
+
+  /* ── 线：一档 --border，逐级变淡靠透明度 ──────────────────────────────────
+     不再按主题分「暗色半透明白 / 亮色实色灰」：--border 自己就是主题相关值。 */
+  --line-1: hsl(var(--border));
+  --line-2: color-mix(in srgb, hsl(var(--border)) 70%, transparent);
+  --line-3: color-mix(in srgb, hsl(var(--border)) 45%, transparent);
+  --line-strong: hsl(var(--border));
+
+  /* ── 墨：foreground / muted-foreground 两档 + 两档淡化 ──────────────────── */
+  --ink-high: hsl(var(--foreground));
+  --ink-primary: hsl(var(--foreground));
+  --ink-secondary: hsl(var(--muted-foreground));
+  --ink-tertiary: color-mix(in srgb, hsl(var(--muted-foreground)) 78%, hsl(var(--background)));
+  --ink-muted: color-mix(in srgb, hsl(var(--muted-foreground)) 58%, hsl(var(--background)));
+
+  /* ── 强调：全库只有一个强调色，就是 shadcn 的 --primary ───────────────────
+     上一版另外造了 accent-strong / accent-solid 两档"图形强调"，和 --primary
+     两套说法并存 —— 同一个界面里进度条、勾选盘和主按钮能是三个色。这里全部并
+     回 --primary：名字留着（它们是组件的公开 API），值不再分叉。 */
+  --accent-strong: var(--primary);
+  --accent-strong-soft: var(--muted-foreground);
+  --accent-solid: var(--primary);
+  --accent-wash: color-mix(in srgb, hsl(var(--primary)) 12%, transparent);
+  --selected-bg: hsl(var(--primary) / 0.1);
+  --selected-fg: hsl(var(--primary));
+  /* 焦点：只在外框外面加一圈，底色和边框都不动。用 box-shadow 的 spread
+     而不是 outline —— outline-offset 在圆角上对不齐，圆角处会露直角。 */
+  --focus-ring: 0 0 0 3px hsl(var(--ring) / 0.45);
+  /* 内环：画在元素自己的边框盒里面，给会被父级 overflow 裁掉的位置用
+     （全宽行、标签页、分段按钮、拖拽条）—— 那些地方外环左右两边会被切掉。 */
+  --focus-ring-inset: inset 0 0 0 2px hsl(var(--ring) / 0.6);
+  --focus-glow: var(--focus-ring);
+
+  /* ── 控件：勾选盘 / 开关轨道吃 --primary，勾和旋钮吃它的反差字 ────────────
+     暗色下 --primary 是近白，白勾压上去等于没有；跟着 --primary-foreground
+     走，两个主题都不会出现"白勾压白底"。 */
+  --control-checked-mark: hsl(var(--primary-foreground));
+  --knob-bg: hsl(var(--background));
+  /* 分段控件：槽是 --muted，激活片是 --background（shadcn 的 Tabs 就是这个关系：
+     亮色白片浮在灰槽上，暗色深片压在浅槽上）。 */
+  --segmented-bg: hsl(var(--muted));
+  --segmented-active-bg: hsl(var(--background));
+  --segmented-active-hover-bg: color-mix(in srgb, hsl(var(--background)) 92%, hsl(var(--foreground)));
+
+  /* ── 装饰：旧版的环境光/星尘是四个靛紫色相的 blob ─────────────────────────
+     shadcn 没有这套。中性化成一档墨色微光，只留明度差；想彻底关掉就设成 none。 */
+  --ambient-glow: radial-gradient(circle, hsl(var(--foreground) / 0.05) 0%, transparent 60%);
+  --blob-1: radial-gradient(circle, hsl(var(--foreground) / 0.05) 0%, transparent 70%);
+  --blob-2: radial-gradient(circle, hsl(var(--foreground) / 0.04) 0%, transparent 70%);
+  --blob-3: radial-gradient(circle, hsl(var(--foreground) / 0.03) 0%, transparent 70%);
+  --blob-4: radial-gradient(circle, hsl(var(--foreground) / 0.04) 0%, transparent 70%);
+  /* 推理滑杆：原来填色是紫的，跟强调色不同色相。收进中性三档。 */
+  --inference-fill-deep: hsl(var(--muted-foreground));
+  --inference-spark: hsl(var(--foreground));
+  --inference-spark-warm: hsl(var(--warning));
   /* ── 强调色家族 ───────────────────────────────────────────────────────── */
-  /* 图形用途（图标/进度/勾选/焦点）走饱和靛，填充用途走淡靛。 */
+  /* 图形用途（图标/进度/勾选/焦点）和填充用途共用同一个色：--primary。
+     名字分成这两组是历史遗留，值不再分叉，所以界面上不会出现「进度条和
+     主按钮不是一个颜色」。 */
   --accent-primary: hsl(var(--accent-strong));
   --accent-primary-hsl: var(--accent-strong);
   --accent-ink: hsl(var(--accent-strong));
@@ -464,7 +399,8 @@ html[data-theme] {
   --input-focus-ring: var(--focus-ring);
 
   /* ── 按钮家族 ─────────────────────────────────────────────────────────── */
-  /* 主按钮：淡靛填 + 同色相深字。没有内嵌高光，没有外发光。 */
+  /* 主按钮：--primary 填 + --primary-foreground 字。亮色近黑配白字，
+     暗色近白配深字，两种主题都是「实心、能一眼看到」的强调块。没有外发光。 */
   --btn-primary-bg: hsl(var(--primary));
   --btn-primary-hover: hsl(var(--primary-hover));
   --btn-primary-active: hsl(var(--primary-active));
@@ -539,21 +475,14 @@ html[data-theme] {
   --btn-glass-danger-active: color-mix(in srgb, hsl(var(--destructive-soft-bg)) 82%, var(--ink-high));
 
   /* ── 控件家族 ─────────────────────────────────────────────────────────── */
-  /* 勾选盘/开关只分「开/关」两态，用实心靛填充 + 白勾。 */
+  /* 勾选盘/开关只分「开/关」两态：--primary 填充，勾和旋钮吃它的反差字。
+     槽、激活片、投影的取值在 A 层和主题块里（见文件前面的说明）。 */
   --control-checked-bg: hsl(var(--accent-solid));
   --switch-active-bg: hsl(var(--accent-solid));
   --switch-thumb-bg: var(--knob-bg);
-  /* 槽要比输入框明显深一档：白胶囊压在 95.5% 的淡靛上只差十来阶，选中项看着像没选中。
-     93.5% 仍偏淡（技能库、主页统计范围都反馈「看不出哪个是激活的」），压到 91.5%
-     并把靛味收掉一半，纯白胶囊才立得住，槽也不必上阴影。 */
-  --segmented-bg: hsl(228 38% 91.5%);
   --segmented-text: var(--ink-secondary);
   --segmented-hover-bg: var(--surface-hover);
   --segmented-active-text: var(--ink-high);
-  /* 白胶囊压在 91.5% 的槽上已经能立住，但亮色界面本身也是白的，光靠 9% 的
-     明度差在缩放下还是糊。加一层极轻的投影给边界兜底；暗色在下面的 dark 块
-     里改回 none（深槽上的浅块本来就分得清，不需要影）。 */
-  --segmented-active-shadow: 0 1px 2px rgba(15, 23, 42, 0.1);
 
   /* ── 状态家族 ─────────────────────────────────────────────────────────── */
   /* 三支来源色，status-* 与 btn-* 都由它们派生。 */
@@ -642,66 +571,32 @@ html[data-theme] {
   --composer-divider: var(--line-2);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   第二套配色：玫瑰（`html[data-palette="rose"]`）
-
-   加一套配色**不是再写一份完整调色板**，而是只覆盖「带色相的那几个 token」：
-   中性骨架（`--background` / `--surface-*` / `--line-*` / `--ink-*` / `--border`）
-   所有配色共用，这也是这套设计里「表面永远中性」那条规则的直接收益 —— 加第三套
-   （淡紫、薄荷……）只需要再抄这一段。
-
-   写的时候守三条：
-   1. 只换色相，明度/饱和度的**关系**跟原套保持一致，这样对比度和层级都是验过的；
-   2. 暗色块用 `html[data-palette="…"]`（压 `:root`），亮色块必须写
-      `html[data-theme="light"][data-palette="…"]` —— 两个属性 = 比亮色块高一级，否则压不住；
-   3. 白字只允许落在 `--accent-solid` / `--error` / `--destructive` 上，所以
-      `--accent-solid` 的明度要卡在能过 4.5:1 的那一档（玫瑰 = 48% / 44%）。
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* ============================================================================
+ * 第二套配色：玫瑰
+ * ----------------------------------------------------------------------------
+ * 只覆盖带色相的三个 token —— `--primary` 一族和 `--ring`。表面、线、墨、
+ * 选中、焦点、控件全部由它们派生（见桥接层），所以这一块永远只有十行。
+ * 明暗关系照抄 shadcn：暗色近白底 + 深字，亮色饱和底 + 白字。
+ * ========================================================================== */
 html[data-palette="rose"] {
-  --ring: 340 58% 76%;
-  --primary: 340 34% 22%;
-  --primary-foreground: 340 92% 88%;
-  --primary-hover: 340 36% 26%;
-  --primary-active: 340 38% 29%;
-  --accent-strong: 340 64% 76%;
-  --accent-strong-soft: 340 80% 86%;
-  --accent-solid: 340 52% 48%;
-  --selected-bg: hsl(340 58% 76% / 0.16);
-  --selected-fg: hsl(340 92% 90%);
-  --ambient-glow: radial-gradient(circle, hsl(340 70% 62% / 0.08) 0%, transparent 60%);
-  --blob-1: radial-gradient(circle, hsl(340 70% 62% / 0.10) 0%, transparent 70%);
-  --blob-2: radial-gradient(circle, hsl(344 68% 58% / 0.08) 0%, transparent 70%);
-  --blob-3: radial-gradient(circle, hsl(335 60% 52% / 0.06) 0%, transparent 70%);
-  --blob-4: radial-gradient(circle, hsl(348 66% 64% / 0.07) 0%, transparent 70%);
-  --inference-fill-deep: hsl(340 48% 40%);
-  --inference-spark: hsl(340 80% 93%);
+  --ring: 340 60% 84%;
+  --primary: 340 72% 96%;
+  --primary-foreground: 340 44% 12%;
+  --primary-hover: 340 56% 90%;
+  --primary-active: 340 50% 84%;
 }
 
 html[data-theme="light"][data-palette="rose"] {
-  --ring: 340 84% 89%;
-  --primary: 340 88% 95%;
-  --primary-foreground: 340 62% 44%;
-  --primary-hover: 340 88% 92%;
-  --primary-active: 340 86% 88%;
-  --accent-strong: 340 62% 44%;
-  --accent-strong-soft: 340 80% 92%;
-  --accent-solid: 340 62% 44%;
-  --selected-bg: hsl(340 88% 95%);
-  --selected-fg: hsl(340 58% 36%);
-  --ambient-glow: radial-gradient(circle, hsl(340 84% 82% / 0.16) 0%, transparent 60%);
-  --blob-1: radial-gradient(circle, hsl(340 84% 90% / 0.55) 0%, transparent 70%);
-  --blob-2: radial-gradient(circle, hsl(344 84% 91% / 0.45) 0%, transparent 70%);
-  --blob-3: radial-gradient(circle, hsl(335 76% 91% / 0.40) 0%, transparent 70%);
-  --blob-4: radial-gradient(circle, hsl(348 84% 93% / 0.45) 0%, transparent 70%);
-  --inference-fill-deep: hsl(340 52% 34%);
-  --inference-spark: hsl(340 84% 96%);
+  --ring: 340 60% 20%;
+  --primary: 340 60% 20%;
+  --primary-foreground: 0 0% 100%;
+  --primary-hover: 340 60% 26%;
+  --primary-active: 340 60% 32%;
 }
 
 /* 控件家族那段是亮色基准，写在 html[data-theme] 里会一起压到暗色：
-   槽成亮白、胶囊是深灰，选中关系整个反了。暗色把槽掰回 input-bg-sunken 这类深面。 */
+   槽成亮白、胶囊是深灰，选中关系整个反了。暗色把槽掰回凹槽那档深面。 */
 html[data-theme="dark"] {
-  --segmented-bg: var(--input-bg-sunken);
-  --segmented-active-shadow: none;
   --divider-color: var(--line-1);
   /* 危险按钮的字：--error 在暗色是 52% 的红，压在 29% 的暗粉底上读不出来，
      往白里提一档成亮红，既还是红的、又跳得出来。 */
