@@ -14,10 +14,9 @@ const tabsListVariants = cva(
   {
     variants: {
       variant: {
-        // 槽和胶囊都走分段 token：`bg-muted` 与选中项的 `bg-background` 在亮色
-        // 只差几阶，分段控件整排看着像没有选中项。`--segmented-bg` 是为这件事
-        // 单独压深的一档，`--segmented-active-bg` 是纯白。
-        default: "bg-[var(--segmented-bg)]",
+        /* 轨道 `bg-muted`、选中项 `bg-background`，都是 shadcn 的默认值。
+           两档只差几阶是有意的：选中块靠投影和文字色分辨，不靠把轨道压深。 */
+        default: "bg-muted",
         line: "gap-1 bg-transparent p-0",
       },
     },
@@ -51,7 +50,7 @@ const TabsTrigger = React.forwardRef<
     ref={ref}
     data-slot="tabs-trigger"
     className={cn(
-      "relative inline-flex h-full flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-[8px] border border-transparent px-2.5 py-0.5 text-xs font-medium text-foreground/60 transition-all duration-100 outline-none hover:text-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-[var(--segmented-active-bg)] data-[state=active]:text-foreground data-[state=active]:shadow-[var(--segmented-active-shadow)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+      "relative inline-flex h-full flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-[8px] border border-transparent px-2.5 py-0.5 text-xs font-medium text-foreground/60 transition-all duration-100 outline-none hover:text-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-[var(--segmented-active-shadow)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
       className
     )}
     {...props}

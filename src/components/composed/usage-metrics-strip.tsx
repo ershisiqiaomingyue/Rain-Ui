@@ -65,7 +65,7 @@ function Metric({ metric }: { metric: UsageMetric }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <span className={cn(hitArea, "cursor-default transition-colors hover:bg-[var(--hover-tint)]")}>
+        <span className={cn(hitArea, "cursor-default transition-colors hover:bg-accent")}>
           {body}
         </span>
       </TooltipTrigger>
@@ -101,7 +101,7 @@ export function UsageMetricsStrip({
           <button
             type="button"
             aria-label="会话用量明细"
-            className="inline-flex min-h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-[7px] px-2 transition-colors outline-none hover:bg-[var(--hover-tint)] focus-visible:ring-2 focus-visible:ring-ring/40"
+            className="inline-flex min-h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-[7px] px-2 transition-colors outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/40"
           >
             <AppIcon name="database" size={12} className="size-3 text-muted-foreground" />
             <span className="text-muted-foreground">缓存命中</span>
@@ -158,7 +158,7 @@ export function UsageMetricsStrip({
         onClick={onRefreshBalance}
         disabled={balance.refreshing}
         title={balance.detail}
-        className="inline-flex min-h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-[7px] px-2 transition-colors outline-none hover:bg-[var(--hover-tint)] focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
+        className="inline-flex min-h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-[7px] px-2 transition-colors outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-60"
       >
         <AppIcon name="balance" size={12} className="size-3 text-muted-foreground" />
         <span className="text-muted-foreground">{balance.label}</span>

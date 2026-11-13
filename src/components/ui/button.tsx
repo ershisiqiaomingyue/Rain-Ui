@@ -17,31 +17,31 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground [box-shadow:var(--btn-primary-shadow)] hover:bg-primary/90 active:bg-primary/95",
+          "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:bg-primary/95",
         primary:
-          "bg-primary text-primary-foreground [box-shadow:var(--btn-primary-shadow)] hover:bg-primary/90 active:bg-primary/95",
+          "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:bg-primary/95",
         outline:
-          "border-border bg-card hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)] dark:border-input dark:bg-transparent",
+          "border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         surface:
-          "border-border bg-card hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)] dark:border-input dark:bg-transparent",
+          "border-border bg-card shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-[var(--btn-glass-accent-bg)] text-[var(--btn-glass-accent-text)] hover:bg-[var(--btn-glass-accent-hover)] active:bg-[var(--btn-glass-accent-active)]",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         /* 必须显式声明透明：只写 hover 态的话，未悬停时 background-color 落在
            浏览器默认的 buttonface（亮色下是中性灰），整站的 ghost 按钮都会带一块灰底。 */
         ghost:
-          "bg-transparent hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)]",
+          "bg-transparent hover:bg-accent hover:text-accent-foreground",
         subtle:
-          "bg-transparent hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)]",
+          "bg-transparent hover:bg-accent hover:text-accent-foreground",
         bare:
-          "border-transparent bg-transparent text-muted-foreground shadow-none hover:bg-[var(--hover-tint)] hover:text-foreground active:bg-[var(--surface-active)]",
+          "border-transparent bg-transparent text-muted-foreground shadow-none hover:bg-accent hover:text-foreground",
         destructive:
-          "bg-[var(--btn-danger-bg)] text-[var(--btn-danger-text)] hover:bg-[var(--btn-danger-hover)] active:bg-[var(--btn-danger-hover)]",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         danger:
-          "bg-[var(--btn-danger-bg)] text-[var(--btn-danger-text)] hover:bg-[var(--btn-danger-hover)] active:bg-[var(--btn-danger-hover)]",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         success:
-          "bg-[var(--btn-success-bg)] text-[var(--btn-success-text)] hover:bg-[var(--btn-success-hover)] active:bg-[var(--btn-success-hover)]",
+          "bg-success-bg text-success-foreground hover:bg-success-hover",
         warning:
-          "bg-[var(--btn-warning-bg)] text-[var(--btn-warning-text)] hover:bg-[var(--btn-warning-hover)] active:bg-[var(--btn-warning-hover)]",
+          "bg-warning-bg text-warning-foreground hover:bg-warning-hover",
         link:
           "text-primary underline-offset-4 hover:underline active:translate-y-0 active:scale-100",
       },

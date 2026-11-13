@@ -6,7 +6,7 @@ import { cn } from "../../lib/utils"
 
 /* 与 Button default 同一度量：h-8 / rounded-[10px] / text-xs / px-3 */
 const INPUT_BASE =
-  "flex w-full min-w-0 rounded-[10px] border border-transparent bg-[var(--field-bg)] hover:bg-[var(--field-bg-hover)] focus-visible:border-[var(--line-2)] focus-visible:ring-2 focus-visible:ring-[var(--line-strong)] px-3 py-1 text-xs text-foreground transition-[border-color,background-color,box-shadow] outline-none placeholder:text-muted-foreground/80 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+  "flex w-full min-w-0 rounded-[10px] border border-input bg-transparent focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 px-3 py-1 text-xs text-foreground transition-[border-color,background-color,box-shadow] outline-none placeholder:text-muted-foreground aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
 
 const INPUT_SIZE = {
   sm: "h-7 text-[11px]",
@@ -60,8 +60,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         className={cn(
           INPUT_BASE,
           INPUT_SIZE[size],
-          variant === "sunken" && "active:bg-[var(--field-bg-active)]",
-          variant === "surface" && "border-border bg-background/80 hover:bg-background",
+          variant === "surface" && "bg-background",
           prefixIcon && "pl-8",
           suffixAction && showClear ? "pr-14" : (suffixAction || showClear) && "pr-8",
           className

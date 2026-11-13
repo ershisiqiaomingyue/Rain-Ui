@@ -406,7 +406,7 @@ border: 1px solid hsl(var(--border));
 | `Label` | 只是文字，走 `--ink-*` 就够了，不需要单独的配色层 |
 | `Select` | 触发器与面板都是中性，现有值可用 |
 | `Combobox` | 同上 |
-| `Toggle` / `Switch` | 开关只有开/关两态，现有 `--control-checked-bg` 换个值即可，结构不动 |
+| `Toggle` / `Switch` | 开关只有开/关两态：开态 `bg-primary`、关态 `bg-input`，结构不动 |
 | `Tabs`（rain-ui `tabs`） | 没提；保持现状 |
 | `Menubar` | 保持现状 |
 | `Spinner` | 单色转圈，跟 `--ink-tertiary` 走 |
@@ -415,10 +415,9 @@ border: 1px solid hsl(var(--border));
 > 这批「不换」是**暂缓**，不是永远不改。等 §7.1 那批落地、亮暗两套都验过之后，
 > 再单独一轮处理。理由很简单：一次改太多，出问题分不清是哪一层引起的。
 >
-> 输入族（`Input` / `InputGroup` / `Textarea` / `Select` 触发器）的底色已先落地：
-> 静息走 `--field-bg`（= `hsl(var(--background))`，与卡片同面，不再有比卡片更深的灰凹槽），
-> hover 走 `--field-bg-hover`（`hsl(var(--accent))`）、按下走 `--field-bg-active`，
-> 聚焦只换边框和环、不再换底色。
+> 输入族（`Input` / `InputGroup` / `Textarea` / `Select` 触发器）已按 shadcn 默认收口：
+> 边框 `border-input`、底色 `bg-transparent`（让父级的面透上来），聚焦换 `--ring` 的
+> 边框 + 2px 环，hover 不改底色。`--field-bg` 三档只剩历史别名，组件不再引用。
 
 ### 7.3 判定新组件归哪边（沿用宿主 AGENTS.md §1.2）
 
@@ -484,7 +483,7 @@ A 层写 `var()` / `hsl(var(--x))` / `color-mix()`，C 层同理 —— 这样�
 --surface-1       /* 卡片面（= --card）。L1/L2/L3 同值，深度靠线不靠底色 */
 --surface-2 --surface-3
 --surface-hover --surface-active
---field-bg --field-bg-hover --field-bg-active  /* 输入族底色：静息 = --background，hover = --accent，按下再深一档 */
+--field-bg --field-bg-hover --field-bg-active  /* 历史别名：输入族已改用 border-input + bg-transparent，组件不再引用 */
 --surface-inset   /* 凹槽：输入框、表头、分段轨道（= --muted） */
 --surface-popover
 --card-tone-muted --card-tone-subtle --card-tone-deep  /* Card 的 tone 属性，当前全 = --card */
@@ -503,7 +502,7 @@ A 层写 `var()` / `hsl(var(--x))` / `color-mix()`，C 层同理 —— 这样�
 
 /* 强调 */
 --primary --primary-foreground         /* shadcn 原义：实心填 + 反差字 */
---primary-hover --primary-active
+--primary-hover --primary-active        /* shadcn 没有这两个：宿主的 hover/active 别名，库内一律写 bg-primary/90 */
 --accent-strong                        /* 历史名字，值 = --primary */
 --accent-strong-soft                   /* 同上，值 = --muted-foreground */
 --accent-solid                         /* 同上，值 = --primary */

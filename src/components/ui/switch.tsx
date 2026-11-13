@@ -22,7 +22,7 @@ const Switch = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Root>, 
           // 于是开着也和禁用一样灰。--switch-active-bg / --switch-thumb-bg / --control-unchecked-bg
           // 是库里为开关准备的（旧的 Kit 版开关 CSS 一直用的就是它们）。
           // 用任意值写法接 token，因为 tailwind preset 没有对应的颜色键名（同 badge / button 的做法）。
-          "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[var(--switch-active-bg)] data-[state=checked]:shadow-[var(--switch-track-shadow)] data-[state=unchecked]:bg-[var(--control-unchecked-bg)] data-[state=unchecked]:shadow-[var(--input-inner-shadow)]",
+          "peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
           className
         )}
         onCheckedChange={onChange ?? onCheckedChange}

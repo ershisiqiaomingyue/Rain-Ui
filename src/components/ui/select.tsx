@@ -19,7 +19,7 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     data-slot="select-trigger"
     className={cn(
-      "flex h-8 w-full items-center justify-between gap-2 rounded-[10px] border border-transparent bg-[var(--field-bg)] hover:bg-[var(--field-bg-hover)] active:bg-[var(--field-bg-active)] focus-visible:border-[var(--line-2)] focus-visible:ring-2 focus-visible:ring-[var(--line-strong)] px-3 py-1 text-xs text-foreground transition-[border-color,background-color,box-shadow] outline-none data-[placeholder]:text-muted-foreground/60 disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "flex h-8 w-full items-center justify-between gap-2 rounded-[10px] border border-input bg-transparent focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 px-3 py-1 text-xs text-foreground transition-[border-color,background-color,box-shadow] outline-none data-[placeholder]:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       className
     )}
     {...props}
