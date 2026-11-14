@@ -11,7 +11,7 @@
   justify-content: center;
   gap: 6px;
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: var(--fw-label);
   border-radius: var(--radius-control);
   border: 1px solid transparent;
   cursor: pointer;
@@ -72,15 +72,16 @@ html[data-theme] .btn.btn-subtle.btn-icon-only:hover:not(:disabled) {
 }
 
 /* One neutral ladder, one filled action.
-   primary  : the only filled control on a screen (brand accent, no glow)
-   secondary: bordered neutral slab, ink text  — the default action
-   surface  : filled neutral, no border        — toolbar / segmented sibling
-   subtle   : transparent, muted text          — quietest labelled action
-   danger   : red outline, quiet until hover   — destructive, not loud
-   success  : green outline, quiet
-   bare     : no box at all (host draws the surface)
-   Glass, sheen, rim highlights and coloured glows are gone: at rest a button
-   is a flat shape, and depth comes from the fill step, not from decoration. */
+   primary    : solid accent — 一屏里唯一的实心强调色
+   secondary  : --secondary 底 + 墨色字 + 描边 —— 默认动作
+   surface    : 无底，只在 hover 浮一层 --accent —— 工具栏里的图标动作
+   subtle     : --secondary 六成底 + 弱墨字 —— 带字的最安静一档
+   danger     : --destructive 一成四底 + --destructive-ink 字 —— 可撤销的破坏动作
+   destructive: 实心红 + 反差字 —— 不可逆删除
+   success    : 实心 primary（状态色已删，别再立第二档）
+   bare       : 完全没有盒子，表面由宿主画（列表行、环形按钮、toast 动作）
+   除了 surface / bare / 图标态，每个带字的变体都有自己的底色：
+   「只有字色」不是这套按钮的任何一档，那是链接。 */
 html[data-theme] .btn:not(.btn-icon-only):not(.btn-bare) {
   position: relative;
   backdrop-filter: none;
@@ -93,19 +94,21 @@ html[data-theme] .btn:not(.btn-icon-only) > * {
 }
 
 /* 样式变体 */
-/* 主按钮：淡靛实心 + 同色相深字（亮色绝不配黑字）。
+/* 主按钮：实心 --primary + 反差字（暗色下 primary 是亮靛，配深字）。
    阴影全部来自 token —— 暗色下那几个 token 都是空值，按钮就是一块平面，
-   不再有「黑底 + 黑阴影」那种边缘发脏的效果。 */
+   不再有「黑底 + 黑阴影」那种边缘发脏的效果。
+   hover 不再走 --primary-hover（那套别名已删）：往前景色方向挪 15%，
+   暗色变亮、亮色变深，两个主题都是「按下去更实」。 */
 .btn-primary {
-  background: var(--btn-primary-bg);
-  color: var(--btn-primary-text);
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   border-color: transparent;
   box-shadow: var(--shadow-btn), var(--shadow-inset-highlight), inset 0 1px 0 hsl(var(--primary-foreground) / 0.20);
-  font-weight: 550;
+  font-weight: var(--fw-label);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--btn-primary-hover);
+  background: color-mix(in srgb, hsl(var(--primary)) 85%, hsl(var(--foreground)));
   box-shadow: var(--shadow-btn-hover), var(--shadow-inset-highlight), inset 0 1px 0 hsl(var(--primary-foreground) / 0.20);
 }
 
@@ -141,24 +144,27 @@ html[data-theme] .btn.btn-secondary[aria-pressed="true"]:not(:disabled),
 }
 
 .btn-primary:focus-visible {
-  background: var(--btn-primary-hover);
-  color: var(--btn-primary-text);
+  background: color-mix(in srgb, hsl(var(--primary)) 85%, hsl(var(--foreground)));
+  color: hsl(var(--primary-foreground));
 }
 
 /* 只在 hover 时才现出危险色的按钮（列表行里的「删除」）：
-   静止时是普通文本按钮，指上去才变成淡玫瑰实心。 */
+   静止时是普通文本按钮，指上去才浮出一层淡红。底色带透明度，
+   否则红底压红字，字就没了。 */
 .btn.btn-danger-hover:hover:not(:disabled) {
-  color: hsl(var(--destructive)) !important;
-  background: hsl(var(--destructive)) !important;
+  color: var(--destructive-ink) !important;
+  background: hsl(var(--destructive) / 0.1) !important;
 }
 
 .btn.btn-danger-hover:active:not(:disabled) {
-  color: hsl(var(--destructive)) !important;
-  background: color-mix(in srgb, hsl(var(--destructive)) 82%, hsl(var(--foreground))) !important;
+  color: var(--destructive-ink) !important;
+  background: hsl(var(--destructive) / 0.16) !important;
 }
 
+/* 带字的最安静一档：淡中性底 + 弱墨字。仍然是"有底"的按钮，
+   只是比 secondary 浅一半；真正无底的只有 .btn-bare 和图标态的 .btn-icon-only。 */
 .btn-subtle {
-  background: transparent;
+  background: hsl(var(--secondary) / 0.6);
   color: hsl(var(--muted-foreground));
   border-color: transparent;
   box-shadow: none;
@@ -174,29 +180,50 @@ html[data-theme] .btn.btn-secondary[aria-pressed="true"]:not(:disabled),
   background: hsl(var(--accent));
 }
 
-/* 危险按钮：淡玫瑰实心 + 同色相深字，用来表示「可以撤销的破坏性动作」。
-   不再描边染色 —— 半透明的染色边压在卡片底色上会糊成一层，看着像没渲染完。
-   不可逆的删除不用这个形态，用 --btn-destructive-*（实心深粉 + 白字）。
-   三个状态都走 --btn-danger-* token（palettes.css），这样「淡一档」只在 token 里调。 */
+/* 危险动作（可撤销的那种，比如「撤销本轮改动」）：淡红底 + 红字。
+   底是 --destructive 的一成四，字是 --destructive-ink —— 直接把
+   hsl(var(--destructive)) 当字色用，暗色主题里红字压深卡面只有 2:1，看着就是"只有个颜色"。
+   实心红仍然留给不可逆删除（下面的 .btn-destructive）。 */
 .btn-danger {
-  background: hsl(var(--destructive));
-  color: hsl(var(--destructive));
+  background: hsl(var(--destructive) / 0.14);
+  color: var(--destructive-ink);
   border-color: transparent;
   box-shadow: none;
 }
 
 .btn-danger:hover:not(:disabled) {
-  background: hsl(var(--destructive));
+  background: hsl(var(--destructive) / 0.2);
 }
 
 .btn-danger:active:not(:disabled) {
-  background: hsl(var(--destructive));
+  background: hsl(var(--destructive) / 0.26);
   transform: translateY(0.5px);
 }
 
+/* 不可逆删除（「彻底删除」「确认清空」）：实心红 + 反差字。
+   和 .btn-danger 的唯一区别是这一步做错了没有回头路，所以它必须比「取消」醒目。 */
+.btn-destructive {
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.btn-destructive:hover:not(:disabled) {
+  background: color-mix(in srgb, hsl(var(--destructive)) 88%, hsl(var(--foreground)));
+  box-shadow: none;
+}
+
+.btn-destructive:active:not(:disabled) {
+  background: color-mix(in srgb, hsl(var(--destructive)) 94%, hsl(var(--foreground)));
+  transform: translateY(0.5px);
+}
+
+/* success 色已随调色板删除（状态只由 StatusBadge 的点表达）：成功动作就是
+   普通主按钮，别再立第二档颜色。 */
 .btn-success {
   background: hsl(var(--primary));
-  color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   border-color: transparent;
   box-shadow: none;
 }

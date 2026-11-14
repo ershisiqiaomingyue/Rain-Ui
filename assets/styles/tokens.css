@@ -55,6 +55,12 @@
   /* 焦点只有一个信号：一圈 ring，不叠第二层紫色。 */
   --focus-ring: 0 0 0 2px hsl(var(--ring) / 0.45);
 
+  /* 红字专用。--destructive 是「实心填充」色（暗色只有 30.6% 明度），
+     直接当文字压在深色卡面上约 2:1，等于看不见。
+     往 --foreground 混到六成就成了两套主题都能读的红字（深色 5.9:1、浅色 9:1），
+     仍然只有一个色源 —— 实心红依旧是 hsl(var(--destructive)) + --destructive-foreground。 */
+  --destructive-ink: color-mix(in srgb, hsl(var(--destructive)) 60%, hsl(var(--foreground)));
+
   /* ── 阴影：暗色一律近乎没有，层级靠描边和表面亮度 ────────────────────── */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.5);

@@ -62,7 +62,7 @@ export function SpecNoticeTypes() {
             summary="选择要安装的设备"
             tone="neutral"
             icon={<Bot size={15} />}
-            meta={<Badge variant="neutral">2 个候选</Badge>}
+            meta={<Badge variant="muted">2 个候选</Badge>}
           >
             <Note>模型需要澄清时使用，正文是单选列表。</Note>
           </NoticePanel>

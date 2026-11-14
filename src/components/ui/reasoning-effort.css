@@ -2,9 +2,9 @@
 .rain-reasoning-track {
   --rain-inference-progress: 0;
   --rain-inference-track: color-mix(in srgb, hsl(var(--muted)) 88%, hsl(var(--background)));
-  /* 填充/高光/闪光全部走 palettes.css 里的领域调色板 --inference-*，
-     它们由 shadcn 语义推导（--primary / --muted-foreground / --foreground），
-     这里不再自己配色，也不要引 shadcn 语义以外的东西。 */
+  /* 填充/高光/闪光全部走 palettes.css 里的领域调色板 --inference-*：那是这个控件
+     自己的一套紫（不跟 --primary 走，否则填色和星点会跟主色糊成一片）。
+     这里只做搬运，不自己配色，也不要引 shadcn 语义以外的东西。 */
   --rain-inference-fill: var(--inference-fill);
   --rain-inference-fill-deep: var(--inference-fill-deep);
   --rain-inference-fill-highlight: var(--inference-fill-highlight);

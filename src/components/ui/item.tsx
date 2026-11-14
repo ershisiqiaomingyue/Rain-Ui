@@ -3,13 +3,15 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../lib/utils"
 
 const itemVariants = cva(
-  "group/item flex w-full items-center gap-2.5 rounded-[10px] border border-transparent px-3 py-2.5 text-sm transition-colors",
+  "group/item flex w-full items-center gap-2.5 rounded-[10px] border px-3 py-2.5 text-sm transition-colors",
   {
     variants: {
+      /* 每一档都必须坐在底色上（bg-card / bg-muted），不允许透明底悬空 ——
+         组件没有面就等于没有边界，叠在任何底上都说不清是谁。 */
       variant: {
-        default: "hover:bg-muted/50",
+        default: "border-border/60 bg-card hover:border-border",
         outline: "border-border bg-card",
-        muted: "bg-muted/50 hover:bg-muted",
+        muted: "border-transparent bg-muted/50 hover:bg-muted",
       },
       size: {
         default: "",

@@ -410,7 +410,7 @@ export function SpecEmptyStates() {
           <CardHeader>
             <div className="kit-head-inline">
               <strong className="kit-card-title">已连接设备</strong>
-              <Badge variant="neutral">0</Badge>
+              <Badge variant="muted">0</Badge>
             </div>
             <Button variant="secondary" size="sm" icon={<RefreshCw size={14} />}>
               刷新

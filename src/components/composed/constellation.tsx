@@ -338,7 +338,7 @@ export function Constellation({
       <div
         data-slot="constellation"
         className={cn(
-          "relative flex w-full items-center justify-center overflow-hidden rounded-xl border border-white/10 text-[12px] text-white/45",
+          "constellation-empty relative flex w-full items-center justify-center overflow-hidden rounded-xl border text-label",
           className,
         )}
         style={{ height }}
@@ -352,7 +352,7 @@ export function Constellation({
   return (
     <div
       data-slot="constellation"
-      className={cn("relative w-full overflow-hidden rounded-xl border border-white/10", className)}
+      className={cn("constellation-frame relative w-full overflow-hidden rounded-xl border", className)}
       style={{ height }}
     >
       {sky}
@@ -452,7 +452,7 @@ export function Constellation({
                 cx={node.x - node.radius * 0.26}
                 cy={node.y - node.radius * 0.26}
                 r={Math.max(0.28, node.radius * 0.3)}
-                fill="#ffffff"
+                fill="hsl(var(--stellar-star))"
                 fillOpacity={active ? 0.9 : 0.6}
               />
               {active ? (
@@ -474,9 +474,9 @@ export function Constellation({
                   textAnchor="middle"
                   fontSize={2.05}
                   className="constellation-label"
-                  fill="#e8eeff"
+                  fill="hsl(var(--stellar-star))"
                   fillOpacity={active ? 0.96 : 0.62}
-                  stroke="#05070f"
+                  stroke="hsl(var(--stellar-sky-edge))"
                   strokeWidth={0.4}
                   strokeOpacity={0.9}
                 >

@@ -303,7 +303,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                           title={action.label}
                           className={cn(
                             "ml-1 inline-flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground",
-                            action.danger && "hover:bg-destructive/10 hover:text-destructive"
+                            action.danger && "hover:bg-destructive/10 hover:text-[color:var(--destructive-ink)]"
                           )}
                           onClick={(event) => {
                             event.stopPropagation()
@@ -321,7 +321,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                           type="button"
                           aria-label={option.removeLabel || `删除 ${option.label}`}
                           title={option.removeLabel || `删除 ${option.label}`}
-                          className="ml-1 inline-flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                          className="ml-1 inline-flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-[color:var(--destructive-ink)]"
                           onClick={(event) => {
                             event.stopPropagation()
                             option.onRemove?.()

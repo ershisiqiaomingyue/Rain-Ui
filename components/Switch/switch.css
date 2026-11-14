@@ -141,7 +141,7 @@
   content: "";
   width: 8px;
   height: 2px;
-  background: #ffffff;
+  background: hsl(var(--primary-foreground));
 }
 
 .checkbox:focus-visible,
@@ -149,60 +149,10 @@
 .checkbox:disabled,
 .desk-chk:disabled { cursor: not-allowed; opacity: .55; }
 
-/* 分段视图控制器 (Segmented) */
-.segmented-glass {
-  display: inline-flex;
-  align-items: center;
-  /* 槽走 `--segmented-bg` 而不是 `--surface-inset`：后者亮色是 95.5% 的淡靛，
-     白胶囊压上去只差几阶，选中项看着像没选中。`--segmented-bg` 就是为这件事
-     调到 93.5% 的那一档（见 palettes.css 控件家族），分段控件和 code-viewer
-     的分段条从此用同一个槽色。 */
-  background: hsl(var(--muted));
-  border: 0;
-  border-radius: var(--radius-control);
-  padding: 2px;
-  gap: 2px;
-}
+/* 分段控件不在这里：`SegmentedControl` 已经是 Tabs 的受控封装
+   （src/components/composed/segmented-control.tsx），轨道与选中态都用
+   TabsList / TabsTrigger 的语义 class 表达。这里原来那套
+   `.segmented-glass` / `.seg-btn` 规则整体删掉了——组件不再渲染这组类名，
+   留着只会让人以为分段控件还有一份独立皮肤（那几条规则的注释还在引用
+   早已删除的配色变量）。 */
 
-.segmented-glass .seg-btn {
-  padding: 4px 12px;
-  height: calc(var(--control-height) - 6px);
-  font-size: var(--fs-label);
-  font-weight: 600;
-  color: hsl(var(--muted-foreground));
-  background: transparent;
-  border: 0;
-  border-radius: calc(var(--radius-control) - 2px);
-  cursor: pointer;
-  transition: all 0.18s;
-  user-select: none;
-}
-
-.segmented-glass .seg-btn:hover:not(:disabled) {
-  background: hsl(var(--accent));
-  color: hsl(var(--foreground));
-}
-
-.segmented-glass .seg-btn.active {
-  background: hsl(var(--secondary));
-  color: hsl(var(--foreground));
-  box-shadow: var(--shadow-sm);
-}
-
-.segmented-glass .seg-btn.active:hover:not(:disabled) {
-  background: hsl(var(--secondary));
-}
-
-/* 分段按钮在轨道里面，外环会被相邻段和轨道边缘吃掉，所以用内环。 */
-html[data-theme] .segmented-glass .seg-btn:focus-visible {
-  background: hsl(var(--accent));
-  color: hsl(var(--foreground));
-  box-shadow: inset 0 0 0 2px hsl(var(--ring) / 0.6);
-}
-
-html[data-theme] .segmented-glass .seg-btn.active:focus-visible {
-  background: hsl(var(--secondary));
-  color: hsl(var(--foreground));
-}
-
-.segmented-glass .seg-btn:disabled { opacity: .5; cursor: not-allowed; }

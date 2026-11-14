@@ -49,8 +49,8 @@
   width: var(--confirm-dialog-icon-size);
   height: var(--confirm-dialog-icon-size);
   border-radius: var(--radius-control);
-  background: hsl(var(--destructive));
-  color: hsl(var(--destructive));
+  background: hsl(var(--destructive) / 0.12);
+  color: var(--destructive-ink);
   flex-shrink: 0;
 }
 
@@ -113,7 +113,7 @@
 
 .confirm-dialog-error {
   margin: 0 0 0 calc(var(--confirm-dialog-icon-size) + var(--confirm-dialog-icon-gap));
-  color: hsl(var(--destructive));
+  color: var(--destructive-ink);
   font-size: var(--fs-label);
   line-height: 1.5;
   overflow-wrap: anywhere;
@@ -146,18 +146,15 @@
 }
 
 .confirm-dialog-actions .btn-primary {
-  --btn-primary-bg: hsl(var(--primary));
-  --btn-primary-hover: hsl(var(--primary));
-  --btn-primary-text: hsl(var(--primary-foreground));
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
 }
 
-/* 删除确认是唯一的破坏性主操作：实心深红 + 白字，必须比「取消」醒目。
-   .btn-danger 是淡蔷薇底 + 描边，适合工具栏，放这里会看起来像禁用态。
-   色值一律走 --btn-destructive-* 这组 token，不在这里写死（design.md §10）。 */
+/* 删除确认是唯一的破坏性主操作：实心深红 + 反差字，必须比「取消」醒目。
+   不在这里写死色值，也不再用 --btn-* 那套别名（已随调色板删除）。 */
 .confirm-dialog-actions .confirm-dialog-confirm-danger {
-  --btn-primary-bg: hsl(var(--destructive));
-  --btn-primary-hover: hsl(var(--destructive));
-  --btn-primary-text: hsl(var(--destructive));
+  background: hsl(var(--destructive));
+  color: hsl(var(--destructive-foreground));
   /* 主按钮自带内高光 + 外投影（button.css 里的 --shadow-inset-highlight 和
      --shadow-btn，都不是可覆盖的变量），实色片叠上去就是一层玻璃；
      这里连同描边光圈一起归零，要的就是一块纯色。 */

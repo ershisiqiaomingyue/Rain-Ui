@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { AppIcon } from "../icons/AppIcon"
-import { Badge } from "../ui/badge"
+import { Badge, type BadgeProps } from "../ui/badge"
 import { Button } from "../ui/button"
 import {
   ExpandableItem,
@@ -11,7 +11,8 @@ import {
   type ExpandableItemProps,
   type ExpandableItemSectionTone,
 } from "./expandable-item"
-import { StatusBadge, type StatusBadgeVariant } from "./status-badge"
+/** 徽章配色档：即 Badge 的 variant（primary 在 Badge 里叫 default）。 */
+type StatusVariant = NonNullable<BadgeProps["variant"]>
 
 /**
  * 工具条目 —— 展开后是「下载 / 更新」的那一套。
@@ -61,13 +62,13 @@ export interface ToolUpdateItemProps
   children?: React.ReactNode
 }
 
-const DEFAULT_STATUS: Record<ToolUpdateState, { text: string; variant: StatusBadgeVariant }> = {
+const DEFAULT_STATUS: Record<ToolUpdateState, { text: string; variant: StatusVariant }> = {
   idle: { text: "可更新", variant: "warning" },
-  downloading: { text: "下载中", variant: "primary" },
+  downloading: { text: "下载中", variant: "default" },
   paused: { text: "已暂停", variant: "warning" },
-  installing: { text: "正在安装", variant: "primary" },
+  installing: { text: "正在安装", variant: "default" },
   done: { text: "已完成", variant: "success" },
-  error: { text: "下载失败", variant: "danger" },
+  error: { text: "下载失败", variant: "destructive" },
 }
 
 /** 详情卡片的标题：正常是版本详情，出错就是出错详情。 */
@@ -101,8 +102,8 @@ export function ToolUpdateItem({
   const upToDate = Boolean(targetVersion && currentVersion && targetVersion === currentVersion)
 
   // 闲置时按「版本差」自己判断：没装 / 已是最新 / 可更新。
-  const idleStatus: { text: string; variant: StatusBadgeVariant } = !currentVersion
-    ? { text: "未安装", variant: "neutral" }
+  const idleStatus: { text: string; variant: StatusVariant } = !currentVersion
+    ? { text: "未安装", variant: "muted" }
     : upToDate
       ? { text: "已是最新", variant: "success" }
       : DEFAULT_STATUS.idle
@@ -170,11 +171,13 @@ export function ToolUpdateItem({
 
   const statusNode =
     state === "idle" && upToDate ? (
-      <StatusBadge variant="success">已是最新</StatusBadge>
+      <Badge variant="success" dot radius="full">
+        已是最新
+      </Badge>
     ) : (
-      <StatusBadge variant={statusVariant} pulse={busy}>
+      <Badge variant={statusVariant} dot pulse={busy} radius="full">
         {statusText}
-      </StatusBadge>
+      </Badge>
     )
 
   return (
@@ -219,7 +222,7 @@ export function ToolUpdateItem({
             ) : null}
 
             {errorText ? (
-              <p className="m-0 text-[11.5px] leading-relaxed font-medium text-destructive" role="alert">
+              <p className="m-0 text-[11.5px] leading-relaxed font-medium text-[color:var(--destructive-ink)]" role="alert">
                 {errorText}
               </p>
             ) : null}

@@ -34,11 +34,12 @@ const CommandDialog = ({ children, ...props }: DialogProps) => {
   )
 }
 
+// 搜索框下的分隔线只做分隔：不跟 focus 染主色，线就是线。
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className="flex h-8 shrink-0 items-center gap-2 border-b px-3 focus-within:border-primary/40" cmdk-input-wrapper="">
+  <div className="flex h-8 shrink-0 items-center gap-2 border-b px-3" cmdk-input-wrapper="">
     <AppIcon name="search" className="size-3.5 shrink-0 opacity-50" />
     <CommandPrimitive.Input
       ref={ref}

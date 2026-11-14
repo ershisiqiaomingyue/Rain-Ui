@@ -39,6 +39,17 @@
   }
 }
 
+/* 框线和空态文字的墨色只能来自夜空自己：--stellar-star 两套主题同值
+   （226 100% 96% 的近白蓝），所以亮色主题下也不会变成"浅字压深底"。
+   用 --border / --foreground 会随主题翻转，亮色主题里直接看不见。 */
+.constellation-frame {
+  border-color: hsl(var(--stellar-star) / 0.12);
+}
+
+.constellation-empty {
+  color: hsl(var(--stellar-star) / 0.45);
+}
+
 /* 星图里的文字要压在星点上，没有描边就会糊在星星里看不清。 */
 .constellation-label {
   paint-order: stroke;

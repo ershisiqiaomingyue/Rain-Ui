@@ -8,7 +8,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
    * row, a toast action or a thumbnail can be a real <button> without being
    * forced into the 26–38px control shell. All other variants are boxed.
    */
-  variant?: "primary" | "secondary" | "danger" | "success" | "subtle" | "surface" | "bare";
+  variant?: "primary" | "secondary" | "danger" | "destructive" | "success" | "subtle" | "surface" | "bare";
   /** Ignored by `bare`, which has no fixed height. */
   size?: "xs" | "sm" | "md" | "lg";
   loading?: boolean;
@@ -20,6 +20,7 @@ const VARIANT_CLASS: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary: "btn-primary",
   secondary: "btn-secondary",
   danger: "btn-danger",
+  destructive: "btn-destructive",
   success: "btn-success",
   subtle: "btn-subtle",
   surface: "btn-surface",

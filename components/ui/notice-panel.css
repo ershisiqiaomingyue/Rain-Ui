@@ -8,11 +8,9 @@
      no max-content, no per-kind cap → expanding never changes the outer size
    ========================================================================== */
 
-/* 通知卡是浮在对话内容上方的，**不能带透明度**：主题里的 --bg-card 本身是
-   rgba（亮色 .85 / 暗色渐变 .98），白字黑底或黑字白底都会从卡片里透出来，
-   滚动时尤其明显。这里换成一层不透明的卡片底色：先在 --bg-canvas（页面底色）
-   上叠 --bg-card，再把 alpha 吃掉 —— 既保留卡片与画布之间的色差，又保证
-   填充完全不透明。两套主题、自定义主题都走同一条规则。 */
+/* 通知卡是浮在对话内容上方的，**不能带透明度**：卡片一旦半透明，下面滚动的
+   对话文字就会从卡里透出来，滚动时尤其明显。所以这里铺一层不透明的卡片底色
+   （`--notice-fill`，见下），两套主题、自定义主题都走同一条规则。 */
 .ui-notice {
   --notice-fill: color-mix(in srgb, hsl(var(--card)) 100%, hsl(var(--background)));
   position: relative;
@@ -111,7 +109,7 @@
 }
 
 .ui-notice-preview em:first-child { color: hsl(var(--primary)); }
-.ui-notice-preview em:last-child { color: hsl(var(--destructive)); }
+.ui-notice-preview em:last-child { color: var(--destructive-ink); }
 
 /* `count` (任务数/文件数) sits at the far right; `meta` (进度 pill) must stay
    next to the summary text, so only count gets the auto margin. */
@@ -189,7 +187,7 @@
 .ui-notice.is-warning .ui-notice-icon { color: hsl(var(--muted-foreground)); }
 .ui-notice.is-warning { border-color: color-mix(in srgb, hsl(var(--muted-foreground)) 34%, hsl(var(--border))); }
 
-.ui-notice.is-danger .ui-notice-icon { color: hsl(var(--destructive)); }
+.ui-notice.is-danger .ui-notice-icon { color: var(--destructive-ink); }
 .ui-notice.is-danger { border-color: color-mix(in srgb, hsl(var(--destructive)) 34%, hsl(var(--border))); }
 
 .ui-notice.is-success .ui-notice-icon { color: hsl(var(--primary)); }
@@ -386,7 +384,7 @@
   flex: 0 0 auto;
   font-style: normal;
   font-variant-numeric: tabular-nums;
-  color: hsl(var(--destructive));
+  color: var(--destructive-ink);
 }
 
 /* Progress pill used by 任务编排's meta slot. */
@@ -535,11 +533,10 @@ html[data-theme] .ui-notice-background-task .ui-notice-background-detail {
 html[data-theme] .ui-notice-background-task .ui-notice-background-detail::after { display: none; }
 .ui-notice-background-detail > details { min-width: 0; }
 
-/* 日志块和「任务详情」是卡片里再套的两层填充，同样不能带 alpha：暗色主题的
-   --markdown-code-bg 是 rgba(18,22,30,.92)、亮色是 rgba(255,255,255,.95)，
-   叠在不透明卡片上仍会让上层的文字/滚动内容透出来。这里先把每一层的 alpha
-   吃掉（混进卡片自己的 --notice-fill），再把卡片拆成「--bg-canvas 垫底 +
-   去 alpha 的填充盖面」，两层都不透明；顺序反过来会留下一个半透明的底色。 */
+/* 日志块和「任务详情」是卡片里再套的两层填充：不能靠半透明叠色，否则中间层
+   的文字/滚动内容会透出来。这里把每一层都显式铺成不透明填充（`--notice-fill`），
+   并把卡片拆成「`hsl(var(--background))` 垫底 + 不透明填充盖面」，两层都不透明；
+   顺序反过来会留下一个半透明的底色。 */
 html[data-theme] .ui-notice .ui-notice-code {
   background-color: var(--notice-fill);
   background-image: linear-gradient(
@@ -555,12 +552,11 @@ html[data-theme] .ui-notice-background-task .ui-notice-background-detail {
   );
 }
 
-/* 亮色主题下 --markdown-code-bg 是 rgba(255,255,255,.95)、--surface-inset-bg 是
-   白底混 2% 文字色，两者都贴住通知的白色外壳：日志块和「任务详情」的卡片边界
+/* 亮色主题下 `--card` 是纯白、页面底色也是近白，日志块和「任务详情」的卡片边界
    于是整个消失（暗色主题下面板有自己的深底色，对比本来就够，所以只修亮色）。
    这里换成一层可见的浅灰填充 + 淡边框；详情卡内部的命令块再回到白底，
    保证「日志块 → 任务详情卡 → 命令块」三层仍然分得开。
-   `background-color` 只是不透明垫底，可见的那一层仍是上面的去 alpha 填充。 */
+   `background-color` 只是不透明垫底，可见的那一层是下面的浅灰填充。 */
 html[data-theme="light"] .ui-notice .ui-notice-code,
 html[data-theme="light"] .ui-notice .ui-notice-background-detail {
   background-color: hsl(var(--background));
@@ -575,7 +571,7 @@ html[data-theme="light"] .ui-notice .ui-notice-background-detail .ui-notice-code
   background-image: linear-gradient(hsl(var(--card)), hsl(var(--card)));
   border-color: color-mix(in srgb, hsl(var(--foreground)) 8%, transparent);
 }
-.ui-notice-error { margin: 0; color: hsl(var(--destructive)); overflow-wrap: anywhere; }
+.ui-notice-error { margin: 0; color: var(--destructive-ink); overflow-wrap: anywhere; }
 .ui-notice-file-list { display: flex; flex-direction: column; gap: 4px; }
 .ui-notice-file-row.btn.btn-bare { display: flex; width: 100%; min-width: 0; gap: 8px; padding: 4px 8px; border-radius: var(--radius-control); font: var(--fs-label)/1.5 var(--font-mono); text-align: left; }
 .ui-notice-file-row.is-deleted > span { text-decoration: line-through; }

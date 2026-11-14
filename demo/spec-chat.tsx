@@ -237,7 +237,7 @@ export function SpecNoticePanel() {
           <NoticePanel label="权限请求" summary="即将执行 adb shell pm clear com.demo" tone="neutral" icon={<ShieldAlert size={15} />}>
             <Note>点击整行展开；再点一次或按 Esc 收起。</Note>
           </NoticePanel>
-          <NoticePanel label="任务编排" summary="3 个步骤，预计 40 秒" tone="attention" icon={<Sparkles size={15} />} meta={<Badge variant="neutral">40s</Badge>}>
+          <NoticePanel label="任务编排" summary="3 个步骤，预计 40 秒" tone="attention" icon={<Sparkles size={15} />} meta={<Badge variant="muted">40s</Badge>}>
             <Note>attention 用于需要留意但不阻塞的事。</Note>
           </NoticePanel>
           <NoticePanel label="后台任务" summary="Perfetto 正在采集，剩余 12s" tone="warning" icon={<Clock size={15} />}>
@@ -415,7 +415,7 @@ export function SpecAccessMode() {
       </Group>
       <Group title="当前选择" hint="调用方保留最终确认逻辑，组件只负责选择。">
         <Row>
-          <Badge variant={mode === "full" ? "danger" : mode === "risk" ? "warning" : "neutral"}>
+          <Badge variant={mode === "full" ? "destructive" : mode === "risk" ? "warning" : "muted"}>
             {mode === "ask" ? "请求批准" : mode === "risk" ? "替我审批" : "完全信任（无隔离）"}
           </Badge>
           <Button variant="secondary" onClick={() => setMode("ask")}>

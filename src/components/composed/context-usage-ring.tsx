@@ -78,9 +78,10 @@ export function ContextUsageRing({
   const isWarning = computedPercent != null && computedPercent >= 70 && computedPercent < 90
 
   const statusColor = isDanger
-    ? "text-destructive"
-    : isWarning
-      ? "text-amber-500"
+    ? "text-[color:var(--destructive-ink)]"
+    :
+      isWarning
+        ? "text-foreground"
       : "text-primary"
 
   const displayPercent = anomaly

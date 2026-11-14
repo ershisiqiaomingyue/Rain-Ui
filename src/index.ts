@@ -4,8 +4,11 @@
 export * from "../components/ui"
 // shadcn Card 以别名导出：kit 的 Card（CSS 版）仍被旧视图使用，迁移完成后统一移除。
 export { Card as UICard } from "./components/ui/card"
+// shadcn Badge 顶掉 kit 的 CSS 版（原 StatusBadge 已并进来）：`export *` 的星号导出
+// 会被上面这条显式导出遮住，所以 `Badge` 这个名字从此走 cva 版（带 dot / radius）。
+export { Badge, badgeVariants, type BadgeProps } from "./components/ui/badge"
 
-// shadcn 基础组件（与 kit 重名的 badge/card/checkbox/context-menu/spinner/step-spinner/table/tooltip 不导出）
+// shadcn 基础组件（与 kit 重名的 card/checkbox/context-menu/spinner/step-spinner/table/tooltip 不导出）
 export * from "./components/ui/accordion"
 export * from "./components/ui/alert-dialog"
 export * from "./components/ui/alert"
@@ -58,7 +61,6 @@ export * from "./components/composed/context-usage-ring"
 export * from "./components/composed/radial-progress"
 export * from "./components/composed/composer-notice-dock"
 export * from "./components/composed/permission-request-bar"
-export * from "./components/composed/status-badge"
 export * from "./components/composed/task-status-row"
 export * from "./components/composed/terminal-range-slider"
 // 与 kit 的 UsageMetrics 同名类型（UsageMetric）冲突，显式导出让组合件这份胜出。
@@ -72,6 +74,13 @@ export {
 // 而 kit 那份多了 `variant="row"`（时间线行内样式），demo 与 Android-Toolkit 都在用；
 // 让 Tailwind 版把它顶掉会直接丢样式。组合件那份先留在库里当草稿。
 export * from "./components/icons/AppIcon"
+// ProviderLogo 的数据与类型（IMAGE_MARKS / ProviderMark / ProviderMarkId）
+export * from "./components/icons/provider-marks"
+// ButtonGroup 的官方组合演示块（demo 与宿主的「预设组合」都直接用它）
+export * from "./components/ui/button-group-demo"
+// 模型服务商品牌标：Android-Toolkit Settings→Agent 同源的十五枚资产 base64 内联
+// （九家服务商 + WorkBuddy 六枚），单色品牌蒙版 + 墨色底跟随主题。
+export * from "./components/icons/ProviderLogo"
 export * from "./components/composed/segmented-control"
 // 可展开条目：整行可点开合，收起态一行、展开态按用途换设计。
 // 壳 + 四套展开形态（配置表单 / 只读信息 / 下载更新 / 单选切换）。

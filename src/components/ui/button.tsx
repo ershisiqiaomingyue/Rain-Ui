@@ -41,20 +41,31 @@ const buttonVariants = cva(
          */
         secondary:
           "border-[hsl(var(--primary)/0.24)] bg-[hsl(var(--primary)/0.06)] text-[color:color-mix(in_srgb,hsl(var(--primary))_70%,hsl(var(--foreground)))] hover:border-[hsl(var(--primary)/0.36)] hover:bg-[hsl(var(--primary)/0.1)]",
-        /* 必须显式声明透明：只写 hover 态的话，未悬停时 background-color 落在
-           浏览器默认的 buttonface（亮色下是中性灰），整站的 ghost 按钮都会带一块灰底。 */
+        /* ghost 是唯一「没有底」的档：图标动作、行内链接式的入口。
+           subtle 必须显式声明自己的淡中性底 —— 带字的按钮要看得见形状；
+           和 ghost 长得一模一样的时候，两个名字就是一个东西，等于没分层。 */
         ghost:
           "bg-transparent text-muted-foreground hover:bg-secondary hover:text-foreground",
         subtle:
-          "bg-transparent text-muted-foreground hover:bg-secondary hover:text-foreground",
+          "bg-[hsl(var(--secondary)/0.7)] text-muted-foreground hover:bg-secondary hover:text-foreground",
         bare:
           "border-transparent bg-transparent text-muted-foreground shadow-none hover:bg-accent hover:text-foreground",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        /* 行内危险操作（卸载这类）走描边红：实心红一排放五个按钮里太吵，
+        /* 警告档：琥珀实心 + 深墨字（--warning 两个主题都配深字，白字压琥珀只有 3:1）。
+           「需要确认 / 有风险但可恢复」的动作用这颗；不可逆删除仍然是 destructive。 */
+        warning:
+          "bg-warning text-warning-foreground hover:bg-[color:color-mix(in_srgb,hsl(var(--warning))_85%,hsl(var(--foreground)))]",
+        /* 行内危险操作（撤销、移入回收站这类）走「淡红底 + 红字」：底是 --destructive
+           的一成四，字是 --destructive-ink —— 直接把 hsl(var(--destructive)) 当字色，
+           暗色主题里红字压深卡面只有 2:1，看着就是"只有个颜色"。
            真正要拦一下的场景（确认删除）用 destructive 的实心。 */
         danger:
-          "border-[hsl(var(--destructive)/0.24)] bg-transparent text-destructive hover:border-[hsl(var(--destructive)/0.46)] hover:bg-[hsl(var(--destructive)/0.07)]",
+          "border-transparent bg-[hsl(var(--destructive)/0.14)] text-[color:var(--destructive-ink)] hover:bg-[hsl(var(--destructive)/0.2)]",
+        /* 图标态的删除：工具条上放不下淡红底方块，所以平时无底、墨色同 muted，
+           悬停才浮一层淡红并转 --destructive-ink。危险信号只在真的指上去时出现。 */
+        "danger-ghost":
+          "border-transparent bg-transparent text-muted-foreground shadow-none hover:bg-[hsl(var(--destructive)/0.1)] hover:text-[color:var(--destructive-ink)]",
         link:
           "text-primary underline-offset-4 hover:underline active:translate-y-0 active:scale-100",
       },
@@ -134,16 +145,21 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       children !== undefined && children !== null && children !== false && children !== ""
     const iconOnly = !hasChildren && (Boolean(icon) || loading)
     const resolvedSize = iconOnly ? (ICON_ONLY_SIZE[size ?? "default"] ?? size) : size
+    /*
+     * 图标态画不出「淡底 + 弱墨字」的层次，subtle 的底在那里只会让工具栏变成一排小方块，
+     * 所以图标态退回 ghost（透明 + hover 浮一层）。带字的 subtle 才有底色。
+     */
+    const resolvedVariant = iconOnly && variant === "subtle" ? "ghost" : variant
 
     return (
       <Comp
         ref={ref}
         data-slot="button"
-        data-variant={variant}
+        data-variant={resolvedVariant}
         data-size={resolvedSize}
         aria-busy={loading || undefined}
         disabled={disabled || (loading && !allowClickWhileLoading)}
-        className={cn(buttonVariants({ variant, size: resolvedSize, className }))}
+        className={cn(buttonVariants({ variant: resolvedVariant, size: resolvedSize, className }))}
         {...props}
       >
         {loading ? <Spinner aria-hidden /> : icon}

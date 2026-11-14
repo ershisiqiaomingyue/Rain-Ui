@@ -81,7 +81,7 @@ const Field = React.forwardRef<
       {label && (
         <FieldLabel className="flex items-center gap-1">
           {label}
-          {required && <span className="text-destructive">*</span>}
+          {required && <span className="text-[color:var(--destructive-ink)]">*</span>}
         </FieldLabel>
       )}
       {children}
@@ -130,7 +130,7 @@ const FieldError = React.forwardRef<
     <p
       ref={ref}
       data-slot="field-error"
-      className={cn("text-[11.5px] font-medium text-destructive leading-normal", className)}
+      className={cn("text-[11.5px] font-medium text-[color:var(--destructive-ink)] leading-normal", className)}
       {...props}
     />
   )

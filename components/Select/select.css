@@ -237,7 +237,7 @@
 .select-option-row.is-grouped { padding-left: 10px; }
 .select-option-row > .select-option { flex: 1; min-width: 0; }
 .select-option-remove { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 26px; height: 26px; margin-right: 4px; padding: 0; border: 0; border-radius: var(--radius-control); color: hsl(var(--muted-foreground)); background: transparent; cursor: pointer; }
-.select-option-remove:hover, .select-option-remove:focus-visible { color: hsl(var(--destructive)); background: transparent; }
+.select-option-remove:hover, .select-option-remove:focus-visible { color: var(--destructive-ink); background: transparent; }
 
 .select-option:hover,
 .select-item-pill:hover {
@@ -297,7 +297,7 @@ html[data-theme] .select-option.selected svg {
 .select-option-expand { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 26px; width: 26px; height: 26px; padding: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: hsl(var(--muted-foreground)); cursor: pointer; transition: color var(--transition-fast), background-color var(--transition-fast); }
 .select-option-action:hover,
 .select-option-expand:hover { color: hsl(var(--foreground)); background: hsl(var(--accent)); }
-.select-option-action.is-danger:hover { color: hsl(var(--destructive)); background: hsl(var(--destructive)); }
+.select-option-action.is-danger:hover { color: var(--destructive-ink); background: hsl(var(--destructive) / 0.1); }
 .select-option-expand svg { transition: transform var(--transition-fast); }
 .select-option-expand.is-open svg { transform: rotate(180deg); }
 

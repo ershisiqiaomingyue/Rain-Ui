@@ -10,6 +10,7 @@
 import * as React from "react"
 
 import { AppIcon } from "@/components/icons/AppIcon"
+import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Select } from "@/components/ui/select-menu"
 import { Button } from "@/components/ui/button"
@@ -17,7 +18,6 @@ import { Switch } from "@/components/ui/switch"
 import {
   ExpandableItem,
   ExpandableItemSection,
-  StatusBadge,
   ToolChoiceItem,
   ToolInfoItem,
   ToolItem,
@@ -142,7 +142,7 @@ export function ToolItemsSpec() {
             title="rust-analyzer"
             meta="0.3.2192"
             defaultExpanded
-            status={<StatusBadge variant="neutral">可用</StatusBadge>}
+            status={<Badge variant="muted" dot>可用</Badge>}
             description="可执行文件与启动参数存在配置里，改完保存才生效。"
             fields={[
               {
@@ -193,7 +193,7 @@ export function ToolItemsSpec() {
             title="JDK"
             meta="21.0.5+11"
             defaultExpanded
-            status={<StatusBadge variant="neutral">可用</StatusBadge>}
+            status={<Badge variant="muted" dot>可用</Badge>}
             sectionLabel="版本与安装位置"
             description="只读信息：要换版本就卸载后重新下载。"
             items={[
@@ -220,11 +220,7 @@ export function ToolItemsSpec() {
           <ToolChoiceItem
             title="Gradle"
             defaultExpanded
-            status={
-              <StatusBadge variant="neutral" hideDot>
-                {GRADLE_SOURCES.find((item) => item.id === gradleSource)?.label}
-              </StatusBadge>
-            }
+            status={<Badge variant="muted">{GRADLE_SOURCES.find((item) => item.id === gradleSource)?.label}</Badge>}
             value={gradleSource}
             options={GRADLE_SOURCES}
             onChange={setGradleSource}
@@ -251,9 +247,9 @@ export function ToolItemsSpec() {
             meta="0.3.7"
             defaultExpanded
             status={
-              <StatusBadge variant="warning" pulse>
+              <Badge variant="warning" dot pulse>
                 未找到
-              </StatusBadge>
+              </Badge>
             }
             actions={
               <Select
@@ -313,7 +309,7 @@ export function ToolItemsSpec() {
             title="Gradle Wrapper"
             meta="8.10.2"
             defaultExpanded
-            status={<StatusBadge variant="neutral">可用</StatusBadge>}
+            status={<Badge variant="muted" dot>可用</Badge>}
             description="项目里有 gradlew 时优先用它，构建脚本改版本不会影响应用内置那份。"
             fields={[
               {

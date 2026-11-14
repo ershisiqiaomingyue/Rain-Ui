@@ -129,7 +129,7 @@
 }
 
 .ui-preview-counts b { color: var(--change-added, hsl(var(--primary))); font-weight: 600; }
-.ui-preview-counts i { color: hsl(var(--destructive)); font-style: normal; font-weight: 600; }
+.ui-preview-counts i { color: var(--destructive-ink); font-style: normal; font-weight: 600; }
 .ui-preview-counts small { color: hsl(var(--muted-foreground)); font-size: var(--fs-label); }
 
 /* Search row */

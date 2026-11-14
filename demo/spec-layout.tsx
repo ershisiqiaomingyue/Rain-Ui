@@ -481,7 +481,7 @@ export function SpecComposed() {
           <CardHeader>
             <div className="kit-head-inline">
               <strong className="kit-card-title">文件浏览</strong>
-              <Badge variant="neutral">只读</Badge>
+              <Badge variant="muted">只读</Badge>
             </div>
             <div className="kit-toolbar is-tight">
               <Input

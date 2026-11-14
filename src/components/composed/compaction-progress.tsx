@@ -41,9 +41,9 @@ export function CompactionProgress({
       data-slot="compaction-progress"
       className={cn(
         "flex h-8 w-full items-center gap-2 rounded-[10px] border border-border/70 bg-card px-2.5 text-xs",
-        status === "failed" && "border-destructive/40 bg-destructive/8 text-destructive",
-        status === "interrupted" &&
-          "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+        status === "failed" && "border-destructive/40 bg-destructive/8 text-[color:var(--destructive-ink)]",
+        /* 中断不是错误，只是没跑完：走中性一档，别为它新开一个琥珀色阶。 */
+        status === "interrupted" && "text-muted-foreground",
         className
       )}
     >
@@ -52,8 +52,8 @@ export function CompactionProgress({
           "flex size-4 shrink-0 items-center justify-center rounded-full",
           status === "completed" && "bg-primary text-primary-foreground",
           status === "running" && "bg-primary/12 text-primary",
-          status === "interrupted" && "bg-amber-500/20 text-amber-600 dark:text-amber-400",
-          status === "failed" && "bg-destructive/15 text-destructive"
+          status === "interrupted" && "bg-muted text-muted-foreground",
+          status === "failed" && "bg-destructive/15 text-[color:var(--destructive-ink)]"
         )}
       >
         {status === "running" && <Spinner size="xs" className="size-3" />}

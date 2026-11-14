@@ -49,9 +49,9 @@
   padding: 4px 10px;
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius-panel);
-  /* 与 NoticePanel 同一套不透明填充：垫底 `--bg-canvas` + 盖面 `--notice-fill`。
-     `background` 简写会把这两层一起重置，所以下面只用 `background-color`
-     做 hover 变色，否则 hover 时底又会透出来。 */
+  /* 与 NoticePanel 同一套不透明填充：垫底 `hsl(var(--background))` + 盖面
+     `--notice-fill`。`background` 简写会把这两层一起重置，所以下面只用
+     `background-color` 做 hover 变色，否则 hover 时底又会透出来。 */
   background-color: hsl(var(--background));
   background-image: linear-gradient(var(--notice-fill), var(--notice-fill));
   color: hsl(var(--foreground));
@@ -95,7 +95,7 @@
 }
 
 .ui-file-notice-diff em { font-style: normal; color: var(--change-added, hsl(var(--primary))); }
-.ui-file-notice-diff i { font-style: normal; color: hsl(var(--destructive)); }
+.ui-file-notice-diff i { font-style: normal; color: var(--destructive-ink); }
 
 .ui-file-notice-count {
   flex: 0 0 auto;

@@ -26,22 +26,25 @@
   --badge-text: hsl(var(--primary-foreground));
 }
 
+/* 下面三档原来都是「底色和字色同一个值」，等于把字吞掉（实心 primary 上写 primary 字、
+   实心 muted-foreground 上写 muted-foreground 字、实心红上写红字）。字一律取对比色：
+   实心底配 *-foreground，弱化档退回 muted 面 + 弱墨字，红只做淡红底 + --destructive-ink。 */
 .badge-success,
 .pill-success {
   --badge-bg: hsl(var(--primary));
-  --badge-text: hsl(var(--primary));
+  --badge-text: hsl(var(--primary-foreground));
 }
 
 .badge-warning,
 .pill-warning {
-  --badge-bg: hsl(var(--muted-foreground));
+  --badge-bg: hsl(var(--muted));
   --badge-text: hsl(var(--muted-foreground));
 }
 
 .badge-danger,
 .pill-danger {
-  --badge-bg: hsl(var(--destructive));
-  --badge-text: hsl(var(--destructive));
+  --badge-bg: hsl(var(--destructive) / 0.14);
+  --badge-text: var(--destructive-ink);
 }
 
 .badge-neutral {

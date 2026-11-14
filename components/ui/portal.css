@@ -64,7 +64,7 @@
 
 .ui-portal.is-solid.is-error {
   --portal-bg: color-mix(in srgb, hsl(var(--destructive)) 11%, hsl(var(--popover)));
-  --portal-text: hsl(var(--destructive));
+  --portal-text: var(--destructive-ink);
   --portal-border: color-mix(in srgb, hsl(var(--destructive)) 24%, transparent);
   --portal-shadow: 0 5px 18px color-mix(in srgb, hsl(var(--destructive)) 13%, transparent);
 }
@@ -97,7 +97,7 @@
 }
 
 .ui-portal.is-neutral.is-success .ui-portal-icon { color: hsl(var(--primary)); }
-.ui-portal.is-neutral.is-error .ui-portal-icon { color: hsl(var(--destructive)); }
+.ui-portal.is-neutral.is-error .ui-portal-icon { color: var(--destructive-ink); }
 .ui-portal.is-neutral.is-warning .ui-portal-icon { color: hsl(var(--muted-foreground)); }
 .ui-portal.is-neutral.is-info .ui-portal-icon { color: hsl(var(--primary)); }
 
@@ -133,7 +133,7 @@
 }
 
 .ui-portal .ui-portal-close.btn:hover:not(:disabled) {
-  color: hsl(var(--destructive));
+  color: var(--destructive-ink);
   background: color-mix(in srgb, hsl(var(--destructive)) 12%, transparent);
   border-color: transparent;
   opacity: 1;

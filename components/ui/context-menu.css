@@ -37,6 +37,6 @@
 /* 破坏性项（删除 / 移除）走危险色：菜单里最容易被误点的常是最后一项，
    颜色先说话，点下去还有各自的二次确认。 */
 .context-menu button.is-danger,
-.context-menu button.is-danger svg { color: hsl(var(--destructive)); }
+.context-menu button.is-danger svg { color: var(--destructive-ink); }
 @keyframes context-menu-appear { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .context-menu { animation: none; } }

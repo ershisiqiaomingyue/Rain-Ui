@@ -71,7 +71,7 @@
 .ui-ring-control.is-warning .ui-ring-fill,
 .ui-ring-control.is-warning .ui-ring-percent { stroke: hsl(var(--muted-foreground)); color: hsl(var(--muted-foreground)); }
 .ui-ring-control.is-danger .ui-ring-fill,
-.ui-ring-control.is-danger .ui-ring-percent { stroke: hsl(var(--destructive)); color: hsl(var(--destructive)); }
+.ui-ring-control.is-danger .ui-ring-percent { stroke: hsl(var(--destructive)); color: var(--destructive-ink); }
 
 .ui-ring-control.is-busy .ui-ring { animation: ui-ring-pulse 1.4s ease-in-out infinite; }
 

@@ -39,10 +39,10 @@ const val = (name) => `var(--${name})`;
 module.exports = {
   theme: {
     extend: {
-      /* ── 颜色：只有 shadcn 那 19 个名字 ────────────────────────────────────
-         一个都不许新增。A 基础层（surface / line / ink）、桥接层（accent-strong /
-         btn-* / card-* / hover-tint / segmented-*）和状态族（success / warning /
-         error / destructive-soft）已整体删除 —— 重建前不要往回加。
+      /* ── 颜色：shadcn 那 19 个名字 + 状态族（success / warning）────────────
+         A 基础层（surface / line / ink）、桥接层（accent-strong / btn-* / card-* /
+         hover-tint / segmented-*）已整体删除 —— 别加回来。success / warning 是
+         仅有的两个特批（Badge / Button 的状态档要用，shadcn 没有对应物）。
          bg-accent 是「悬停底」，不是强调色；强调色只有 primary。 */
       colors: {
         border: hsl("border"),
@@ -53,6 +53,8 @@ module.exports = {
         primary: { DEFAULT: hsl("primary"), foreground: hsl("primary-foreground") },
         secondary: { DEFAULT: hsl("secondary"), foreground: hsl("secondary-foreground") },
         destructive: { DEFAULT: hsl("destructive"), foreground: hsl("destructive-foreground") },
+        success: { DEFAULT: hsl("success"), foreground: hsl("success-foreground") },
+        warning: { DEFAULT: hsl("warning"), foreground: hsl("warning-foreground") },
         muted: { DEFAULT: hsl("muted"), foreground: hsl("muted-foreground") },
         accent: { DEFAULT: hsl("accent"), foreground: hsl("accent-foreground") },
         popover: { DEFAULT: hsl("popover"), foreground: hsl("popover-foreground") },

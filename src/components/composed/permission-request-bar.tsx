@@ -43,12 +43,13 @@ export function PermissionRequestBar({
   return (
     <div
       className={cn(
-        "space-y-2.5 rounded-xl border border-amber-500/30 bg-amber-500/[0.07] p-3",
+        /* 授权请求是「要人看一眼」，不是报错：用唯一强调色的淡底，不另开琥珀色阶。 */
+        "space-y-2.5 rounded-xl border border-border bg-[hsl(var(--primary)/0.06)] p-3",
         className
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="flex size-5 shrink-0 items-center justify-center rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400">
+        <span className="flex size-5 shrink-0 items-center justify-center rounded-md bg-[hsl(var(--primary)/0.14)] text-primary">
           <AppIcon name="shield-alert" className="size-3" />
         </span>
         <span className="text-xs font-semibold text-foreground">需要授权</span>

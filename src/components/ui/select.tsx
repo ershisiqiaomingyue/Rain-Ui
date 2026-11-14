@@ -19,7 +19,7 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     data-slot="select-trigger"
     className={cn(
-      "flex h-8 w-full items-center justify-between gap-2 rounded-[10px] border border-input bg-transparent focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 px-3 py-1 text-xs text-foreground transition-[border-color,background-color,box-shadow] outline-none data-[placeholder]:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "flex h-8 w-full items-center justify-between gap-2 rounded-[10px] border border-input bg-transparent focus-visible:shadow-[0_1px_2px_hsl(var(--foreground)/0.05),0_2px_8px_hsl(var(--foreground)/0.09)] px-3 py-1 text-xs text-foreground transition-[border-color,background-color,box-shadow] outline-none data-[placeholder]:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       className
     )}
     {...props}

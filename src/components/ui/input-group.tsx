@@ -21,7 +21,7 @@ const InputGroup = React.forwardRef<
       role="group"
       data-slot="input-group"
       className={cn(
-        "group/input-group relative flex h-8 w-full min-w-0 items-center rounded-[10px] border border-input bg-transparent transition-[border-color,background-color,box-shadow] has-[>textarea]:h-auto has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-ring/40 has-disabled:opacity-50",
+        "group/input-group relative flex h-8 w-full min-w-0 items-center rounded-[10px] border border-input bg-transparent transition-[border-color,background-color,box-shadow] has-[>textarea]:h-auto has-[[data-slot=input-group-control]:focus-visible]:shadow-[0_1px_2px_hsl(var(--foreground)/0.05),0_2px_8px_hsl(var(--foreground)/0.09)] has-disabled:opacity-50",
         className
       )}
       {...props}

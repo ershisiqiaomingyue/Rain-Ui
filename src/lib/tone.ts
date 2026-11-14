@@ -11,6 +11,16 @@
  * 想统一改配色（换品牌色、调暗色调、换成更灰的色板）只改 DATA_TONES 一处；
  * 只想覆盖某一个点就传 `className`（组件内部用 tailwind-merge 合并，后者优先）。
  *
+ * ── 一个原则：色名是「档位」，不是色相 ──────────────────────────────────────
+ * 设计系统只有一套强调色（--primary）＋中性（muted / foreground）＋危险（--destructive），
+ * 换配色只该换 token。所以这里一个色相值都不能出现：sky / indigo / violet / plum
+ * 是同一支强调色的四档浓度，amber 是「需要看一眼」的高对比中性档，rose 是危险档。
+ * 六个名字必须留着——宿主的 Store / KPI 已经在用 `tone="plum"` 这类写法，改名就是
+ * 改公开 API。档位差别体现在浓度（soft 底、solid 点、bar 进度）而不是色相：
+ * 强调 8% → 12% → 16% → 20%，实心 40% → 60% → 80% → 100%。
+ * 副作用：一张表里两行不再是「红对蓝」，而是「深对浅」。要分类，用文字 / 图标 / Badge（dot），
+ * 不要指望颜色（只有一支强调色的前提下，颜色本来就不该承担分类职责）。
+ *
  * 注意：这里必须是字面量 class 字符串。Tailwind 只扫描得到写死的类名，
  * 用模板串拼出来的 `bg-${hue}-500` 一定不会出现在产物里。
  */
@@ -27,7 +37,7 @@ export type DataTone =
   | "neutral"
 
 export interface DataToneClasses {
-  /** 浅色块底：图标方块、名次方块（约 12% 主色） */
+  /** 浅色块底：图标方块、名次方块（一支强调色的低浓度） */
   soft: string
   /** 叠在 soft 上的文字/图标色，浅底深一档、深底浅一档 */
   ink: string
@@ -37,79 +47,90 @@ export interface DataToneClasses {
   bar: string
   /**
    * 自发光色：给「自己画深色底」的图（星图夜空、深色画布）用的文字色。
-   * 这类地方的底色不跟随主题，所以这色也不跟主题走 —— 浅色主题下也得亮。
+   * 这类地方底色不跟随主题，所以这里挑的是两主题下都能在深底上读到的组合：
+   * 亮色主题给中性灰（--primary 在亮色下是深蓝，落在深底上等于消失），
+   * 暗色主题给强调色。星图因此在两个主题下都是单色，簇与簇靠位置和亮度区分。
    */
   glow: string
 }
 
+/** 深色画布（星图夜空）上的自发光色：两主题都可读的那一支。 */
+const GLOW = "text-muted-foreground dark:text-primary"
+
+// 四档浓度必须逐条写全：bar / solid 里的 opacity 修饰符没法用模板串拼
+// （Tailwind 只认源码里看得见的完整类名，拼出来的 class 一定不生成）。
 export const DATA_TONES: Record<DataTone, DataToneClasses> = {
   sky: {
-    soft: "bg-sky-500/[0.12] dark:bg-sky-400/[0.16]",
-    ink: "text-sky-700 dark:text-sky-300",
-    solid: "bg-sky-500",
-    bar: "[&>[data-slot=progress-indicator]]:bg-sky-500",
-    glow: "text-sky-400",
+    soft: "bg-primary/[0.08]",
+    ink: "text-muted-foreground",
+    solid: "bg-primary/40",
+    bar: "[&>[data-slot=progress-indicator]]:bg-primary/40",
+    glow: GLOW,
   },
   indigo: {
-    soft: "bg-indigo-500/[0.12] dark:bg-indigo-400/[0.16]",
-    ink: "text-indigo-700 dark:text-indigo-300",
-    solid: "bg-indigo-500",
-    bar: "[&>[data-slot=progress-indicator]]:bg-indigo-500",
-    glow: "text-indigo-400",
+    soft: "bg-primary/[0.12]",
+    ink: "text-primary",
+    solid: "bg-primary/60",
+    bar: "[&>[data-slot=progress-indicator]]:bg-primary/60",
+    glow: GLOW,
+  },
+  violet: {
+    soft: "bg-primary/[0.16]",
+    ink: "text-primary",
+    solid: "bg-primary/80",
+    bar: "[&>[data-slot=progress-indicator]]:bg-primary/80",
+    glow: GLOW,
+  },
+  // 淡紫红（玫红）：原来是整个 UI 的主强调色（KPI、日历、排行榜都是这一族），
+  // 现在它就是强调色的最浓一档，`tone="plum"` 的调用点不用改。
+  plum: {
+    soft: "bg-primary/[0.20]",
+    ink: "text-primary",
+    solid: "bg-primary",
+    bar: "[&>[data-slot=progress-indicator]]:bg-primary",
+    glow: GLOW,
+  },
+  // 琥珀 = 「需要看一眼」档。暖色不在语义层里，用最亮的中性色（foreground）表达，
+  // 至少比 neutral 抢眼一档，但不再有「黄」。
+  amber: {
+    soft: "bg-foreground/[0.10]",
+    ink: "text-foreground",
+    solid: "bg-foreground/70",
+    bar: "[&>[data-slot=progress-indicator]]:bg-foreground/70",
+    glow: GLOW,
+  },
+  // 危险 / 失败。实心红只给「不可逆」用，这里是数据点与进度条，不是按钮。
+  // ink 是`--destructive-ink`而不是 `--destructive`：后者明度 30.6%，压在 12% 淡红上只有 2:1。
+  rose: {
+    soft: "bg-destructive/[0.12]",
+    ink: "text-[color:var(--destructive-ink)]",
+    solid: "bg-destructive",
+    bar: "[&>[data-slot=progress-indicator]]:bg-destructive",
+    glow: GLOW,
   },
   // 历史色：绿色系（emerald / teal）已经从默认色板里拿掉了，定义留着只为兼容
   // 显式传 `tone="emerald"` 的老调用点。它们不在 DATA_TONE_ORDER 里，
-  // 所以哈希取色不会再落到绿色上。
+  // 所以哈希取色不会再落到绿色上；现在它们也不会再是绿色。
   emerald: {
-    soft: "bg-emerald-500/[0.12] dark:bg-emerald-400/[0.16]",
-    ink: "text-emerald-700 dark:text-emerald-300",
-    solid: "bg-emerald-500",
-    bar: "[&>[data-slot=progress-indicator]]:bg-emerald-500",
-    glow: "text-emerald-400",
-  },
-  amber: {
-    soft: "bg-amber-500/[0.14] dark:bg-amber-400/[0.16]",
-    ink: "text-amber-700 dark:text-amber-300",
-    solid: "bg-amber-500",
-    bar: "[&>[data-slot=progress-indicator]]:bg-amber-500",
-    glow: "text-amber-400",
-  },
-  violet: {
-    soft: "bg-violet-500/[0.12] dark:bg-violet-400/[0.16]",
-    ink: "text-violet-700 dark:text-violet-300",
-    solid: "bg-violet-500",
-    bar: "[&>[data-slot=progress-indicator]]:bg-violet-500",
-    glow: "text-violet-400",
-  },
-  rose: {
-    soft: "bg-rose-500/[0.12] dark:bg-rose-400/[0.16]",
-    ink: "text-rose-700 dark:text-rose-300",
-    solid: "bg-rose-500",
-    bar: "[&>[data-slot=progress-indicator]]:bg-rose-500",
-    glow: "text-rose-400",
-  },
-  // 淡紫红（玫红）：整个 UI 的主强调色（KPI、日历、排行榜都是这一族）。
-  // 它在 DATA_TONE_ORDER 里，所以工作区 / 会话 / 模型的哈希取色也会用到它。
-  plum: {
-    soft: "bg-pink-500/[0.12] dark:bg-pink-400/[0.16]",
-    ink: "text-pink-600 dark:text-pink-300",
-    solid: "bg-pink-500",
-    bar: "[&>[data-slot=progress-indicator]]:bg-pink-500",
-    glow: "text-pink-400",
+    soft: "bg-primary/[0.12]",
+    ink: "text-primary",
+    solid: "bg-primary/60",
+    bar: "[&>[data-slot=progress-indicator]]:bg-primary/60",
+    glow: GLOW,
   },
   teal: {
-    soft: "bg-teal-500/[0.12] dark:bg-teal-400/[0.16]",
-    ink: "text-teal-700 dark:text-teal-300",
-    solid: "bg-teal-500",
-    bar: "[&>[data-slot=progress-indicator]]:bg-teal-500",
-    glow: "text-teal-400",
+    soft: "bg-muted-foreground/[0.14]",
+    ink: "text-muted-foreground",
+    solid: "bg-muted-foreground/80",
+    bar: "[&>[data-slot=progress-indicator]]:bg-muted-foreground/80",
+    glow: GLOW,
   },
   neutral: {
     soft: "bg-foreground/[0.06]",
     ink: "text-muted-foreground",
     solid: "bg-muted-foreground/60",
     bar: "",
-    glow: "text-slate-300",
+    glow: GLOW,
   },
 }
 
@@ -144,10 +165,11 @@ export function dataToneClasses(tone?: DataTone, seed?: string | null): DataTone
  *
  * ```ts
  * registerDataTones({
- *   sky: { ink: "text-brand-700 dark:text-brand-300", solid: "bg-brand-500" },
+ *   sky: { ink: "text-muted-foreground", solid: "bg-primary/40" },
  * });
  * ```
  *
+ * 覆盖值同样只能用语义 token（换色请改 --primary，不要在这里塞色板类名）。
  * 注意：`DATA_TONES` 是模块内单例，覆盖对整棵组件树生效；
  * 单点覆盖仍然用组件的 `className`（内部 tailwind-merge，后者优先）。
  */

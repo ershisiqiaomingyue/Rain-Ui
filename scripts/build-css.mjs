@@ -34,7 +34,8 @@ const REQUIRED = [
   ".modern-select",
   ".switch-wrapper",
   ".badge",
-  ".segmented-glass",
+  // `.segmented-glass` 不在这里了：分段控件已经是 Tabs 的受控封装
+  // （src/components/composed/segmented-control.tsx），库不再输出那套 class。
   ".card",
   ".card-header",
   ".desk-table",

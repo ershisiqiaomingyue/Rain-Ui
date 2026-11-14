@@ -13,8 +13,8 @@
 /* 1. 基础规范 */
 
 @import "./tokens.css";
-/* palettes.css 必须排在 tokens.css 之后：它负责覆盖旧配色，并保留一条
-   历史变量名的桥接，让组件不必逐个改就能换上新配色。 */
+/* palettes.css 必须排在 tokens.css 之后：它把结构 token 落成具体色值，
+   暗色写在 `:root`、亮色写在 `html[data-theme="light"]`，一个颜色只有这两处定义。 */
 @import "./palettes.css";
 @import "./typography.css";
 @import "./ambient.css";

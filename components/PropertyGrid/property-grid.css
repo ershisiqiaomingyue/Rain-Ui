@@ -176,4 +176,4 @@ html[data-theme] .card-tool .property-row {
   font-weight: 500;
 }
 
-.property-value.value-danger { color: hsl(var(--destructive)); }
+.property-value.value-danger { color: var(--destructive-ink); }

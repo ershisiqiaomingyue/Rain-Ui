@@ -36,7 +36,7 @@
    警告三角），颜色只表达状态。进行中也不染强调色——它已经在转，运动本身就是
    「正在进行」，字形保持次级灰，和 AI 回复前后那些图标一个色系。 */
 .ui-compaction.is-interrupted .ui-compaction-icon { color: hsl(var(--muted-foreground)); }
-.ui-compaction.is-failed .ui-compaction-icon { color: hsl(var(--destructive)); }
+.ui-compaction.is-failed .ui-compaction-icon { color: var(--destructive-ink); }
 
 /* Fixed-length track instead of a full-width bar: the strip shares its row with
    the label and the token delta, so a flex-grown bar dominated the line. */

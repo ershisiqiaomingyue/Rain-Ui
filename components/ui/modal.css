@@ -61,8 +61,8 @@
 }
 
 .ui-modal-icon.is-danger {
-  background: hsl(var(--destructive));
-  color: hsl(var(--destructive));
+  background: hsl(var(--destructive) / 0.12);
+  color: var(--destructive-ink);
 }
 
 .ui-modal-headings {

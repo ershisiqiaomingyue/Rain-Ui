@@ -140,6 +140,6 @@ html[data-theme] .task-step-row.is-clickable:hover .task-step-icon.pending {
   line-height: 1.4;
 }
 
-.task-step-icon.error { color: hsl(var(--destructive)); background: hsl(var(--destructive)); }
+.task-step-icon.error { color: var(--destructive-ink); background: hsl(var(--destructive) / 0.12); }
 .task-step-icon.cancelled { color: hsl(var(--muted-foreground)); background: hsl(var(--accent)); }
 .task-step-icon.error svg, .task-step-icon.cancelled svg { width: 13px; height: 13px; stroke-width: 2; }

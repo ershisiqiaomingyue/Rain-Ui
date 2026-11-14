@@ -4,7 +4,6 @@ import * as React from "react"
 
 import { AppIcon, type AppIconName } from "../icons/AppIcon"
 import { cn } from "../../lib/utils"
-import { DATA_TONES } from "../../lib/tone"
 
 /**
  * 可展开条目（整块可点的那一层）。
@@ -43,13 +42,17 @@ export type ExpandableItemTone = "neutral" | "primary" | "success" | "warning" |
  */
 export type ExpandableItemSectionTone = "neutral" | "primary" | "success" | "warning" | "danger"
 
-/** 底色复用统计面板那套 tone（浅底 + 深一档文字），别在组件里另写一组色值。 */
+/**
+ * 图标盘的五个档位。只有一支强调色，所以「完成」和「强调」都落在 --primary 上，
+ * 靠浓度分开；「暂停 / 待确认」没有暖色可用，改用最亮的中性色（foreground）——
+ * 比 neutral 抢眼一档，等于「这块要多看一眼」。出错仍然只给 --destructive。
+ */
 const TONE_TILE: Record<ExpandableItemTone, string> = {
   neutral: "bg-muted text-muted-foreground ring-border/70",
   primary: "bg-muted text-primary ring-border/70",
-  success: cn(DATA_TONES.emerald.soft, DATA_TONES.emerald.ink, "ring-emerald-500/25"),
-  warning: cn(DATA_TONES.amber.soft, DATA_TONES.amber.ink, "ring-amber-500/25"),
-  danger: "bg-destructive/[0.14] text-destructive ring-destructive/25",
+  success: "bg-primary/[0.14] text-primary ring-primary/25",
+  warning: "bg-foreground/[0.10] text-foreground ring-border",
+  danger: "bg-destructive/[0.14] text-[color:var(--destructive-ink)] ring-destructive/25",
 }
 
 interface SectionToneClasses {
@@ -62,9 +65,10 @@ interface SectionToneClasses {
 }
 
 /**
- * 分项卡片一律平涂灰底（跟设置里的分组卡一样）：卡片本身不沾主题色。
- * 主题色只留给按钮、徽标、进度条这些「组件」；success / warning / danger
- * 只在真完成、真暂停、真出错时出现。
+ * 分项卡片默认平涂灰底（跟设置里的分组卡一样）：neutral / primary 都不沾色。
+ * success / warning 各有一次极淡的底（强调色 8% / 前景色 6%）用来标状态，
+ * danger 才用 --destructive。主题色不往卡片上调满，只留给按钮、徽标、进度条
+ * 这些「组件」；success / warning / danger 只在真完成、真暂停、真出错时出现。
  */
 const SECTION_TONE: Record<ExpandableItemSectionTone, SectionToneClasses> = {
   neutral: { wrap: "border-border bg-muted/60", ink: "text-foreground", bar: "" },
@@ -74,19 +78,19 @@ const SECTION_TONE: Record<ExpandableItemSectionTone, SectionToneClasses> = {
     bar: "[&>[data-slot=progress-indicator]]:bg-primary",
   },
   success: {
-    wrap: "border-emerald-500/30 bg-emerald-500/10",
-    ink: DATA_TONES.emerald.ink,
-    bar: DATA_TONES.emerald.bar,
+    wrap: "border-primary/25 bg-primary/[0.08]",
+    ink: "text-primary",
+    bar: "[&>[data-slot=progress-indicator]]:bg-primary",
   },
   warning: {
-    wrap: "border-amber-500/30 bg-amber-500/10",
-    ink: DATA_TONES.amber.ink,
-    bar: DATA_TONES.amber.bar,
+    wrap: "border-border bg-foreground/[0.06]",
+    ink: "text-foreground",
+    bar: "[&>[data-slot=progress-indicator]]:bg-foreground/70",
   },
   danger: {
     wrap: "border-destructive/30 bg-destructive/[0.08]",
-    ink: "text-destructive",
-    bar: DATA_TONES.rose.bar,
+    ink: "text-[color:var(--destructive-ink)]",
+    bar: "[&>[data-slot=progress-indicator]]:bg-destructive",
   },
 }
 
@@ -108,7 +112,7 @@ export interface ExpandableItemProps {
   title: React.ReactNode
   /** 收起态跟在标题后的简要信息（版本号、路径尾段…），等宽显示 */
   meta?: React.ReactNode
-  /** 标题右侧的状态徽标（用 StatusBadge） */
+  /** 标题右侧的状态徽标（用 Badge，dot / pulse 可选） */
   status?: React.ReactNode
   /**
    * 标题下面那行灰色说明（来源路径、仓库地址、传输量…），一行截断。
@@ -193,9 +197,9 @@ export function ExpandableItemSection({
       {label || hint ? (
         <div className="mb-2 flex min-w-0 items-baseline justify-between gap-2">
           {label ? (
-            <span className={cn("truncate text-[11px] font-semibold", t.ink)}>{label}</span>
+            <span className={cn("truncate text-meta font-semibold", t.ink)}>{label}</span>
           ) : null}
-          {hint ? <span className={cn("shrink-0 text-[11px] font-normal", t.ink)}>{hint}</span> : null}
+          {hint ? <span className={cn("shrink-0 text-meta font-normal", t.ink)}>{hint}</span> : null}
         </div>
       ) : null}
       {children}
@@ -299,9 +303,9 @@ export function ExpandableItem({
               />
             ) : null}
             <span className="flex min-w-0 flex-1 items-baseline gap-2">
-              <span className="truncate text-[13px] font-semibold text-foreground">{title}</span>
+              <span className="truncate text-body font-semibold text-foreground">{title}</span>
               {meta ? (
-                <span className="truncate font-mono text-[11px] text-muted-foreground">{meta}</span>
+                <span className="truncate font-mono text-meta text-muted-foreground">{meta}</span>
               ) : null}
             </span>
             {status ? <span className="flex shrink-0 items-center gap-1.5">{status}</span> : null}
@@ -323,7 +327,7 @@ export function ExpandableItem({
           <p
             data-slot="expandable-item-subtitle"
             className={cn(
-              "mt-1 mb-0 truncate text-[12px] leading-snug text-muted-foreground",
+              "mt-1 mb-0 truncate text-label text-muted-foreground",
               icon ? "pl-[42px]" : "pl-[24px]"
             )}
           >
@@ -346,7 +350,7 @@ export function ExpandableItem({
           {children}
           {footerLeft || footer ? (
             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-2.5">
-              <div className="min-w-0 text-[11px] text-muted-foreground">{footerLeft}</div>
+              <div className="min-w-0 text-meta text-muted-foreground">{footerLeft}</div>
               <div className="flex shrink-0 items-center gap-2">{footer}</div>
             </div>
           ) : null}

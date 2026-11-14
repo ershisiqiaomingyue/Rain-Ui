@@ -109,7 +109,7 @@
 .ui-attachment.is-code .ui-attachment-glyph { color: hsl(var(--primary)); }
 .ui-attachment.is-archive .ui-attachment-glyph { color: color-mix(in srgb, hsl(var(--primary)) 55%, hsl(var(--muted-foreground))); }
 .ui-attachment.is-json .ui-attachment-glyph { color: color-mix(in srgb, hsl(var(--muted-foreground)) 70%, hsl(var(--foreground))); }
-.ui-attachment.is-document .ui-attachment-glyph { color: hsl(var(--destructive)); }
+.ui-attachment.is-document .ui-attachment-glyph { color: var(--destructive-ink); }
 .ui-attachment.is-text .ui-attachment-glyph { color: hsl(var(--muted-foreground)); }
 
 .ui-attachment-meta {
@@ -160,7 +160,7 @@
   font-weight: 500;
   line-height: 1.2;
   text-align: left;
-  color: hsl(var(--destructive));
+  color: var(--destructive-ink);
   cursor: pointer;
 }
 
@@ -188,7 +188,7 @@
 }
 
 .ui-attachment-remove:hover:not(:disabled) {
-  color: hsl(var(--destructive));
+  color: var(--destructive-ink);
   background: color-mix(in srgb, hsl(var(--destructive)) 12%, transparent);
 }
 
@@ -224,7 +224,7 @@
 .ui-attachment.is-tile:focus-within .ui-attachment-remove { opacity: 1; }
 
 .ui-attachment.is-tile .ui-attachment-remove:hover:not(:disabled) {
-  color: hsl(var(--destructive));
+  color: var(--destructive-ink);
   background: color-mix(in srgb, hsl(var(--destructive)) 12%, hsl(var(--card)));
   border-color: color-mix(in srgb, hsl(var(--destructive)) 30%, hsl(var(--border)));
 }

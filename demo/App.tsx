@@ -97,14 +97,14 @@ import {
   TerminalRangeSlider,
   CompactionProgress,
   UsageMetricsStrip,
-  SegmentedControl,
-  StatusBadge,
   type ComposerNoticeItem,
   type ReasoningLevel,
   type TaskItem,
 } from "@/components/composed"
 import { cn } from "@/lib/utils"
 import { SpecIcons } from "./spec-icons"
+import { ProviderLogo, PROVIDER_NAMES, type ProviderId } from "@/components/icons/ProviderLogo"
+import { PaletteLab } from "./palette-lab"
 import { ToolItemsSpec } from "./tool-items"
 import { DownloadProgressSpec } from "./download-progress"
 interface NavItem {
@@ -115,6 +115,7 @@ interface NavItem {
 }
 const NAV_ITEMS: NavItem[] = [
   // 基础组件（先做基础，再拼组合）
+  { id: "palette-lab", title: "Palette Lab", label: "选主色 & 卡片阶梯", group: "base" },
   { id: "button", title: "Button", label: "按钮", group: "base" },
   { id: "button-group", title: "Button Group", label: "按钮组", group: "base" },
   { id: "input", title: "Input", label: "输入框", group: "base" },
@@ -161,6 +162,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: "resizable", title: "Resizable", label: "可调整面板", group: "base" },
   { id: "sidebar", title: "Sidebar", label: "侧边栏布局", group: "base" },
   { id: "icons", title: "AppIcon", label: "统一图标集", group: "base" },
+  { id: "provider-logo", title: "Provider Logo", label: "服务商品牌标", group: "base" },
   // 组合组件
   { id: "context-usage-ring", title: "Context Ring", label: "上下文圆环", group: "composed" },
   { id: "radial-progress", title: "Radial Progress", label: "环形进度", group: "composed" },
@@ -170,8 +172,6 @@ const NAV_ITEMS: NavItem[] = [
   { id: "terminal-range-slider", title: "Range Slider", label: "设置拖动条", group: "composed" },
   { id: "compaction-progress", title: "Compaction", label: "上下文压缩", group: "composed" },
   { id: "usage-metrics-strip", title: "Usage Metrics", label: "会话用量", group: "composed" },
-  { id: "segmented-control", title: "Segmented", label: "分段切换", group: "composed" },
-  { id: "status-badge", title: "Status Badge", label: "状态徽章", group: "composed" },
   { id: "tool-items", title: "Tool Items", label: "工具条目（展开收缩）", group: "composed" },
   { id: "download-progress", title: "Download Progress", label: "下载/安装进度", group: "composed" },
 ]
@@ -227,8 +227,6 @@ export function App() {
     { id: "t5", title: "Deploy to husky device", chip: "failed", status: "error" },
   ])
   const [balanceRefreshing, setBalanceRefreshing] = React.useState(false)
-  const [segmentedView, setSegmentedView] = React.useState<"conversation" | "terminal" | "files">("conversation")
-  const [segmentedRange, setSegmentedRange] = React.useState<"day" | "week" | "month" | "all">("week")
   const cycleTask = (id: string) => {
     setTasks((prev) => prev.map((t) => t.id === id ? { ...t, status: t.status === "done" ? "running" : t.status === "running" ? "pending" : "done" } : t))
   }
@@ -712,49 +710,6 @@ export function App() {
             </div>
           </Section>
 
-          {/* 组合组件 · 分段切换 */}
-          <Section id="segmented-control" title="Segmented" label="分段切换（Tabs 封装）" count={0}>
-            <div className="space-y-4">
-              <p className="text-xs text-muted-foreground">直接复用基础组件 Tabs，不再自建按钮：</p>
-              <div className="flex flex-wrap items-center gap-4">
-                <SegmentedControl
-                  label="视图切换"
-                  value={segmentedView}
-                  onChange={setSegmentedView}
-                  options={[
-                    { value: "conversation", label: "对话" },
-                    { value: "terminal", label: "终端" },
-                    { value: "files", label: "文件" },
-                  ]}
-                />
-                <SegmentedControl
-                  label="时间范围"
-                  value={segmentedRange}
-                  onChange={setSegmentedRange}
-                  options={[
-                    { value: "day", label: "今天" },
-                    { value: "week", label: "近 7 天" },
-                    { value: "month", label: "近 30 天" },
-                    { value: "all", label: "全部", disabled: true },
-                  ]}
-                />
-              </div>
-              <p className="text-[11px] text-muted-foreground">当前：{segmentedView} / {segmentedRange}</p>
-            </div>
-          </Section>
-
-          {/* 组合组件 · 状态徽章 */}
-          <Section id="status-badge" title="Status Badge" label="状态徽章（24px 高）" count={0}>
-            <div className="flex flex-wrap items-center gap-2">
-              <StatusBadge variant="primary" pulse>运行中</StatusBadge>
-              <StatusBadge variant="success">已完成</StatusBadge>
-              <StatusBadge variant="warning" pulse>等待审批</StatusBadge>
-              <StatusBadge variant="danger">失败</StatusBadge>
-              <StatusBadge variant="neutral">空闲</StatusBadge>
-              <StatusBadge variant="primary" hideDot>v2.4.0</StatusBadge>
-            </div>
-          </Section>
-
           <Section id="tool-items" title="Tool Items" label="工具条目（展开收缩）" count={0}>
             <ToolItemsSpec />
           </Section>
@@ -847,16 +802,43 @@ export function App() {
           </Section>
 
           {/* Badge */}
-          <Section id="badge" title="Badge" label="徽章（与 Button 同族：24px 高 / 6px 圆角）" count={0}>
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge>默认</Badge>
-              <Badge variant="secondary">次要</Badge>
-              <Badge variant="default">描边</Badge>
-              <Badge variant="muted">中性</Badge>
-              <Badge variant="destructive">危险</Badge>
-              <Badge variant="default">
-                <Check className="size-3" /> 带图标
-              </Badge>
+          <Section id="badge" title="Badge" label="徽章（原 StatusBadge 已并入：配色 × 圆角 × 状态点全部可配）" count={0}>
+            <div className="space-y-4">
+              <div>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">配色（状态族 = success / warning / destructive）：</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge>默认（primary）</Badge>
+                  <Badge variant="success">已完成</Badge>
+                  <Badge variant="warning" dot pulse>运行中</Badge>
+                  <Badge variant="destructive">失败</Badge>
+                  <Badge variant="secondary">次要</Badge>
+                  <Badge variant="muted">中性</Badge>
+                  <Badge variant="outline">描边</Badge>
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">圆角（radius，默认 full 胶囊）：full / lg / md</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="muted">full · 默认</Badge>
+                  <Badge variant="muted" radius="lg">lg · 10px</Badge>
+                  <Badge variant="muted" radius="md">md · 6px</Badge>
+                  <Badge variant="outline" radius="lg" dot>v1.2.0</Badge>
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">状态点（dot / pulse，点色用 dotTone 独立选）：</p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" dot dotTone="success" pulse>在线</Badge>
+                  <Badge variant="outline" dot dotTone="destructive">离线</Badge>
+                  <Badge variant="outline" dot dotTone="warning">等待中</Badge>
+                  <Badge variant="muted" dot dotTone="primary" pulse>同步中</Badge>
+                  <Badge variant="success" dot pulse>在线</Badge>
+                  <Badge variant="destructive" dot>离线</Badge>
+                  <Badge variant="secondary">
+                    <Check className="size-3" /> 带图标
+                  </Badge>
+                </div>
+              </div>
             </div>
           </Section>
 
@@ -895,6 +877,10 @@ export function App() {
               </AlertDialogContent>
             </AlertDialog>
           </Section>
+          {/* 0. Palette Lab：现场选 primary 与卡片阶梯（demo 专用，不属于库） */}
+          <Section id="palette-lab" title="Palette Lab" label="选 primary & 卡片阶梯" count={0}>
+            <PaletteLab dark={dark} />
+          </Section>
           {/* 3. Button */}
           <Section id="button" title="Button" label="Button (Radix-Nova 官方标准)" count={12}>
             <div className="space-y-5">
@@ -918,6 +904,7 @@ export function App() {
                   <Button variant="secondary">Secondary</Button>
                   <Button variant="ghost">Ghost</Button>
                   <Button variant="destructive">Destructive</Button>
+                  <Button variant="warning">Warning</Button>
                   <Button variant="link">Link</Button>
                   <Button disabled>Disabled</Button>
                 </div>
@@ -1427,7 +1414,7 @@ export function App() {
               </Item>
               <Item variant="default">
                 <ItemMedia>
-                  <Smartphone className="size-4 text-primary" />
+                  <Smartphone className="size-4" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle className="line-clamp-1">iPhone 16 Pro Max</ItemTitle>
@@ -1956,6 +1943,45 @@ export function App() {
           {/* 45. AppIcon · 统一图标集（清单来自库里的 APP_ICON_NAMES） */}
           <Section id="icons" title="AppIcon" label="统一图标集（Hugeicons 4.4.0 基底）" count={45}>
             <SpecIcons />
+          </Section>
+
+          {/* Provider 品牌标：Android-Toolkit Settings→Agent 同源的九枚，模型列表的「这是谁的模型」 */}
+          <Section id="provider-logo" title="Provider Logo" label="模型服务商品牌标" count={0}>
+            <div className="space-y-4">
+              <div>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+                  {(Object.keys(PROVIDER_NAMES) as ProviderId[]).map((id) => (
+                    <div
+                      key={id}
+                      className="flex items-center gap-2 rounded-lg border border-border/60 bg-card px-2.5 py-2"
+                    >
+                      <ProviderLogo provider={id} />
+                      <span className="min-w-0 truncate text-xs text-foreground">{PROVIDER_NAMES[id]}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div className="max-w-sm divide-y divide-border/60 rounded-xl border border-border/60 bg-card">
+                  {(
+                    [
+                      ["openai", "GPT-5.2", "官方"],
+                      ["anthropic", "Claude Sonnet 4.5", "官方"],
+                      ["deepseek", "DeepSeek V3.2", "聚合"],
+                      ["glm", "GLM-4.7", "官方"],
+                    ] as [ProviderId, string, string][]
+                  ).map(([id, model, tag]) => (
+                    <div key={id} className="flex items-center gap-2.5 px-3 py-2.5">
+                      <ProviderLogo provider={id} className="size-4" />
+                      <span className="text-xs font-medium text-foreground">{model}</span>
+                      <Badge variant="muted" className="ml-auto h-5 px-1.5 text-[10px]">
+                        {tag}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </Section>
           </PageContext.Provider>
           {/* 底部翻页 */}

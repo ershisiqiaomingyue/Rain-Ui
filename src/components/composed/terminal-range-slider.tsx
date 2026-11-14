@@ -71,9 +71,9 @@ export function TerminalRangeSlider({
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
           />
 
-          {/* Apple HIG 质感圆形滑动拇指 (Thumb) */}
+          {/* 圆形拇指：白旋钮 + 清晰描边 + 柔影，与基础 Slider 同一配方（不描主色边） */}
           <div
-            className="absolute size-4 rounded-full bg-background border-2 border-primary shadow-xs pointer-events-none -translate-x-1/2 transition-transform duration-75 active:scale-110"
+            className="absolute size-4 rounded-full border border-black/20 bg-white shadow-[0_1px_2px_hsl(var(--foreground)/0.16),0_2px_6px_hsl(var(--foreground)/0.20)] pointer-events-none -translate-x-1/2 transition-transform duration-75 active:scale-110"
             style={{ left: `${percentage}%` }}
           />
         </div>

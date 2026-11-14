@@ -55,7 +55,7 @@ export function SpecButton() {
           <Button variant="secondary">刷新设备</Button>
           <Button variant="surface">打开终端</Button>
           <Button variant="subtle">更多</Button>
-          <Button variant="danger" icon={<Trash2 size={14} />}>
+          <Button variant="destructive" icon={<Trash2 size={14} />}>
             删除
           </Button>
           <Button variant="bare">收起</Button>
@@ -409,11 +409,11 @@ export function SpecBadge() {
     <Stack gap={20}>
       <Group title="5 个语义" hint="颜色只表达状态，不做装饰。">
         <Row>
-          <Badge variant="primary">已集成</Badge>
+          <Badge variant="default">已集成</Badge>
           <Badge variant="success">运行中</Badge>
           <Badge variant="warning">需授权</Badge>
-          <Badge variant="danger">失败</Badge>
-          <Badge variant="neutral">未开放</Badge>
+          <Badge variant="destructive">失败</Badge>
+          <Badge variant="muted">未开放</Badge>
         </Row>
       </Group>
       <Group title="pulse" hint="只给实时变化的状态；静态状态加脉冲等于说谎。">
@@ -424,7 +424,7 @@ export function SpecBadge() {
           <Badge variant="warning" pulse>
             等待设备
           </Badge>
-          <Badge variant="danger" pulse>
+          <Badge variant="destructive" pulse>
             连接断开
           </Badge>
         </Row>
@@ -435,7 +435,7 @@ export function SpecBadge() {
             Logcat <Badge variant="success">可用</Badge>
           </span>
           <span className="kit-line">
-            WinScope <Badge variant="neutral">未开放</Badge>
+            WinScope <Badge variant="muted">未开放</Badge>
           </span>
           <span className="kit-line">
             Perfetto <Badge variant="warning">需设备</Badge>

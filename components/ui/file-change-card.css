@@ -2,12 +2,13 @@
    FileChangeCard — the settled file-change card after an assistant reply.
    Carries both the original Card shell and chatAppearance refinements.
    Keep the surface in Card; only file-list geometry belongs here.
-   Colors: --change-added / --change-removed aliased to success / danger.
+   Colors: --change-added = --primary（增行/主色），--change-removed = --destructive-ink（只做红字，不做实心红）。
    ========================================================================== */
 
 .ui-file-changes {
   --change-added: hsl(var(--primary));
-  --change-removed: hsl(var(--destructive));
+  /* 下面这行只被 `color:` 消费（文件行末的 −N），所以取 ink 那一档，不是实心红。 */
+  --change-removed: var(--destructive-ink);
 
   display: flex;
   flex-direction: column;

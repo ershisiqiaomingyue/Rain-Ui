@@ -179,8 +179,8 @@ function FilesNotice({
           <AppIcon name="folder-open" className="size-3.5 shrink-0 text-muted-foreground" />
           <span className="shrink-0 font-medium">文件改动</span>
           <span className="inline-flex shrink-0 gap-1.5 font-mono text-[11px] tabular-nums">
-            <em className="not-italic text-emerald-600 dark:text-emerald-400">+{added}</em>
-            <i className="not-italic text-destructive">-{removed}</i>
+            <em className="not-italic text-muted-foreground">+{added}</em>
+            <i className="not-italic text-[color:var(--destructive-ink)]">-{removed}</i>
           </span>
           <span className="ml-auto shrink-0 text-[11px] tabular-nums text-muted-foreground">
             {files.length} 个文件
@@ -207,8 +207,8 @@ function FilesNotice({
               >
                 <FilePath path={file.path} />
                 <span className="ml-1 inline-flex shrink-0 items-center gap-1.5 font-mono text-[11px] tabular-nums">
-                  <em className="not-italic text-emerald-600 dark:text-emerald-400">+{file.added ?? 0}</em>
-                  <i className="not-italic text-destructive">-{file.removed ?? 0}</i>
+                  <em className="not-italic text-muted-foreground">+{file.added ?? 0}</em>
+                  <i className="not-italic text-[color:var(--destructive-ink)]">-{file.removed ?? 0}</i>
                 </span>
               </Button>
             ))}
@@ -255,7 +255,7 @@ function QueueActions({
       <QueueIconButton
         title="删除"
         aria-label={`删除排队消息：${content}`}
-        className="hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/15"
+        className="hover:bg-destructive/10 hover:text-[color:var(--destructive-ink)] dark:hover:bg-destructive/15"
         onClick={onRemove}
       >
         <AppIcon name="trash" />

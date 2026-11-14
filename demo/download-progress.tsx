@@ -108,14 +108,6 @@ export function DownloadProgressSpec() {
           onCancel={() => {}}
         />
         <ToolUpdateItem
-          icon="box"
-          title="宿主插件 workbuddy"
-          meta="v0.7.9"
-          detail="已收到 18.6 MB · 3.1 MB/s"
-          state="downloading"
-          progress={undefined}
-        />
-        <ToolUpdateItem
           icon="folder-open"
           title="技能仓库 anthropics/skills"
           detail="解开 148 个文件…"
@@ -129,15 +121,6 @@ export function DownloadProgressSpec() {
           meta="35.0.2"
           detail="12.8 MB · 用时 6 秒"
           state="done"
-        />
-        <ToolUpdateItem
-          icon="box"
-          title="模型连接插件 workbuddy"
-          meta="v0.7.9"
-          detail="已试 4 个安装源 · 卡在依赖"
-          state="error"
-          errorText="已依次尝试 4 个安装源仍装不上：依赖版本冲突，不是网络问题。"
-          onStart={() => {}}
         />
       </Group>
 
@@ -156,27 +139,10 @@ export function DownloadProgressSpec() {
         />
         <ToolUpdateItem
           icon="box"
-          title="宿主插件 workbuddy"
-          meta="v0.7.9"
-          detail="已收到 18.6 MB · 3.1 MB/s"
-          state="downloading"
-          description="npm install：250ms 轮询 download-progress.cjs，totalBytes 恒为 null；300 秒超时兜底。"
-        />
-        <ToolUpdateItem
-          icon="box"
           title="MCP 依赖 filesystem / git"
           detail="已收到 6.2 MB · 2.4 MB/s"
           state="downloading"
           description="npx 拉包：跟 npm 同一套 DTO，requestId 换成 MCP 服务 id；同样没有取消。"
-        />
-        <ToolUpdateItem
-          icon="folder-open"
-          title="模型连接插件 workbuddy"
-          meta="v0.7.9"
-          detail="正在校验插件接口…"
-          state="installing"
-          progress={null}
-          description="没有进度事件：安装器每 1500ms 读一次 PROGRESS 字符串，五个固定文案；observe 现在是 false。"
         />
         <ToolUpdateItem
           icon="folder-open"
