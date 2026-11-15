@@ -7,6 +7,9 @@ export { Card as UICard } from "./components/ui/card"
 // shadcn Badge 顶掉 kit 的 CSS 版（原 StatusBadge 已并进来）：`export *` 的星号导出
 // 会被上面这条显式导出遮住，所以 `Badge` 这个名字从此走 cva 版（带 dot / radius）。
 export { Badge, badgeVariants, type BadgeProps } from "./components/ui/badge"
+// shadcn Checkbox 同理：kit 的 `Checkbox`（原生 input + CSS 皮肤）保住默认名，
+// Radix 版以 `UICheckbox` 导出，宿主按需换用（属性是 `checked` + `onCheckedChange`）。
+export { Checkbox as UICheckbox } from "./components/ui/checkbox"
 
 // shadcn 基础组件（与 kit 重名的 card/checkbox/context-menu/spinner/step-spinner/table/tooltip 不导出）
 export * from "./components/ui/accordion"

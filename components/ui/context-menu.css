@@ -1,13 +1,16 @@
+/* 与 shadcn 那族菜单（DropdownMenuContent / MenubarContent：border + rounded-md + p-1）
+   保持同一套结构值：1px 描边、外壳圆角 var(--radius-overlay)、行圆角 var(--radius-control)、4px 内边距、行间不留缝。
+   这样右键菜单与点击菜单不会出现两种圆角、两种描边。 */
 .context-menu {
   position: fixed;
   z-index: var(--z-menu);
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 0;
   min-width: 208px;
   max-width: calc(100vw - 16px);
-  padding: 6px;
-  border: 0;
+  padding: 4px;
+  border: 1px solid hsl(var(--border));
   border-radius: var(--radius-overlay);
   background: hsl(var(--popover));
   color: hsl(var(--foreground));
@@ -17,9 +20,9 @@
 .context-menu button {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 34px;
-  padding: 7px 10px;
+  gap: 8px;
+  min-height: 32px;
+  padding: 6px 8px;
   border: 0;
   border-radius: var(--radius-control);
   background: transparent;
