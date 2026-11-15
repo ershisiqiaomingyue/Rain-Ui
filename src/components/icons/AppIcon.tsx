@@ -30,6 +30,7 @@ export type AppIconName =
   | "close"
   | "panel-left"
   | "bot"
+  | "brand"
   | "file-pen"
   | "terminal"
   | "bug"
@@ -244,6 +245,8 @@ const BODIES: Record<AppIconName, string> = {
     "<g fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\"><path stroke-linejoin=\"round\" d=\"m15.214 5.982l1.402-1.401a1.982 1.982 0 0 1 2.803 2.803l-1.401 1.402m-2.804-2.804L6.98 14.216c-1.045 1.046-1.568 1.568-1.924 2.205S4.342 18.561 4 20c1.438-.342 2.942-.7 3.579-1.056s1.16-.879 2.205-1.924l8.234-8.234m-2.804-2.804l2.804 2.804\"/><path d=\"M11 20h6\"/></g>",
   "branch":
     "<g fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0M5 6a2 2 0 1 0 4 0a2 2 0 1 0-4 0m10 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0\"/><path d=\"M7 8v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V8m-5 4v4\"/></g>",
+  "brand":
+    "<g fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\"><ellipse cx=\"12\" cy=\"12\" rx=\"9\" ry=\"3.4\"/><ellipse cx=\"12\" cy=\"12\" rx=\"9\" ry=\"3.4\" transform=\"rotate(45 12 12)\"/><ellipse cx=\"12\" cy=\"12\" rx=\"9\" ry=\"3.4\" transform=\"rotate(90 12 12)\"/><ellipse cx=\"12\" cy=\"12\" rx=\"9\" ry=\"3.4\" transform=\"rotate(135 12 12)\"/><path d=\"M0,-6.25 C0.78,-3 3,-0.78 6.25,0 C3,0.78 0.78,3 0,6.25 C-0.78,3 -3,-0.78 -6.25,0 C-3,-0.78 -0.78,-3 0,-6.25Z\" fill=\"currentColor\" stroke=\"none\" transform=\"translate(12 12)\"/></g>",
   "copy":
     "<g fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 11V9c0-3.3 0-4.95 1.025-5.975S10.7 2 14 2s4.95 0 5.975 1.025S21 5.7 21 9v2c0 3.3 0 4.95-1.025 5.975S17.3 18 14 18s-4.95 0-5.975-1.025S7 14.3 7 11\"/><path d=\"M3 6v9c0 3.3 0 4.95 1.025 5.975S6.7 22 10 22h7\"/></g>",
   "trash":

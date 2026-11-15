@@ -249,4 +249,3 @@ html[data-theme] .card[class*="card-tone-"].card-interactive:hover {
   border-color: hsl(var(--border)) !important;
   box-shadow: none !important;
 }
-

@@ -2,11 +2,11 @@
    FileChangeCard — the settled file-change card after an assistant reply.
    Carries both the original Card shell and chatAppearance refinements.
    Keep the surface in Card; only file-list geometry belongs here.
-   Colors: --change-added = --primary（增行/主色），--change-removed = --destructive-ink（只做红字，不做实心红）。
+   Colors: --change-added = --success（增行绿，diff 通用语义），--change-removed = --destructive-ink（只做红字，不做实心红）。
    ========================================================================== */
 
 .ui-file-changes {
-  --change-added: hsl(var(--primary));
+  --change-added: hsl(var(--success));
   /* 下面这行只被 `color:` 消费（文件行末的 −N），所以取 ink 那一档，不是实心红。 */
   --change-removed: var(--destructive-ink);
 
@@ -108,8 +108,8 @@
 }
 
 .ui-file-changes-file.is-deleted > span:first-child { text-decoration: line-through; }
-.ui-file-changes-file.btn.btn-bare:hover { background: hsl(var(--accent)); color: hsl(var(--foreground)); }
-.ui-file-changes-file.btn.btn-bare:active { background: hsl(var(--secondary)); }
+.ui-file-changes-file.btn.btn-bare:hover { background: color-mix(in srgb, hsl(var(--foreground)) 6%, transparent); color: hsl(var(--foreground)); }
+.ui-file-changes-file.btn.btn-bare:active { background: color-mix(in srgb, hsl(var(--foreground)) 10%, transparent); }
 
 .ui-file-changes-file:focus-visible {
   box-shadow: inset 0 0 0 2px hsl(var(--ring) / 0.6);

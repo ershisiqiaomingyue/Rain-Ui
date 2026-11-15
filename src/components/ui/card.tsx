@@ -19,17 +19,12 @@ const cardVariants = cva("relative text-card-foreground", {
     variant: {
       /** shadcn 原样：白/暗底 + 发丝线 + 原版阴影，别改它，现有消费方都在用。 */
       default: "rounded-[14px] border bg-card shadow",
-      /** 重点卡：淡天蓝渐变卡面。三档都是 --primary 叠透明度，换 primary 整套跟着换。 */
-      primary:
-        "rounded-[14px] border border-[hsl(var(--primary)/0.22)] bg-[linear-gradient(168deg,hsl(var(--primary)/0.03)_0%,hsl(var(--primary)/0.08)_52%,hsl(var(--primary)/0.17)_100%)] shadow-card",
-      /** 不放渐变的淡蓝底，一组卡里的次级那张用它。 */
-      soft: "rounded-[14px] border border-[hsl(var(--primary)/0.14)] bg-[hsl(var(--primary)/0.06)] shadow-card",
-      /** 淡白灰：在白底上只分出一块，不出灰调。 */
-      muted: "rounded-[14px] border border-[hsl(var(--primary)/0.1)] bg-[hsl(var(--muted)/0.8)] shadow-card",
-      /** 只有线：不填色，纯靠描边分层，最适合再往里堆内容。 */
-      outline: "rounded-[14px] border border-[hsl(var(--primary)/0.18)]",
+      /** 中性三档：default（白卡+发丝线）/ muted（灰面）/ outline（只描边）。
+          边框一律 --border，不染主色 —— 卡面本身不承担语义，语义归 Badge 和 tone。 */
+      muted: 'rounded-[14px] border border-border bg-[hsl(var(--muted)/0.8)] shadow-card',
+      outline: 'rounded-[14px] border border-border',
       /** 内部用：卡里再放卡时的自动样子，别手写。 */
-      inset: "border border-[hsl(var(--primary)/0.14)] bg-[hsl(var(--card)/0.65)]",
+      inset: 'border border-border bg-[hsl(var(--card)/0.65)]',
     },
   },
   defaultVariants: {
