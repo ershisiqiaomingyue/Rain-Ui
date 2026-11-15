@@ -34,13 +34,11 @@ const buttonVariants = cva(
         surface:
           "border-border bg-card shadow-sm hover:bg-accent hover:text-accent-foreground",
         /*
-         * 次要按钮 = A 的「淡蓝」：6% 天蓝铺底、深天蓝字、22% 天蓝描边。
-         * 字不是 --primary 本身（43% 明度压在 6% 淡底上只有 3.9:1），
-         * 而是 primary 往 ink 里混 30%，落在 214 86% 36% 附近 —— 就是 A 的
-         * accent-deep，对淡底 5.2:1。这样仍然只有一个色源。
+         * 次要按钮：中性灰面 + 中性描边（hover 落到 accent）。不染主色 ——
+         * 主次靠明度分（primary 实心 vs 灰面），颜色语义归 primary 按钮。
          */
         secondary:
-          "border-[hsl(var(--primary)/0.24)] bg-[hsl(var(--primary)/0.06)] text-[color:color-mix(in_srgb,hsl(var(--primary))_70%,hsl(var(--foreground)))] hover:border-[hsl(var(--primary)/0.36)] hover:bg-[hsl(var(--primary)/0.1)]",
+          "border-border bg-secondary text-secondary-foreground hover:bg-accent hover:text-foreground",
         /* ghost 是唯一「没有底」的档：图标动作、行内链接式的入口。
            subtle 必须显式声明自己的淡中性底 —— 带字的按钮要看得见形状；
            和 ghost 长得一模一样的时候，两个名字就是一个东西，等于没分层。 */

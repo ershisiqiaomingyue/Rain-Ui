@@ -5,7 +5,8 @@
  * 这里用 esbuild 直接 bundle，规则一条不少。
  */
 import { build } from "esbuild";
-import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { resolve, dirname } from "node:path";
 
 const root = resolve(dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1")), "..");
@@ -47,7 +48,6 @@ const REQUIRED = [
   ".tool-icon",
   ".boot-screen",
   ".confirm-dialog-modal",
-  ".rename-dialog-input",
   ".ui-list-item",
   ".ui-notice",
   ".ui-usage",
@@ -80,9 +80,24 @@ if (missing.length) {
   throw new Error(`产物缺少 ${missing.length} 个选择器：${missing.join(", ")}`);
 }
 mkdirSync(dirname(out), { recursive: true });
-writeFileSync(out, css);
+
+/* ── 库组件的 tailwind 工具类预编译 ───────────────────────────────────────
+   shadcn 层的组件用 tailwind 类写样式，此前依赖消费方的 tailwind 扫描
+   node_modules/rain-ui/dist 生成——但消费方的 dev JIT 可能编译不了任意变体
+   （实测 3.4.19 某些安装下 dev 与 build 行为不一致），整批类静默丢失。
+   独立跑 tailwind（CLI / postcss 编程接口）在同类安装下同样提取不到变体，
+   只有 vite 的 demo 构建管线是完整的。所以 build 链先跑 build:demo，
+   这里从 dist-demo 的产物里取编译好的工具类 CSS 追加到 rain-ui.css 末尾
+   （token 定义在前，工具类引用 var() 顺序正确；demo 专属类是冗余但无害）。
+   消费方 `import "rain-ui/styles.css"` 即得到完整样式，不依赖其 tailwind 扫描。 */
+const demoAssets = resolve(root, "dist-demo/assets");
+const demoCssFile = readdirSync(demoAssets).find((f) => f.endsWith(".css"));
+if (!demoCssFile) throw new Error("dist-demo 里没有 CSS：先跑 npm run build:demo");
+const utilities = readFileSync(resolve(demoAssets, demoCssFile), "utf8");
+
+writeFileSync(out, css + "\n" + utilities);
 rmSync(resolve(root, ".css-build"), { recursive: true, force: true });
-console.log(`dist/rain-ui.css  ${(css.length / 1024).toFixed(1)} kB`);
+console.log(`dist/rain-ui.css  ${(css.length / 1024).toFixed(1)} kB + 工具类 ${(utilities.length / 1024).toFixed(1)} kB`);
 
 /* Tailwind 词表跟着进 dist：消费方（Android-Toolkit）通过 `rain-ui/tailwind-preset`
    引它，而 package.json 的 files 只有 dist，node_modules/rain-ui 里看不到仓库根目录。

@@ -1,0 +1,4 @@
+/* 库组件工具类的 tailwind 入口（build-css.mjs 用）。
+   不含 @tailwind base：preflight 归消费方，库只输出 components + utilities。 */
+@tailwind components;
+@tailwind utilities;

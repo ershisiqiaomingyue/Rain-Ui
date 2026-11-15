@@ -268,7 +268,7 @@
     "dev": "vite",
     "demo": "vite",
     "prebuild": "node scripts/sync-monolith.mjs",
-    "build": "vite build && node scripts/build-types.mjs",
+    "build": "npm run build:demo && vite build && node scripts/build-types.mjs",
     "build:demo": "vite build --mode vitedemo",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json --noEmit"

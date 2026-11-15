@@ -104,6 +104,7 @@ import {
 import { cn } from "@/lib/utils"
 import { SpecIcons } from "./spec-icons"
 import { ProviderLogo, PROVIDER_NAMES, type ProviderId } from "@/components/icons/ProviderLogo"
+import { BrandLogo } from "@/components/icons/BrandLogo"
 import { PaletteLab } from "./palette-lab"
 import { ToolItemsSpec } from "./tool-items"
 import { DownloadProgressSpec } from "./download-progress"
@@ -162,6 +163,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: "resizable", title: "Resizable", label: "可调整面板", group: "base" },
   { id: "sidebar", title: "Sidebar", label: "侧边栏布局", group: "base" },
   { id: "icons", title: "AppIcon", label: "统一图标集", group: "base" },
+  { id: "brand-logo", title: "Brand Logo", label: "品牌标", group: "base" },
   { id: "provider-logo", title: "Provider Logo", label: "服务商品牌标", group: "base" },
   // 组合组件
   { id: "context-usage-ring", title: "Context Ring", label: "上下文圆环", group: "composed" },
@@ -1011,10 +1013,10 @@ export function App() {
 
             <div className="mt-6 space-y-2">
               <p className="text-xs text-muted-foreground">
-                卡面变体（里面是空的，只验底色 / 描边 / 圆角）。天蓝就是 --primary（205 88%），灰色一个都没用：
+                卡面变体（里面是空的，只验底色 / 描边 / 圆角）。三档全中性：白卡 / 灰面 / 只描边，边框一律 --border：
               </p>
               <div className="grid grid-cols-3 gap-3">
-                {(["primary", "soft", "muted", "outline"] as const).map((v) => (
+                {(["muted", "outline"] as const).map((v) => (
                   <Card key={v} variant={v} className="min-h-[104px]">
                     <span className="p-4 block font-mono text-[11px] text-muted-foreground">{v}</span>
                   </Card>
@@ -1029,7 +1031,7 @@ export function App() {
               <p className="text-xs text-muted-foreground">
                 层级：卡里堆卡不用写类名 —— 往里一层圆角收一档、底色换成半透明 card、去掉阴影，第三层收到 6px。
               </p>
-              <Card variant="primary" className="max-w-md p-4">
+              <Card className="max-w-md p-4">
                 <Card className="min-h-[88px] p-4">
                   <Card className="min-h-[52px] p-4">
                     <span className="font-mono text-[11px] text-muted-foreground">第三层</span>
@@ -1943,6 +1945,44 @@ export function App() {
           {/* 45. AppIcon · 统一图标集（清单来自库里的 APP_ICON_NAMES） */}
           <Section id="icons" title="AppIcon" label="统一图标集（Hugeicons 4.4.0 基底）" count={45}>
             <SpecIcons />
+          </Section>
+
+          {/* Android-Toolkit 品牌标：宿主 brand-icon.svg 内联，多实例渐变 id 防冲突 */}
+          <Section id="brand-logo" title="Brand Logo" label="Android-Toolkit 品牌标（彩标 · 渐变内联）" count={0}>
+            <div className="space-y-4">
+              <div>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">尺寸阶梯：</p>
+                <div className="flex flex-wrap items-end gap-5">
+                  {[16, 20, 24, 32, 48].map((s) => (
+                    <div key={s} className="flex flex-col items-center gap-1.5">
+                      <BrandLogo size={s} />
+                      <span className="font-mono text-[10px] text-muted-foreground">{s}px</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">明暗两种画布上（彩标自带渐变，不跟主题）：</p>
+                <div className="grid max-w-md grid-cols-2 gap-3">
+                  <div className="flex items-center justify-center gap-3 rounded-lg border border-border bg-background p-4">
+                    <BrandLogo size={24} />
+                    <span className="text-xs text-foreground">Android-Toolkit</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-3 rounded-lg border border-border bg-foreground p-4">
+                    <BrandLogo size={24} />
+                    <span className="text-xs text-background">Android-Toolkit</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">语境：标题栏 / 关于页的用法：</p>
+                <div className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2">
+                  <BrandLogo size={18} />
+                  <span className="text-xs font-semibold text-foreground">Android Toolkit</span>
+                  <span className="text-[10px] text-muted-foreground">v2.0.0</span>
+                </div>
+              </div>
+            </div>
           </Section>
 
           {/* Provider 品牌标：Android-Toolkit Settings→Agent 同源的九枚，模型列表的「这是谁的模型」 */}

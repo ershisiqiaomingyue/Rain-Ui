@@ -94,7 +94,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.ui-file-notice-diff em { font-style: normal; color: var(--change-added, hsl(var(--primary))); }
+.ui-file-notice-diff em { font-style: normal; color: var(--change-added, hsl(var(--success))); }
 .ui-file-notice-diff i { font-style: normal; color: var(--destructive-ink); }
 
 .ui-file-notice-count {

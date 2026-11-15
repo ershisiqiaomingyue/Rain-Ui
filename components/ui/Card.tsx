@@ -14,11 +14,11 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   dividers?: boolean;
 }
 
-const TONE_CLASS: Record<NonNullable<CardProps["tone"]>, string | undefined> = {
-  surface: "card-tone-surface",
-  muted: "card-tone-muted",
-  subtle: "card-tone-subtle",
-  deep: "card-tone-deep",
+const TONE_CLASS: Record<NonNullable<CardProps['tone']>, string | undefined> = {
+  surface: 'card-tone-surface',
+  muted: 'card-tone-muted',
+  subtle: 'card-tone-subtle',
+  deep: 'card-tone-deep',
 };
 
 export const Card: React.FC<CardProps> = ({

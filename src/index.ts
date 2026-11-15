@@ -74,6 +74,9 @@ export {
 // 而 kit 那份多了 `variant="row"`（时间线行内样式），demo 与 Android-Toolkit 都在用；
 // 让 Tailwind 版把它顶掉会直接丢样式。组合件那份先留在库里当草稿。
 export * from "./components/icons/AppIcon"
+// Android-Toolkit 品牌标（「液态水银天青」）：宿主 brand-icon.svg 原样内联，
+// 渐变/滤镜 id 按 useId 加前缀防多实例冲突。
+export * from "./components/icons/BrandLogo"
 // ProviderLogo 的数据与类型（IMAGE_MARKS / ProviderMark / ProviderMarkId）
 export * from "./components/icons/provider-marks"
 // ButtonGroup 的官方组合演示块（demo 与宿主的「预设组合」都直接用它）

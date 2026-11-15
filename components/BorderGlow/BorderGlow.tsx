@@ -1,26 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
 
-interface BorderGlowProps {
+/** 本实现上收自 Android-Toolkit：token 化的默认色（--primary 三档渐变）、
+ *  动画帧率封顶、visibility 感知。库里的旧版写死蓝紫渐变，已由这份取代。 */
+
+export interface BorderGlowProps {
   children: React.ReactNode;
   className?: string;
   animated?: boolean;
   followPointer?: boolean;
   colors?: string[];
   backgroundColor?: string;
-  borderRadius?: number;
+  /** 默认走库的浮层圆角；调用方要精确值时传 CSS 长度或数字。 */
+  borderRadius?: number | string;
   borderWidth?: number;
 }
+
+// 默认值全部指向库的 token：以前这里是写死的 #6699ff / #8eb4ff / #6f8fbf 三段
+// 蓝紫渐变 + 写死白底，暗色主题下整圈边缘泛白，换配色时也不跟着变。
+const DEFAULT_COLORS = [
+  "hsl(var(--primary) / 0.55)",
+  "hsl(var(--primary) / 0.26)",
+  "hsl(var(--primary) / 0.08)",
+];
 
 export const BorderGlow: React.FC<BorderGlowProps> = ({
   children,
   className,
   animated = false,
   followPointer = true,
-  // 默认取主题强调色，跟着亮暗主题走；写死 #6699ff 会在浅色主题里发灰、深色主题里发脏。
-  colors = ["hsl(var(--primary))", "hsl(var(--primary))", "color-mix(in srgb, hsl(var(--primary)) 55%, transparent)"],
-  // 卡片底色必须来自 token。写死 #ffffff 时深色主题里是白底 + 近白文字（对比度 1.05:1，字直接看不见）。
+  colors = DEFAULT_COLORS,
   backgroundColor = "hsl(var(--card))",
-  borderRadius = 14,
+  borderRadius = "var(--radius-overlay)",
   borderWidth = 2,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -86,9 +96,9 @@ export const BorderGlow: React.FC<BorderGlowProps> = ({
     layer.style.setProperty("--glow-opacity", `${Math.max(0, (proximity * 100 - 50) / 50)}`);
   };
 
-  // 调用方可能只给 1~2 个色；缺的档位回退到上一个，避免 undefined 让整条 gradient 失效。
-  const [stop0, stop1 = stop0, stop2 = stop1] = colors;
-  const gradient = `radial-gradient(180px 140px at var(--glow-point, 50% 0%), ${stop0} 0%, ${stop0} 12%, ${stop1} 28%, ${stop2} 46%, rgba(255,255,255,0) 76%)`;
+  // 收尾用 transparent 而不是 rgba(255,255,255,0)：后者在暗色底上会把渐变的末端
+  // 往白里推，边缘出现一圈脏灰。
+  const gradient = `radial-gradient(180px 140px at var(--glow-point, 50% 0%), ${colors[0]} 0%, ${colors[0]} 12%, ${colors[1]} 28%, ${colors[2]} 46%, transparent 76%)`;
 
   return (
     <div

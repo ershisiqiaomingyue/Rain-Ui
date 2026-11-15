@@ -18,3 +18,8 @@ Thumbs.db
 # design-taste skill 的工作目录（发牌历史 / 无头浏览器 profile）
 .taste-skill/
 .tmp-shots/
+.shots-host*/
+.err-prof/
+.shots-*/
+.shots-cmp/
+.err-prof/
