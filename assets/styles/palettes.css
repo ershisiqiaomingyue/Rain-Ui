@@ -10,35 +10,36 @@
  * 语义层存的是 `H S% L%` 裸三元组，组件里写 hsl(var(--x))；领域调色板存整串色值，
  * 直接 var()。两者不能混，混了就出 hsl(hsl(...))。
  *
- * 语义层的数值就是 shadcn 官方 slate 主题（components.json baseColor: "slate"）
- * 的默认值，从 ui.shadcn.com 的 colors/slate registry 一比一抄来的。
- * 唯一的本地覆写是 accent 三件套（--primary / --primary-foreground / --ring）：
+ * 语义层的结构照 shadcn 官方主题（components.json 的名字与层级）。中性阶已从
+ * slate（hue 222 的蓝调）改为 hue 0 纯黑灰：暗色画布/卡面此前是「发蓝的近黑」，
+ * 消费方拍板要纯黑 —— 明度全部保持 slate 原档，对比关系零变化。亮色仍为 slate 原值。
+ * 唯一的带色相覆写是 accent 三件套（--primary / --primary-foreground / --ring）：
  * Stripe blurple（hue 243），从 demo Palette Lab 的 V3 候选里拍板 —— 要换品牌色
  * 只改这三行 ×2，别动其余 16 个。
  */
 
 :root {
-  /* ── shadcn 语义（暗色为默认主题） ─────────────────────────────────────── */
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
+  /* ── shadcn 语义（暗色为默认主题；中性阶 = hue 0 纯黑，不走 slate 的蓝调） ── */
+  --background: 0 0% 4.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 4.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 4.9%;
+  --popover-foreground: 0 0% 98%;
   /* ── accent 三件套（唯一本地覆写）：Stripe blurple，hue 243。
      暗色给亮档（100% 77%）实心、深靛墨当字（6.4:1）；亮色给压深档（84% 63%）、白字 5.3:1。 ── */
   --primary: 243 100% 77%;
   --primary-foreground: 243 60% 12%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
+  --secondary: 0 0% 17.5%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 17.5%;
+  --muted-foreground: 0 0% 65.1%;
+  --accent: 0 0% 17.5%;
+  --accent-foreground: 0 0% 98%;
   --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 17.5%;
+  --input: 0 0% 17.5%;
   --ring: 243 100% 77%;
 
   /* ── 领域调色板：终端 ANSI / 代码高亮 / 装饰光。它们不是设计语义，
