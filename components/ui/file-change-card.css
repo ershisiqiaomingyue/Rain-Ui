@@ -17,13 +17,19 @@
   max-width: 640px;
   margin: 8px auto 0;
   color: hsl(var(--foreground));
-  container-type: inline-size;
 }
 
+/* 一行放得下就一行：标题和两个动作的换行交给 flex 自己判，不按容器宽硬切。
+   原来这里是 `@container (max-width: 480px)` —— 容器一窄到 480 就把动作挤到第二行，
+   可这行的内容（图标 28 + 标题 + 两个动作）离 480 还差着一大截：
+   面板 400px 时右边明明还空着，撤销 / 查看变更 却已经掉下去了。
+   现在 header 常开 flex-wrap、标题用 basis auto（`flex: 1` 的 basis 是 0，
+   永远不会触发换行、只会把标题压瘪），于是只有内容真的并排放不下时才换行。 */
 .ui-file-changes > header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 7px;
+  gap: 6px 7px;
   min-height: 42px;
   padding: 9px 12px;
   border-bottom: 1px solid hsl(var(--border));
@@ -43,7 +49,8 @@
 
 .ui-file-changes-heading {
   display: flex;
-  flex: 1;
+  /* basis auto（不是 1 = 0%）：换行判断要用标题的真实宽度。 */
+  flex: 1 1 auto;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 4px 8px;
@@ -74,6 +81,8 @@
   align-items: center;
   gap: 6px;
   flex: 0 0 auto;
+  /* 一行放不下、动作掉到第二行时，仍然贴右边缘 —— 和一行时所在的位置一致。 */
+  margin-left: auto;
 }
 
 /* Restore the historical inset rows. Match the bare Button specificity so
@@ -133,14 +142,6 @@
 .ui-file-changes-expand.btn.btn-subtle:hover:not(:disabled) {
   background: color-mix(in srgb, hsl(var(--foreground)) 11%, transparent);
   color: hsl(var(--foreground));
-}
-
-/* A split pane can be narrow even on a wide desktop window. */
-@container (max-width: 480px) {
-  .ui-file-changes > header { flex-wrap: wrap; padding: 10px; }
-  .ui-file-changes-heading { flex-basis: calc(100% - 35px); }
-  .ui-file-changes-actions { margin-left: 35px; }
-  .ui-file-changes-file.btn.btn-bare { gap: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
