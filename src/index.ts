@@ -64,6 +64,7 @@ export * from "./components/composed/context-usage-ring"
 export * from "./components/composed/radial-progress"
 export * from "./components/composed/composer-notice-dock"
 export * from "./components/composed/permission-request-bar"
+export * from "./components/composed/composer-human-gate"
 export * from "./components/composed/task-status-row"
 export * from "./components/composed/terminal-range-slider"
 // 与 kit 的 UsageMetrics 同名类型（UsageMetric）冲突，显式导出让组合件这份胜出。
@@ -107,6 +108,7 @@ export * from "./components/ui/tabs"
 export * from "./components/ui/textarea"
 export * from "./components/ui/toggle"
 export * from "./lib/utils"
+export * from "./components/composed/monaco-code-editor"
 export {
   APP_FONT_OPTIONS,
   APP_MONO_FONT_OPTIONS,

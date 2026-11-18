@@ -25,6 +25,7 @@ import {
   NoticeFileList,
   NoticePanel,
   ChatQueuePanel,
+  ComposerHumanGate,
   NoticePermissionContent,
   NoticeQuestionContent,
   NoticeQueueRow,
@@ -159,8 +160,14 @@ export function SpecNoticeTypes() {
 export function SpecNoticeContents() {
   const [instruction, setInstruction] = useState("");
   const [answer, setAnswer] = useState("Pixel 8 Pro");
+  const [gateAnswer, setGateAnswer] = useState("");
   return (
     <Stack gap={20}>
+      <Group title="输入框接管态" hint="不额外套 NoticePanel 卡片；原输入区被接管，操作沿用输入框的语义色与控件。">
+        <div className="min-h-56 rounded-xl border border-border bg-background p-3">
+          <ComposerHumanGate mode="permission" title="读取本地工作区文件" description="本机 · Windows" details={'{\n  "path": "D:\\\\workspace\\\\app",\n  "operation": "list_files"\n}'} value={gateAnswer} onChange={setGateAnswer} onSubmit={() => {}} onAllowOnce={() => {}} onAllowSession={() => {}} onDeny={() => {}} />
+        </div>
+      </Group>
       <Group title="权限请求正文" hint="命令等宽预览 + 一段可选的「补充指令」输入 + 三个判定的横排按钮；busy 时全部禁用。">
         <NoticePanel label="权限请求" summary="执行 adb shell pm clear com.demo" icon={<ShieldAlert size={15} />} defaultExpanded>
           <NoticePermissionContent

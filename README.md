@@ -70,6 +70,20 @@ import { readAppTheme, setAppTheme, toggleAppTheme, subscribeAppTheme } from "ra
 
 ## 组件清单
 
+### 按需代码编辑器
+
+`MonacoCodeEditor` 接收宿主加载的 `runtime`，库入口不会加载 Monaco。使用时安装可选 peer
+`monaco-editor@0.57.0`，由宿主配置 Worker、注册所需语言与编辑功能，再传入编辑器。
+演示站的「Monaco Editor」页提供独立的按需加载示例。
+
+- `modelKey` 标识当前文件，`retainedModelKeys` 指定仍然打开的文件；模型、撤销栈、光标位置按实例隔离，关闭标签和卸载时释放。
+- `theme` 与 `options`（字体、字号、行高）由宿主按 token 提供，未传字体时使用库等宽字体 token。
+- 补全列表使用界面字体、紧凑控件行高和 AppIcon 语义图标，不改变代码正文的字体；候选定位、键盘选择及插入仍由 Monaco 处理。
+- `onReady` 提供 `focus()` / `revealMatch(start, end)`，搜索范围使用原始文本 UTF-16 偏移；定位不会抢走搜索框焦点。
+- `onOpenFind` / `onSave` 接管 Ctrl/Cmd+F / S；未传查找回调时保留 Monaco 原生查找。
+- `onChange` 返回模型当前换行格式与 BOM；常规 LF / CRLF 不因编辑器接入互相转换。Monaco 模型不保留混合换行风格。
+
+
 | 分组 | 组件 |
 | --- | --- |
 | 表单 | `Button` `Input` `Select` `Switch` `Checkbox` `SegmentedControl` `Badge` |

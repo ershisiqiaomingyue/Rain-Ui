@@ -108,6 +108,7 @@ import { BrandLogo } from "@/components/icons/BrandLogo"
 import { PaletteLab } from "./palette-lab"
 import { ToolItemsSpec } from "./tool-items"
 import { DownloadProgressSpec } from "./download-progress"
+import { MonacoEditorSpec } from "./monaco-editor-spec"
 interface NavItem {
   id: string
   title: string
@@ -176,6 +177,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: "usage-metrics-strip", title: "Usage Metrics", label: "会话用量", group: "composed" },
   { id: "tool-items", title: "Tool Items", label: "工具条目（展开收缩）", group: "composed" },
   { id: "download-progress", title: "Download Progress", label: "下载/安装进度", group: "composed" },
+  { id: "monaco-editor", title: "Monaco Editor", label: "代码编辑器", group: "composed" },
 ]
 const PageContext = React.createContext<string | null>(null)
 
@@ -718,6 +720,10 @@ export function App() {
 
           <Section id="download-progress" title="Download Progress" label="下载/安装进度（徽标 % + 取消）" count={0}>
             <DownloadProgressSpec />
+          </Section>
+
+          <Section id="monaco-editor" title="Monaco Editor" label="代码编辑器（按需加载）" count={0}>
+            <MonacoEditorSpec />
           </Section>
 
           {/* Avatar */}

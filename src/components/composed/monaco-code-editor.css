@@ -1,0 +1,122 @@
+.rain-monaco-code-editor {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.rain-monaco-code-editor .rain-monaco-match {
+  background: var(--code-find-match);
+}
+
+.rain-monaco-code-editor .rain-monaco-match-current {
+  background: var(--code-find-current);
+}
+
+.rain-monaco-code-editor .monaco-scrollable-element > .scrollbar > .slider {
+  border-radius: var(--radius-full);
+}
+
+/* 只定制补全浮层，不覆盖源码、hover 文档或其它 Monaco 控件。 */
+.rain-monaco-code-editor .monaco-editor .suggest-widget,
+.rain-monaco-code-editor .monaco-editor .suggest-details {
+  border-radius: var(--radius-overlay);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .monaco-list {
+  border-radius: var(--radius-overlay);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .monaco-list .monaco-list-row {
+  align-items: center;
+  padding-inline: 8px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-control);
+  background-clip: padding-box;
+  /* Monaco 的行内字重随代码字体设置，补全列表保持常规字重。 */
+  font-weight: var(--fw-body) !important;
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .monaco-list .monaco-list-row.focused {
+  outline: none;
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .monaco-list .monaco-list-row:hover {
+  background-color: var(--vscode-editorSuggestWidget-selectedBackground);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .monaco-list-row > .contents > .main {
+  align-items: center;
+  height: 100%;
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .monaco-icon-label {
+  font-family: var(--font-sans);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .monaco-list .monaco-list-row > .contents > .main > .right > .details-label,
+.rain-monaco-code-editor .monaco-editor .suggest-widget .monaco-list .monaco-list-row.focused > .contents > .main > .right > .details-label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-body);
+  color: hsl(var(--muted-foreground));
+  margin-left: 16px;
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .monaco-highlighted-label .highlight {
+  font-weight: var(--fw-title);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon {
+  color: hsl(var(--muted-foreground));
+  margin-inline: 4px 8px;
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon::before {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: currentColor;
+  mask: var(--rain-suggest-icon-code) center / contain no-repeat;
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-variable::before,
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-field::before,
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-property::before {
+  mask-image: var(--rain-suggest-icon-braces);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-class::before,
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-module::before,
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-namespace::before,
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-interface::before {
+  mask-image: var(--rain-suggest-icon-box);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-snippet::before {
+  mask-image: var(--rain-suggest-icon-file-code);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-keyword::before {
+  mask-image: var(--rain-suggest-icon-code);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-enum::before,
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-enum-member::before,
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-constant::before {
+  mask-image: var(--rain-suggest-icon-tag);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-file::before {
+  mask-image: var(--rain-suggest-icon-file);
+}
+
+.rain-monaco-code-editor .monaco-editor .suggest-widget .suggest-icon.codicon-symbol-folder::before {
+  mask-image: var(--rain-suggest-icon-folder);
+}

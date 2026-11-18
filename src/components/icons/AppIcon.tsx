@@ -610,6 +610,12 @@ const BODIES: Record<AppIconName, string> = {
 /** 全部图标名（BODIES 的键，声明顺序）。演示站/文档遍历用，避免各处再抄一份清单。 */
 export const APP_ICON_NAMES = Object.keys(BODIES) as AppIconName[];
 
+/** 给第三方控件的 CSS mask 复用同一份图标，不维护第二套路径。 */
+export function appIconMask(name: AppIconName): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" color="white" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${BODIES[name]}</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+
 export function AppIcon({
   name,
   size = 16,
