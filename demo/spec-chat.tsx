@@ -237,7 +237,7 @@ export function SpecNoticePanel() {
           <NoticePanel label="权限请求" summary="即将执行 adb shell pm clear com.demo" tone="neutral" icon={<ShieldAlert size={15} />}>
             <Note>点击整行展开；再点一次或按 Esc 收起。</Note>
           </NoticePanel>
-          <NoticePanel label="任务编排" summary="3 个步骤，预计 40 秒" tone="attention" icon={<Sparkles size={15} />} meta={<Badge variant="muted">40s</Badge>}>
+          <NoticePanel floating label="任务编排" summary="3 个步骤，预计 40 秒 · 展开为悬浮详情，不改变周围布局" tone="attention" icon={<Sparkles size={15} />} meta={<Badge variant="muted">40s</Badge>}>
             <Note>attention 用于需要留意但不阻塞的事。</Note>
           </NoticePanel>
           <NoticePanel label="后台任务" summary="Perfetto 正在采集，剩余 12s" tone="warning" icon={<Clock size={15} />}>

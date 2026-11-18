@@ -164,6 +164,24 @@
   color: hsl(var(--foreground));
 }
 
+/* Composer notices keep only their summary row in document flow. Their details
+   are an opaque, anchored surface so opening a long task never pushes chat or
+   the composer around. */
+.ui-notice-floating-content {
+  z-index: var(--z-popover, 50);
+  min-width: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 10px 12px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-panel);
+  background-color: hsl(var(--background));
+  background-image: linear-gradient(var(--notice-fill), var(--notice-fill));
+  box-shadow: var(--shadow-md, var(--shadow-sm));
+  font-size: var(--fs-label);
+  color: hsl(var(--foreground));
+}
+
 /* ── Compact rows (文件改动): half width, fixed before and after expand ──
    The product caps compact rows with width: max-content / max-width 420px.
    Here the width is fixed instead so opening the file list never resizes the

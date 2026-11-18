@@ -1,4 +1,5 @@
 import React, { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { AppIcon } from "../../src/components/icons/AppIcon"
 import { Button } from "./Button";
 
@@ -52,6 +53,8 @@ export type NoticePanelProps = {
   collapsible?: boolean;
   /** Opens expanded. */
   defaultExpanded?: boolean;
+  /** Render expanded details as an anchored floating card without changing dock layout. */
+  floating?: boolean;
   expanded?: boolean;
   onExpandedChange?: (expanded: boolean) => void;
   /** Fired on expand, e.g. to open a planner popover. Never expands by hover. */
@@ -76,6 +79,7 @@ export const NoticePanel: React.FC<NoticePanelProps> = ({
   inline = false,
   collapsible = false,
   defaultExpanded = false,
+  floating = false,
   expanded: controlled,
   onExpandedChange,
   onActivate,
@@ -86,6 +90,8 @@ export const NoticePanel: React.FC<NoticePanelProps> = ({
   const expanded = controlled ?? uncontrolled;
   const contentId = useId();
   const root = useRef<HTMLElement>(null);
+  const floatingBody = useRef<HTMLDivElement>(null);
+  const [floatingStyle, setFloatingStyle] = useState<React.CSSProperties>({ position: "fixed", visibility: "hidden" });
   // 「展开/收起」的箭头方向统一给所有 variant：收起朝右（>）、展开朝下（v）。
   // 形状永远是直角箭头，展开态靠 CSS `rotate(90deg)` 转成下箭头，这样在两种
 
@@ -106,6 +112,39 @@ export const NoticePanel: React.FC<NoticePanelProps> = ({
     document.addEventListener("keydown", escape);
     return () => document.removeEventListener("keydown", escape);
   }, [expanded, controlled, onExpandedChange]);
+
+  useEffect(() => {
+    if (!floating || !expanded) return;
+    const update = () => {
+      const anchor = root.current?.getBoundingClientRect();
+      const body = floatingBody.current;
+      if (!anchor || !body) return;
+      const gutter = 8;
+      const gap = 6;
+      const width = Math.min(anchor.width, window.innerWidth - gutter * 2);
+      const left = Math.max(8, Math.min(anchor.left, window.innerWidth - width - 8));
+      const viewportLimit = window.innerHeight * 0.62;
+      const above = Math.max(0, anchor.top - gap - gutter);
+      const below = Math.max(0, window.innerHeight - anchor.bottom - gap - gutter);
+      const placeBelow = below >= Math.min(body.scrollHeight, viewportLimit) || below > above;
+      const available = placeBelow ? below : above;
+      const maxHeight = Math.max(0, Math.min(viewportLimit, available));
+      const height = Math.min(body.scrollHeight, maxHeight);
+      const top = placeBelow ? anchor.bottom + gap : anchor.top - height - gap;
+      setFloatingStyle({ position: "fixed", left, top: Math.max(gutter, Math.min(top, window.innerHeight - height - gutter)), width, maxHeight, visibility: "visible" });
+    };
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, true);
+    const observer = new ResizeObserver(update);
+    if (root.current) observer.observe(root.current);
+    if (floatingBody.current) observer.observe(floatingBody.current);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update, true);
+      observer.disconnect();
+    };
+  }, [floating, expanded, children]);
 
   const toggle = () => {
     const next = !expanded;
@@ -212,11 +251,11 @@ export const NoticePanel: React.FC<NoticePanelProps> = ({
         </Button>
         {actions && <div className="ui-notice-actions">{actions}</div>}
       </div>
-      {expanded && (
-        <div id={contentId} className="ui-notice-content">
+      {expanded && (floating ? createPortal(
+        <div ref={floatingBody} id={contentId} className="ui-notice-floating-content" style={floatingStyle}>
           {children}
-        </div>
-      )}
+        </div>, document.body,
+      ) : <div id={contentId} className="ui-notice-content">{children}</div>)}
     </section>
   );
 };
