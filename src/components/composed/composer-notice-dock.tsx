@@ -179,7 +179,7 @@ function FilesNotice({
           <AppIcon name="folder-open" className="size-3.5 shrink-0 text-muted-foreground" />
           <span className="shrink-0 font-medium">文件改动</span>
           <span className="inline-flex shrink-0 gap-1.5 font-mono text-[11px] tabular-nums">
-            <em className="not-italic text-muted-foreground">+{added}</em>
+            <em className="not-italic text-success">+{added}</em>
             <i className="not-italic text-[color:var(--destructive-ink)]">-{removed}</i>
           </span>
           <span className="ml-auto shrink-0 text-[11px] tabular-nums text-muted-foreground">
@@ -207,7 +207,7 @@ function FilesNotice({
               >
                 <FilePath path={file.path} />
                 <span className="ml-1 inline-flex shrink-0 items-center gap-1.5 font-mono text-[11px] tabular-nums">
-                  <em className="not-italic text-muted-foreground">+{file.added ?? 0}</em>
+                  <em className="not-italic text-success">+{file.added ?? 0}</em>
                   <i className="not-italic text-[color:var(--destructive-ink)]">-{file.removed ?? 0}</i>
                 </span>
               </Button>
