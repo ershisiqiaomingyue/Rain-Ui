@@ -88,6 +88,8 @@ export function MonacoCodeEditor(props: MonacoCodeEditorProps) {
       scrollBeyondLastLine: false,
       wordWrap: "off",
       renderLineHighlight: "none",
+      // WebView2 的原生 EditContext 在 Enter 后可能错位；textarea 输入通道更稳定。
+      editContext: false,
       tabSize: 4,
       insertSpaces: true,
       detectIndentation: true,
