@@ -102,9 +102,22 @@
   border-color: transparent;
 }
 
-/* 正文和报错都从标题那一列开始，不从图标下面开始。 */
+.confirm-dialog-close-btn:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 1px;
+}
+
+/* 标题行以下整体左对齐：说明、操作行、勾选行都从标题那一列的左边缘起排
+   （与标题同一左缘），换行从左侧续行；按钮区例外，仍从右下角靠右排。 */
+.confirm-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
 .confirm-dialog-message {
-  margin: 0 0 0 calc(var(--confirm-dialog-icon-size) + var(--confirm-dialog-icon-gap));
+  margin: 0;
   font-size: var(--fs-body);
   color: hsl(var(--muted-foreground));
   line-height: 1.5;
@@ -112,7 +125,7 @@
 }
 
 .confirm-dialog-error {
-  margin: 0 0 0 calc(var(--confirm-dialog-icon-size) + var(--confirm-dialog-icon-gap));
+  margin: 0;
   color: var(--destructive-ink);
   font-size: var(--fs-label);
   line-height: 1.5;
@@ -125,7 +138,6 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin: 0 0 14px;
   color: hsl(var(--muted-foreground));
   font-size: var(--fs-body);
   line-height: 1.45;
@@ -135,6 +147,49 @@
 .confirm-dialog-acknowledge input {
   margin-top: 2px;
   accent-color: hsl(var(--destructive));
+}
+
+/* 控件圆角（10px）套在 16px 的勾选框上会读成圆点；勾选框要有「方」的语义，
+   在弹窗里放宽到 18px、5px 圆角，勾选动作的目标也更跟手。 */
+.confirm-dialog-acknowledge .checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+}
+
+/* 勾选框的强调色跟弹窗级别走：危险红、警告琥珀，普通保持默认。
+   库的选中态是画出来的（背景实色 + ::after 对勾），所以这里的覆盖要连
+   对勾的颜色一起接过来，accent-color 管不到它。 */
+.confirm-dialog-acknowledge input:checked {
+  background: hsl(var(--destructive));
+}
+
+.confirm-dialog-acknowledge input:checked::after {
+  border-color: hsl(var(--destructive-foreground));
+}
+
+.confirm-dialog-modal--warning .confirm-dialog-acknowledge input {
+  accent-color: hsl(var(--warning));
+}
+
+.confirm-dialog-modal--warning .confirm-dialog-acknowledge input:checked {
+  background: hsl(var(--warning));
+}
+
+.confirm-dialog-modal--warning .confirm-dialog-acknowledge input:checked::after {
+  border-color: hsl(var(--warning-foreground));
+}
+
+/* 非 danger 变体的图标着色：warning 用琥珀、primary 用中性面，
+   图标底色都是主题 token 推出来的软底，亮暗主题都能读清。 */
+.confirm-dialog-modal--warning .confirm-dialog-icon-wrapper {
+  background: hsl(var(--warning) / 0.14);
+  color: hsl(var(--warning));
+}
+
+.confirm-dialog-modal--primary .confirm-dialog-icon-wrapper {
+  background: hsl(var(--accent));
+  color: hsl(var(--muted-foreground));
 }
 
 .confirm-dialog-actions {
@@ -173,8 +228,42 @@
   box-shadow: none;
 }
 
-.confirm-dialog-actions .btn-primary:disabled:not(.btn-loading) {
+/* 警告级确认（中断进程、覆盖配置这类「不是删除但要有分量」的操作）：
+   实心琥珀 + 深字（--warning-foreground 本来就是往琥珀上配的），醒目程度与危险红同级。 */
+.confirm-dialog-actions .confirm-dialog-confirm-warning {
+  background: hsl(var(--warning));
+  color: hsl(var(--warning-foreground));
+  box-shadow: none;
+}
+
+.confirm-dialog-actions .confirm-dialog-confirm-warning:hover:not(:disabled) {
+  background: hsl(var(--warning));
+  box-shadow: none;
+}
+
+.confirm-dialog-actions .confirm-dialog-confirm-warning:active:not(:disabled) {
+  background: hsl(var(--warning));
+  box-shadow: none;
+}
+
+/* 普通主按钮的禁用态掏空成幽灵；danger / warning 不参与 —— 它们的禁用态
+   保持实色、整体降透明（下面的规则），掏空会让「永久删除」读起来像一句灰字提示。 */
+.confirm-dialog-actions .btn-primary:disabled:not(.btn-loading):not(.confirm-dialog-confirm-danger):not(.confirm-dialog-confirm-warning) {
   background: transparent;
   color: hsl(var(--muted-foreground));
   opacity: .65;
+}
+
+.confirm-dialog-confirm-danger:disabled:not(.btn-loading),
+.confirm-dialog-confirm-warning:disabled:not(.btn-loading) {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* 质量底线：系统开了「减少动态效果」时，入场动画直接落到最终状态。 */
+@media (prefers-reduced-motion: reduce) {
+  .confirm-dialog-overlay,
+  .confirm-dialog-modal {
+    animation: none;
+  }
 }

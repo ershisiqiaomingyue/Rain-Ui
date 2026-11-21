@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { formatInvokeError } from "../../src/lib/errorText";
-import { ConfirmDialog } from "./ConfirmDialog";
+import { ConfirmDialog, type ConfirmDialogProps } from "./ConfirmDialog";
 
 interface ConfirmAction {
   title: string;
   message: string;
   confirmLabel?: string;
+  /** danger=不可逆删除（红，默认）；warning=中断/覆盖类（琥珀）；primary=常规确认。 */
+  variant?: ConfirmDialogProps["variant"];
+  /** 传了就出现勾选框，勾上才允许点确认（高危/不可逆操作用）。 */
+  acknowledgeLabel?: string;
   onConfirm: () => void | Promise<void>;
   /** 取消时的回调（如抢占确认取消后恢复拖拽前的比例）。 */
   onCancel?: () => void;
@@ -43,6 +47,7 @@ export function useConfirmAction() {
   return { confirmAction, confirmationDialog: <ConfirmDialog
     open={Boolean(pending)} title={pending?.title || "确认操作"}
     message={pending?.message || ""} confirmLabel={pending?.confirmLabel}
+    variant={pending?.variant} acknowledgeLabel={pending?.acknowledgeLabel}
     busy={busy} error={error} onConfirm={() => { void execute(); }}
     onCancel={() => { if (!executing.current) { pending?.onCancel?.(); setPending(null); } }}
   /> };

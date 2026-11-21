@@ -11,7 +11,8 @@ export interface ConfirmDialogProps {
   message: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  variant?: "danger" | "primary";
+  /** danger=不可逆删除（红）；warning=中断/覆盖类（琥珀）；primary=常规确认（主色）。 */
+  variant?: "danger" | "warning" | "primary";
   acknowledgeLabel?: string;
   busy?: boolean;
   confirmDisabled?: boolean;
@@ -89,7 +90,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     <div className={`confirm-dialog-overlay${className ? ` ${className}` : ""}`} onClick={() => { if (!busy) onCancel(); }}>
       <div
         ref={modalRef}
-        className="confirm-dialog-modal"
+        className={`confirm-dialog-modal${variant !== "danger" ? ` confirm-dialog-modal--${variant}` : ""}`}
         role="alertdialog"
         aria-modal="true"
         aria-labelledby={titleId}
@@ -101,11 +102,10 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       >
         <div className="confirm-dialog-body">
           {/* 图标跟着标题走：它是这行的装饰，不是独立的左栏。放在标题左边，
-              行高由标题决定，图标用 align-items: center 竖直居中；
-              说明文字另起一段、占满整行，不再缩进到标题后面。 */}
+              行高由标题决定，图标用 align-items: center 竖直居中。 */}
           <div className="confirm-dialog-header">
             <div className="confirm-dialog-icon-wrapper" aria-hidden="true">
-              <AppIcon name="alert-triangle" size={18} className="confirm-dialog-icon" />
+              <AppIcon name={variant === "primary" ? "info" : "alert-triangle"} size={18} className="confirm-dialog-icon" />
             </div>
             <h3 className="confirm-dialog-title" id={titleId}>{title}</h3>
             <button
@@ -119,20 +119,24 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             </button>
           </div>
 
-          <p className="confirm-dialog-message" id={messageId}>{message}</p>
-          {error && <p className="confirm-dialog-error" role="alert">{error}</p>}
-          {children}
+          {/* 标题行以下整体居中：说明、报错、自定义内容和勾选行都相对卡片水平居中，
+              按钮区例外，仍从右下角靠右排。 */}
+          <div className="confirm-dialog-content">
+            <p className="confirm-dialog-message" id={messageId}>{message}</p>
+            {error && <p className="confirm-dialog-error" role="alert">{error}</p>}
+            {children}
 
-          {acknowledgeLabel && (
-            <label className="confirm-dialog-acknowledge">
-              <Checkbox
-                checked={acknowledged}
-                disabled={busy}
-                onChange={setAcknowledged}
-              />
-              <span>{acknowledgeLabel}</span>
-            </label>
-          )}
+            {acknowledgeLabel && (
+              <label className="confirm-dialog-acknowledge">
+                <Checkbox
+                  checked={acknowledged}
+                  disabled={busy}
+                  onChange={setAcknowledged}
+                />
+                <span>{acknowledgeLabel}</span>
+              </label>
+            )}
+          </div>
 
           <div className="confirm-dialog-actions">
             <Button size="sm" variant="secondary" disabled={busy} onClick={onCancel}>
@@ -142,7 +146,9 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             <Button
               size="sm"
               variant="primary"
-              className={variant === "danger" ? "confirm-dialog-confirm-danger" : undefined}
+              className={variant === "danger"
+                ? "confirm-dialog-confirm-danger"
+                : variant === "warning" ? "confirm-dialog-confirm-warning" : undefined}
               disabled={busy || confirmDisabled || (Boolean(acknowledgeLabel) && !acknowledged)}
               loading={busy}
               onClick={onConfirm}
