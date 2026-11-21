@@ -28,12 +28,12 @@ const badgeVariants = cva(
         secondary: "border-transparent bg-secondary text-secondary-foreground",
         muted: "border-border/70 bg-muted text-muted-foreground",
         outline: "border-border bg-background text-foreground",
-        /* 状态三档一律「淡底软胶囊」：8% 色底 + 25% 描边 + 同色深一档的字。
-           字色用 color-mix 往 foreground 混 —— 暗色主题自动提亮、亮色主题自动压深，
-           两个主题都可读。实心琥珀/绿在卡面上像警告灯，软胶囊才是仪表盘的用法；
-           危险字的 --destructive-ink 是现成的混合 token，直接用。 */
+        /* 状态三档：success 是实心深绿 + 配套前景字（--success-foreground 两个主题
+           都按白字/深字对比度配好，亮色绿已压深到 4.7:1）；warning / destructive
+           仍是淡底软胶囊 —— 绿色承载「达成/健康」，实心才够分量；黄和红是提示，
+           淡底不抢内容。产品方向（2026-11）：绿要图 2 那种实心深绿的分量。 */
         success:
-          "border-[hsl(var(--success)/0.25)] bg-[hsl(var(--success)/0.08)] text-[color:color-mix(in_srgb,hsl(var(--success))_80%,hsl(var(--foreground)))]",
+          "border-transparent bg-success text-success-foreground",
         warning:
           "border-[hsl(var(--warning)/0.25)] bg-[hsl(var(--warning)/0.08)] text-[color:color-mix(in_srgb,hsl(var(--warning))_80%,hsl(var(--foreground)))]",
         destructive:
